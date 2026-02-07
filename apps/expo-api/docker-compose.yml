@@ -1,0 +1,67 @@
+version: '3.8'
+
+services:
+  # Expo API Service
+  expo-api:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: expo-api
+    restart: unless-stopped
+    ports:
+      - "8002:8000"
+    volumes:
+      - .:/var/www/html
+      - ./storage:/var/www/html/storage
+    environment:
+      - APP_ENV=local
+      - APP_DEBUG=true
+      - DB_CONNECTION=mysql
+      - DB_HOST=mysql
+      - DB_PORT=3306
+      - DB_DATABASE=maham_expo_api
+      - DB_USERNAME=root
+      - DB_PASSWORD=password
+      - AUTH_SERVICE_URL=http://host.docker.internal:8001
+      - CACHE_DRIVER=redis
+      - REDIS_HOST=redis
+    depends_on:
+      - mysql
+      - redis
+    networks:
+      - expo-network
+      - microservices_network
+
+  # MySQL Database
+  mysql:
+    image: mysql:8.0
+    container_name: expo-api-mysql
+    restart: unless-stopped
+    ports:
+      - "3308:3306"
+    environment:
+      MYSQL_ROOT_PASSWORD: password
+      MYSQL_DATABASE: maham_expo_api
+    volumes:
+      - expo-mysql-data:/var/lib/mysql
+    networks:
+      - expo-network
+
+  # Redis Cache
+  redis:
+    image: redis:alpine
+    container_name: expo-api-redis
+    restart: unless-stopped
+    ports:
+      - "6381:6379"
+    networks:
+      - expo-network
+
+volumes:
+  expo-mysql-data:
+
+networks:
+  expo-network:
+    driver: bridge
+  microservices_network:
+    external: true
