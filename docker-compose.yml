@@ -1,0 +1,188 @@
+services:
+  # ============================================
+  # Auth Service (maham-auth-expo-api)
+  # Port: 8001
+  # ============================================
+  auth-service:
+    build:
+      context: ./apps/maham-auth-expo-api
+      dockerfile: Dockerfile
+    container_name: auth-service
+    restart: unless-stopped
+    ports:
+      - "8001:8000"
+    volumes:
+      - ./apps/maham-auth-expo-api:/var/www/html
+      - auth-vendor:/var/www/html/vendor
+    env_file:
+      - ./apps/maham-auth-expo-api/.env.docker
+    depends_on:
+      auth-mysql:
+        condition: service_healthy
+      auth-redis:
+        condition: service_healthy
+    networks:
+      - microservices
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:8000/api/health"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 40s
+
+  # ============================================
+  # Expo API Service
+  # Port: 8002
+  # ============================================
+  expo-api:
+    build:
+      context: ./apps/expo-api
+      dockerfile: Dockerfile
+    container_name: expo-api
+    restart: unless-stopped
+    ports:
+      - "8002:8000"
+    volumes:
+      - ./apps/expo-api:/var/www/html
+      - expo-vendor:/var/www/html/vendor
+    env_file:
+      - ./apps/expo-api/.env.docker
+    depends_on:
+      expo-mysql:
+        condition: service_healthy
+      expo-redis:
+        condition: service_healthy
+      auth-service:
+        condition: service_healthy
+    networks:
+      - microservices
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:8000/api/health"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 40s
+
+  # ============================================
+  # Auth MySQL Database
+  # Port: 3307
+  # ============================================
+  auth-mysql:
+    image: mysql:8.0
+    container_name: auth-mysql
+    restart: unless-stopped
+    ports:
+      - "3307:3306"
+    environment:
+      MYSQL_ROOT_PASSWORD: root_secret
+      MYSQL_DATABASE: auth_service
+      MYSQL_USER: auth_user
+      MYSQL_PASSWORD: secret
+    volumes:
+      - auth-mysql-data:/var/lib/mysql
+    networks:
+      - microservices
+    healthcheck:
+      test: ["CMD", "mysqladmin", "ping", "-h", "localhost", "-u", "root", "-proot_secret"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+      start_period: 30s
+
+  # ============================================
+  # Expo MySQL Database
+  # Port: 3308
+  # ============================================
+  expo-mysql:
+    image: mysql:8.0
+    container_name: expo-mysql
+    restart: unless-stopped
+    ports:
+      - "3308:3306"
+    environment:
+      MYSQL_ROOT_PASSWORD: password
+      MYSQL_DATABASE: maham_expo_api
+    volumes:
+      - expo-mysql-data:/var/lib/mysql
+    networks:
+      - microservices
+    healthcheck:
+      test: ["CMD", "mysqladmin", "ping", "-h", "localhost", "-u", "root", "-ppassword"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+      start_period: 30s
+
+  # ============================================
+  # Auth Redis
+  # Port: 6380
+  # ============================================
+  auth-redis:
+    image: redis:alpine
+    container_name: auth-redis
+    restart: unless-stopped
+    ports:
+      - "6380:6379"
+    volumes:
+      - auth-redis-data:/data
+    networks:
+      - microservices
+    healthcheck:
+      test: ["CMD", "redis-cli", "ping"]
+      interval: 10s
+      timeout: 5s
+      retries: 3
+
+  # ============================================
+  # Expo Redis
+  # Port: 6381
+  # ============================================
+  expo-redis:
+    image: redis:alpine
+    container_name: expo-redis
+    restart: unless-stopped
+    ports:
+      - "6381:6379"
+    volumes:
+      - expo-redis-data:/data
+    networks:
+      - microservices
+    healthcheck:
+      test: ["CMD", "redis-cli", "ping"]
+      interval: 10s
+      timeout: 5s
+      retries: 3
+
+  # ============================================
+  # phpMyAdmin (Database Management)
+  # Port: 8080
+  # ============================================
+  phpmyadmin:
+    image: phpmyadmin:latest
+    container_name: phpmyadmin
+    restart: unless-stopped
+    ports:
+      - "8080:80"
+    environment:
+      PMA_HOSTS: auth-mysql,expo-mysql
+      PMA_PORTS: 3306,3306
+      PMA_USER: root
+      PMA_PASSWORD: root_secret
+    depends_on:
+      - auth-mysql
+      - expo-mysql
+    networks:
+      - microservices
+
+networks:
+  microservices:
+    driver: bridge
+    name: microservices_network
+
+volumes:
+  auth-mysql-data:
+  auth-redis-data:
+  expo-mysql-data:
+  expo-redis-data:
+  auth-vendor:
+  expo-vendor:

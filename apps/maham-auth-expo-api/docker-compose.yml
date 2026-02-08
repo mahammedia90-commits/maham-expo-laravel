@@ -1,4 +1,9 @@
-version: '3.8'
+# ============================================
+# NOTE: Use the root docker-compose.yml instead!
+# Run from /maham-expo: docker compose up -d
+# Or: make up
+# ============================================
+# This file is kept for standalone development only.
 
 services:
   auth-service:
@@ -9,23 +14,15 @@ services:
     restart: unless-stopped
     ports:
       - "8001:8000"
-    environment:
-      - APP_ENV=local
-      - APP_DEBUG=true
-      - DB_CONNECTION=mysql
-      - DB_HOST=mysql
-      - DB_PORT=3306
-      - DB_DATABASE=auth_service
-      - DB_USERNAME=auth_user
-      - DB_PASSWORD=secret
-      - REDIS_HOST=redis
-      - CACHE_DRIVER=redis
-      - QUEUE_CONNECTION=redis
     volumes:
       - .:/var/www/html
+    env_file:
+      - .env.docker
     depends_on:
-      - mysql
-      - redis
+      mysql:
+        condition: service_healthy
+      redis:
+        condition: service_healthy
     networks:
       - microservices
 
@@ -44,6 +41,12 @@ services:
       - mysql_data:/var/lib/mysql
     networks:
       - microservices
+    healthcheck:
+      test: ["CMD", "mysqladmin", "ping", "-h", "localhost", "-u", "root", "-proot_secret"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+      start_period: 30s
 
   redis:
     image: redis:alpine
@@ -55,6 +58,11 @@ services:
       - redis_data:/data
     networks:
       - microservices
+    healthcheck:
+      test: ["CMD", "redis-cli", "ping"]
+      interval: 10s
+      timeout: 5s
+      retries: 3
 
 networks:
   microservices:

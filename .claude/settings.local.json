@@ -3,7 +3,14 @@
     "allow": [
       "Bash(composer require:*)",
       "Bash(php artisan vendor:publish:*)",
-      "Bash(php artisan:*)"
+      "Bash(php artisan:*)",
+      "Bash(tree:*)",
+      "Bash(chmod:*)",
+      "Bash(docker:*)",
+      "Bash(docker compose:*)",
+      "Bash(open:*)",
+      "Bash(curl:*)",
+      "Bash(python3 -m json.tool:*)"
     ]
   }
 }

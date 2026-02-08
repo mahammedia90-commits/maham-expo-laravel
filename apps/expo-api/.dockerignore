@@ -1,0 +1,15 @@
+vendor/
+node_modules/
+.git/
+.env
+.env.docker
+docker-compose.yml
+storage/logs/*
+storage/framework/cache/*
+storage/framework/sessions/*
+storage/framework/views/*
+bootstrap/cache/*
+*.log
+.phpunit.result.cache
+.idea/
+.vscode/
