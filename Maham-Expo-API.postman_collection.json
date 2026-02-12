@@ -1,0 +1,790 @@
+{
+	"info": {
+		"_postman_id": "a1b2c3d4-e5f6-7890-abcd-ef1234567890",
+		"name": "Maham Expo API",
+		"description": "Maham Expo API - Auth Service + Expo API",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"variable": [
+		{"key": "auth_url", "value": "http://localhost:8001/api"},
+		{"key": "expo_url", "value": "http://localhost:8002/api"},
+		{"key": "token", "value": ""},
+		{"key": "event_id", "value": ""},
+		{"key": "space_id", "value": ""},
+		{"key": "section_id", "value": ""},
+		{"key": "service_id", "value": ""},
+		{"key": "category_id", "value": ""},
+		{"key": "city_id", "value": ""},
+		{"key": "user_id", "value": ""},
+		{"key": "role_id", "value": ""},
+		{"key": "visit_request_id", "value": ""},
+		{"key": "rental_request_id", "value": ""},
+		{"key": "favorite_id", "value": ""},
+		{"key": "notification_id", "value": ""},
+		{"key": "profile_id", "value": ""}
+	],
+	"item": [
+		{
+			"name": "Auth Service",
+			"item": [
+				{
+					"name": "Health Check",
+					"request": {
+						"method": "GET",
+						"header": [{"key": "Accept", "value": "application/json"}],
+						"url": {"raw": "{{auth_url}}/health", "host": ["{{auth_url}}"], "path": ["health"]}
+					}
+				},
+				{
+					"name": "Register",
+					"event": [{"listen": "test", "script": {"exec": ["var j=pm.response.json();if(j.data&&j.data.token){pm.collectionVariables.set('token',j.data.token);}"], "type": "text/javascript"}}],
+					"request": {
+						"method": "POST",
+						"header": [{"key": "Content-Type", "value": "application/json"}, {"key": "Accept", "value": "application/json"}],
+						"body": {"mode": "raw", "raw": "{\n  \"name\": \"Test User\",\n  \"email\": \"test@example.com\",\n  \"password\": \"password123\",\n  \"password_confirmation\": \"password123\",\n  \"phone\": \"0500000000\"\n}"},
+						"url": {"raw": "{{auth_url}}/auth/register", "host": ["{{auth_url}}"], "path": ["auth", "register"]}
+					}
+				},
+				{
+					"name": "Login",
+					"event": [{"listen": "test", "script": {"exec": ["var j=pm.response.json();if(j.data&&j.data.token){pm.collectionVariables.set('token',j.data.token);}"], "type": "text/javascript"}}],
+					"request": {
+						"method": "POST",
+						"header": [{"key": "Content-Type", "value": "application/json"}, {"key": "Accept", "value": "application/json"}],
+						"body": {"mode": "raw", "raw": "{\n  \"email\": \"admin@maham.com\",\n  \"password\": \"password123\"\n}"},
+						"url": {"raw": "{{auth_url}}/auth/login", "host": ["{{auth_url}}"], "path": ["auth", "login"]}
+					}
+				},
+				{
+					"name": "Logout",
+					"request": {
+						"method": "POST",
+						"header": [{"key": "Authorization", "value": "Bearer {{token}}"}, {"key": "Accept", "value": "application/json"}],
+						"url": {"raw": "{{auth_url}}/auth/logout", "host": ["{{auth_url}}"], "path": ["auth", "logout"]}
+					}
+				},
+				{
+					"name": "Refresh Token",
+					"event": [{"listen": "test", "script": {"exec": ["var j=pm.response.json();if(j.data&&j.data.token){pm.collectionVariables.set('token',j.data.token);}"], "type": "text/javascript"}}],
+					"request": {
+						"method": "POST",
+						"header": [{"key": "Authorization", "value": "Bearer {{token}}"}, {"key": "Accept", "value": "application/json"}],
+						"url": {"raw": "{{auth_url}}/auth/refresh", "host": ["{{auth_url}}"], "path": ["auth", "refresh"]}
+					}
+				},
+				{
+					"name": "Get Me",
+					"request": {
+						"method": "GET",
+						"header": [{"key": "Authorization", "value": "Bearer {{token}}"}, {"key": "Accept", "value": "application/json"}],
+						"url": {"raw": "{{auth_url}}/auth/me", "host": ["{{auth_url}}"], "path": ["auth", "me"]}
+					}
+				},
+				{
+					"name": "Change Password",
+					"request": {
+						"method": "POST",
+						"header": [{"key": "Authorization", "value": "Bearer {{token}}"}, {"key": "Content-Type", "value": "application/json"}, {"key": "Accept", "value": "application/json"}],
+						"body": {"mode": "raw", "raw": "{\n  \"current_password\": \"password123\",\n  \"password\": \"newpass123\",\n  \"password_confirmation\": \"newpass123\"\n}"},
+						"url": {"raw": "{{auth_url}}/auth/change-password", "host": ["{{auth_url}}"], "path": ["auth", "change-password"]}
+					}
+				},
+				{
+					"name": "Update Profile",
+					"request": {
+						"method": "PUT",
+						"header": [{"key": "Authorization", "value": "Bearer {{token}}"}, {"key": "Content-Type", "value": "application/json"}, {"key": "Accept", "value": "application/json"}],
+						"body": {"mode": "raw", "raw": "{\n  \"name\": \"Updated Name\",\n  \"phone\": \"0511111111\"\n}"},
+						"url": {"raw": "{{auth_url}}/auth/profile", "host": ["{{auth_url}}"], "path": ["auth", "profile"]}
+					}
+				},
+				{
+					"name": "Forgot Password",
+					"request": {
+						"method": "POST",
+						"header": [{"key": "Content-Type", "value": "application/json"}, {"key": "Accept", "value": "application/json"}],
+						"body": {"mode": "raw", "raw": "{\n  \"email\": \"test@example.com\"\n}"},
+						"url": {"raw": "{{auth_url}}/auth/forgot-password", "host": ["{{auth_url}}"], "path": ["auth", "forgot-password"]}
+					}
+				},
+				{
+					"name": "Reset Password",
+					"request": {
+						"method": "POST",
+						"header": [{"key": "Content-Type", "value": "application/json"}, {"key": "Accept", "value": "application/json"}],
+						"body": {"mode": "raw", "raw": "{\n  \"email\": \"test@example.com\",\n  \"token\": \"reset_token\",\n  \"password\": \"newpass123\",\n  \"password_confirmation\": \"newpass123\"\n}"},
+						"url": {"raw": "{{auth_url}}/auth/reset-password", "host": ["{{auth_url}}"], "path": ["auth", "reset-password"]}
+					}
+				},
+				{
+					"name": "S2S - Verify Token",
+					"request": {
+						"method": "POST",
+						"header": [{"key": "Content-Type", "value": "application/json"}, {"key": "Accept", "value": "application/json"}, {"key": "X-Service-Token", "value": "your-service-token"}],
+						"body": {"mode": "raw", "raw": "{\n  \"token\": \"{{token}}\"\n}"},
+						"url": {"raw": "{{auth_url}}/service/verify-token", "host": ["{{auth_url}}"], "path": ["service", "verify-token"]}
+					}
+				},
+				{
+					"name": "S2S - Check Permission",
+					"request": {
+						"method": "POST",
+						"header": [{"key": "Content-Type", "value": "application/json"}, {"key": "Accept", "value": "application/json"}, {"key": "X-Service-Token", "value": "your-service-token"}],
+						"body": {"mode": "raw", "raw": "{\n  \"token\": \"{{token}}\",\n  \"permission\": \"events.view\"\n}"},
+						"url": {"raw": "{{auth_url}}/service/check-permission", "host": ["{{auth_url}}"], "path": ["service", "check-permission"]}
+					}
+				},
+				{
+					"name": "S2S - User Info",
+					"request": {
+						"method": "POST",
+						"header": [{"key": "Content-Type", "value": "application/json"}, {"key": "Accept", "value": "application/json"}, {"key": "X-Service-Token", "value": "your-service-token"}],
+						"body": {"mode": "raw", "raw": "{\n  \"token\": \"{{token}}\"\n}"},
+						"url": {"raw": "{{auth_url}}/service/user-info", "host": ["{{auth_url}}"], "path": ["service", "user-info"]}
+					}
+				},
+				{
+					"name": "List Users",
+					"request": {
+						"method": "GET",
+						"header": [{"key": "Authorization", "value": "Bearer {{token}}"}, {"key": "Accept", "value": "application/json"}],
+						"url": {"raw": "{{auth_url}}/users?page=1&per_page=15", "host": ["{{auth_url}}"], "path": ["users"], "query": [{"key": "page", "value": "1"}, {"key": "per_page", "value": "15"}, {"key": "search", "value": "", "disabled": true}]}
+					}
+				},
+				{
+					"name": "Create User",
+					"request": {
+						"method": "POST",
+						"header": [{"key": "Authorization", "value": "Bearer {{token}}"}, {"key": "Content-Type", "value": "application/json"}, {"key": "Accept", "value": "application/json"}],
+						"body": {"mode": "raw", "raw": "{\n  \"name\": \"New User\",\n  \"email\": \"new@example.com\",\n  \"password\": \"password123\",\n  \"password_confirmation\": \"password123\"\n}"},
+						"url": {"raw": "{{auth_url}}/users", "host": ["{{auth_url}}"], "path": ["users"]}
+					}
+				},
+				{
+					"name": "Show User",
+					"request": {
+						"method": "GET",
+						"header": [{"key": "Authorization", "value": "Bearer {{token}}"}, {"key": "Accept", "value": "application/json"}],
+						"url": {"raw": "{{auth_url}}/users/{{user_id}}", "host": ["{{auth_url}}"], "path": ["users", "{{user_id}}"]}
+					}
+				},
+				{
+					"name": "Update User",
+					"request": {
+						"method": "PUT",
+						"header": [{"key": "Authorization", "value": "Bearer {{token}}"}, {"key": "Content-Type", "value": "application/json"}, {"key": "Accept", "value": "application/json"}],
+						"body": {"mode": "raw", "raw": "{\n  \"name\": \"Updated Name\"\n}"},
+						"url": {"raw": "{{auth_url}}/users/{{user_id}}", "host": ["{{auth_url}}"], "path": ["users", "{{user_id}}"]}
+					}
+				},
+				{
+					"name": "Delete User",
+					"request": {
+						"method": "DELETE",
+						"header": [{"key": "Authorization", "value": "Bearer {{token}}"}, {"key": "Accept", "value": "application/json"}],
+						"url": {"raw": "{{auth_url}}/users/{{user_id}}", "host": ["{{auth_url}}"], "path": ["users", "{{user_id}}"]}
+					}
+				},
+				{
+					"name": "Assign Roles to User",
+					"request": {
+						"method": "POST",
+						"header": [{"key": "Authorization", "value": "Bearer {{token}}"}, {"key": "Content-Type", "value": "application/json"}, {"key": "Accept", "value": "application/json"}],
+						"body": {"mode": "raw", "raw": "{\n  \"roles\": [\"admin\"]\n}"},
+						"url": {"raw": "{{auth_url}}/users/{{user_id}}/roles", "host": ["{{auth_url}}"], "path": ["users", "{{user_id}}", "roles"]}
+					}
+				},
+				{
+					"name": "List Roles",
+					"request": {
+						"method": "GET",
+						"header": [{"key": "Authorization", "value": "Bearer {{token}}"}, {"key": "Accept", "value": "application/json"}],
+						"url": {"raw": "{{auth_url}}/roles", "host": ["{{auth_url}}"], "path": ["roles"]}
+					}
+				},
+				{
+					"name": "Create Role",
+					"request": {
+						"method": "POST",
+						"header": [{"key": "Authorization", "value": "Bearer {{token}}"}, {"key": "Content-Type", "value": "application/json"}, {"key": "Accept", "value": "application/json"}],
+						"body": {"mode": "raw", "raw": "{\n  \"name\": \"moderator\",\n  \"display_name\": \"Moderator\"\n}"},
+						"url": {"raw": "{{auth_url}}/roles", "host": ["{{auth_url}}"], "path": ["roles"]}
+					}
+				},
+				{
+					"name": "Show Role",
+					"request": {
+						"method": "GET",
+						"header": [{"key": "Authorization", "value": "Bearer {{token}}"}, {"key": "Accept", "value": "application/json"}],
+						"url": {"raw": "{{auth_url}}/roles/{{role_id}}", "host": ["{{auth_url}}"], "path": ["roles", "{{role_id}}"]}
+					}
+				},
+				{
+					"name": "Sync Role Permissions",
+					"request": {
+						"method": "POST",
+						"header": [{"key": "Authorization", "value": "Bearer {{token}}"}, {"key": "Content-Type", "value": "application/json"}, {"key": "Accept", "value": "application/json"}],
+						"body": {"mode": "raw", "raw": "{\n  \"permissions\": [\"events.view\", \"events.create\"]\n}"},
+						"url": {"raw": "{{auth_url}}/roles/{{role_id}}/permissions", "host": ["{{auth_url}}"], "path": ["roles", "{{role_id}}", "permissions"]}
+					}
+				},
+				{
+					"name": "List Permissions",
+					"request": {
+						"method": "GET",
+						"header": [{"key": "Authorization", "value": "Bearer {{token}}"}, {"key": "Accept", "value": "application/json"}],
+						"url": {"raw": "{{auth_url}}/permissions", "host": ["{{auth_url}}"], "path": ["permissions"]}
+					}
+				}
+			]
+		},
+		{
+			"name": "Expo - Public",
+			"item": [
+				{
+					"name": "Health Check",
+					"request": {
+						"method": "GET",
+						"header": [{"key": "Accept", "value": "application/json"}],
+						"url": {"raw": "{{expo_url}}/health", "host": ["{{expo_url}}"], "path": ["health"]}
+					}
+				},
+				{
+					"name": "List Categories",
+					"request": {
+						"method": "GET",
+						"header": [{"key": "Accept", "value": "application/json"}, {"key": "Accept-Language", "value": "ar"}],
+						"url": {"raw": "{{expo_url}}/categories", "host": ["{{expo_url}}"], "path": ["categories"]}
+					}
+				},
+				{
+					"name": "Show Category",
+					"request": {
+						"method": "GET",
+						"header": [{"key": "Accept", "value": "application/json"}, {"key": "Accept-Language", "value": "ar"}],
+						"url": {"raw": "{{expo_url}}/categories/{{category_id}}", "host": ["{{expo_url}}"], "path": ["categories", "{{category_id}}"]}
+					}
+				},
+				{
+					"name": "List Cities",
+					"request": {
+						"method": "GET",
+						"header": [{"key": "Accept", "value": "application/json"}, {"key": "Accept-Language", "value": "ar"}],
+						"url": {"raw": "{{expo_url}}/cities", "host": ["{{expo_url}}"], "path": ["cities"]}
+					}
+				},
+				{
+					"name": "Show City",
+					"request": {
+						"method": "GET",
+						"header": [{"key": "Accept", "value": "application/json"}, {"key": "Accept-Language", "value": "ar"}],
+						"url": {"raw": "{{expo_url}}/cities/{{city_id}}", "host": ["{{expo_url}}"], "path": ["cities", "{{city_id}}"]}
+					}
+				},
+				{
+					"name": "List Events",
+					"request": {
+						"method": "GET",
+						"header": [{"key": "Accept", "value": "application/json"}, {"key": "Accept-Language", "value": "ar"}],
+						"url": {"raw": "{{expo_url}}/events?page=1&per_page=15", "host": ["{{expo_url}}"], "path": ["events"], "query": [{"key": "page", "value": "1"}, {"key": "per_page", "value": "15"}, {"key": "search", "value": "", "disabled": true}, {"key": "city_id", "value": "", "disabled": true}, {"key": "category_id", "value": "", "disabled": true}, {"key": "status", "value": "ongoing", "disabled": true}, {"key": "featured", "value": "true", "disabled": true}, {"key": "start_date", "value": "2024-01-01", "disabled": true}, {"key": "end_date", "value": "2024-12-31", "disabled": true}, {"key": "rental_duration", "value": "daily", "disabled": true}, {"key": "min_price", "value": "100", "disabled": true}, {"key": "max_price", "value": "5000", "disabled": true}, {"key": "min_area", "value": "10", "disabled": true}, {"key": "max_area", "value": "100", "disabled": true}, {"key": "sort_by", "value": "start_date", "disabled": true}, {"key": "sort_order", "value": "asc", "disabled": true}]}
+					}
+				},
+				{
+					"name": "Featured Events",
+					"request": {
+						"method": "GET",
+						"header": [{"key": "Accept", "value": "application/json"}, {"key": "Accept-Language", "value": "ar"}],
+						"url": {"raw": "{{expo_url}}/events/featured?limit=10", "host": ["{{expo_url}}"], "path": ["events", "featured"], "query": [{"key": "limit", "value": "10"}]}
+					}
+				},
+				{
+					"name": "Show Event",
+					"request": {
+						"method": "GET",
+						"header": [{"key": "Accept", "value": "application/json"}, {"key": "Accept-Language", "value": "ar"}],
+						"url": {"raw": "{{expo_url}}/events/{{event_id}}", "host": ["{{expo_url}}"], "path": ["events", "{{event_id}}"]}
+					}
+				},
+				{
+					"name": "Event Sections",
+					"request": {
+						"method": "GET",
+						"header": [{"key": "Accept", "value": "application/json"}, {"key": "Accept-Language", "value": "ar"}],
+						"url": {"raw": "{{expo_url}}/events/{{event_id}}/sections", "host": ["{{expo_url}}"], "path": ["events", "{{event_id}}", "sections"]}
+					}
+				},
+				{
+					"name": "Event Spaces",
+					"request": {
+						"method": "GET",
+						"header": [{"key": "Accept", "value": "application/json"}, {"key": "Accept-Language", "value": "ar"}],
+						"url": {"raw": "{{expo_url}}/events/{{event_id}}/spaces", "host": ["{{expo_url}}"], "path": ["events", "{{event_id}}", "spaces"], "query": [{"key": "available_only", "value": "true", "disabled": true}, {"key": "section_id", "value": "", "disabled": true}, {"key": "space_type", "value": "booth", "disabled": true}, {"key": "payment_system", "value": "full", "disabled": true}, {"key": "rental_duration", "value": "daily", "disabled": true}, {"key": "service_id", "value": "", "disabled": true}, {"key": "min_price", "value": "100", "disabled": true}, {"key": "max_price", "value": "5000", "disabled": true}, {"key": "min_area", "value": "10", "disabled": true}, {"key": "max_area", "value": "100", "disabled": true}, {"key": "floor", "value": "1", "disabled": true}, {"key": "grouped_by_section", "value": "true", "disabled": true}, {"key": "sort_by", "value": "location_code", "disabled": true}, {"key": "sort_order", "value": "asc", "disabled": true}]}
+					}
+				},
+				{
+					"name": "Show Space",
+					"request": {
+						"method": "GET",
+						"header": [{"key": "Accept", "value": "application/json"}, {"key": "Accept-Language", "value": "ar"}],
+						"url": {"raw": "{{expo_url}}/spaces/{{space_id}}", "host": ["{{expo_url}}"], "path": ["spaces", "{{space_id}}"]}
+					}
+				},
+				{
+					"name": "List Services",
+					"request": {
+						"method": "GET",
+						"header": [{"key": "Accept", "value": "application/json"}, {"key": "Accept-Language", "value": "ar"}],
+						"url": {"raw": "{{expo_url}}/services", "host": ["{{expo_url}}"], "path": ["services"]}
+					}
+				}
+			]
+		},
+		{
+			"name": "Expo - Authenticated",
+			"item": [
+				{
+					"name": "Get My Profile",
+					"request": {
+						"method": "GET",
+						"header": [{"key": "Authorization", "value": "Bearer {{token}}"}, {"key": "Accept", "value": "application/json"}],
+						"url": {"raw": "{{expo_url}}/profile", "host": ["{{expo_url}}"], "path": ["profile"]}
+					}
+				},
+				{
+					"name": "Create Profile",
+					"request": {
+						"method": "POST",
+						"header": [{"key": "Authorization", "value": "Bearer {{token}}"}, {"key": "Content-Type", "value": "application/json"}, {"key": "Accept", "value": "application/json"}],
+						"body": {"mode": "raw", "raw": "{\n  \"business_name\": \"My Company\",\n  \"business_name_ar\": \"شركتي\",\n  \"business_type\": \"company\",\n  \"commercial_register\": \"1234567890\",\n  \"phone\": \"0500000000\",\n  \"email\": \"info@company.com\"\n}"},
+						"url": {"raw": "{{expo_url}}/profile", "host": ["{{expo_url}}"], "path": ["profile"]}
+					}
+				},
+				{
+					"name": "Update Profile",
+					"request": {
+						"method": "PUT",
+						"header": [{"key": "Authorization", "value": "Bearer {{token}}"}, {"key": "Content-Type", "value": "application/json"}, {"key": "Accept", "value": "application/json"}],
+						"body": {"mode": "raw", "raw": "{\n  \"business_name\": \"Updated Company\"\n}"},
+						"url": {"raw": "{{expo_url}}/profile", "host": ["{{expo_url}}"], "path": ["profile"]}
+					}
+				},
+				{
+					"name": "List Favorites",
+					"request": {
+						"method": "GET",
+						"header": [{"key": "Authorization", "value": "Bearer {{token}}"}, {"key": "Accept", "value": "application/json"}],
+						"url": {"raw": "{{expo_url}}/favorites", "host": ["{{expo_url}}"], "path": ["favorites"]}
+					}
+				},
+				{
+					"name": "Add Favorite",
+					"request": {
+						"method": "POST",
+						"header": [{"key": "Authorization", "value": "Bearer {{token}}"}, {"key": "Content-Type", "value": "application/json"}, {"key": "Accept", "value": "application/json"}],
+						"body": {"mode": "raw", "raw": "{\n  \"favoritable_type\": \"event\",\n  \"favoritable_id\": \"{{event_id}}\"\n}"},
+						"url": {"raw": "{{expo_url}}/favorites", "host": ["{{expo_url}}"], "path": ["favorites"]}
+					}
+				},
+				{
+					"name": "Remove Favorite",
+					"request": {
+						"method": "DELETE",
+						"header": [{"key": "Authorization", "value": "Bearer {{token}}"}, {"key": "Accept", "value": "application/json"}],
+						"url": {"raw": "{{expo_url}}/favorites/{{favorite_id}}", "host": ["{{expo_url}}"], "path": ["favorites", "{{favorite_id}}"]}
+					}
+				},
+				{
+					"name": "List Notifications",
+					"request": {
+						"method": "GET",
+						"header": [{"key": "Authorization", "value": "Bearer {{token}}"}, {"key": "Accept", "value": "application/json"}],
+						"url": {"raw": "{{expo_url}}/notifications", "host": ["{{expo_url}}"], "path": ["notifications"]}
+					}
+				},
+				{
+					"name": "Unread Notifications Count",
+					"request": {
+						"method": "GET",
+						"header": [{"key": "Authorization", "value": "Bearer {{token}}"}, {"key": "Accept", "value": "application/json"}],
+						"url": {"raw": "{{expo_url}}/notifications/unread-count", "host": ["{{expo_url}}"], "path": ["notifications", "unread-count"]}
+					}
+				},
+				{
+					"name": "Mark Notification Read",
+					"request": {
+						"method": "PUT",
+						"header": [{"key": "Authorization", "value": "Bearer {{token}}"}, {"key": "Accept", "value": "application/json"}],
+						"url": {"raw": "{{expo_url}}/notifications/{{notification_id}}/read", "host": ["{{expo_url}}"], "path": ["notifications", "{{notification_id}}", "read"]}
+					}
+				},
+				{
+					"name": "Mark All Notifications Read",
+					"request": {
+						"method": "PUT",
+						"header": [{"key": "Authorization", "value": "Bearer {{token}}"}, {"key": "Accept", "value": "application/json"}],
+						"url": {"raw": "{{expo_url}}/notifications/read-all", "host": ["{{expo_url}}"], "path": ["notifications", "read-all"]}
+					}
+				},
+				{
+					"name": "List Visit Requests",
+					"request": {
+						"method": "GET",
+						"header": [{"key": "Authorization", "value": "Bearer {{token}}"}, {"key": "Accept", "value": "application/json"}],
+						"url": {"raw": "{{expo_url}}/visit-requests", "host": ["{{expo_url}}"], "path": ["visit-requests"]}
+					}
+				},
+				{
+					"name": "Create Visit Request",
+					"request": {
+						"method": "POST",
+						"header": [{"key": "Authorization", "value": "Bearer {{token}}"}, {"key": "Content-Type", "value": "application/json"}, {"key": "Accept", "value": "application/json"}],
+						"body": {"mode": "raw", "raw": "{\n  \"event_id\": \"{{event_id}}\",\n  \"visit_date\": \"2024-06-15\",\n  \"visitors_count\": 2,\n  \"notes\": \"Visit request\"\n}"},
+						"url": {"raw": "{{expo_url}}/visit-requests", "host": ["{{expo_url}}"], "path": ["visit-requests"]}
+					}
+				},
+				{
+					"name": "Show Visit Request",
+					"request": {
+						"method": "GET",
+						"header": [{"key": "Authorization", "value": "Bearer {{token}}"}, {"key": "Accept", "value": "application/json"}],
+						"url": {"raw": "{{expo_url}}/visit-requests/{{visit_request_id}}", "host": ["{{expo_url}}"], "path": ["visit-requests", "{{visit_request_id}}"]}
+					}
+				},
+				{
+					"name": "Update Visit Request",
+					"request": {
+						"method": "PUT",
+						"header": [{"key": "Authorization", "value": "Bearer {{token}}"}, {"key": "Content-Type", "value": "application/json"}, {"key": "Accept", "value": "application/json"}],
+						"body": {"mode": "raw", "raw": "{\n  \"visit_date\": \"2024-06-20\",\n  \"visitors_count\": 3\n}"},
+						"url": {"raw": "{{expo_url}}/visit-requests/{{visit_request_id}}", "host": ["{{expo_url}}"], "path": ["visit-requests", "{{visit_request_id}}"]}
+					}
+				},
+				{
+					"name": "Cancel Visit Request",
+					"request": {
+						"method": "DELETE",
+						"header": [{"key": "Authorization", "value": "Bearer {{token}}"}, {"key": "Accept", "value": "application/json"}],
+						"url": {"raw": "{{expo_url}}/visit-requests/{{visit_request_id}}", "host": ["{{expo_url}}"], "path": ["visit-requests", "{{visit_request_id}}"]}
+					}
+				},
+				{
+					"name": "List Rental Requests",
+					"request": {
+						"method": "GET",
+						"header": [{"key": "Authorization", "value": "Bearer {{token}}"}, {"key": "Accept", "value": "application/json"}],
+						"url": {"raw": "{{expo_url}}/rental-requests", "host": ["{{expo_url}}"], "path": ["rental-requests"]}
+					}
+				},
+				{
+					"name": "Create Rental Request",
+					"request": {
+						"method": "POST",
+						"header": [{"key": "Authorization", "value": "Bearer {{token}}"}, {"key": "Content-Type", "value": "application/json"}, {"key": "Accept", "value": "application/json"}],
+						"body": {"mode": "raw", "raw": "{\n  \"space_id\": \"{{space_id}}\",\n  \"start_date\": \"2024-06-01\",\n  \"end_date\": \"2024-06-30\",\n  \"notes\": \"Rental request\"\n}"},
+						"url": {"raw": "{{expo_url}}/rental-requests", "host": ["{{expo_url}}"], "path": ["rental-requests"]}
+					}
+				},
+				{
+					"name": "Show Rental Request",
+					"request": {
+						"method": "GET",
+						"header": [{"key": "Authorization", "value": "Bearer {{token}}"}, {"key": "Accept", "value": "application/json"}],
+						"url": {"raw": "{{expo_url}}/rental-requests/{{rental_request_id}}", "host": ["{{expo_url}}"], "path": ["rental-requests", "{{rental_request_id}}"]}
+					}
+				},
+				{
+					"name": "Cancel Rental Request",
+					"request": {
+						"method": "DELETE",
+						"header": [{"key": "Authorization", "value": "Bearer {{token}}"}, {"key": "Accept", "value": "application/json"}],
+						"url": {"raw": "{{expo_url}}/rental-requests/{{rental_request_id}}", "host": ["{{expo_url}}"], "path": ["rental-requests", "{{rental_request_id}}"]}
+					}
+				}
+			]
+		},
+		{
+			"name": "Expo - Admin",
+			"item": [
+				{
+					"name": "List All Events",
+					"request": {
+						"method": "GET",
+						"header": [{"key": "Authorization", "value": "Bearer {{token}}"}, {"key": "Accept", "value": "application/json"}],
+						"url": {"raw": "{{expo_url}}/admin/events?page=1", "host": ["{{expo_url}}"], "path": ["admin", "events"], "query": [{"key": "page", "value": "1"}, {"key": "search", "value": "", "disabled": true}, {"key": "status", "value": "published", "disabled": true}, {"key": "city_id", "value": "", "disabled": true}, {"key": "category_id", "value": "", "disabled": true}]}
+					}
+				},
+				{
+					"name": "Create Event",
+					"request": {
+						"method": "POST",
+						"header": [{"key": "Authorization", "value": "Bearer {{token}}"}, {"key": "Accept", "value": "application/json"}],
+						"body": {"mode": "formdata", "formdata": [{"key": "name", "value": "Tech Expo 2024", "type": "text"}, {"key": "name_ar", "value": "معرض تقني 2024", "type": "text"}, {"key": "description", "value": "Tech expo event", "type": "text"}, {"key": "description_ar", "value": "فعالية معرض تقني", "type": "text"}, {"key": "category_id", "value": "{{category_id}}", "type": "text"}, {"key": "city_id", "value": "{{city_id}}", "type": "text"}, {"key": "address", "value": "Riyadh Front", "type": "text"}, {"key": "address_ar", "value": "واجهة الرياض", "type": "text"}, {"key": "latitude", "value": "24.7136", "type": "text"}, {"key": "longitude", "value": "46.6753", "type": "text"}, {"key": "start_date", "value": "2024-06-01", "type": "text"}, {"key": "end_date", "value": "2024-06-30", "type": "text"}, {"key": "opening_time", "value": "09:00", "type": "text"}, {"key": "closing_time", "value": "22:00", "type": "text"}, {"key": "organizer_name", "value": "Maham Events", "type": "text"}, {"key": "organizer_phone", "value": "0500000000", "type": "text"}, {"key": "status", "value": "published", "type": "text"}, {"key": "is_featured", "value": "true", "type": "text"}, {"key": "images[]", "type": "file", "src": ""}, {"key": "images_360[]", "type": "file", "src": ""}]},
+						"url": {"raw": "{{expo_url}}/admin/events", "host": ["{{expo_url}}"], "path": ["admin", "events"]}
+					}
+				},
+				{
+					"name": "Show Event (Admin)",
+					"request": {
+						"method": "GET",
+						"header": [{"key": "Authorization", "value": "Bearer {{token}}"}, {"key": "Accept", "value": "application/json"}],
+						"url": {"raw": "{{expo_url}}/admin/events/{{event_id}}", "host": ["{{expo_url}}"], "path": ["admin", "events", "{{event_id}}"]}
+					}
+				},
+				{
+					"name": "Update Event",
+					"request": {
+						"method": "PUT",
+						"header": [{"key": "Authorization", "value": "Bearer {{token}}"}, {"key": "Content-Type", "value": "application/json"}, {"key": "Accept", "value": "application/json"}],
+						"body": {"mode": "raw", "raw": "{\n  \"name\": \"Updated Event\",\n  \"status\": \"published\",\n  \"is_featured\": true\n}"},
+						"url": {"raw": "{{expo_url}}/admin/events/{{event_id}}", "host": ["{{expo_url}}"], "path": ["admin", "events", "{{event_id}}"]}
+					}
+				},
+				{
+					"name": "Delete Event",
+					"request": {
+						"method": "DELETE",
+						"header": [{"key": "Authorization", "value": "Bearer {{token}}"}, {"key": "Accept", "value": "application/json"}],
+						"url": {"raw": "{{expo_url}}/admin/events/{{event_id}}", "host": ["{{expo_url}}"], "path": ["admin", "events", "{{event_id}}"]}
+					}
+				},
+				{
+					"name": "List Event Sections",
+					"request": {
+						"method": "GET",
+						"header": [{"key": "Authorization", "value": "Bearer {{token}}"}, {"key": "Accept", "value": "application/json"}],
+						"url": {"raw": "{{expo_url}}/admin/events/{{event_id}}/sections", "host": ["{{expo_url}}"], "path": ["admin", "events", "{{event_id}}", "sections"], "query": [{"key": "is_active", "value": "true", "disabled": true}]}
+					}
+				},
+				{
+					"name": "Create Section",
+					"request": {
+						"method": "POST",
+						"header": [{"key": "Authorization", "value": "Bearer {{token}}"}, {"key": "Content-Type", "value": "application/json"}, {"key": "Accept", "value": "application/json"}],
+						"body": {"mode": "raw", "raw": "{\n  \"name\": \"Section A\",\n  \"name_ar\": \"القسم أ\",\n  \"description\": \"Main section\",\n  \"description_ar\": \"القسم الرئيسي\",\n  \"icon\": \"building\",\n  \"is_active\": true,\n  \"sort_order\": 1\n}"},
+						"url": {"raw": "{{expo_url}}/admin/events/{{event_id}}/sections", "host": ["{{expo_url}}"], "path": ["admin", "events", "{{event_id}}", "sections"]}
+					}
+				},
+				{
+					"name": "Show Section",
+					"request": {
+						"method": "GET",
+						"header": [{"key": "Authorization", "value": "Bearer {{token}}"}, {"key": "Accept", "value": "application/json"}],
+						"url": {"raw": "{{expo_url}}/admin/sections/{{section_id}}", "host": ["{{expo_url}}"], "path": ["admin", "sections", "{{section_id}}"]}
+					}
+				},
+				{
+					"name": "Update Section",
+					"request": {
+						"method": "PUT",
+						"header": [{"key": "Authorization", "value": "Bearer {{token}}"}, {"key": "Content-Type", "value": "application/json"}, {"key": "Accept", "value": "application/json"}],
+						"body": {"mode": "raw", "raw": "{\n  \"name\": \"Updated Section\",\n  \"name_ar\": \"القسم المحدث\"\n}"},
+						"url": {"raw": "{{expo_url}}/admin/sections/{{section_id}}", "host": ["{{expo_url}}"], "path": ["admin", "sections", "{{section_id}}"]}
+					}
+				},
+				{
+					"name": "Delete Section",
+					"request": {
+						"method": "DELETE",
+						"header": [{"key": "Authorization", "value": "Bearer {{token}}"}, {"key": "Accept", "value": "application/json"}],
+						"url": {"raw": "{{expo_url}}/admin/sections/{{section_id}}", "host": ["{{expo_url}}"], "path": ["admin", "sections", "{{section_id}}"]}
+					}
+				},
+				{
+					"name": "List Event Spaces (Admin)",
+					"request": {
+						"method": "GET",
+						"header": [{"key": "Authorization", "value": "Bearer {{token}}"}, {"key": "Accept", "value": "application/json"}],
+						"url": {"raw": "{{expo_url}}/admin/events/{{event_id}}/spaces", "host": ["{{expo_url}}"], "path": ["admin", "events", "{{event_id}}", "spaces"], "query": [{"key": "status", "value": "available", "disabled": true}, {"key": "section_id", "value": "", "disabled": true}, {"key": "space_type", "value": "booth", "disabled": true}, {"key": "floor", "value": "1", "disabled": true}]}
+					}
+				},
+				{
+					"name": "Create Space",
+					"request": {
+						"method": "POST",
+						"header": [{"key": "Authorization", "value": "Bearer {{token}}"}, {"key": "Accept", "value": "application/json"}],
+						"body": {"mode": "formdata", "formdata": [{"key": "name", "value": "Booth A-01", "type": "text"}, {"key": "name_ar", "value": "كشك أ-01", "type": "text"}, {"key": "location_code", "value": "A-01", "type": "text"}, {"key": "area_sqm", "value": "25", "type": "text"}, {"key": "price_per_day", "value": "500", "type": "text"}, {"key": "price_total", "value": "15000", "type": "text"}, {"key": "status", "value": "available", "type": "text"}, {"key": "floor_number", "value": "1", "type": "text"}, {"key": "section_id", "value": "{{section_id}}", "type": "text"}, {"key": "space_type", "value": "booth", "type": "text"}, {"key": "payment_system", "value": "full", "type": "text"}, {"key": "rental_duration", "value": "full_event", "type": "text"}, {"key": "latitude", "value": "24.7136", "type": "text"}, {"key": "longitude", "value": "46.6753", "type": "text"}, {"key": "address", "value": "Hall A, Floor 1", "type": "text"}, {"key": "address_ar", "value": "قاعة أ، الطابق 1", "type": "text"}, {"key": "images[]", "type": "file", "src": ""}, {"key": "images_360[]", "type": "file", "src": ""}]},
+						"url": {"raw": "{{expo_url}}/admin/events/{{event_id}}/spaces", "host": ["{{expo_url}}"], "path": ["admin", "events", "{{event_id}}", "spaces"]}
+					}
+				},
+				{
+					"name": "Show Space (Admin)",
+					"request": {
+						"method": "GET",
+						"header": [{"key": "Authorization", "value": "Bearer {{token}}"}, {"key": "Accept", "value": "application/json"}],
+						"url": {"raw": "{{expo_url}}/admin/spaces/{{space_id}}", "host": ["{{expo_url}}"], "path": ["admin", "spaces", "{{space_id}}"]}
+					}
+				},
+				{
+					"name": "Update Space",
+					"request": {
+						"method": "PUT",
+						"header": [{"key": "Authorization", "value": "Bearer {{token}}"}, {"key": "Content-Type", "value": "application/json"}, {"key": "Accept", "value": "application/json"}],
+						"body": {"mode": "raw", "raw": "{\n  \"name\": \"Updated Space\",\n  \"price_total\": 20000,\n  \"space_type\": \"shop\",\n  \"payment_system\": \"installment\",\n  \"rental_duration\": \"monthly\",\n  \"services\": []\n}"},
+						"url": {"raw": "{{expo_url}}/admin/spaces/{{space_id}}", "host": ["{{expo_url}}"], "path": ["admin", "spaces", "{{space_id}}"]}
+					}
+				},
+				{
+					"name": "Delete Space",
+					"request": {
+						"method": "DELETE",
+						"header": [{"key": "Authorization", "value": "Bearer {{token}}"}, {"key": "Accept", "value": "application/json"}],
+						"url": {"raw": "{{expo_url}}/admin/spaces/{{space_id}}", "host": ["{{expo_url}}"], "path": ["admin", "spaces", "{{space_id}}"]}
+					}
+				},
+				{
+					"name": "List Services (Admin)",
+					"request": {
+						"method": "GET",
+						"header": [{"key": "Authorization", "value": "Bearer {{token}}"}, {"key": "Accept", "value": "application/json"}],
+						"url": {"raw": "{{expo_url}}/admin/services", "host": ["{{expo_url}}"], "path": ["admin", "services"], "query": [{"key": "is_active", "value": "true", "disabled": true}, {"key": "search", "value": "", "disabled": true}]}
+					}
+				},
+				{
+					"name": "Create Service",
+					"request": {
+						"method": "POST",
+						"header": [{"key": "Authorization", "value": "Bearer {{token}}"}, {"key": "Content-Type", "value": "application/json"}, {"key": "Accept", "value": "application/json"}],
+						"body": {"mode": "raw", "raw": "{\n  \"name\": \"Electricity\",\n  \"name_ar\": \"كهرباء\",\n  \"description\": \"Power supply\",\n  \"description_ar\": \"توفير الكهرباء\",\n  \"icon\": \"bolt\",\n  \"is_active\": true,\n  \"sort_order\": 1\n}"},
+						"url": {"raw": "{{expo_url}}/admin/services", "host": ["{{expo_url}}"], "path": ["admin", "services"]}
+					}
+				},
+				{
+					"name": "Show Service (Admin)",
+					"request": {
+						"method": "GET",
+						"header": [{"key": "Authorization", "value": "Bearer {{token}}"}, {"key": "Accept", "value": "application/json"}],
+						"url": {"raw": "{{expo_url}}/admin/services/{{service_id}}", "host": ["{{expo_url}}"], "path": ["admin", "services", "{{service_id}}"]}
+					}
+				},
+				{
+					"name": "Update Service",
+					"request": {
+						"method": "PUT",
+						"header": [{"key": "Authorization", "value": "Bearer {{token}}"}, {"key": "Content-Type", "value": "application/json"}, {"key": "Accept", "value": "application/json"}],
+						"body": {"mode": "raw", "raw": "{\n  \"name\": \"Updated Service\",\n  \"name_ar\": \"خدمة محدثة\"\n}"},
+						"url": {"raw": "{{expo_url}}/admin/services/{{service_id}}", "host": ["{{expo_url}}"], "path": ["admin", "services", "{{service_id}}"]}
+					}
+				},
+				{
+					"name": "Delete Service",
+					"request": {
+						"method": "DELETE",
+						"header": [{"key": "Authorization", "value": "Bearer {{token}}"}, {"key": "Accept", "value": "application/json"}],
+						"url": {"raw": "{{expo_url}}/admin/services/{{service_id}}", "host": ["{{expo_url}}"], "path": ["admin", "services", "{{service_id}}"]}
+					}
+				},
+				{
+					"name": "List Visit Requests (Admin)",
+					"request": {
+						"method": "GET",
+						"header": [{"key": "Authorization", "value": "Bearer {{token}}"}, {"key": "Accept", "value": "application/json"}],
+						"url": {"raw": "{{expo_url}}/admin/visit-requests", "host": ["{{expo_url}}"], "path": ["admin", "visit-requests"]}
+					}
+				},
+				{
+					"name": "Show Visit Request (Admin)",
+					"request": {
+						"method": "GET",
+						"header": [{"key": "Authorization", "value": "Bearer {{token}}"}, {"key": "Accept", "value": "application/json"}],
+						"url": {"raw": "{{expo_url}}/admin/visit-requests/{{visit_request_id}}", "host": ["{{expo_url}}"], "path": ["admin", "visit-requests", "{{visit_request_id}}"]}
+					}
+				},
+				{
+					"name": "Approve Visit Request",
+					"request": {
+						"method": "PUT",
+						"header": [{"key": "Authorization", "value": "Bearer {{token}}"}, {"key": "Content-Type", "value": "application/json"}, {"key": "Accept", "value": "application/json"}],
+						"body": {"mode": "raw", "raw": "{\n  \"notes\": \"Approved\"\n}"},
+						"url": {"raw": "{{expo_url}}/admin/visit-requests/{{visit_request_id}}/approve", "host": ["{{expo_url}}"], "path": ["admin", "visit-requests", "{{visit_request_id}}", "approve"]}
+					}
+				},
+				{
+					"name": "Reject Visit Request",
+					"request": {
+						"method": "PUT",
+						"header": [{"key": "Authorization", "value": "Bearer {{token}}"}, {"key": "Content-Type", "value": "application/json"}, {"key": "Accept", "value": "application/json"}],
+						"body": {"mode": "raw", "raw": "{\n  \"reason\": \"No available slots\"\n}"},
+						"url": {"raw": "{{expo_url}}/admin/visit-requests/{{visit_request_id}}/reject", "host": ["{{expo_url}}"], "path": ["admin", "visit-requests", "{{visit_request_id}}", "reject"]}
+					}
+				},
+				{
+					"name": "List Rental Requests (Admin)",
+					"request": {
+						"method": "GET",
+						"header": [{"key": "Authorization", "value": "Bearer {{token}}"}, {"key": "Accept", "value": "application/json"}],
+						"url": {"raw": "{{expo_url}}/admin/rental-requests", "host": ["{{expo_url}}"], "path": ["admin", "rental-requests"]}
+					}
+				},
+				{
+					"name": "Show Rental Request (Admin)",
+					"request": {
+						"method": "GET",
+						"header": [{"key": "Authorization", "value": "Bearer {{token}}"}, {"key": "Accept", "value": "application/json"}],
+						"url": {"raw": "{{expo_url}}/admin/rental-requests/{{rental_request_id}}", "host": ["{{expo_url}}"], "path": ["admin", "rental-requests", "{{rental_request_id}}"]}
+					}
+				},
+				{
+					"name": "Approve Rental Request",
+					"request": {
+						"method": "PUT",
+						"header": [{"key": "Authorization", "value": "Bearer {{token}}"}, {"key": "Content-Type", "value": "application/json"}, {"key": "Accept", "value": "application/json"}],
+						"body": {"mode": "raw", "raw": "{\n  \"notes\": \"Approved\"\n}"},
+						"url": {"raw": "{{expo_url}}/admin/rental-requests/{{rental_request_id}}/approve", "host": ["{{expo_url}}"], "path": ["admin", "rental-requests", "{{rental_request_id}}", "approve"]}
+					}
+				},
+				{
+					"name": "Reject Rental Request",
+					"request": {
+						"method": "PUT",
+						"header": [{"key": "Authorization", "value": "Bearer {{token}}"}, {"key": "Content-Type", "value": "application/json"}, {"key": "Accept", "value": "application/json"}],
+						"body": {"mode": "raw", "raw": "{\n  \"reason\": \"Space already booked\"\n}"},
+						"url": {"raw": "{{expo_url}}/admin/rental-requests/{{rental_request_id}}/reject", "host": ["{{expo_url}}"], "path": ["admin", "rental-requests", "{{rental_request_id}}", "reject"]}
+					}
+				},
+				{
+					"name": "Record Payment",
+					"request": {
+						"method": "POST",
+						"header": [{"key": "Authorization", "value": "Bearer {{token}}"}, {"key": "Content-Type", "value": "application/json"}, {"key": "Accept", "value": "application/json"}],
+						"body": {"mode": "raw", "raw": "{\n  \"amount\": 15000,\n  \"payment_method\": \"bank_transfer\",\n  \"reference\": \"TXN-123456\"\n}"},
+						"url": {"raw": "{{expo_url}}/admin/rental-requests/{{rental_request_id}}/payment", "host": ["{{expo_url}}"], "path": ["admin", "rental-requests", "{{rental_request_id}}", "payment"]}
+					}
+				},
+				{
+					"name": "List Business Profiles",
+					"request": {
+						"method": "GET",
+						"header": [{"key": "Authorization", "value": "Bearer {{token}}"}, {"key": "Accept", "value": "application/json"}],
+						"url": {"raw": "{{expo_url}}/admin/profiles", "host": ["{{expo_url}}"], "path": ["admin", "profiles"]}
+					}
+				},
+				{
+					"name": "Show Business Profile",
+					"request": {
+						"method": "GET",
+						"header": [{"key": "Authorization", "value": "Bearer {{token}}"}, {"key": "Accept", "value": "application/json"}],
+						"url": {"raw": "{{expo_url}}/admin/profiles/{{profile_id}}", "host": ["{{expo_url}}"], "path": ["admin", "profiles", "{{profile_id}}"]}
+					}
+				},
+				{
+					"name": "Approve Profile",
+					"request": {
+						"method": "PUT",
+						"header": [{"key": "Authorization", "value": "Bearer {{token}}"}, {"key": "Content-Type", "value": "application/json"}, {"key": "Accept", "value": "application/json"}],
+						"body": {"mode": "raw", "raw": "{\n  \"notes\": \"Documents verified\"\n}"},
+						"url": {"raw": "{{expo_url}}/admin/profiles/{{profile_id}}/approve", "host": ["{{expo_url}}"], "path": ["admin", "profiles", "{{profile_id}}", "approve"]}
+					}
+				},
+				{
+					"name": "Reject Profile",
+					"request": {
+						"method": "PUT",
+						"header": [{"key": "Authorization", "value": "Bearer {{token}}"}, {"key": "Content-Type", "value": "application/json"}, {"key": "Accept", "value": "application/json"}],
+						"body": {"mode": "raw", "raw": "{\n  \"reason\": \"Incomplete documents\"\n}"},
+						"url": {"raw": "{{expo_url}}/admin/profiles/{{profile_id}}/reject", "host": ["{{expo_url}}"], "path": ["admin", "profiles", "{{profile_id}}", "reject"]}
+					}
+				}
+			]
+		}
+	]
+}

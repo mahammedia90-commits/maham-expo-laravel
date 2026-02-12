@@ -15,7 +15,7 @@ return [
     | Service Token for Inter-Service Communication
     |--------------------------------------------------------------------------
     */
-    'service_token' => env('SERVICE_TOKEN', 'maham-expo-secret-token-2024'),
+    'service_token' => env('SERVICE_TOKEN'),
 
     /*
     |--------------------------------------------------------------------------

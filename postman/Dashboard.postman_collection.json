@@ -1,0 +1,924 @@
+{
+	"info": {
+		"_postman_id": "dash-0001-a2b3-c4d5-e6f7g8h9i0j1",
+		"name": "Dashboard Statistics - Maham Expo",
+		"description": "Dashboard Statistics API collection for admin use.\nCovers overview stats, spaces filters, revenue filters, combined filters, user stats from auth service, and health checks.",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"auth": {
+		"type": "bearer",
+		"bearer": [
+			{
+				"key": "token",
+				"value": "{{admin_token}}",
+				"type": "string"
+			}
+		]
+	},
+	"variable": [
+		{"key": "auth_url", "value": "http://localhost:8001/api"},
+		{"key": "expo_url", "value": "http://localhost:8002/api"},
+		{"key": "admin_token", "value": ""},
+		{"key": "event_id", "value": ""}
+	],
+	"item": [
+		{
+			"name": "1. Auth (تسجيل الدخول)",
+			"item": [
+				{
+					"name": "Login Admin",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test('Login successful', function () {",
+									"    pm.response.to.have.status(200);",
+									"});",
+									"",
+									"var jsonData = pm.response.json();",
+									"",
+									"if (jsonData.data && jsonData.data.token) {",
+									"    pm.collectionVariables.set('admin_token', jsonData.data.token);",
+									"    pm.environment.set('admin_token', jsonData.data.token);",
+									"    console.log('admin_token saved successfully');",
+									"}",
+									"",
+									"pm.test('Token is present', function () {",
+									"    pm.expect(jsonData.data).to.have.property('token');",
+									"    pm.expect(jsonData.data.token).to.be.a('string').and.not.empty;",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "noauth"
+						},
+						"method": "POST",
+						"header": [
+							{"key": "Content-Type", "value": "application/json"},
+							{"key": "Accept", "value": "application/json"},
+							{"key": "Accept-Language", "value": "ar"}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"identifier\": \"admin@maham-expo.com\",\n  \"password\": \"Admin@123456\"\n}"
+						},
+						"url": {
+							"raw": "{{auth_url}}/auth/login",
+							"host": ["{{auth_url}}"],
+							"path": ["auth", "login"]
+						},
+						"description": "Login as admin to obtain the admin_token. The test script automatically saves the token to both collection and environment variables."
+					},
+					"response": []
+				}
+			],
+			"description": "Authenticate as admin and store the bearer token for subsequent requests."
+		},
+		{
+			"name": "2. Dashboard - Overview (نظرة عامة)",
+			"item": [
+				{
+					"name": "Get Dashboard - All Stats",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test('Status code is 200', function () {",
+									"    pm.response.to.have.status(200);",
+									"});",
+									"",
+									"pm.test('Response has data object', function () {",
+									"    var jsonData = pm.response.json();",
+									"    pm.expect(jsonData).to.have.property('data');",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [
+							{"key": "Accept", "value": "application/json"},
+							{"key": "Accept-Language", "value": "ar"}
+						],
+						"url": {
+							"raw": "{{expo_url}}/admin/dashboard",
+							"host": ["{{expo_url}}"],
+							"path": ["admin", "dashboard"]
+						},
+						"description": "Retrieve all dashboard statistics without any filters."
+					},
+					"response": []
+				},
+				{
+					"name": "Get Dashboard - Filter by Event",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test('Status code is 200', function () {",
+									"    pm.response.to.have.status(200);",
+									"});",
+									"",
+									"pm.test('Response has data object', function () {",
+									"    var jsonData = pm.response.json();",
+									"    pm.expect(jsonData).to.have.property('data');",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [
+							{"key": "Accept", "value": "application/json"},
+							{"key": "Accept-Language", "value": "ar"}
+						],
+						"url": {
+							"raw": "{{expo_url}}/admin/dashboard?event_id={{event_id}}",
+							"host": ["{{expo_url}}"],
+							"path": ["admin", "dashboard"],
+							"query": [
+								{
+									"key": "event_id",
+									"value": "{{event_id}}",
+									"description": "Filter dashboard stats by a specific event"
+								}
+							]
+						},
+						"description": "Retrieve dashboard statistics filtered by a specific event ID."
+					},
+					"response": []
+				}
+			],
+			"description": "Overview dashboard endpoints - all stats and event-filtered stats."
+		},
+		{
+			"name": "3. Dashboard - Spaces Filter (فلتر المساحات)",
+			"item": [
+				{
+					"name": "Spaces - All Time",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test('Status code is 200', function () {",
+									"    pm.response.to.have.status(200);",
+									"});",
+									"",
+									"pm.test('Response has data', function () {",
+									"    var jsonData = pm.response.json();",
+									"    pm.expect(jsonData).to.have.property('data');",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [
+							{"key": "Accept", "value": "application/json"},
+							{"key": "Accept-Language", "value": "ar"}
+						],
+						"url": {
+							"raw": "{{expo_url}}/admin/dashboard?spaces_period=all",
+							"host": ["{{expo_url}}"],
+							"path": ["admin", "dashboard"],
+							"query": [
+								{
+									"key": "spaces_period",
+									"value": "all",
+									"description": "All time spaces statistics"
+								}
+							]
+						},
+						"description": "Dashboard spaces statistics - all time."
+					},
+					"response": []
+				},
+				{
+					"name": "Spaces - Today",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test('Status code is 200', function () {",
+									"    pm.response.to.have.status(200);",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [
+							{"key": "Accept", "value": "application/json"},
+							{"key": "Accept-Language", "value": "ar"}
+						],
+						"url": {
+							"raw": "{{expo_url}}/admin/dashboard?spaces_period=today",
+							"host": ["{{expo_url}}"],
+							"path": ["admin", "dashboard"],
+							"query": [
+								{
+									"key": "spaces_period",
+									"value": "today",
+									"description": "Today's spaces statistics"
+								}
+							]
+						},
+						"description": "Dashboard spaces statistics - today only."
+					},
+					"response": []
+				},
+				{
+					"name": "Spaces - This Week",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test('Status code is 200', function () {",
+									"    pm.response.to.have.status(200);",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [
+							{"key": "Accept", "value": "application/json"},
+							{"key": "Accept-Language", "value": "ar"}
+						],
+						"url": {
+							"raw": "{{expo_url}}/admin/dashboard?spaces_period=week",
+							"host": ["{{expo_url}}"],
+							"path": ["admin", "dashboard"],
+							"query": [
+								{
+									"key": "spaces_period",
+									"value": "week",
+									"description": "This week's spaces statistics"
+								}
+							]
+						},
+						"description": "Dashboard spaces statistics - this week."
+					},
+					"response": []
+				},
+				{
+					"name": "Spaces - This Month",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test('Status code is 200', function () {",
+									"    pm.response.to.have.status(200);",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [
+							{"key": "Accept", "value": "application/json"},
+							{"key": "Accept-Language", "value": "ar"}
+						],
+						"url": {
+							"raw": "{{expo_url}}/admin/dashboard?spaces_period=month",
+							"host": ["{{expo_url}}"],
+							"path": ["admin", "dashboard"],
+							"query": [
+								{
+									"key": "spaces_period",
+									"value": "month",
+									"description": "This month's spaces statistics"
+								}
+							]
+						},
+						"description": "Dashboard spaces statistics - this month."
+					},
+					"response": []
+				},
+				{
+					"name": "Spaces - This Year",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test('Status code is 200', function () {",
+									"    pm.response.to.have.status(200);",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [
+							{"key": "Accept", "value": "application/json"},
+							{"key": "Accept-Language", "value": "ar"}
+						],
+						"url": {
+							"raw": "{{expo_url}}/admin/dashboard?spaces_period=year",
+							"host": ["{{expo_url}}"],
+							"path": ["admin", "dashboard"],
+							"query": [
+								{
+									"key": "spaces_period",
+									"value": "year",
+									"description": "This year's spaces statistics"
+								}
+							]
+						},
+						"description": "Dashboard spaces statistics - this year."
+					},
+					"response": []
+				}
+			],
+			"description": "Dashboard endpoints filtered by spaces period (all, today, week, month, year)."
+		},
+		{
+			"name": "4. Dashboard - Revenue Filter (فلتر الإيرادات)",
+			"item": [
+				{
+					"name": "Revenue - All Time",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test('Status code is 200', function () {",
+									"    pm.response.to.have.status(200);",
+									"});",
+									"",
+									"pm.test('Response has data', function () {",
+									"    var jsonData = pm.response.json();",
+									"    pm.expect(jsonData).to.have.property('data');",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [
+							{"key": "Accept", "value": "application/json"},
+							{"key": "Accept-Language", "value": "ar"}
+						],
+						"url": {
+							"raw": "{{expo_url}}/admin/dashboard?revenue_period=all",
+							"host": ["{{expo_url}}"],
+							"path": ["admin", "dashboard"],
+							"query": [
+								{
+									"key": "revenue_period",
+									"value": "all",
+									"description": "All time revenue statistics"
+								}
+							]
+						},
+						"description": "Dashboard revenue statistics - all time."
+					},
+					"response": []
+				},
+				{
+					"name": "Revenue - Today",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test('Status code is 200', function () {",
+									"    pm.response.to.have.status(200);",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [
+							{"key": "Accept", "value": "application/json"},
+							{"key": "Accept-Language", "value": "ar"}
+						],
+						"url": {
+							"raw": "{{expo_url}}/admin/dashboard?revenue_period=today",
+							"host": ["{{expo_url}}"],
+							"path": ["admin", "dashboard"],
+							"query": [
+								{
+									"key": "revenue_period",
+									"value": "today",
+									"description": "Today's revenue statistics"
+								}
+							]
+						},
+						"description": "Dashboard revenue statistics - today only."
+					},
+					"response": []
+				},
+				{
+					"name": "Revenue - This Week",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test('Status code is 200', function () {",
+									"    pm.response.to.have.status(200);",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [
+							{"key": "Accept", "value": "application/json"},
+							{"key": "Accept-Language", "value": "ar"}
+						],
+						"url": {
+							"raw": "{{expo_url}}/admin/dashboard?revenue_period=week",
+							"host": ["{{expo_url}}"],
+							"path": ["admin", "dashboard"],
+							"query": [
+								{
+									"key": "revenue_period",
+									"value": "week",
+									"description": "This week's revenue statistics"
+								}
+							]
+						},
+						"description": "Dashboard revenue statistics - this week."
+					},
+					"response": []
+				},
+				{
+					"name": "Revenue - This Month",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test('Status code is 200', function () {",
+									"    pm.response.to.have.status(200);",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [
+							{"key": "Accept", "value": "application/json"},
+							{"key": "Accept-Language", "value": "ar"}
+						],
+						"url": {
+							"raw": "{{expo_url}}/admin/dashboard?revenue_period=month",
+							"host": ["{{expo_url}}"],
+							"path": ["admin", "dashboard"],
+							"query": [
+								{
+									"key": "revenue_period",
+									"value": "month",
+									"description": "This month's revenue statistics"
+								}
+							]
+						},
+						"description": "Dashboard revenue statistics - this month."
+					},
+					"response": []
+				},
+				{
+					"name": "Revenue - This Year",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test('Status code is 200', function () {",
+									"    pm.response.to.have.status(200);",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [
+							{"key": "Accept", "value": "application/json"},
+							{"key": "Accept-Language", "value": "ar"}
+						],
+						"url": {
+							"raw": "{{expo_url}}/admin/dashboard?revenue_period=year",
+							"host": ["{{expo_url}}"],
+							"path": ["admin", "dashboard"],
+							"query": [
+								{
+									"key": "revenue_period",
+									"value": "year",
+									"description": "This year's revenue statistics"
+								}
+							]
+						},
+						"description": "Dashboard revenue statistics - this year."
+					},
+					"response": []
+				}
+			],
+			"description": "Dashboard endpoints filtered by revenue period (all, today, week, month, year)."
+		},
+		{
+			"name": "5. Dashboard - Combined Filters (فلاتر مجتمعة)",
+			"item": [
+				{
+					"name": "Mixed - Spaces Week + Revenue Month",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test('Status code is 200', function () {",
+									"    pm.response.to.have.status(200);",
+									"});",
+									"",
+									"pm.test('Response has data', function () {",
+									"    var jsonData = pm.response.json();",
+									"    pm.expect(jsonData).to.have.property('data');",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [
+							{"key": "Accept", "value": "application/json"},
+							{"key": "Accept-Language", "value": "ar"}
+						],
+						"url": {
+							"raw": "{{expo_url}}/admin/dashboard?spaces_period=week&revenue_period=month",
+							"host": ["{{expo_url}}"],
+							"path": ["admin", "dashboard"],
+							"query": [
+								{
+									"key": "spaces_period",
+									"value": "week",
+									"description": "Spaces filtered by this week"
+								},
+								{
+									"key": "revenue_period",
+									"value": "month",
+									"description": "Revenue filtered by this month"
+								}
+							]
+						},
+						"description": "Dashboard with mixed filters: spaces for this week and revenue for this month."
+					},
+					"response": []
+				},
+				{
+					"name": "Full Filter - Spaces Month + Revenue Month + Event",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test('Status code is 200', function () {",
+									"    pm.response.to.have.status(200);",
+									"});",
+									"",
+									"pm.test('Response has data', function () {",
+									"    var jsonData = pm.response.json();",
+									"    pm.expect(jsonData).to.have.property('data');",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [
+							{"key": "Accept", "value": "application/json"},
+							{"key": "Accept-Language", "value": "ar"}
+						],
+						"url": {
+							"raw": "{{expo_url}}/admin/dashboard?spaces_period=month&revenue_period=month&event_id={{event_id}}",
+							"host": ["{{expo_url}}"],
+							"path": ["admin", "dashboard"],
+							"query": [
+								{
+									"key": "spaces_period",
+									"value": "month",
+									"description": "Spaces filtered by this month"
+								},
+								{
+									"key": "revenue_period",
+									"value": "month",
+									"description": "Revenue filtered by this month"
+								},
+								{
+									"key": "event_id",
+									"value": "{{event_id}}",
+									"description": "Filter by specific event"
+								}
+							]
+						},
+						"description": "Dashboard with all filters combined: spaces period, revenue period, and event ID."
+					},
+					"response": []
+				}
+			],
+			"description": "Dashboard endpoints using multiple combined filter parameters."
+		},
+		{
+			"name": "6. User Stats - Auth Service (إحصائيات المستخدمين)",
+			"item": [
+				{
+					"name": "User Stats - All Time",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test('Status code is 200', function () {",
+									"    pm.response.to.have.status(200);",
+									"});",
+									"",
+									"pm.test('Response has data', function () {",
+									"    var jsonData = pm.response.json();",
+									"    pm.expect(jsonData).to.have.property('data');",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [
+							{"key": "Accept", "value": "application/json"},
+							{"key": "Accept-Language", "value": "ar"}
+						],
+						"url": {
+							"raw": "{{auth_url}}/admin/stats/users",
+							"host": ["{{auth_url}}"],
+							"path": ["admin", "stats", "users"]
+						},
+						"description": "Get user statistics from the auth service - all time."
+					},
+					"response": []
+				},
+				{
+					"name": "User Stats - Today",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test('Status code is 200', function () {",
+									"    pm.response.to.have.status(200);",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [
+							{"key": "Accept", "value": "application/json"},
+							{"key": "Accept-Language", "value": "ar"}
+						],
+						"url": {
+							"raw": "{{auth_url}}/admin/stats/users?period=today",
+							"host": ["{{auth_url}}"],
+							"path": ["admin", "stats", "users"],
+							"query": [
+								{
+									"key": "period",
+									"value": "today",
+									"description": "Today's user statistics"
+								}
+							]
+						},
+						"description": "Get user statistics from the auth service - today."
+					},
+					"response": []
+				},
+				{
+					"name": "User Stats - This Week",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test('Status code is 200', function () {",
+									"    pm.response.to.have.status(200);",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [
+							{"key": "Accept", "value": "application/json"},
+							{"key": "Accept-Language", "value": "ar"}
+						],
+						"url": {
+							"raw": "{{auth_url}}/admin/stats/users?period=week",
+							"host": ["{{auth_url}}"],
+							"path": ["admin", "stats", "users"],
+							"query": [
+								{
+									"key": "period",
+									"value": "week",
+									"description": "This week's user statistics"
+								}
+							]
+						},
+						"description": "Get user statistics from the auth service - this week."
+					},
+					"response": []
+				},
+				{
+					"name": "User Stats - This Month",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test('Status code is 200', function () {",
+									"    pm.response.to.have.status(200);",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [
+							{"key": "Accept", "value": "application/json"},
+							{"key": "Accept-Language", "value": "ar"}
+						],
+						"url": {
+							"raw": "{{auth_url}}/admin/stats/users?period=month",
+							"host": ["{{auth_url}}"],
+							"path": ["admin", "stats", "users"],
+							"query": [
+								{
+									"key": "period",
+									"value": "month",
+									"description": "This month's user statistics"
+								}
+							]
+						},
+						"description": "Get user statistics from the auth service - this month."
+					},
+					"response": []
+				},
+				{
+					"name": "User Stats - This Year",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test('Status code is 200', function () {",
+									"    pm.response.to.have.status(200);",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [
+							{"key": "Accept", "value": "application/json"},
+							{"key": "Accept-Language", "value": "ar"}
+						],
+						"url": {
+							"raw": "{{auth_url}}/admin/stats/users?period=year",
+							"host": ["{{auth_url}}"],
+							"path": ["admin", "stats", "users"],
+							"query": [
+								{
+									"key": "period",
+									"value": "year",
+									"description": "This year's user statistics"
+								}
+							]
+						},
+						"description": "Get user statistics from the auth service - this year."
+					},
+					"response": []
+				}
+			],
+			"description": "User statistics endpoints from the Auth Service, filtered by period."
+		},
+		{
+			"name": "7. Health Checks (فحص الصحة)",
+			"item": [
+				{
+					"name": "Auth Service Health",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test('Auth service is healthy', function () {",
+									"    pm.response.to.have.status(200);",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "noauth"
+						},
+						"method": "GET",
+						"header": [
+							{"key": "Accept", "value": "application/json"},
+							{"key": "Accept-Language", "value": "ar"}
+						],
+						"url": {
+							"raw": "{{auth_url}}/health",
+							"host": ["{{auth_url}}"],
+							"path": ["health"]
+						},
+						"description": "Check the health status of the Auth Service."
+					},
+					"response": []
+				},
+				{
+					"name": "Expo API Health",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test('Expo API is healthy', function () {",
+									"    pm.response.to.have.status(200);",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "noauth"
+						},
+						"method": "GET",
+						"header": [
+							{"key": "Accept", "value": "application/json"},
+							{"key": "Accept-Language", "value": "ar"}
+						],
+						"url": {
+							"raw": "{{expo_url}}/health",
+							"host": ["{{expo_url}}"],
+							"path": ["health"]
+						},
+						"description": "Check the health status of the Expo API."
+					},
+					"response": []
+				}
+			],
+			"description": "Health check endpoints for both the Auth Service and Expo API."
+		}
+	]
+}

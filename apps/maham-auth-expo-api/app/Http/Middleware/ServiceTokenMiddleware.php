@@ -39,7 +39,7 @@ class ServiceTokenMiddleware
         // ═══════════════════════════════════════════════════════════════
         
         $configToken = config('auth-service.service_token');
-        if ($token === $configToken) {
+        if ($configToken && $token === $configToken) {
             $request->merge([
                 '_service' => null,
                 '_service_name' => 'config_token',

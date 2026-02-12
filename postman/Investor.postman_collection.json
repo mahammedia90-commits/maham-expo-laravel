@@ -1,0 +1,1438 @@
+{
+	"info": {
+		"_postman_id": "inv-c1d2e3f4-a5b6-7890-cdef-1234567890ab",
+		"name": "Investor (مستثمر)",
+		"description": "Maham Expo API - Investor (مستثمر) Collection\n\nAn investor user can:\n- Login, manage profile\n- Create business profile (business_type: investor)\n- Browse events/spaces\n- Create visit requests and rental requests\n- Manage favorites and notifications",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"auth": {
+		"type": "bearer",
+		"bearer": [
+			{
+				"key": "token",
+				"value": "{{investor_token}}",
+				"type": "string"
+			}
+		]
+	},
+	"variable": [
+		{
+			"key": "auth_url",
+			"value": "http://localhost:8001/api"
+		},
+		{
+			"key": "expo_url",
+			"value": "http://localhost:8002/api"
+		},
+		{
+			"key": "investor_token",
+			"value": ""
+		},
+		{
+			"key": "event_id",
+			"value": ""
+		},
+		{
+			"key": "space_id",
+			"value": ""
+		},
+		{
+			"key": "visit_request_id",
+			"value": ""
+		},
+		{
+			"key": "rental_request_id",
+			"value": ""
+		},
+		{
+			"key": "favorite_id",
+			"value": ""
+		},
+		{
+			"key": "notification_id",
+			"value": ""
+		}
+	],
+	"item": [
+		{
+			"name": "Auth (تسجيل الدخول)",
+			"item": [
+				{
+					"name": "Register",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"var jsonData = pm.response.json();",
+									"if (jsonData.data && jsonData.data.token) {",
+									"    pm.collectionVariables.set('investor_token', jsonData.data.token);",
+									"    console.log('investor_token saved');",
+									"}"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "noauth"
+						},
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							},
+							{
+								"key": "Accept",
+								"value": "application/json"
+							},
+							{
+								"key": "Accept-Language",
+								"value": "ar"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"name\": \"خالد المستثمر\",\n  \"email\": \"investor@test.com\",\n  \"password\": \"Test@123456\",\n  \"password_confirmation\": \"Test@123456\",\n  \"phone\": \"0522222222\"\n}"
+						},
+						"url": {
+							"raw": "{{auth_url}}/auth/register",
+							"host": [
+								"{{auth_url}}"
+							],
+							"path": [
+								"auth",
+								"register"
+							]
+						}
+					}
+				},
+				{
+					"name": "Login",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"var jsonData = pm.response.json();",
+									"if (jsonData.data && jsonData.data.token) {",
+									"    pm.collectionVariables.set('investor_token', jsonData.data.token);",
+									"    console.log('investor_token saved');",
+									"}"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "noauth"
+						},
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							},
+							{
+								"key": "Accept",
+								"value": "application/json"
+							},
+							{
+								"key": "Accept-Language",
+								"value": "ar"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"identifier\": \"investor@test.com\",\n  \"password\": \"Test@123456\"\n}"
+						},
+						"url": {
+							"raw": "{{auth_url}}/auth/login",
+							"host": [
+								"{{auth_url}}"
+							],
+							"path": [
+								"auth",
+								"login"
+							]
+						}
+					}
+				},
+				{
+					"name": "Get Me",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "application/json"
+							},
+							{
+								"key": "Accept-Language",
+								"value": "ar"
+							}
+						],
+						"url": {
+							"raw": "{{auth_url}}/auth/me",
+							"host": [
+								"{{auth_url}}"
+							],
+							"path": [
+								"auth",
+								"me"
+							]
+						}
+					}
+				},
+				{
+					"name": "Change Password",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							},
+							{
+								"key": "Accept",
+								"value": "application/json"
+							},
+							{
+								"key": "Accept-Language",
+								"value": "ar"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"current_password\": \"Test@123456\",\n  \"password\": \"NewPass@123\",\n  \"password_confirmation\": \"NewPass@123\"\n}"
+						},
+						"url": {
+							"raw": "{{auth_url}}/auth/change-password",
+							"host": [
+								"{{auth_url}}"
+							],
+							"path": [
+								"auth",
+								"change-password"
+							]
+						}
+					}
+				},
+				{
+					"name": "Update Profile",
+					"request": {
+						"method": "PUT",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							},
+							{
+								"key": "Accept",
+								"value": "application/json"
+							},
+							{
+								"key": "Accept-Language",
+								"value": "ar"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"name\": \"خالد المستثمر المحدث\"\n}"
+						},
+						"url": {
+							"raw": "{{auth_url}}/auth/profile",
+							"host": [
+								"{{auth_url}}"
+							],
+							"path": [
+								"auth",
+								"profile"
+							]
+						}
+					}
+				},
+				{
+					"name": "Refresh Token",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"var jsonData = pm.response.json();",
+									"if (jsonData.data && jsonData.data.token) {",
+									"    pm.collectionVariables.set('investor_token', jsonData.data.token);",
+									"    console.log('investor_token refreshed');",
+									"}"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "application/json"
+							},
+							{
+								"key": "Accept-Language",
+								"value": "ar"
+							}
+						],
+						"url": {
+							"raw": "{{auth_url}}/auth/refresh",
+							"host": [
+								"{{auth_url}}"
+							],
+							"path": [
+								"auth",
+								"refresh"
+							]
+						}
+					}
+				},
+				{
+					"name": "Forgot Password",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "application/json"
+							},
+							{
+								"key": "Accept-Language",
+								"value": "ar"
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"url": {
+							"raw": "{{auth_url}}/auth/forgot-password",
+							"host": [
+								"{{auth_url}}"
+							],
+							"path": [
+								"auth",
+								"forgot-password"
+							]
+						},
+						"auth": {
+							"type": "noauth"
+						},
+						"body": {
+							"mode": "raw",
+							"raw": "{\n\t\"email\": \"investor@test.com\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Reset Password",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "application/json"
+							},
+							{
+								"key": "Accept-Language",
+								"value": "ar"
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"url": {
+							"raw": "{{auth_url}}/auth/reset-password",
+							"host": [
+								"{{auth_url}}"
+							],
+							"path": [
+								"auth",
+								"reset-password"
+							]
+						},
+						"auth": {
+							"type": "noauth"
+						},
+						"body": {
+							"mode": "raw",
+							"raw": "{\n\t\"email\": \"investor@test.com\",\n\t\"token\": \"reset-token-here\",\n\t\"password\": \"Test@123456\",\n\t\"password_confirmation\": \"Test@123456\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Send Email Verification",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "application/json"
+							},
+							{
+								"key": "Accept-Language",
+								"value": "ar"
+							}
+						],
+						"url": {
+							"raw": "{{auth_url}}/auth/email/send-verification",
+							"host": [
+								"{{auth_url}}"
+							],
+							"path": [
+								"auth",
+								"email",
+								"send-verification"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Verify Email",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "application/json"
+							},
+							{
+								"key": "Accept-Language",
+								"value": "ar"
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"url": {
+							"raw": "{{auth_url}}/auth/email/verify",
+							"host": [
+								"{{auth_url}}"
+							],
+							"path": [
+								"auth",
+								"email",
+								"verify"
+							]
+						},
+						"body": {
+							"mode": "raw",
+							"raw": "{\n\t\"code\": \"123456\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Logout",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "application/json"
+							},
+							{
+								"key": "Accept-Language",
+								"value": "ar"
+							}
+						],
+						"url": {
+							"raw": "{{auth_url}}/auth/logout",
+							"host": [
+								"{{auth_url}}"
+							],
+							"path": [
+								"auth",
+								"logout"
+							]
+						}
+					}
+				}
+			]
+		},
+		{
+			"name": "Business Profile (الملف التجاري)",
+			"item": [
+				{
+					"name": "Create Business Profile",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "application/json"
+							},
+							{
+								"key": "Accept-Language",
+								"value": "ar"
+							}
+						],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "company_name",
+									"value": "Khalid Investments",
+									"type": "text"
+								},
+								{
+									"key": "company_name_ar",
+									"value": "استثمارات خالد",
+									"type": "text"
+								},
+								{
+									"key": "commercial_registration_number",
+									"value": "9876543210",
+									"type": "text"
+								},
+								{
+									"key": "contact_phone",
+									"value": "0522222222",
+									"type": "text"
+								},
+								{
+									"key": "contact_email",
+									"value": "investor@test.com",
+									"type": "text"
+								},
+								{
+									"key": "business_type",
+									"value": "investor",
+									"type": "text"
+								}
+							]
+						},
+						"url": {
+							"raw": "{{expo_url}}/profile",
+							"host": [
+								"{{expo_url}}"
+							],
+							"path": [
+								"profile"
+							]
+						}
+					}
+				},
+				{
+					"name": "Get Business Profile",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "application/json"
+							},
+							{
+								"key": "Accept-Language",
+								"value": "ar"
+							}
+						],
+						"url": {
+							"raw": "{{expo_url}}/profile",
+							"host": [
+								"{{expo_url}}"
+							],
+							"path": [
+								"profile"
+							]
+						}
+					}
+				},
+				{
+					"name": "Update Business Profile",
+					"request": {
+						"method": "PUT",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "application/json"
+							},
+							{
+								"key": "Accept-Language",
+								"value": "ar"
+							}
+						],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "company_name",
+									"value": "Khalid Investments Updated",
+									"type": "text"
+								}
+							]
+						},
+						"url": {
+							"raw": "{{expo_url}}/profile",
+							"host": [
+								"{{expo_url}}"
+							],
+							"path": [
+								"profile"
+							]
+						}
+					}
+				}
+			]
+		},
+		{
+			"name": "Browse Events (تصفح الفعاليات)",
+			"item": [
+				{
+					"name": "List Events",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "application/json"
+							},
+							{
+								"key": "Accept-Language",
+								"value": "ar"
+							}
+						],
+						"url": {
+							"raw": "{{expo_url}}/events?page=1",
+							"host": [
+								"{{expo_url}}"
+							],
+							"path": [
+								"events"
+							],
+							"query": [
+								{
+									"key": "page",
+									"value": "1"
+								},
+								{
+									"key": "search",
+									"value": "",
+									"disabled": true
+								},
+								{
+									"key": "city_id",
+									"value": "",
+									"disabled": true
+								},
+								{
+									"key": "category_id",
+									"value": "",
+									"disabled": true
+								},
+								{
+									"key": "sort_by",
+									"value": "start_date",
+									"disabled": true
+								},
+								{
+									"key": "sort_order",
+									"value": "asc",
+									"disabled": true
+								}
+							]
+						}
+					}
+				},
+				{
+					"name": "Featured Events",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "application/json"
+							},
+							{
+								"key": "Accept-Language",
+								"value": "ar"
+							}
+						],
+						"url": {
+							"raw": "{{expo_url}}/events/featured",
+							"host": [
+								"{{expo_url}}"
+							],
+							"path": [
+								"events",
+								"featured"
+							]
+						}
+					}
+				},
+				{
+					"name": "Show Event",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "application/json"
+							},
+							{
+								"key": "Accept-Language",
+								"value": "ar"
+							}
+						],
+						"url": {
+							"raw": "{{expo_url}}/events/{{event_id}}",
+							"host": [
+								"{{expo_url}}"
+							],
+							"path": [
+								"events",
+								"{{event_id}}"
+							]
+						}
+					}
+				},
+				{
+					"name": "Event Spaces",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "application/json"
+							},
+							{
+								"key": "Accept-Language",
+								"value": "ar"
+							}
+						],
+						"url": {
+							"raw": "{{expo_url}}/events/{{event_id}}/spaces?available_only=true",
+							"host": [
+								"{{expo_url}}"
+							],
+							"path": [
+								"events",
+								"{{event_id}}",
+								"spaces"
+							],
+							"query": [
+								{
+									"key": "available_only",
+									"value": "true"
+								},
+								{
+									"key": "min_price",
+									"value": "",
+									"disabled": true
+								},
+								{
+									"key": "max_price",
+									"value": "",
+									"disabled": true
+								},
+								{
+									"key": "space_type",
+									"value": "booth",
+									"disabled": true
+								}
+							]
+						}
+					}
+				},
+				{
+					"name": "Event Sections",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "application/json"
+							},
+							{
+								"key": "Accept-Language",
+								"value": "ar"
+							}
+						],
+						"url": {
+							"raw": "{{expo_url}}/events/{{event_id}}/sections",
+							"host": [
+								"{{expo_url}}"
+							],
+							"path": [
+								"events",
+								"{{event_id}}",
+								"sections"
+							]
+						}
+					}
+				},
+				{
+					"name": "Show Space",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "application/json"
+							},
+							{
+								"key": "Accept-Language",
+								"value": "ar"
+							}
+						],
+						"url": {
+							"raw": "{{expo_url}}/spaces/{{space_id}}",
+							"host": [
+								"{{expo_url}}"
+							],
+							"path": [
+								"spaces",
+								"{{space_id}}"
+							]
+						}
+					}
+				},
+				{
+					"name": "List Categories",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "application/json"
+							},
+							{
+								"key": "Accept-Language",
+								"value": "ar"
+							}
+						],
+						"url": {
+							"raw": "{{expo_url}}/categories",
+							"host": [
+								"{{expo_url}}"
+							],
+							"path": [
+								"categories"
+							]
+						}
+					}
+				},
+				{
+					"name": "List Cities",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "application/json"
+							},
+							{
+								"key": "Accept-Language",
+								"value": "ar"
+							}
+						],
+						"url": {
+							"raw": "{{expo_url}}/cities",
+							"host": [
+								"{{expo_url}}"
+							],
+							"path": [
+								"cities"
+							]
+						}
+					}
+				},
+				{
+					"name": "List Services",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "application/json"
+							},
+							{
+								"key": "Accept-Language",
+								"value": "ar"
+							}
+						],
+						"url": {
+							"raw": "{{expo_url}}/services",
+							"host": [
+								"{{expo_url}}"
+							],
+							"path": [
+								"services"
+							]
+						}
+					}
+				}
+			]
+		},
+		{
+			"name": "Visit Requests (طلبات الزيارة)",
+			"item": [
+				{
+					"name": "Create Visit Request",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"var jsonData = pm.response.json();",
+									"if (jsonData.data && jsonData.data.id) {",
+									"    pm.collectionVariables.set('visit_request_id', jsonData.data.id);",
+									"    console.log('visit_request_id saved: ' + jsonData.data.id);",
+									"}"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							},
+							{
+								"key": "Accept",
+								"value": "application/json"
+							},
+							{
+								"key": "Accept-Language",
+								"value": "ar"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"event_id\": \"{{event_id}}\",\n  \"visit_date\": \"2025-07-01\",\n  \"visitors_count\": 2,\n  \"notes\": \"Investment evaluation\",\n  \"contact_phone\": \"0522222222\"\n}"
+						},
+						"url": {
+							"raw": "{{expo_url}}/visit-requests",
+							"host": [
+								"{{expo_url}}"
+							],
+							"path": [
+								"visit-requests"
+							]
+						}
+					}
+				},
+				{
+					"name": "List Visit Requests",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "application/json"
+							},
+							{
+								"key": "Accept-Language",
+								"value": "ar"
+							}
+						],
+						"url": {
+							"raw": "{{expo_url}}/visit-requests",
+							"host": [
+								"{{expo_url}}"
+							],
+							"path": [
+								"visit-requests"
+							]
+						}
+					}
+				},
+				{
+					"name": "Show Visit Request",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "application/json"
+							},
+							{
+								"key": "Accept-Language",
+								"value": "ar"
+							}
+						],
+						"url": {
+							"raw": "{{expo_url}}/visit-requests/{{visit_request_id}}",
+							"host": [
+								"{{expo_url}}"
+							],
+							"path": [
+								"visit-requests",
+								"{{visit_request_id}}"
+							]
+						}
+					}
+				},
+				{
+					"name": "Update Visit Request",
+					"request": {
+						"method": "PUT",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							},
+							{
+								"key": "Accept",
+								"value": "application/json"
+							},
+							{
+								"key": "Accept-Language",
+								"value": "ar"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"visit_date\": \"2025-07-05\",\n  \"visitors_count\": 4\n}"
+						},
+						"url": {
+							"raw": "{{expo_url}}/visit-requests/{{visit_request_id}}",
+							"host": [
+								"{{expo_url}}"
+							],
+							"path": [
+								"visit-requests",
+								"{{visit_request_id}}"
+							]
+						}
+					}
+				},
+				{
+					"name": "Delete Visit Request",
+					"request": {
+						"method": "DELETE",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "application/json"
+							},
+							{
+								"key": "Accept-Language",
+								"value": "ar"
+							}
+						],
+						"url": {
+							"raw": "{{expo_url}}/visit-requests/{{visit_request_id}}",
+							"host": [
+								"{{expo_url}}"
+							],
+							"path": [
+								"visit-requests",
+								"{{visit_request_id}}"
+							]
+						}
+					}
+				}
+			]
+		},
+		{
+			"name": "Rental Requests (طلبات الإيجار)",
+			"item": [
+				{
+					"name": "Create Rental Request",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"var jsonData = pm.response.json();",
+									"if (jsonData.data && jsonData.data.id) {",
+									"    pm.collectionVariables.set('rental_request_id', jsonData.data.id);",
+									"    console.log('rental_request_id saved: ' + jsonData.data.id);",
+									"}"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							},
+							{
+								"key": "Accept",
+								"value": "application/json"
+							},
+							{
+								"key": "Accept-Language",
+								"value": "ar"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"space_id\": \"{{space_id}}\",\n  \"start_date\": \"2025-07-01\",\n  \"end_date\": \"2025-07-31\",\n  \"notes\": \"Long-term investment space\"\n}"
+						},
+						"url": {
+							"raw": "{{expo_url}}/rental-requests",
+							"host": [
+								"{{expo_url}}"
+							],
+							"path": [
+								"rental-requests"
+							]
+						}
+					}
+				},
+				{
+					"name": "List Rental Requests",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "application/json"
+							},
+							{
+								"key": "Accept-Language",
+								"value": "ar"
+							}
+						],
+						"url": {
+							"raw": "{{expo_url}}/rental-requests",
+							"host": [
+								"{{expo_url}}"
+							],
+							"path": [
+								"rental-requests"
+							]
+						}
+					}
+				},
+				{
+					"name": "Show Rental Request",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "application/json"
+							},
+							{
+								"key": "Accept-Language",
+								"value": "ar"
+							}
+						],
+						"url": {
+							"raw": "{{expo_url}}/rental-requests/{{rental_request_id}}",
+							"host": [
+								"{{expo_url}}"
+							],
+							"path": [
+								"rental-requests",
+								"{{rental_request_id}}"
+							]
+						}
+					}
+				},
+				{
+					"name": "Update Rental Request",
+					"request": {
+						"method": "PUT",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							},
+							{
+								"key": "Accept",
+								"value": "application/json"
+							},
+							{
+								"key": "Accept-Language",
+								"value": "ar"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"notes\": \"Updated investment notes\"\n}"
+						},
+						"url": {
+							"raw": "{{expo_url}}/rental-requests/{{rental_request_id}}",
+							"host": [
+								"{{expo_url}}"
+							],
+							"path": [
+								"rental-requests",
+								"{{rental_request_id}}"
+							]
+						}
+					}
+				},
+				{
+					"name": "Delete Rental Request",
+					"request": {
+						"method": "DELETE",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "application/json"
+							},
+							{
+								"key": "Accept-Language",
+								"value": "ar"
+							}
+						],
+						"url": {
+							"raw": "{{expo_url}}/rental-requests/{{rental_request_id}}",
+							"host": [
+								"{{expo_url}}"
+							],
+							"path": [
+								"rental-requests",
+								"{{rental_request_id}}"
+							]
+						}
+					}
+				}
+			]
+		},
+		{
+			"name": "Favorites (المفضلة)",
+			"item": [
+				{
+					"name": "Add Favorite",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"var jsonData = pm.response.json();",
+									"if (jsonData.data && jsonData.data.id) {",
+									"    pm.collectionVariables.set('favorite_id', jsonData.data.id);",
+									"    console.log('favorite_id saved: ' + jsonData.data.id);",
+									"}"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							},
+							{
+								"key": "Accept",
+								"value": "application/json"
+							},
+							{
+								"key": "Accept-Language",
+								"value": "ar"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"favoritable_id\": \"{{space_id}}\",\n  \"favoritable_type\": \"space\"\n}"
+						},
+						"url": {
+							"raw": "{{expo_url}}/favorites",
+							"host": [
+								"{{expo_url}}"
+							],
+							"path": [
+								"favorites"
+							]
+						}
+					}
+				},
+				{
+					"name": "List Favorites",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "application/json"
+							},
+							{
+								"key": "Accept-Language",
+								"value": "ar"
+							}
+						],
+						"url": {
+							"raw": "{{expo_url}}/favorites",
+							"host": [
+								"{{expo_url}}"
+							],
+							"path": [
+								"favorites"
+							]
+						}
+					}
+				},
+				{
+					"name": "Remove Favorite",
+					"request": {
+						"method": "DELETE",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "application/json"
+							},
+							{
+								"key": "Accept-Language",
+								"value": "ar"
+							}
+						],
+						"url": {
+							"raw": "{{expo_url}}/favorites/{{favorite_id}}",
+							"host": [
+								"{{expo_url}}"
+							],
+							"path": [
+								"favorites",
+								"{{favorite_id}}"
+							]
+						}
+					}
+				}
+			]
+		},
+		{
+			"name": "Notifications (الإشعارات)",
+			"item": [
+				{
+					"name": "List Notifications",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "application/json"
+							},
+							{
+								"key": "Accept-Language",
+								"value": "ar"
+							}
+						],
+						"url": {
+							"raw": "{{expo_url}}/notifications",
+							"host": [
+								"{{expo_url}}"
+							],
+							"path": [
+								"notifications"
+							]
+						}
+					}
+				},
+				{
+					"name": "Unread Notifications Count",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "application/json"
+							},
+							{
+								"key": "Accept-Language",
+								"value": "ar"
+							}
+						],
+						"url": {
+							"raw": "{{expo_url}}/notifications/unread-count",
+							"host": [
+								"{{expo_url}}"
+							],
+							"path": [
+								"notifications",
+								"unread-count"
+							]
+						}
+					}
+				},
+				{
+					"name": "Mark Notification Read",
+					"request": {
+						"method": "PUT",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "application/json"
+							},
+							{
+								"key": "Accept-Language",
+								"value": "ar"
+							}
+						],
+						"url": {
+							"raw": "{{expo_url}}/notifications/{{notification_id}}/read",
+							"host": [
+								"{{expo_url}}"
+							],
+							"path": [
+								"notifications",
+								"{{notification_id}}",
+								"read"
+							]
+						}
+					}
+				},
+				{
+					"name": "Mark All Notifications Read",
+					"request": {
+						"method": "PUT",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "application/json"
+							},
+							{
+								"key": "Accept-Language",
+								"value": "ar"
+							}
+						],
+						"url": {
+							"raw": "{{expo_url}}/notifications/read-all",
+							"host": [
+								"{{expo_url}}"
+							],
+							"path": [
+								"notifications",
+								"read-all"
+							]
+						}
+					}
+				}
+			]
+		}
+	]
+}

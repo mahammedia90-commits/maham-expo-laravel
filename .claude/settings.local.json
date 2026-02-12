@@ -10,7 +10,17 @@
       "Bash(docker compose:*)",
       "Bash(open:*)",
       "Bash(curl:*)",
-      "Bash(python3 -m json.tool:*)"
+      "Bash(python3 -m json.tool:*)",
+      "Bash(python3:*)",
+      "Bash(done)",
+      "Bash(xargs:*)",
+      "Bash(php -r:*)",
+      "Bash(DB_CONNECTION=sqlite DB_DATABASE=:memory: php artisan migrate:fresh:*)",
+      "Bash(DB_CONNECTION=sqlite DB_DATABASE=:memory: php artisan tinker:*)",
+      "Bash(DB_CONNECTION=sqlite DB_DATABASE=:memory: CACHE_STORE=array CACHE_DRIVER=array php artisan:*)",
+      "Bash(ls:*)",
+      "Bash(for f in *.json)",
+      "Bash(do echo \"=== $f ===\")"
     ]
   }
 }

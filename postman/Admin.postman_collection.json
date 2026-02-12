@@ -1,0 +1,3121 @@
+{
+	"info": {
+		"_postman_id": "admin-maham-expo-collection",
+		"name": "Maham Expo - Admin",
+		"description": "Admin collection for Maham Expo platform. Covers authentication, user management, roles, permissions, events, sections, spaces, services, visit requests, rental requests, business profiles, and dashboard stats.",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"auth": {
+		"type": "bearer",
+		"bearer": [
+			{
+				"key": "token",
+				"value": "{{admin_token}}",
+				"type": "string"
+			}
+		]
+	},
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		},
+		{
+			"listen": "test",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		}
+	],
+	"variable": [],
+	"item": [
+		{
+			"name": "Auth (تسجيل الدخول)",
+			"item": [
+				{
+					"name": "Login",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"type": "text/javascript",
+								"exec": [
+									"if(pm.response.code===200){pm.environment.set(\"admin_token\",pm.response.json().data.token)}"
+								]
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "noauth"
+						},
+						"method": "POST",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "application/json"
+							},
+							{
+								"key": "Accept-Language",
+								"value": "ar"
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n\t\"identifier\": \"admin@maham-expo.com\",\n\t\"password\": \"Admin@123456\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{auth_url}}/auth/login",
+							"host": [
+								"{{auth_url}}"
+							],
+							"path": [
+								"auth",
+								"login"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Me",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "application/json"
+							},
+							{
+								"key": "Accept-Language",
+								"value": "ar"
+							}
+						],
+						"url": {
+							"raw": "{{auth_url}}/auth/me",
+							"host": [
+								"{{auth_url}}"
+							],
+							"path": [
+								"auth",
+								"me"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Refresh Token",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "application/json"
+							},
+							{
+								"key": "Accept-Language",
+								"value": "ar"
+							}
+						],
+						"url": {
+							"raw": "{{auth_url}}/auth/refresh",
+							"host": [
+								"{{auth_url}}"
+							],
+							"path": [
+								"auth",
+								"refresh"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Change Password",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "application/json"
+							},
+							{
+								"key": "Accept-Language",
+								"value": "ar"
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"url": {
+							"raw": "{{auth_url}}/auth/change-password",
+							"host": [
+								"{{auth_url}}"
+							],
+							"path": [
+								"auth",
+								"change-password"
+							]
+						},
+						"body": {
+							"mode": "raw",
+							"raw": "{\n\t\"current_password\": \"Admin@123456\",\n\t\"password\": \"NewAdmin@123456\",\n\t\"password_confirmation\": \"NewAdmin@123456\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Update Profile",
+					"request": {
+						"method": "PUT",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "application/json"
+							},
+							{
+								"key": "Accept-Language",
+								"value": "ar"
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"url": {
+							"raw": "{{auth_url}}/auth/profile",
+							"host": [
+								"{{auth_url}}"
+							],
+							"path": [
+								"auth",
+								"profile"
+							]
+						},
+						"body": {
+							"mode": "raw",
+							"raw": "{\n\t\"name\": \"Admin Updated\",\n\t\"phone\": \"0500000001\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Forgot Password",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "application/json"
+							},
+							{
+								"key": "Accept-Language",
+								"value": "ar"
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"url": {
+							"raw": "{{auth_url}}/auth/forgot-password",
+							"host": [
+								"{{auth_url}}"
+							],
+							"path": [
+								"auth",
+								"forgot-password"
+							]
+						},
+						"auth": {
+							"type": "noauth"
+						},
+						"body": {
+							"mode": "raw",
+							"raw": "{\n\t\"email\": \"admin@maham-expo.com\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Reset Password",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "application/json"
+							},
+							{
+								"key": "Accept-Language",
+								"value": "ar"
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"url": {
+							"raw": "{{auth_url}}/auth/reset-password",
+							"host": [
+								"{{auth_url}}"
+							],
+							"path": [
+								"auth",
+								"reset-password"
+							]
+						},
+						"auth": {
+							"type": "noauth"
+						},
+						"body": {
+							"mode": "raw",
+							"raw": "{\n\t\"email\": \"admin@maham-expo.com\",\n\t\"token\": \"reset-token-here\",\n\t\"password\": \"Admin@123456\",\n\t\"password_confirmation\": \"Admin@123456\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Send Email Verification",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "application/json"
+							},
+							{
+								"key": "Accept-Language",
+								"value": "ar"
+							}
+						],
+						"url": {
+							"raw": "{{auth_url}}/auth/email/send-verification",
+							"host": [
+								"{{auth_url}}"
+							],
+							"path": [
+								"auth",
+								"email",
+								"send-verification"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Verify Email",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "application/json"
+							},
+							{
+								"key": "Accept-Language",
+								"value": "ar"
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"url": {
+							"raw": "{{auth_url}}/auth/email/verify",
+							"host": [
+								"{{auth_url}}"
+							],
+							"path": [
+								"auth",
+								"email",
+								"verify"
+							]
+						},
+						"body": {
+							"mode": "raw",
+							"raw": "{\n\t\"code\": \"123456\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Logout",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "application/json"
+							},
+							{
+								"key": "Accept-Language",
+								"value": "ar"
+							}
+						],
+						"url": {
+							"raw": "{{auth_url}}/auth/logout",
+							"host": [
+								"{{auth_url}}"
+							],
+							"path": [
+								"auth",
+								"logout"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Users Management (إدارة المستخدمين)",
+			"item": [
+				{
+					"name": "List Users",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "application/json"
+							},
+							{
+								"key": "Accept-Language",
+								"value": "ar"
+							}
+						],
+						"url": {
+							"raw": "{{auth_url}}/users?page=1&search=&status=&role=",
+							"host": [
+								"{{auth_url}}"
+							],
+							"path": [
+								"users"
+							],
+							"query": [
+								{
+									"key": "page",
+									"value": "1"
+								},
+								{
+									"key": "search",
+									"value": "",
+									"description": "Search by name or email"
+								},
+								{
+									"key": "status",
+									"value": "",
+									"description": "Filter by status: active, inactive"
+								},
+								{
+									"key": "role",
+									"value": "",
+									"description": "Filter by role"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Create User",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"type": "text/javascript",
+								"exec": [
+									"if(pm.response.code===201||pm.response.code===200){pm.environment.set(\"user_id\",pm.response.json().data.id)}"
+								]
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "application/json"
+							},
+							{
+								"key": "Accept-Language",
+								"value": "ar"
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n\t\"name\": \"Test User\",\n\t\"email\": \"test@test.com\",\n\t\"password\": \"Test@123456\",\n\t\"password_confirmation\": \"Test@123456\",\n\t\"phone\": \"0500000000\",\n\t\"status\": \"active\",\n\t\"roles\": [\"user\"]\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{auth_url}}/users",
+							"host": [
+								"{{auth_url}}"
+							],
+							"path": [
+								"users"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get User",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "application/json"
+							},
+							{
+								"key": "Accept-Language",
+								"value": "ar"
+							}
+						],
+						"url": {
+							"raw": "{{auth_url}}/users/{{user_id}}",
+							"host": [
+								"{{auth_url}}"
+							],
+							"path": [
+								"users",
+								"{{user_id}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Update User",
+					"request": {
+						"method": "PUT",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "application/json"
+							},
+							{
+								"key": "Accept-Language",
+								"value": "ar"
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n\t\"name\": \"Updated User\",\n\t\"status\": \"active\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{auth_url}}/users/{{user_id}}",
+							"host": [
+								"{{auth_url}}"
+							],
+							"path": [
+								"users",
+								"{{user_id}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Delete User",
+					"request": {
+						"method": "DELETE",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "application/json"
+							},
+							{
+								"key": "Accept-Language",
+								"value": "ar"
+							}
+						],
+						"url": {
+							"raw": "{{auth_url}}/users/{{user_id}}",
+							"host": [
+								"{{auth_url}}"
+							],
+							"path": [
+								"users",
+								"{{user_id}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Assign Roles to User",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "application/json"
+							},
+							{
+								"key": "Accept-Language",
+								"value": "ar"
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n\t\"roles\": [\"merchant\"]\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{auth_url}}/users/{{user_id}}/roles",
+							"host": [
+								"{{auth_url}}"
+							],
+							"path": [
+								"users",
+								"{{user_id}}",
+								"roles"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Assign Permissions to User",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "application/json"
+							},
+							{
+								"key": "Accept-Language",
+								"value": "ar"
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n\t\"permissions\": [\"events.view\"]\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{auth_url}}/users/{{user_id}}/permissions",
+							"host": [
+								"{{auth_url}}"
+							],
+							"path": [
+								"users",
+								"{{user_id}}",
+								"permissions"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get User Permissions",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "application/json"
+							},
+							{
+								"key": "Accept-Language",
+								"value": "ar"
+							}
+						],
+						"url": {
+							"raw": "{{auth_url}}/users/{{user_id}}/permissions",
+							"host": [
+								"{{auth_url}}"
+							],
+							"path": [
+								"users",
+								"{{user_id}}",
+								"permissions"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Roles (الأدوار)",
+			"item": [
+				{
+					"name": "List Roles",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "application/json"
+							},
+							{
+								"key": "Accept-Language",
+								"value": "ar"
+							}
+						],
+						"url": {
+							"raw": "{{auth_url}}/roles",
+							"host": [
+								"{{auth_url}}"
+							],
+							"path": [
+								"roles"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Create Role",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"type": "text/javascript",
+								"exec": [
+									"if(pm.response.code===201||pm.response.code===200){pm.environment.set(\"role_id\",pm.response.json().data.id)}"
+								]
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "application/json"
+							},
+							{
+								"key": "Accept-Language",
+								"value": "ar"
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n\t\"name\": \"custom-role\",\n\t\"display_name\": \"Custom Role\",\n\t\"description\": \"Test role\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{auth_url}}/roles",
+							"host": [
+								"{{auth_url}}"
+							],
+							"path": [
+								"roles"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get Role",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "application/json"
+							},
+							{
+								"key": "Accept-Language",
+								"value": "ar"
+							}
+						],
+						"url": {
+							"raw": "{{auth_url}}/roles/{{role_id}}",
+							"host": [
+								"{{auth_url}}"
+							],
+							"path": [
+								"roles",
+								"{{role_id}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Update Role",
+					"request": {
+						"method": "PUT",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "application/json"
+							},
+							{
+								"key": "Accept-Language",
+								"value": "ar"
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n\t\"display_name\": \"Updated Role\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{auth_url}}/roles/{{role_id}}",
+							"host": [
+								"{{auth_url}}"
+							],
+							"path": [
+								"roles",
+								"{{role_id}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Delete Role",
+					"request": {
+						"method": "DELETE",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "application/json"
+							},
+							{
+								"key": "Accept-Language",
+								"value": "ar"
+							}
+						],
+						"url": {
+							"raw": "{{auth_url}}/roles/{{role_id}}",
+							"host": [
+								"{{auth_url}}"
+							],
+							"path": [
+								"roles",
+								"{{role_id}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Sync Role Permissions",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "application/json"
+							},
+							{
+								"key": "Accept-Language",
+								"value": "ar"
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n\t\"permissions\": [\"events.view\", \"events.create\"]\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{auth_url}}/roles/{{role_id}}/permissions",
+							"host": [
+								"{{auth_url}}"
+							],
+							"path": [
+								"roles",
+								"{{role_id}}",
+								"permissions"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Add Permissions to Role",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "application/json"
+							},
+							{
+								"key": "Accept-Language",
+								"value": "ar"
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n\t\"permissions\": [\"spaces.view\"]\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{auth_url}}/roles/{{role_id}}/permissions/add",
+							"host": [
+								"{{auth_url}}"
+							],
+							"path": [
+								"roles",
+								"{{role_id}}",
+								"permissions",
+								"add"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Remove Permissions from Role",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "application/json"
+							},
+							{
+								"key": "Accept-Language",
+								"value": "ar"
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n\t\"permissions\": [\"spaces.view\"]\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{auth_url}}/roles/{{role_id}}/permissions/remove",
+							"host": [
+								"{{auth_url}}"
+							],
+							"path": [
+								"roles",
+								"{{role_id}}",
+								"permissions",
+								"remove"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Permissions (الصلاحيات)",
+			"item": [
+				{
+					"name": "List Permissions",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "application/json"
+							},
+							{
+								"key": "Accept-Language",
+								"value": "ar"
+							}
+						],
+						"url": {
+							"raw": "{{auth_url}}/permissions",
+							"host": [
+								"{{auth_url}}"
+							],
+							"path": [
+								"permissions"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Create Permission",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"type": "text/javascript",
+								"exec": [
+									"if(pm.response.code===201||pm.response.code===200){pm.environment.set(\"permission_id\",pm.response.json().data.id)}"
+								]
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "application/json"
+							},
+							{
+								"key": "Accept-Language",
+								"value": "ar"
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n\t\"name\": \"test.view\",\n\t\"display_name\": \"View Test\",\n\t\"group\": \"test\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{auth_url}}/permissions",
+							"host": [
+								"{{auth_url}}"
+							],
+							"path": [
+								"permissions"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Create Resource Permissions",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "application/json"
+							},
+							{
+								"key": "Accept-Language",
+								"value": "ar"
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n\t\"resource\": \"reports\",\n\t\"actions\": [\"view\", \"create\", \"update\", \"delete\"]\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{auth_url}}/permissions/resource",
+							"host": [
+								"{{auth_url}}"
+							],
+							"path": [
+								"permissions",
+								"resource"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get Permission",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "application/json"
+							},
+							{
+								"key": "Accept-Language",
+								"value": "ar"
+							}
+						],
+						"url": {
+							"raw": "{{auth_url}}/permissions/{{permission_id}}",
+							"host": [
+								"{{auth_url}}"
+							],
+							"path": [
+								"permissions",
+								"{{permission_id}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Update Permission",
+					"request": {
+						"method": "PUT",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "application/json"
+							},
+							{
+								"key": "Accept-Language",
+								"value": "ar"
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n\t\"display_name\": \"Updated Permission\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{auth_url}}/permissions/{{permission_id}}",
+							"host": [
+								"{{auth_url}}"
+							],
+							"path": [
+								"permissions",
+								"{{permission_id}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Delete Permission",
+					"request": {
+						"method": "DELETE",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "application/json"
+							},
+							{
+								"key": "Accept-Language",
+								"value": "ar"
+							}
+						],
+						"url": {
+							"raw": "{{auth_url}}/permissions/{{permission_id}}",
+							"host": [
+								"{{auth_url}}"
+							],
+							"path": [
+								"permissions",
+								"{{permission_id}}"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Events Management (إدارة الفعاليات)",
+			"item": [
+				{
+					"name": "List Events",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "application/json"
+							},
+							{
+								"key": "Accept-Language",
+								"value": "ar"
+							}
+						],
+						"url": {
+							"raw": "{{expo_url}}/admin/events?search=&status=&city_id=&category_id=&sort_by=&sort_order=&page=1",
+							"host": [
+								"{{expo_url}}"
+							],
+							"path": [
+								"admin",
+								"events"
+							],
+							"query": [
+								{
+									"key": "search",
+									"value": "",
+									"description": "Search by name"
+								},
+								{
+									"key": "status",
+									"value": "",
+									"description": "Filter by status: draft, published, cancelled, completed"
+								},
+								{
+									"key": "city_id",
+									"value": "",
+									"description": "Filter by city"
+								},
+								{
+									"key": "category_id",
+									"value": "",
+									"description": "Filter by category"
+								},
+								{
+									"key": "sort_by",
+									"value": "",
+									"description": "Sort field"
+								},
+								{
+									"key": "sort_order",
+									"value": "",
+									"description": "asc or desc"
+								},
+								{
+									"key": "page",
+									"value": "1"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Create Event",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"type": "text/javascript",
+								"exec": [
+									"if(pm.response.code===201||pm.response.code===200){pm.environment.set(\"event_id\",pm.response.json().data.id)}"
+								]
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "application/json"
+							},
+							{
+								"key": "Accept-Language",
+								"value": "ar"
+							}
+						],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "name",
+									"value": "Test Event",
+									"type": "text"
+								},
+								{
+									"key": "name_ar",
+									"value": "فعالية تجريبية",
+									"type": "text"
+								},
+								{
+									"key": "description",
+									"value": "Test event description",
+									"type": "text"
+								},
+								{
+									"key": "description_ar",
+									"value": "وصف الفعالية التجريبية",
+									"type": "text"
+								},
+								{
+									"key": "category_id",
+									"value": "{{category_id}}",
+									"type": "text"
+								},
+								{
+									"key": "city_id",
+									"value": "{{city_id}}",
+									"type": "text"
+								},
+								{
+									"key": "address",
+									"value": "123 Test Street",
+									"type": "text"
+								},
+								{
+									"key": "address_ar",
+									"value": "شارع الاختبار 123",
+									"type": "text"
+								},
+								{
+									"key": "start_date",
+									"value": "2025-06-01",
+									"type": "text"
+								},
+								{
+									"key": "end_date",
+									"value": "2025-06-10",
+									"type": "text"
+								},
+								{
+									"key": "opening_time",
+									"value": "09:00",
+									"type": "text"
+								},
+								{
+									"key": "closing_time",
+									"value": "22:00",
+									"type": "text"
+								},
+								{
+									"key": "status",
+									"value": "published",
+									"type": "text"
+								},
+								{
+									"key": "is_featured",
+									"value": "false",
+									"type": "text"
+								}
+							]
+						},
+						"url": {
+							"raw": "{{expo_url}}/admin/events",
+							"host": [
+								"{{expo_url}}"
+							],
+							"path": [
+								"admin",
+								"events"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get Event",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "application/json"
+							},
+							{
+								"key": "Accept-Language",
+								"value": "ar"
+							}
+						],
+						"url": {
+							"raw": "{{expo_url}}/admin/events/{{event_id}}",
+							"host": [
+								"{{expo_url}}"
+							],
+							"path": [
+								"admin",
+								"events",
+								"{{event_id}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Update Event",
+					"request": {
+						"method": "PUT",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "application/json"
+							},
+							{
+								"key": "Accept-Language",
+								"value": "ar"
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n\t\"name\": \"Updated Event\",\n\t\"status\": \"published\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{expo_url}}/admin/events/{{event_id}}",
+							"host": [
+								"{{expo_url}}"
+							],
+							"path": [
+								"admin",
+								"events",
+								"{{event_id}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Delete Event",
+					"request": {
+						"method": "DELETE",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "application/json"
+							},
+							{
+								"key": "Accept-Language",
+								"value": "ar"
+							}
+						],
+						"url": {
+							"raw": "{{expo_url}}/admin/events/{{event_id}}",
+							"host": [
+								"{{expo_url}}"
+							],
+							"path": [
+								"admin",
+								"events",
+								"{{event_id}}"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Sections Management (إدارة الأقسام)",
+			"item": [
+				{
+					"name": "List Sections",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "application/json"
+							},
+							{
+								"key": "Accept-Language",
+								"value": "ar"
+							}
+						],
+						"url": {
+							"raw": "{{expo_url}}/admin/events/{{event_id}}/sections",
+							"host": [
+								"{{expo_url}}"
+							],
+							"path": [
+								"admin",
+								"events",
+								"{{event_id}}",
+								"sections"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Create Section",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"type": "text/javascript",
+								"exec": [
+									"if(pm.response.code===201||pm.response.code===200){pm.environment.set(\"section_id\",pm.response.json().data.id)}"
+								]
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "application/json"
+							},
+							{
+								"key": "Accept-Language",
+								"value": "ar"
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n\t\"name\": \"Section A\",\n\t\"name_ar\": \"القسم أ\",\n\t\"description\": \"Main section\",\n\t\"is_active\": true,\n\t\"sort_order\": 1\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{expo_url}}/admin/events/{{event_id}}/sections",
+							"host": [
+								"{{expo_url}}"
+							],
+							"path": [
+								"admin",
+								"events",
+								"{{event_id}}",
+								"sections"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get Section",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "application/json"
+							},
+							{
+								"key": "Accept-Language",
+								"value": "ar"
+							}
+						],
+						"url": {
+							"raw": "{{expo_url}}/admin/sections/{{section_id}}",
+							"host": [
+								"{{expo_url}}"
+							],
+							"path": [
+								"admin",
+								"sections",
+								"{{section_id}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Update Section",
+					"request": {
+						"method": "PUT",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "application/json"
+							},
+							{
+								"key": "Accept-Language",
+								"value": "ar"
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n\t\"name\": \"Updated Section\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{expo_url}}/admin/sections/{{section_id}}",
+							"host": [
+								"{{expo_url}}"
+							],
+							"path": [
+								"admin",
+								"sections",
+								"{{section_id}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Delete Section",
+					"request": {
+						"method": "DELETE",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "application/json"
+							},
+							{
+								"key": "Accept-Language",
+								"value": "ar"
+							}
+						],
+						"url": {
+							"raw": "{{expo_url}}/admin/sections/{{section_id}}",
+							"host": [
+								"{{expo_url}}"
+							],
+							"path": [
+								"admin",
+								"sections",
+								"{{section_id}}"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Spaces Management (إدارة المساحات)",
+			"item": [
+				{
+					"name": "List Spaces",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "application/json"
+							},
+							{
+								"key": "Accept-Language",
+								"value": "ar"
+							}
+						],
+						"url": {
+							"raw": "{{expo_url}}/admin/events/{{event_id}}/spaces?status=&section_id=&space_type=&sort_by=&sort_order=",
+							"host": [
+								"{{expo_url}}"
+							],
+							"path": [
+								"admin",
+								"events",
+								"{{event_id}}",
+								"spaces"
+							],
+							"query": [
+								{
+									"key": "status",
+									"value": "",
+									"description": "Filter by status: available, reserved, occupied"
+								},
+								{
+									"key": "section_id",
+									"value": "",
+									"description": "Filter by section"
+								},
+								{
+									"key": "space_type",
+									"value": "",
+									"description": "Filter by type: booth, office, hall"
+								},
+								{
+									"key": "sort_by",
+									"value": "",
+									"description": "Sort field"
+								},
+								{
+									"key": "sort_order",
+									"value": "",
+									"description": "asc or desc"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Create Space",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"type": "text/javascript",
+								"exec": [
+									"if(pm.response.code===201||pm.response.code===200){pm.environment.set(\"space_id\",pm.response.json().data.id)}"
+								]
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "application/json"
+							},
+							{
+								"key": "Accept-Language",
+								"value": "ar"
+							}
+						],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "name",
+									"value": "Test Space",
+									"type": "text"
+								},
+								{
+									"key": "name_ar",
+									"value": "مساحة تجريبية",
+									"type": "text"
+								},
+								{
+									"key": "location_code",
+									"value": "A-101",
+									"type": "text"
+								},
+								{
+									"key": "area_sqm",
+									"value": "50",
+									"type": "text"
+								},
+								{
+									"key": "price_per_day",
+									"value": "500",
+									"type": "text"
+								},
+								{
+									"key": "price_total",
+									"value": "15000",
+									"type": "text"
+								},
+								{
+									"key": "status",
+									"value": "available",
+									"type": "text"
+								},
+								{
+									"key": "floor_number",
+									"value": "1",
+									"type": "text"
+								},
+								{
+									"key": "section_id",
+									"value": "{{section_id}}",
+									"type": "text"
+								},
+								{
+									"key": "space_type",
+									"value": "booth",
+									"type": "text"
+								},
+								{
+									"key": "payment_system",
+									"value": "full",
+									"type": "text"
+								},
+								{
+									"key": "rental_duration",
+									"value": "full_event",
+									"type": "text"
+								}
+							]
+						},
+						"url": {
+							"raw": "{{expo_url}}/admin/events/{{event_id}}/spaces",
+							"host": [
+								"{{expo_url}}"
+							],
+							"path": [
+								"admin",
+								"events",
+								"{{event_id}}",
+								"spaces"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get Space",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "application/json"
+							},
+							{
+								"key": "Accept-Language",
+								"value": "ar"
+							}
+						],
+						"url": {
+							"raw": "{{expo_url}}/admin/spaces/{{space_id}}",
+							"host": [
+								"{{expo_url}}"
+							],
+							"path": [
+								"admin",
+								"spaces",
+								"{{space_id}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Update Space",
+					"request": {
+						"method": "PUT",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "application/json"
+							},
+							{
+								"key": "Accept-Language",
+								"value": "ar"
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n\t\"name\": \"Updated Space\",\n\t\"status\": \"available\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{expo_url}}/admin/spaces/{{space_id}}",
+							"host": [
+								"{{expo_url}}"
+							],
+							"path": [
+								"admin",
+								"spaces",
+								"{{space_id}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Delete Space",
+					"request": {
+						"method": "DELETE",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "application/json"
+							},
+							{
+								"key": "Accept-Language",
+								"value": "ar"
+							}
+						],
+						"url": {
+							"raw": "{{expo_url}}/admin/spaces/{{space_id}}",
+							"host": [
+								"{{expo_url}}"
+							],
+							"path": [
+								"admin",
+								"spaces",
+								"{{space_id}}"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Services Management (إدارة الخدمات)",
+			"item": [
+				{
+					"name": "List Services",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "application/json"
+							},
+							{
+								"key": "Accept-Language",
+								"value": "ar"
+							}
+						],
+						"url": {
+							"raw": "{{expo_url}}/admin/services?search=&is_active=",
+							"host": [
+								"{{expo_url}}"
+							],
+							"path": [
+								"admin",
+								"services"
+							],
+							"query": [
+								{
+									"key": "search",
+									"value": "",
+									"description": "Search by name"
+								},
+								{
+									"key": "is_active",
+									"value": "",
+									"description": "Filter by active status: true, false"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Create Service",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"type": "text/javascript",
+								"exec": [
+									"if(pm.response.code===201||pm.response.code===200){pm.environment.set(\"service_id\",pm.response.json().data.id)}"
+								]
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "application/json"
+							},
+							{
+								"key": "Accept-Language",
+								"value": "ar"
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n\t\"name\": \"Electricity\",\n\t\"name_ar\": \"كهرباء\",\n\t\"description\": \"Power supply\",\n\t\"is_active\": true,\n\t\"sort_order\": 1\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{expo_url}}/admin/services",
+							"host": [
+								"{{expo_url}}"
+							],
+							"path": [
+								"admin",
+								"services"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get Service",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "application/json"
+							},
+							{
+								"key": "Accept-Language",
+								"value": "ar"
+							}
+						],
+						"url": {
+							"raw": "{{expo_url}}/admin/services/{{service_id}}",
+							"host": [
+								"{{expo_url}}"
+							],
+							"path": [
+								"admin",
+								"services",
+								"{{service_id}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Update Service",
+					"request": {
+						"method": "PUT",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "application/json"
+							},
+							{
+								"key": "Accept-Language",
+								"value": "ar"
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n\t\"name\": \"Updated Service\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{expo_url}}/admin/services/{{service_id}}",
+							"host": [
+								"{{expo_url}}"
+							],
+							"path": [
+								"admin",
+								"services",
+								"{{service_id}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Delete Service",
+					"request": {
+						"method": "DELETE",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "application/json"
+							},
+							{
+								"key": "Accept-Language",
+								"value": "ar"
+							}
+						],
+						"url": {
+							"raw": "{{expo_url}}/admin/services/{{service_id}}",
+							"host": [
+								"{{expo_url}}"
+							],
+							"path": [
+								"admin",
+								"services",
+								"{{service_id}}"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Visit Requests (طلبات الزيارة)",
+			"item": [
+				{
+					"name": "List Visit Requests",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "application/json"
+							},
+							{
+								"key": "Accept-Language",
+								"value": "ar"
+							}
+						],
+						"url": {
+							"raw": "{{expo_url}}/admin/visit-requests?status=&event_id=&from_date=&to_date=&search=&sort_by=&sort_order=",
+							"host": [
+								"{{expo_url}}"
+							],
+							"path": [
+								"admin",
+								"visit-requests"
+							],
+							"query": [
+								{
+									"key": "status",
+									"value": "",
+									"description": "Filter by status: pending, approved, rejected"
+								},
+								{
+									"key": "event_id",
+									"value": "",
+									"description": "Filter by event"
+								},
+								{
+									"key": "from_date",
+									"value": "",
+									"description": "Filter from date"
+								},
+								{
+									"key": "to_date",
+									"value": "",
+									"description": "Filter to date"
+								},
+								{
+									"key": "search",
+									"value": "",
+									"description": "Search"
+								},
+								{
+									"key": "sort_by",
+									"value": "",
+									"description": "Sort field"
+								},
+								{
+									"key": "sort_order",
+									"value": "",
+									"description": "asc or desc"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get Visit Request",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "application/json"
+							},
+							{
+								"key": "Accept-Language",
+								"value": "ar"
+							}
+						],
+						"url": {
+							"raw": "{{expo_url}}/admin/visit-requests/{{visit_request_id}}",
+							"host": [
+								"{{expo_url}}"
+							],
+							"path": [
+								"admin",
+								"visit-requests",
+								"{{visit_request_id}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Approve Visit Request",
+					"request": {
+						"method": "PUT",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "application/json"
+							},
+							{
+								"key": "Accept-Language",
+								"value": "ar"
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n\t\"notes\": \"Approved by admin\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{expo_url}}/admin/visit-requests/{{visit_request_id}}/approve",
+							"host": [
+								"{{expo_url}}"
+							],
+							"path": [
+								"admin",
+								"visit-requests",
+								"{{visit_request_id}}",
+								"approve"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Reject Visit Request",
+					"request": {
+						"method": "PUT",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "application/json"
+							},
+							{
+								"key": "Accept-Language",
+								"value": "ar"
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n\t\"reason\": \"Date not available\",\n\t\"notes\": \"Try another date\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{expo_url}}/admin/visit-requests/{{visit_request_id}}/reject",
+							"host": [
+								"{{expo_url}}"
+							],
+							"path": [
+								"admin",
+								"visit-requests",
+								"{{visit_request_id}}",
+								"reject"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Rental Requests (طلبات الإيجار)",
+			"item": [
+				{
+					"name": "List Rental Requests",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "application/json"
+							},
+							{
+								"key": "Accept-Language",
+								"value": "ar"
+							}
+						],
+						"url": {
+							"raw": "{{expo_url}}/admin/rental-requests?status=&payment_status=&event_id=&space_id=&from_date=&to_date=&search=&sort_by=&sort_order=",
+							"host": [
+								"{{expo_url}}"
+							],
+							"path": [
+								"admin",
+								"rental-requests"
+							],
+							"query": [
+								{
+									"key": "status",
+									"value": "",
+									"description": "Filter by status: pending, approved, rejected"
+								},
+								{
+									"key": "payment_status",
+									"value": "",
+									"description": "Filter by payment status"
+								},
+								{
+									"key": "event_id",
+									"value": "",
+									"description": "Filter by event"
+								},
+								{
+									"key": "space_id",
+									"value": "",
+									"description": "Filter by space"
+								},
+								{
+									"key": "from_date",
+									"value": "",
+									"description": "Filter from date"
+								},
+								{
+									"key": "to_date",
+									"value": "",
+									"description": "Filter to date"
+								},
+								{
+									"key": "search",
+									"value": "",
+									"description": "Search"
+								},
+								{
+									"key": "sort_by",
+									"value": "",
+									"description": "Sort field"
+								},
+								{
+									"key": "sort_order",
+									"value": "",
+									"description": "asc or desc"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get Rental Request",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "application/json"
+							},
+							{
+								"key": "Accept-Language",
+								"value": "ar"
+							}
+						],
+						"url": {
+							"raw": "{{expo_url}}/admin/rental-requests/{{rental_request_id}}",
+							"host": [
+								"{{expo_url}}"
+							],
+							"path": [
+								"admin",
+								"rental-requests",
+								"{{rental_request_id}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Approve Rental Request",
+					"request": {
+						"method": "PUT",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "application/json"
+							},
+							{
+								"key": "Accept-Language",
+								"value": "ar"
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n\t\"notes\": \"Approved\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{expo_url}}/admin/rental-requests/{{rental_request_id}}/approve",
+							"host": [
+								"{{expo_url}}"
+							],
+							"path": [
+								"admin",
+								"rental-requests",
+								"{{rental_request_id}}",
+								"approve"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Reject Rental Request",
+					"request": {
+						"method": "PUT",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "application/json"
+							},
+							{
+								"key": "Accept-Language",
+								"value": "ar"
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n\t\"reason\": \"Space not available\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{expo_url}}/admin/rental-requests/{{rental_request_id}}/reject",
+							"host": [
+								"{{expo_url}}"
+							],
+							"path": [
+								"admin",
+								"rental-requests",
+								"{{rental_request_id}}",
+								"reject"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Record Payment",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "application/json"
+							},
+							{
+								"key": "Accept-Language",
+								"value": "ar"
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n\t\"amount\": 5000\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{expo_url}}/admin/rental-requests/{{rental_request_id}}/payment",
+							"host": [
+								"{{expo_url}}"
+							],
+							"path": [
+								"admin",
+								"rental-requests",
+								"{{rental_request_id}}",
+								"payment"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Business Profiles (الملفات التجارية)",
+			"item": [
+				{
+					"name": "List Business Profiles",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "application/json"
+							},
+							{
+								"key": "Accept-Language",
+								"value": "ar"
+							}
+						],
+						"url": {
+							"raw": "{{expo_url}}/admin/profiles?status=&business_type=&search=&sort_by=&sort_order=",
+							"host": [
+								"{{expo_url}}"
+							],
+							"path": [
+								"admin",
+								"profiles"
+							],
+							"query": [
+								{
+									"key": "status",
+									"value": "",
+									"description": "Filter by status: pending, approved, rejected"
+								},
+								{
+									"key": "business_type",
+									"value": "",
+									"description": "Filter by business type"
+								},
+								{
+									"key": "search",
+									"value": "",
+									"description": "Search by name"
+								},
+								{
+									"key": "sort_by",
+									"value": "",
+									"description": "Sort field"
+								},
+								{
+									"key": "sort_order",
+									"value": "",
+									"description": "asc or desc"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get Business Profile",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "application/json"
+							},
+							{
+								"key": "Accept-Language",
+								"value": "ar"
+							}
+						],
+						"url": {
+							"raw": "{{expo_url}}/admin/profiles/{{profile_id}}",
+							"host": [
+								"{{expo_url}}"
+							],
+							"path": [
+								"admin",
+								"profiles",
+								"{{profile_id}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Approve Business Profile",
+					"request": {
+						"method": "PUT",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "application/json"
+							},
+							{
+								"key": "Accept-Language",
+								"value": "ar"
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n\t\"notes\": \"All documents verified\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{expo_url}}/admin/profiles/{{profile_id}}/approve",
+							"host": [
+								"{{expo_url}}"
+							],
+							"path": [
+								"admin",
+								"profiles",
+								"{{profile_id}}",
+								"approve"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Reject Business Profile",
+					"request": {
+						"method": "PUT",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "application/json"
+							},
+							{
+								"key": "Accept-Language",
+								"value": "ar"
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n\t\"reason\": \"Missing documents\",\n\t\"notes\": \"Please upload national ID\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{expo_url}}/admin/profiles/{{profile_id}}/reject",
+							"host": [
+								"{{expo_url}}"
+							],
+							"path": [
+								"admin",
+								"profiles",
+								"{{profile_id}}",
+								"reject"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Auth Services (إدارة الخدمات المتصلة)",
+			"description": "Manage services (microservices) registered in the auth system",
+			"item": [
+				{
+					"name": "List Services",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "application/json"
+							},
+							{
+								"key": "Accept-Language",
+								"value": "ar"
+							}
+						],
+						"url": {
+							"raw": "{{auth_url}}/services",
+							"host": [
+								"{{auth_url}}"
+							],
+							"path": [
+								"services"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Create Service",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "application/json"
+							},
+							{
+								"key": "Accept-Language",
+								"value": "ar"
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"url": {
+							"raw": "{{auth_url}}/services",
+							"host": [
+								"{{auth_url}}"
+							],
+							"path": [
+								"services"
+							]
+						},
+						"body": {
+							"mode": "raw",
+							"raw": "{\n\t\"name\": \"expo-api\",\n\t\"description\": \"Expo API Service\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						}
+					},
+					"response": [],
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"type": "text/javascript",
+								"exec": [
+									"if(pm.response.code===201||pm.response.code===200){pm.environment.set('service_token_id',pm.response.json().data.id)}"
+								]
+							}
+						}
+					]
+				},
+				{
+					"name": "Get Service",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "application/json"
+							},
+							{
+								"key": "Accept-Language",
+								"value": "ar"
+							}
+						],
+						"url": {
+							"raw": "{{auth_url}}/services/{{service_token_id}}",
+							"host": [
+								"{{auth_url}}"
+							],
+							"path": [
+								"services",
+								"{{service_token_id}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Update Service",
+					"request": {
+						"method": "PUT",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "application/json"
+							},
+							{
+								"key": "Accept-Language",
+								"value": "ar"
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"url": {
+							"raw": "{{auth_url}}/services/{{service_token_id}}",
+							"host": [
+								"{{auth_url}}"
+							],
+							"path": [
+								"services",
+								"{{service_token_id}}"
+							]
+						},
+						"body": {
+							"mode": "raw",
+							"raw": "{\n\t\"name\": \"expo-api-updated\",\n\t\"description\": \"Updated description\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Delete Service",
+					"request": {
+						"method": "DELETE",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "application/json"
+							},
+							{
+								"key": "Accept-Language",
+								"value": "ar"
+							}
+						],
+						"url": {
+							"raw": "{{auth_url}}/services/{{service_token_id}}",
+							"host": [
+								"{{auth_url}}"
+							],
+							"path": [
+								"services",
+								"{{service_token_id}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Regenerate Service Token",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "application/json"
+							},
+							{
+								"key": "Accept-Language",
+								"value": "ar"
+							}
+						],
+						"url": {
+							"raw": "{{auth_url}}/services/{{service_token_id}}/regenerate-token",
+							"host": [
+								"{{auth_url}}"
+							],
+							"path": [
+								"services",
+								"{{service_token_id}}",
+								"regenerate-token"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get Service Roles",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "application/json"
+							},
+							{
+								"key": "Accept-Language",
+								"value": "ar"
+							}
+						],
+						"url": {
+							"raw": "{{auth_url}}/services/{{service_token_id}}/roles",
+							"host": [
+								"{{auth_url}}"
+							],
+							"path": [
+								"services",
+								"{{service_token_id}}",
+								"roles"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Assign Service Roles",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "application/json"
+							},
+							{
+								"key": "Accept-Language",
+								"value": "ar"
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"url": {
+							"raw": "{{auth_url}}/services/{{service_token_id}}/roles",
+							"host": [
+								"{{auth_url}}"
+							],
+							"path": [
+								"services",
+								"{{service_token_id}}",
+								"roles"
+							]
+						},
+						"body": {
+							"mode": "raw",
+							"raw": "{\n\t\"roles\": [\n\t\t\"admin\",\n\t\t\"merchant\"\n\t]\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Remove Service Roles",
+					"request": {
+						"method": "DELETE",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "application/json"
+							},
+							{
+								"key": "Accept-Language",
+								"value": "ar"
+							}
+						],
+						"url": {
+							"raw": "{{auth_url}}/services/{{service_token_id}}/roles",
+							"host": [
+								"{{auth_url}}"
+							],
+							"path": [
+								"services",
+								"{{service_token_id}}",
+								"roles"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Update Service Roles",
+					"request": {
+						"method": "PUT",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "application/json"
+							},
+							{
+								"key": "Accept-Language",
+								"value": "ar"
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"url": {
+							"raw": "{{auth_url}}/services/{{service_token_id}}/roles",
+							"host": [
+								"{{auth_url}}"
+							],
+							"path": [
+								"services",
+								"{{service_token_id}}",
+								"roles"
+							]
+						},
+						"body": {
+							"mode": "raw",
+							"raw": "{\n\t\"roles\": [\n\t\t\"admin\",\n\t\t\"merchant\",\n\t\t\"investor\"\n\t]\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "User Stats - Auth Service",
+			"item": [
+				{
+					"name": "Get User Stats",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "application/json"
+							},
+							{
+								"key": "Accept-Language",
+								"value": "ar"
+							}
+						],
+						"url": {
+							"raw": "{{auth_url}}/admin/stats/users?period=all",
+							"host": [
+								"{{auth_url}}"
+							],
+							"path": [
+								"admin",
+								"stats",
+								"users"
+							],
+							"query": [
+								{
+									"key": "period",
+									"value": "all",
+									"description": "Stats period: all, today, week, month"
+								}
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		}
+	]
+}
