@@ -14,6 +14,12 @@ class RentalRequest extends Model
 {
     use HasFactory, HasUuids, SoftDeletes;
 
+    protected $attributes = [
+        'status' => 'pending',
+        'payment_status' => 'pending',
+        'paid_amount' => 0,
+    ];
+
     protected $fillable = [
         'request_number',
         'space_id',

@@ -31,6 +31,8 @@ class EventListResource extends JsonResource
             'is_featured' => $this->is_featured,
             'is_ongoing' => $this->is_ongoing,
             'available_spaces_count' => $this->available_spaces_count,
+            'total_spaces_count' => $this->total_spaces_count,
+            'min_price' => $this->min_price,
             'is_favorited' => $userId ? Favorite::isFavorited($userId, 'event', $this->id) : false,
         ];
     }

@@ -2,11 +2,15 @@
 
 namespace App\Models;
 
+use App\Enums\PaymentSystem;
+use App\Enums\RentalDuration;
 use App\Enums\SpaceStatus;
+use App\Enums\SpaceType;
 use Illuminate\Database\Eloquent\Concerns\HasUuids;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Relations\MorphMany;
 use Illuminate\Database\Eloquent\SoftDeletes;
@@ -26,11 +30,19 @@ class Space extends Model
         'price_per_day',
         'price_total',
         'images',
+        'images_360',
         'amenities',
         'amenities_ar',
         'status',
         'floor_number',
-        'section',
+        'section_id',
+        'space_type',
+        'payment_system',
+        'rental_duration',
+        'latitude',
+        'longitude',
+        'address',
+        'address_ar',
     ];
 
     protected $casts = [
@@ -38,10 +50,16 @@ class Space extends Model
         'price_per_day' => 'decimal:2',
         'price_total' => 'decimal:2',
         'images' => 'array',
+        'images_360' => 'array',
         'amenities' => 'array',
         'amenities_ar' => 'array',
         'status' => SpaceStatus::class,
         'floor_number' => 'integer',
+        'space_type' => SpaceType::class,
+        'payment_system' => PaymentSystem::class,
+        'rental_duration' => RentalDuration::class,
+        'latitude' => 'decimal:8',
+        'longitude' => 'decimal:8',
     ];
 
     /* ========================================
@@ -51,6 +69,16 @@ class Space extends Model
     public function event(): BelongsTo
     {
         return $this->belongsTo(Event::class);
+    }
+
+    public function section(): BelongsTo
+    {
+        return $this->belongsTo(Section::class);
+    }
+
+    public function services(): BelongsToMany
+    {
+        return $this->belongsToMany(Service::class, 'service_space')->withTimestamps();
     }
 
     public function rentalRequests(): HasMany
@@ -75,6 +103,33 @@ class Space extends Model
     public function scopeInEvent($query, string $eventId)
     {
         return $query->where('event_id', $eventId);
+    }
+
+    public function scopeInSection($query, string $sectionId)
+    {
+        return $query->where('section_id', $sectionId);
+    }
+
+    public function scopeOfType($query, string $spaceType)
+    {
+        return $query->where('space_type', $spaceType);
+    }
+
+    public function scopeWithPaymentSystem($query, string $paymentSystem)
+    {
+        return $query->where('payment_system', $paymentSystem);
+    }
+
+    public function scopeWithRentalDuration($query, string $rentalDuration)
+    {
+        return $query->where('rental_duration', $rentalDuration);
+    }
+
+    public function scopeHasService($query, string $serviceId)
+    {
+        return $query->whereHas('services', function ($q) use ($serviceId) {
+            $q->where('services.id', $serviceId);
+        });
     }
 
     public function scopeInPriceRange($query, ?float $min, ?float $max)
@@ -116,6 +171,11 @@ class Space extends Model
     public function getLocalizedAmenitiesAttribute(): ?array
     {
         return app()->getLocale() === 'ar' ? $this->amenities_ar : $this->amenities;
+    }
+
+    public function getLocalizedAddressAttribute(): ?string
+    {
+        return app()->getLocale() === 'ar' ? ($this->address_ar ?? $this->address) : $this->address;
     }
 
     public function getMainImageAttribute(): ?string

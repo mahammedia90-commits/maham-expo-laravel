@@ -13,6 +13,10 @@ class VisitRequest extends Model
 {
     use HasFactory, HasUuids, SoftDeletes;
 
+    protected $attributes = [
+        'status' => 'pending',
+    ];
+
     protected $fillable = [
         'request_number',
         'event_id',

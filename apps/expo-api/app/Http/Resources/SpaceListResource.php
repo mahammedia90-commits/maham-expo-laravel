@@ -22,7 +22,16 @@ class SpaceListResource extends JsonResource
             'status' => $this->status->value,
             'is_available' => $this->is_available,
             'floor_number' => $this->floor_number,
-            'section' => $this->section,
+            'section' => $this->whenLoaded('section', fn() => [
+                'id' => $this->section->id,
+                'name' => $this->section->localized_name,
+            ]),
+            'space_type' => $this->space_type?->value,
+            'space_type_label' => $this->space_type ? (app()->getLocale() === 'ar' ? $this->space_type->label() : $this->space_type->labelEn()) : null,
+            'payment_system' => $this->payment_system?->value,
+            'payment_system_label' => $this->payment_system ? (app()->getLocale() === 'ar' ? $this->payment_system->label() : $this->payment_system->labelEn()) : null,
+            'rental_duration' => $this->rental_duration?->value,
+            'rental_duration_label' => $this->rental_duration ? (app()->getLocale() === 'ar' ? $this->rental_duration->label() : $this->rental_duration->labelEn()) : null,
             'is_favorited' => $userId ? Favorite::isFavorited($userId, 'space', $this->id) : false,
         ];
     }

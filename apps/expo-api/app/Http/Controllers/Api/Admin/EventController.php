@@ -9,12 +9,14 @@ use App\Http\Resources\EventResource;
 use App\Http\Resources\EventListResource;
 use App\Models\Event;
 use App\Support\ApiResponse;
+use App\Support\SafeOrderBy;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
 
 class EventController extends Controller
 {
+    use SafeOrderBy;
     /**
      * Get all events (admin)
      */
@@ -22,8 +24,8 @@ class EventController extends Controller
     {
         $query = Event::with(['category', 'city']);
 
-        // Search
-        if ($search = $request->input('search')) {
+        // Search (sanitized)
+        if ($search = $this->sanitizeSearch($request->input('search'))) {
             $query->search($search);
         }
 
@@ -42,10 +44,10 @@ class EventController extends Controller
             $query->inCategory($categoryId);
         }
 
-        // Sorting
-        $sortBy = $request->input('sort_by', 'created_at');
-        $sortOrder = $request->input('sort_order', 'desc');
-        $query->orderBy($sortBy, $sortOrder);
+        // Sorting (safe - whitelisted columns only)
+        $this->applySafeOrder($query, $request, [
+            'created_at', 'start_date', 'end_date', 'name', 'name_ar', 'status',
+        ]);
 
         $events = $query->paginate(15);
 
@@ -64,7 +66,12 @@ class EventController extends Controller
 
         // Handle images
         if ($request->hasFile('images')) {
-            $data['images'] = $this->uploadImages($request->file('images'));
+            $data['images'] = $this->uploadImages($request->file('images'), 'events');
+        }
+
+        // Handle 360 images
+        if ($request->hasFile('images_360')) {
+            $data['images_360'] = $this->uploadImages($request->file('images_360'), 'events/360');
         }
 
         $event = Event::create($data);
@@ -104,7 +111,17 @@ class EventController extends Controller
                     Storage::disk('public')->delete($image);
                 }
             }
-            $data['images'] = $this->uploadImages($request->file('images'));
+            $data['images'] = $this->uploadImages($request->file('images'), 'events');
+        }
+
+        // Handle 360 images
+        if ($request->hasFile('images_360')) {
+            if ($event->images_360) {
+                foreach ($event->images_360 as $image) {
+                    Storage::disk('public')->delete($image);
+                }
+            }
+            $data['images_360'] = $this->uploadImages($request->file('images_360'), 'events/360');
         }
 
         $event->update($data);
@@ -139,6 +156,11 @@ class EventController extends Controller
                 Storage::disk('public')->delete($image);
             }
         }
+        if ($event->images_360) {
+            foreach ($event->images_360 as $image) {
+                Storage::disk('public')->delete($image);
+            }
+        }
 
         $event->delete();
 
@@ -151,13 +173,12 @@ class EventController extends Controller
     /**
      * Upload images
      */
-    protected function uploadImages(array $files): array
+    protected function uploadImages(array $files, string $folder = 'events'): array
     {
         $paths = [];
-        $uploadPath = config('expo-api.uploads.paths.events');
 
         foreach ($files as $file) {
-            $paths[] = $file->store($uploadPath, 'public');
+            $paths[] = $file->store($folder, 'public');
         }
 
         return $paths;

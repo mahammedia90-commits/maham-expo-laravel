@@ -9,15 +9,18 @@ class BusinessProfileResource extends JsonResource
 {
     public function toArray(Request $request): array
     {
+        // Sensitive documents only visible to profile owner or admin
+        $isOwnerOrAdmin = $this->isOwnerOrAdmin($request);
+
         return [
             'id' => $this->id,
             'user_id' => $this->user_id,
             'company_name' => $this->localized_company_name,
             'company_name_en' => $this->company_name,
             'company_name_ar' => $this->company_name_ar,
-            'commercial_registration_number' => $this->commercial_registration_number,
-            'commercial_registration_image' => $this->commercial_registration_image,
-            'national_id_image' => $this->national_id_image,
+            'commercial_registration_number' => $this->when($isOwnerOrAdmin, $this->commercial_registration_number),
+            'commercial_registration_image' => $this->when($isOwnerOrAdmin, $this->commercial_registration_image),
+            'national_id_image' => $this->when($isOwnerOrAdmin, $this->national_id_image),
             'company_logo' => $this->company_logo,
             'company_address' => $this->localized_company_address,
             'contact_phone' => $this->contact_phone,
@@ -39,5 +42,29 @@ class BusinessProfileResource extends JsonResource
             'created_at' => $this->created_at->toISOString(),
             'updated_at' => $this->updated_at->toISOString(),
         ];
+    }
+
+    /**
+     * Check if the current request user is the profile owner or an admin
+     */
+    protected function isOwnerOrAdmin(Request $request): bool
+    {
+        $authUserId = $request->input('auth_user_id');
+        if (!$authUserId) {
+            return false;
+        }
+
+        // Owner check
+        if ($this->user_id === $authUserId) {
+            return true;
+        }
+
+        // Admin check
+        $roles = $request->input('auth_user_roles', []);
+        if (is_array($roles) && (in_array('admin', $roles) || in_array('super-admin', $roles))) {
+            return true;
+        }
+
+        return false;
     }
 }

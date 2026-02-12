@@ -7,13 +7,17 @@ use App\Http\Controllers\Api\EventController;
 use App\Http\Controllers\Api\FavoriteController;
 use App\Http\Controllers\Api\NotificationController;
 use App\Http\Controllers\Api\RentalRequestController;
+use App\Http\Controllers\Api\ServiceController;
 use App\Http\Controllers\Api\SpaceController;
 use App\Http\Controllers\Api\VisitRequestController;
 use App\Http\Controllers\Api\Admin\EventController as AdminEventController;
+use App\Http\Controllers\Api\Admin\SectionController as AdminSectionController;
+use App\Http\Controllers\Api\Admin\ServiceController as AdminServiceController;
 use App\Http\Controllers\Api\Admin\SpaceController as AdminSpaceController;
 use App\Http\Controllers\Api\Admin\VisitRequestController as AdminVisitRequestController;
 use App\Http\Controllers\Api\Admin\RentalRequestController as AdminRentalRequestController;
 use App\Http\Controllers\Api\Admin\BusinessProfileController as AdminBusinessProfileController;
+use App\Http\Controllers\Api\Admin\DashboardController as AdminDashboardController;
 use App\Http\Middleware\AuthServiceMiddleware;
 use App\Http\Middleware\CheckRole;
 use App\Http\Middleware\CheckVerifiedProfile;
@@ -25,24 +29,22 @@ use Illuminate\Support\Facades\Route;
 | API Routes
 |--------------------------------------------------------------------------
 */
- 
-// Apply locale middleware to all routes
-Route::middleware([SetLocale::class])->group(function () {
+
+// Apply locale middleware and rate limiting to all routes
+Route::middleware([SetLocale::class, 'throttle:60,1'])->group(function () {
 
     // ==================== PUBLIC ROUTES ====================
 
     // Health check
     Route::get('/health', function () {
         return response()->json([
-            'status' => 'ok', 
+            'status' => 'ok',
             'service' => config('app.name'),
             'version' => config('app.version'),
             'timestamp' => now()->toISOString(),
         ]);
     });
 
-
-    
     // Categories
     Route::get('/categories', [CategoryController::class, 'index']);
     Route::get('/categories/{category}', [CategoryController::class, 'show']);
@@ -56,9 +58,13 @@ Route::middleware([SetLocale::class])->group(function () {
     Route::get('/events/featured', [EventController::class, 'featured']);
     Route::get('/events/{event}', [EventController::class, 'show']);
     Route::get('/events/{event}/spaces', [EventController::class, 'spaces']);
+    Route::get('/events/{event}/sections', [EventController::class, 'sections']);
 
     // Spaces (Public)
     Route::get('/spaces/{space}', [SpaceController::class, 'show']);
+
+    // Services (Public)
+    Route::get('/services', [ServiceController::class, 'index']);
 
 
     // ==================== AUTHENTICATED ROUTES ====================
@@ -110,6 +116,9 @@ Route::middleware([SetLocale::class])->group(function () {
 
         Route::prefix('admin')->middleware([CheckRole::class . ':admin,super-admin'])->group(function () {
 
+            // Dashboard Statistics
+            Route::get('/dashboard', [AdminDashboardController::class, 'index']);
+
             // Events Management
             Route::prefix('events')->group(function () {
                 Route::get('/', [AdminEventController::class, 'index']);
@@ -118,9 +127,20 @@ Route::middleware([SetLocale::class])->group(function () {
                 Route::put('/{event}', [AdminEventController::class, 'update']);
                 Route::delete('/{event}', [AdminEventController::class, 'destroy']);
 
+                // Sections for event
+                Route::get('/{event}/sections', [AdminSectionController::class, 'index']);
+                Route::post('/{event}/sections', [AdminSectionController::class, 'store']);
+
                 // Spaces for event
                 Route::get('/{event}/spaces', [AdminSpaceController::class, 'index']);
                 Route::post('/{event}/spaces', [AdminSpaceController::class, 'store']);
+            });
+
+            // Sections Management
+            Route::prefix('sections')->group(function () {
+                Route::get('/{section}', [AdminSectionController::class, 'show']);
+                Route::put('/{section}', [AdminSectionController::class, 'update']);
+                Route::delete('/{section}', [AdminSectionController::class, 'destroy']);
             });
 
             // Spaces Management
@@ -128,6 +148,15 @@ Route::middleware([SetLocale::class])->group(function () {
                 Route::get('/{space}', [AdminSpaceController::class, 'show']);
                 Route::put('/{space}', [AdminSpaceController::class, 'update']);
                 Route::delete('/{space}', [AdminSpaceController::class, 'destroy']);
+            });
+
+            // Services Management
+            Route::prefix('services')->group(function () {
+                Route::get('/', [AdminServiceController::class, 'index']);
+                Route::post('/', [AdminServiceController::class, 'store']);
+                Route::get('/{service}', [AdminServiceController::class, 'show']);
+                Route::put('/{service}', [AdminServiceController::class, 'update']);
+                Route::delete('/{service}', [AdminServiceController::class, 'destroy']);
             });
 
             // Visit Requests Management

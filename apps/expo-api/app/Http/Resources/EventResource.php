@@ -30,6 +30,7 @@ class EventResource extends JsonResource
             'opening_time' => $this->opening_time?->format('H:i'),
             'closing_time' => $this->closing_time?->format('H:i'),
             'images' => $this->images ?? [],
+            'images_360' => $this->images_360 ?? [],
             'main_image' => $this->main_image,
             'features' => $this->localized_features ?? [],
             'organizer' => [
@@ -46,7 +47,10 @@ class EventResource extends JsonResource
             'is_ended' => $this->is_ended,
             'views_count' => $this->views_count,
             'available_spaces_count' => $this->available_spaces_count,
+            'total_spaces_count' => $this->total_spaces_count,
             'spaces_count' => $this->whenCounted('spaces'),
+            'min_price' => $this->min_price,
+            'sections' => SectionResource::collection($this->whenLoaded('sections')),
             'is_favorited' => $userId ? Favorite::isFavorited($userId, 'event', $this->id) : false,
             'created_at' => $this->created_at->toISOString(),
         ];

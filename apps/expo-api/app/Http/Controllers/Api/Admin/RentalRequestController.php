@@ -8,11 +8,13 @@ use App\Http\Resources\RentalRequestResource;
 use App\Models\Notification;
 use App\Models\RentalRequest;
 use App\Support\ApiResponse;
+use App\Support\SafeOrderBy;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 
 class RentalRequestController extends Controller
 {
+    use SafeOrderBy;
     /**
      * Get all rental requests (admin)
      */
@@ -50,15 +52,16 @@ class RentalRequestController extends Controller
             $query->where('end_date', '<=', $toDate);
         }
 
-        // Search by request number
-        if ($search = $request->input('search')) {
+        // Search by request number (sanitized)
+        if ($search = $this->sanitizeSearch($request->input('search'))) {
             $query->where('request_number', 'like', "%{$search}%");
         }
 
-        // Sorting
-        $sortBy = $request->input('sort_by', 'created_at');
-        $sortOrder = $request->input('sort_order', 'desc');
-        $query->orderBy($sortBy, $sortOrder);
+        // Sorting (safe - whitelisted columns only)
+        $this->applySafeOrder($query, $request, [
+            'created_at', 'start_date', 'end_date', 'status', 'payment_status',
+            'request_number', 'total_price',
+        ]);
 
         $requests = $query->paginate(15);
 

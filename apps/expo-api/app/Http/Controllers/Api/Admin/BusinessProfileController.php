@@ -8,11 +8,13 @@ use App\Http\Resources\BusinessProfileResource;
 use App\Models\BusinessProfile;
 use App\Models\Notification;
 use App\Support\ApiResponse;
+use App\Support\SafeOrderBy;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 
 class BusinessProfileController extends Controller
 {
+    use SafeOrderBy;
     /**
      * Get all business profiles (admin)
      */
@@ -30,8 +32,8 @@ class BusinessProfileController extends Controller
             $query->where('business_type', $businessType);
         }
 
-        // Search
-        if ($search = $request->input('search')) {
+        // Search (sanitized to prevent wildcard injection)
+        if ($search = $this->sanitizeSearch($request->input('search'))) {
             $query->where(function ($q) use ($search) {
                 $q->where('company_name', 'like', "%{$search}%")
                     ->orWhere('company_name_ar', 'like', "%{$search}%")
@@ -40,10 +42,10 @@ class BusinessProfileController extends Controller
             });
         }
 
-        // Sorting
-        $sortBy = $request->input('sort_by', 'created_at');
-        $sortOrder = $request->input('sort_order', 'desc');
-        $query->orderBy($sortBy, $sortOrder);
+        // Sorting (safe - whitelisted columns only)
+        $this->applySafeOrder($query, $request, [
+            'created_at', 'company_name', 'status', 'business_type', 'reviewed_at',
+        ]);
 
         $profiles = $query->paginate(15);
 

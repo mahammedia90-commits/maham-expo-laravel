@@ -8,11 +8,13 @@ use App\Http\Resources\VisitRequestResource;
 use App\Models\Notification;
 use App\Models\VisitRequest;
 use App\Support\ApiResponse;
+use App\Support\SafeOrderBy;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 
 class VisitRequestController extends Controller
 {
+    use SafeOrderBy;
     /**
      * Get all visit requests (admin)
      */
@@ -38,15 +40,15 @@ class VisitRequestController extends Controller
             $query->where('visit_date', '<=', $toDate);
         }
 
-        // Search by request number
-        if ($search = $request->input('search')) {
+        // Search by request number (sanitized)
+        if ($search = $this->sanitizeSearch($request->input('search'))) {
             $query->where('request_number', 'like', "%{$search}%");
         }
 
-        // Sorting
-        $sortBy = $request->input('sort_by', 'created_at');
-        $sortOrder = $request->input('sort_order', 'desc');
-        $query->orderBy($sortBy, $sortOrder);
+        // Sorting (safe - whitelisted columns only)
+        $this->applySafeOrder($query, $request, [
+            'created_at', 'visit_date', 'status', 'request_number', 'visitors_count',
+        ]);
 
         $requests = $query->paginate(15);
 

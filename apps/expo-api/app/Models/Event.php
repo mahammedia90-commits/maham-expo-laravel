@@ -31,6 +31,7 @@ class Event extends Model
         'opening_time',
         'closing_time',
         'images',
+        'images_360',
         'features',
         'features_ar',
         'organizer_name',
@@ -49,6 +50,7 @@ class Event extends Model
         'opening_time' => 'datetime:H:i',
         'closing_time' => 'datetime:H:i',
         'images' => 'array',
+        'images_360' => 'array',
         'features' => 'array',
         'features_ar' => 'array',
         'status' => EventStatus::class,
@@ -75,6 +77,11 @@ class Event extends Model
     public function spaces(): HasMany
     {
         return $this->hasMany(Space::class);
+    }
+
+    public function sections(): HasMany
+    {
+        return $this->hasMany(Section::class);
     }
 
     public function visitRequests(): HasMany
@@ -140,6 +147,37 @@ class Event extends Model
         });
     }
 
+    public function scopeHasSpacesInPriceRange($query, ?float $min, ?float $max)
+    {
+        return $query->whereHas('spaces', function ($q) use ($min, $max) {
+            if ($min !== null) {
+                $q->where('price_total', '>=', $min);
+            }
+            if ($max !== null) {
+                $q->where('price_total', '<=', $max);
+            }
+        });
+    }
+
+    public function scopeHasSpacesInAreaRange($query, ?float $min, ?float $max)
+    {
+        return $query->whereHas('spaces', function ($q) use ($min, $max) {
+            if ($min !== null) {
+                $q->where('area_sqm', '>=', $min);
+            }
+            if ($max !== null) {
+                $q->where('area_sqm', '<=', $max);
+            }
+        });
+    }
+
+    public function scopeHasSpacesWithRentalDuration($query, string $rentalDuration)
+    {
+        return $query->whereHas('spaces', function ($q) use ($rentalDuration) {
+            $q->where('rental_duration', $rentalDuration);
+        });
+    }
+
     /* ========================================
      * Accessors
      * ======================================== */
@@ -188,6 +226,17 @@ class Event extends Model
     public function getAvailableSpacesCountAttribute(): int
     {
         return $this->spaces()->where('status', 'available')->count();
+    }
+
+    public function getTotalSpacesCountAttribute(): int
+    {
+        return $this->spaces()->count();
+    }
+
+    public function getMinPriceAttribute(): ?float
+    {
+        $minPrice = $this->spaces()->min('price_total');
+        return $minPrice !== null ? (float) $minPrice : null;
     }
 
     /* ========================================
