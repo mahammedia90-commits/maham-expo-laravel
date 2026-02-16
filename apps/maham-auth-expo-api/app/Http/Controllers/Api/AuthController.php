@@ -246,7 +246,7 @@ class AuthController extends Controller
     }
 
     /**
-     * طلب إعادة تعيين كلمة المرور
+     * طلب إعادة تعيين كلمة المرور 
      */
     
     public function forgotPassword(ForgotPasswordRequest $request): JsonResponse
@@ -264,8 +264,8 @@ class AuthController extends Controller
             'success' => true,
             'message' => $result['message'],
         ];
-
-        // في بيئة التطوير نرجع التوكن للاختبار
+ 
+        // في بيئة التطوير نرجع التوكن للاختبار 
         if (isset($result['token'])) {
             $response['data'] = ['token' => $result['token']];
         }
@@ -359,7 +359,7 @@ class AuthController extends Controller
         $response = [
             'success' => true,
             'message' => $result['message'],
-        ];
+        ]; 
 
         // في بيئة التطوير نرجع الكود للاختبار
         if (isset($result['code'])) {

@@ -4,12 +4,15 @@ namespace App\Services;
 
 use App\Models\User;
 use App\Models\Service;
-use App\Models\RefreshToken;
+use App\Mail\PasswordResetMail; 
+use App\Mail\EmailVerificationMail; 
+use App\Models\RefreshToken; 
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Str;
 use Tymon\JWTAuth\Facades\JWTAuth;
+
 
 class AuthService
 {
@@ -214,7 +217,7 @@ class AuthService
                 'message' => __('messages.auth.user_not_found'),
             ];
         }
-
+ 
         // توليد توكن إعادة التعيين
         $token = Str::random(64);
 
@@ -224,24 +227,28 @@ class AuthService
         // حفظ التوكن الجديد
         DB::table('password_reset_tokens')->insert([
             'email' => $email,
-            'token' => Hash::make($token),
+            'token' => Hash::make($token), 
             'created_at' => now(),
         ]);
 
         // تسجيل الحدث
         $this->auditService->log('password_reset_requested', $user, [
             'ip' => request()->ip(),
-        ]);
+        ]); 
 
+
+          $resetLink = config('app.url') .
+        "/reset-password?token={$token}&email={$email}";
+ 
         // هنا يمكن إرسال البريد الإلكتروني
-        // Mail::to($email)->send(new PasswordResetMail($token));
+        Mail::to($email)->send(new PasswordResetMail($resetLink));
 
-        return [
+        return [ 
             'success' => true,
             'message' => __('messages.auth.reset_link_sent'),
-            // في بيئة التطوير فقط نرجع التوكن
-            'token' => config('app.debug') ? $token : null,
-        ];
+            // في بيئة التطوير فقط نرجع التوكن لسهولة الاختبار، في الإنتاج لا نرجع أي معلومات حساسة
+            'token' => config('app.debug') ? $resetLink : null,
+        ]; 
     }
 
     /**
@@ -376,18 +383,18 @@ class AuthService
         }
 
         // توليد كود التحقق
-        $code = random_int(100000, 999999);
+        $code = random_int(100000, 999999); 
 
         // حفظ الكود في الكاش (صالح لمدة 15 دقيقة)
         cache()->put("email_verification_{$user->id}", $code, now()->addMinutes(15));
 
         // هنا يمكن إرسال البريد
-        // Mail::to($user->email)->send(new EmailVerificationMail($code));
+        Mail::to($user->email)->send(new EmailVerificationMail($code));
 
-        return [
+        return [ 
             'success' => true,
             'message' => __('messages.auth.verification_code_sent'),
-            'code' => config('app.debug') ? $code : null,
+            'code' => config('app.debug') ? $code : null, // في بيئة التطوير فقط نرجع الكود لسهولة الاختبار، في الإنتاج لا نرجع أي معلومات حساسة
         ];
     }
 

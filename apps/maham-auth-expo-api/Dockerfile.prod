@@ -31,7 +31,8 @@ RUN echo "upload_max_filesize=20M" >> /usr/local/etc/php/conf.d/custom.ini && \
     echo "post_max_size=25M" >> /usr/local/etc/php/conf.d/custom.ini && \
     echo "memory_limit=256M" >> /usr/local/etc/php/conf.d/custom.ini && \
     echo "max_execution_time=60" >> /usr/local/etc/php/conf.d/custom.ini && \
-    echo "expose_php=Off" >> /usr/local/etc/php/conf.d/custom.ini
+    echo "expose_php=Off" >> /usr/local/etc/php/conf.d/custom.ini && \
+    echo "allow_url_fopen=On" >> /usr/local/etc/php/conf.d/custom.ini
 
 # Get Composer
 COPY --from=composer:latest /usr/bin/composer /usr/bin/composer
@@ -55,6 +56,8 @@ COPY --from=build /var/www/html /var/www/html
 
 # Nginx config
 COPY docker/nginx.conf /etc/nginx/sites-available/default
+RUN rm -f /etc/nginx/sites-enabled/default && \
+    ln -s /etc/nginx/sites-available/default /etc/nginx/sites-enabled/default
 
 # Supervisor config
 COPY docker/supervisord.conf /etc/supervisor/conf.d/app.conf
@@ -63,12 +66,18 @@ COPY docker/supervisord.conf /etc/supervisor/conf.d/app.conf
 COPY docker/entrypoint.prod.sh /usr/local/bin/entrypoint.sh
 RUN chmod +x /usr/local/bin/entrypoint.sh
 
+# Create necessary directories
+RUN mkdir -p /var/www/html/storage/logs \
+    /var/www/html/storage/framework/cache/data \
+    /var/www/html/storage/framework/sessions \
+    /var/www/html/storage/framework/views \
+    /var/www/html/bootstrap/cache \
+    /var/log/supervisor \
+    /var/log/nginx
+
 # Permissions
 RUN chown -R www-data:www-data /var/www/html/storage /var/www/html/bootstrap/cache \
     && chmod -R 775 /var/www/html/storage /var/www/html/bootstrap/cache
-
-# Create log directories
-RUN mkdir -p /var/log/supervisor /var/log/nginx
 
 EXPOSE 80
 
