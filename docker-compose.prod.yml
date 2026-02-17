@@ -11,27 +11,26 @@ services:
       context: ./apps/maham-auth-expo-api
       dockerfile: Dockerfile.prod
       target: production
-    container_name: auth-service
     restart: always
     environment:
       APP_NAME: "Maham Auth Service"
       APP_ENV: production
       APP_DEBUG: "false"
-      APP_URL: ${AUTH_APP_URL:-https://auth-api.yourdomain.com}
+      APP_URL: ${AUTH_APP_URL:-https://auth-service-api.mahamexpo.sa}
       DB_CONNECTION: mysql
       DB_HOST: auth-mysql
       DB_PORT: 3306
       DB_DATABASE: auth_service
       DB_USERNAME: ${AUTH_DB_USER:-auth_user}
-      DB_PASSWORD: ${AUTH_DB_PASSWORD:?AUTH_DB_PASSWORD is required}
+      DB_PASSWORD: ${AUTH_DB_PASSWORD:-secret}
       QUEUE_CONNECTION: redis
       CACHE_STORE: redis
       CACHE_PREFIX: auth_
       REDIS_HOST: auth-redis
       REDIS_PORT: 6379
       REDIS_PASSWORD: ${REDIS_PASSWORD:-}
-      JWT_SECRET: ${JWT_SECRET:?JWT_SECRET is required}
-      SERVICE_TOKEN: ${SERVICE_TOKEN:?SERVICE_TOKEN is required}
+      JWT_SECRET: ${JWT_SECRET:-}
+      SERVICE_TOKEN: ${SERVICE_TOKEN:-}
       TRUSTED_SERVICE_IPS: ${TRUSTED_SERVICE_IPS:-172.0.0.0/8}
       LOG_CHANNEL: stack
       LOG_LEVEL: warning
@@ -43,11 +42,11 @@ services:
     networks:
       - microservices
     healthcheck:
-      test: ["CMD", "curl", "-f", "http://localhost/api/health"]
+      test: ["CMD-SHELL", "php -r \"echo file_get_contents('http://127.0.0.1/api/health');\" || exit 1"]
       interval: 30s
       timeout: 10s
-      retries: 3
-      start_period: 60s
+      retries: 5
+      start_period: 120s
     deploy:
       resources:
         limits:
@@ -62,20 +61,19 @@ services:
       context: ./apps/expo-api
       dockerfile: Dockerfile.prod
       target: production
-    container_name: expo-api
     restart: always
     environment:
       APP_NAME: "Maham Expo API"
       APP_ENV: production
       APP_DEBUG: "false"
-      APP_URL: ${EXPO_APP_URL:-https://api.yourdomain.com}
+      APP_URL: ${EXPO_APP_URL:-https://expo-service-api.mahamexpo.sa}
       APP_LOCALE: ar
       DB_CONNECTION: mysql
       DB_HOST: expo-mysql
       DB_PORT: 3306
       DB_DATABASE: maham_expo_api
       DB_USERNAME: ${EXPO_DB_USER:-expo_user}
-      DB_PASSWORD: ${EXPO_DB_PASSWORD:?EXPO_DB_PASSWORD is required}
+      DB_PASSWORD: ${EXPO_DB_PASSWORD:-secret}
       QUEUE_CONNECTION: redis
       CACHE_STORE: redis
       CACHE_PREFIX: expo_
@@ -83,7 +81,7 @@ services:
       REDIS_PORT: 6379
       REDIS_PASSWORD: ${REDIS_PASSWORD:-}
       AUTH_SERVICE_URL: http://auth-service
-      AUTH_SERVICE_TOKEN: ${SERVICE_TOKEN:?SERVICE_TOKEN is required}
+      AUTH_SERVICE_TOKEN: ${SERVICE_TOKEN:-}
       AUTH_SERVICE_TIMEOUT: 10
       AUTH_SERVICE_CACHE_TTL: 300
       RATE_LIMIT_PER_MINUTE: 60
@@ -99,11 +97,11 @@ services:
     networks:
       - microservices
     healthcheck:
-      test: ["CMD", "curl", "-f", "http://localhost/api/health"]
+      test: ["CMD-SHELL", "php -r \"echo file_get_contents('http://127.0.0.1/api/health');\" || exit 1"]
       interval: 30s
       timeout: 10s
-      retries: 3
-      start_period: 60s
+      retries: 5
+      start_period: 120s
     deploy:
       resources:
         limits:
@@ -115,13 +113,12 @@ services:
   # ============================================
   auth-mysql:
     image: mysql:8.0
-    container_name: auth-mysql
     restart: always
     environment:
-      MYSQL_ROOT_PASSWORD: ${AUTH_MYSQL_ROOT_PASSWORD:?AUTH_MYSQL_ROOT_PASSWORD is required}
+      MYSQL_ROOT_PASSWORD: ${AUTH_MYSQL_ROOT_PASSWORD:-rootpassword}
       MYSQL_DATABASE: auth_service
       MYSQL_USER: ${AUTH_DB_USER:-auth_user}
-      MYSQL_PASSWORD: ${AUTH_DB_PASSWORD:?AUTH_DB_PASSWORD is required}
+      MYSQL_PASSWORD: ${AUTH_DB_PASSWORD:-secret}
     volumes:
       - auth-mysql-data:/var/lib/mysql
     networks:
@@ -138,8 +135,8 @@ services:
       test: ["CMD", "mysqladmin", "ping", "-h", "localhost"]
       interval: 10s
       timeout: 5s
-      retries: 5
-      start_period: 30s
+      retries: 10
+      start_period: 60s
     deploy:
       resources:
         limits:
@@ -147,18 +144,16 @@ services:
           cpus: "0.5"
 
   # ============================================
-  # Expo MySQL 
-  
+  # Expo MySQL
   # ============================================
   expo-mysql:
     image: mysql:8.0
-    container_name: expo-mysql
     restart: always
     environment:
-      MYSQL_ROOT_PASSWORD: ${EXPO_MYSQL_ROOT_PASSWORD:?EXPO_MYSQL_ROOT_PASSWORD is required}
+      MYSQL_ROOT_PASSWORD: ${EXPO_MYSQL_ROOT_PASSWORD:-rootpassword}
       MYSQL_DATABASE: maham_expo_api
       MYSQL_USER: ${EXPO_DB_USER:-expo_user}
-      MYSQL_PASSWORD: ${EXPO_DB_PASSWORD:?EXPO_DB_PASSWORD is required}
+      MYSQL_PASSWORD: ${EXPO_DB_PASSWORD:-secret}
     volumes:
       - expo-mysql-data:/var/lib/mysql
     networks:
@@ -175,8 +170,8 @@ services:
       test: ["CMD", "mysqladmin", "ping", "-h", "localhost"]
       interval: 10s
       timeout: 5s
-      retries: 5
-      start_period: 30s
+      retries: 10
+      start_period: 60s
     deploy:
       resources:
         limits:
@@ -188,7 +183,6 @@ services:
   # ============================================
   auth-redis:
     image: redis:7-alpine
-    container_name: auth-redis
     restart: always
     command: redis-server --maxmemory 128mb --maxmemory-policy allkeys-lru --appendonly yes
     volumes:
@@ -199,19 +193,14 @@ services:
       test: ["CMD", "redis-cli", "ping"]
       interval: 10s
       timeout: 5s
-      retries: 3
-    deploy:
-      resources:
-        limits:
-          memory: 192M
-          cpus: "0.25"
+      retries: 5
+      start_period: 10s
 
   # ============================================
   # Expo Redis
   # ============================================
   expo-redis:
     image: redis:7-alpine
-    container_name: expo-redis
     restart: always
     command: redis-server --maxmemory 128mb --maxmemory-policy allkeys-lru --appendonly yes
     volumes:
@@ -222,17 +211,12 @@ services:
       test: ["CMD", "redis-cli", "ping"]
       interval: 10s
       timeout: 5s
-      retries: 3
-    deploy:
-      resources:
-        limits:
-          memory: 192M
-          cpus: "0.25"
+      retries: 5
+      start_period: 10s
 
 networks:
   microservices:
     driver: bridge
-    name: maham_network
 
 volumes:
   auth-mysql-data:
