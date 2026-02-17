@@ -1,8 +1,10 @@
 vendor/
 node_modules/
 .git/
+.gitignore
 .env
-.env.docker
+.env.*
+!.env.example
 docker-compose.yml
 storage/logs/*
 storage/framework/cache/*
@@ -13,3 +15,9 @@ bootstrap/cache/*
 .phpunit.result.cache
 .idea/
 .vscode/
+tests/
+phpunit.xml
+*.md
+.editorconfig
+Dockerfile
+Dockerfile.prod

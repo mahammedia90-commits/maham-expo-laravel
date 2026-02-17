@@ -37,18 +37,10 @@ services:
       LOG_CHANNEL: stack
       LOG_LEVEL: warning
     depends_on:
-      auth-mysql:
-        condition: service_healthy
-      auth-redis:
-        condition: service_healthy
+      - auth-mysql
+      - auth-redis
     networks:
       - microservices
-    healthcheck:
-      test: ["CMD-SHELL", "php -r \"echo file_get_contents('http://127.0.0.1/api/health');\" || exit 1"]
-      interval: 30s
-      timeout: 15s
-      retries: 5
-      start_period: 120s
     deploy:
       resources:
         limits:
@@ -91,20 +83,11 @@ services:
       LOG_CHANNEL: stack
       LOG_LEVEL: warning
     depends_on:
-      expo-mysql:
-        condition: service_healthy
-      expo-redis:
-        condition: service_healthy
-      auth-service:
-        condition: service_healthy
+      - expo-mysql
+      - expo-redis
+      - auth-service
     networks:
       - microservices
-    healthcheck:
-      test: ["CMD-SHELL", "php -r \"echo file_get_contents('http://127.0.0.1/api/health');\" || exit 1"]
-      interval: 30s
-      timeout: 15s
-      retries: 5
-      start_period: 120s
     deploy:
       resources:
         limits:
@@ -132,14 +115,6 @@ services:
       --collation-server=utf8mb4_unicode_ci
       --innodb-buffer-pool-size=256M
       --max-connections=200
-      --slow-query-log=1
-      --long-query-time=2
-    healthcheck:
-      test: ["CMD", "mysqladmin", "ping", "-h", "localhost", "-u", "root", "-p${AUTH_MYSQL_ROOT_PASSWORD:-rootpassword}"]
-      interval: 10s
-      timeout: 5s
-      retries: 10
-      start_period: 60s
     deploy:
       resources:
         limits:
@@ -167,14 +142,6 @@ services:
       --collation-server=utf8mb4_unicode_ci
       --innodb-buffer-pool-size=256M
       --max-connections=200
-      --slow-query-log=1
-      --long-query-time=2
-    healthcheck:
-      test: ["CMD", "mysqladmin", "ping", "-h", "localhost", "-u", "root", "-p${EXPO_MYSQL_ROOT_PASSWORD:-rootpassword}"]
-      interval: 10s
-      timeout: 5s
-      retries: 10
-      start_period: 60s
     deploy:
       resources:
         limits:
@@ -192,12 +159,6 @@ services:
       - auth-redis-data:/data
     networks:
       - microservices
-    healthcheck:
-      test: ["CMD", "redis-cli", "ping"]
-      interval: 10s
-      timeout: 5s
-      retries: 5
-      start_period: 10s
     deploy:
       resources:
         limits:
@@ -215,12 +176,6 @@ services:
       - expo-redis-data:/data
     networks:
       - microservices
-    healthcheck:
-      test: ["CMD", "redis-cli", "ping"]
-      interval: 10s
-      timeout: 5s
-      retries: 5
-      start_period: 10s
     deploy:
       resources:
         limits:
