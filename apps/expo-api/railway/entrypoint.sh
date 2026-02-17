@@ -5,9 +5,21 @@ echo "========================================="
 echo "  Expo API - Railway Starting..."
 echo "========================================="
 
+cd /var/www/html
+
 # Railway provides PORT dynamically
 RAILWAY_PORT="${PORT:-8080}"
 echo ">> Railway PORT: $RAILWAY_PORT"
+
+# Create .env file from environment variables if not exists
+if [ ! -f .env ]; then
+    echo ">> Creating .env file from environment variables..."
+    env | grep -E '^(APP_|DB_|REDIS_|QUEUE_|CACHE_|LOG_|AUTH_SERVICE_|RATE_LIMIT_|MAIL_|SESSION_)' > .env 2>/dev/null || true
+    grep -q "^APP_KEY=" .env 2>/dev/null || echo "APP_KEY=" >> .env
+fi
+
+# Ensure storage directories exist
+mkdir -p storage/logs storage/framework/cache/data storage/framework/sessions storage/framework/views bootstrap/cache
 
 # Replace {{PORT}} placeholder in nginx config with actual Railway PORT
 sed "s/{{PORT}}/$RAILWAY_PORT/g" /etc/nginx/nginx-template.conf > /etc/nginx/sites-available/default
@@ -36,26 +48,26 @@ fi
 # Generate APP_KEY if missing
 if [ -z "$APP_KEY" ] || [ "$APP_KEY" = "" ]; then
     echo ">> Generating APP_KEY..."
-    php artisan key:generate --force
+    php artisan key:generate --force --no-interaction
 fi
 
 # Run migrations
 echo ">> Running migrations..."
-php artisan migrate --force 2>&1 || echo ">> Migration warning (may already be up to date)"
+php artisan migrate --force --no-interaction 2>&1 || echo ">> Migration warning (may already be up to date)"
 
 # Seed
 echo ">> Running seeders..."
-php artisan db:seed --force 2>/dev/null || true
+php artisan db:seed --force --no-interaction 2>/dev/null || echo ">> Seeding skipped (might already be seeded)"
 
 # Production cache optimization
 echo ">> Caching configuration..."
-php artisan config:cache 2>&1 || true
-php artisan route:cache 2>&1 || true
-php artisan view:cache 2>&1 || true
-php artisan event:cache 2>&1 || true
+php artisan config:cache --no-interaction 2>&1 || true
+php artisan route:cache --no-interaction 2>&1 || true
+php artisan view:cache --no-interaction 2>&1 || true
+php artisan event:cache --no-interaction 2>&1 || true
 
 # Storage link
-php artisan storage:link --force 2>/dev/null || true
+php artisan storage:link --force --no-interaction 2>/dev/null || true
 
 # Permissions
 chown -R www-data:www-data /var/www/html/storage /var/www/html/bootstrap/cache

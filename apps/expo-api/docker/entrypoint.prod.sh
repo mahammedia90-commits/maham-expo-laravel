@@ -7,7 +7,17 @@ echo "========================================="
 
 cd /var/www/html
 
-# Wait for MySQL with better error handling
+# Create .env file from environment variables if not exists
+if [ ! -f .env ]; then
+    echo ">> Creating .env file from environment variables..."
+    env | grep -E '^(APP_|DB_|REDIS_|QUEUE_|CACHE_|LOG_|AUTH_SERVICE_|RATE_LIMIT_|MAIL_|SESSION_)' > .env 2>/dev/null || true
+    grep -q "^APP_KEY=" .env 2>/dev/null || echo "APP_KEY=" >> .env
+fi
+
+# Ensure storage directories exist
+mkdir -p storage/logs storage/framework/cache/data storage/framework/sessions storage/framework/views bootstrap/cache
+
+# Wait for MySQL
 echo ">> Waiting for MySQL at ${DB_HOST:-expo-mysql}:${DB_PORT:-3306}..."
 max_retries=60
 count=0
@@ -15,7 +25,7 @@ while ! mysqladmin ping -h"${DB_HOST:-expo-mysql}" -P"${DB_PORT:-3306}" --silent
     count=$((count + 1))
     if [ $count -ge $max_retries ]; then
         echo ">> ERROR: MySQL not available after ${max_retries} attempts"
-        echo ">> Continuing anyway - migrations might fail..."
+        echo ">> Continuing anyway..."
         break
     fi
     echo ">> Waiting for MySQL... ($count/$max_retries)"
@@ -41,16 +51,13 @@ if [ -n "$AUTH_SERVICE_URL" ]; then
     echo ">> Auth Service check completed!"
 fi
 
-# Ensure storage directories exist
-mkdir -p storage/logs storage/framework/cache/data storage/framework/sessions storage/framework/views bootstrap/cache
-
 # Generate APP_KEY if missing
 if [ -z "$APP_KEY" ] || [ "$APP_KEY" = "" ]; then
     echo ">> Generating APP_KEY..."
     php artisan key:generate --force --no-interaction
 fi
 
-# Clear old cache before caching
+# Clear old cache
 echo ">> Clearing old cache..."
 php artisan config:clear 2>/dev/null || true
 php artisan route:clear 2>/dev/null || true
@@ -64,7 +71,7 @@ php artisan migrate --force --no-interaction 2>&1 || echo ">> Migration warning 
 echo ">> Running seeders..."
 php artisan db:seed --force --no-interaction 2>/dev/null || echo ">> Seeding skipped (might already be seeded)"
 
-# Production cache optimization
+# Production cache
 echo ">> Caching configuration..."
 php artisan config:cache --no-interaction 2>&1 || echo ">> Config cache warning"
 php artisan route:cache --no-interaction 2>&1 || echo ">> Route cache warning"
