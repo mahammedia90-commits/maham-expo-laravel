@@ -20,7 +20,9 @@
       "Bash(DB_CONNECTION=sqlite DB_DATABASE=:memory: CACHE_STORE=array CACHE_DRIVER=array php artisan:*)",
       "Bash(ls:*)",
       "Bash(for f in *.json)",
-      "Bash(do echo \"=== $f ===\")"
+      "Bash(do echo \"=== $f ===\")",
+      "Bash(git -C /Users/atif/Desktop/maham-expo remote:*)",
+      "Bash(git -C /Users/atif/Desktop/maham-expo branch:*)"
     ]
   }
 }

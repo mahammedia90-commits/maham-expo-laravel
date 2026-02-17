@@ -1,6 +1,6 @@
 ###############################################
 # Maham Expo - Production (Coolify Deployment)
-# Compatible with Coolify v4 on Hostinger VPS
+# Uses pre-built images from GitHub Container Registry
 ###############################################
 
 services:
@@ -8,10 +8,7 @@ services:
   # Auth Service
   # ============================================
   auth-service:
-    build:
-      context: ./apps/maham-auth-expo-api
-      dockerfile: Dockerfile.prod
-      target: production
+    image: ghcr.io/atif-dev10/maham-services-/auth-service:${IMAGE_TAG:-latest}
     restart: always
     environment:
       APP_NAME: "Maham Auth Service"
@@ -51,10 +48,7 @@ services:
   # Expo API Service
   # ============================================
   expo-api:
-    build:
-      context: ./apps/expo-api
-      dockerfile: Dockerfile.prod
-      target: production
+    image: ghcr.io/atif-dev10/maham-services-/expo-api:${IMAGE_TAG:-latest}
     restart: always
     environment:
       APP_NAME: "Maham Expo API"
@@ -122,8 +116,7 @@ services:
           cpus: "0.5"
 
   # ============================================
-  # Expo MySQL 
-  
+  # Expo MySQL
   # ============================================
   expo-mysql:
     image: mysql:8.0
