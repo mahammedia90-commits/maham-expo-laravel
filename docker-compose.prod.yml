@@ -14,7 +14,6 @@ services:
       APP_NAME: "Maham Auth Service"
       APP_ENV: production
       APP_DEBUG: "false"
-      APP_KEY: ${AUTH_APP_KEY:-}
       APP_URL: ${AUTH_APP_URL:-https://auth-service-api.mahamexpo.sa}
       DB_CONNECTION: mysql
       DB_HOST: auth-mysql
@@ -30,7 +29,7 @@ services:
       REDIS_PASSWORD: ${REDIS_PASSWORD:-}
       JWT_SECRET: ${JWT_SECRET:-}
       SERVICE_TOKEN: ${SERVICE_TOKEN:-}
-      TRUSTED_SERVICE_IPS: ${TRUSTED_SERVICE_IPS:-172.0.0.0/8,10.0.0.0/8,192.168.0.0/16}
+      TRUSTED_SERVICE_IPS: ${TRUSTED_SERVICE_IPS:-172.0.0.0/8}
       LOG_CHANNEL: stack
       LOG_LEVEL: warning
     depends_on:
@@ -38,6 +37,12 @@ services:
       - auth-redis
     networks:
       - microservices
+    healthcheck:
+      test: ["CMD-SHELL", "php -r \"echo file_get_contents('http://127.0.0.1/api/health');\" || exit 1"]
+      interval: 30s
+      timeout: 10s
+      retries: 5
+      start_period: 120s
     deploy:
       resources:
         limits:
@@ -54,7 +59,6 @@ services:
       APP_NAME: "Maham Expo API"
       APP_ENV: production
       APP_DEBUG: "false"
-      APP_KEY: ${EXPO_APP_KEY:-}
       APP_URL: ${EXPO_APP_URL:-https://expo-service-api.mahamexpo.sa}
       APP_LOCALE: ar
       DB_CONNECTION: mysql
@@ -82,6 +86,12 @@ services:
       - auth-service
     networks:
       - microservices
+    healthcheck:
+      test: ["CMD-SHELL", "php -r \"echo file_get_contents('http://127.0.0.1/api/health');\" || exit 1"]
+      interval: 30s
+      timeout: 10s
+      retries: 5
+      start_period: 120s
     deploy:
       resources:
         limits:
@@ -109,6 +119,14 @@ services:
       --collation-server=utf8mb4_unicode_ci
       --innodb-buffer-pool-size=256M
       --max-connections=200
+      --slow-query-log=1
+      --long-query-time=2
+    healthcheck:
+      test: ["CMD", "mysqladmin", "ping", "-h", "localhost"]
+      interval: 10s
+      timeout: 5s
+      retries: 10
+      start_period: 60s
     deploy:
       resources:
         limits:
@@ -136,6 +154,14 @@ services:
       --collation-server=utf8mb4_unicode_ci
       --innodb-buffer-pool-size=256M
       --max-connections=200
+      --slow-query-log=1
+      --long-query-time=2
+    healthcheck:
+      test: ["CMD", "mysqladmin", "ping", "-h", "localhost"]
+      interval: 10s
+      timeout: 5s
+      retries: 10
+      start_period: 60s
     deploy:
       resources:
         limits:
@@ -153,11 +179,12 @@ services:
       - auth-redis-data:/data
     networks:
       - microservices
-    deploy:
-      resources:
-        limits:
-          memory: 192M
-          cpus: "0.25"
+    healthcheck:
+      test: ["CMD", "redis-cli", "ping"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+      start_period: 10s
 
   # ============================================
   # Expo Redis
@@ -170,11 +197,12 @@ services:
       - expo-redis-data:/data
     networks:
       - microservices
-    deploy:
-      resources:
-        limits:
-          memory: 192M
-          cpus: "0.25"
+    healthcheck:
+      test: ["CMD", "redis-cli", "ping"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+      start_period: 10s
 
 networks:
   microservices:
