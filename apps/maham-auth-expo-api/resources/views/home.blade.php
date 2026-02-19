@@ -941,7 +941,7 @@
                 <a href="http://localhost:8080" class="hover:text-orange-400 transition">phpMyAdmin</a>
                 <a href="/api/health" class="hover:text-indigo-400 transition">Health</a>
             </div>
-            <span>{{ now()->format('Y') }} &copy; Maham Expo</span>
+            <span>{{ date('Y') }} &copy; Maham Expo</span>
         </div>
     </footer>
 

@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/bin/sh
 set -e
 
 echo "========================================="
@@ -7,24 +7,21 @@ echo "========================================="
 
 cd /var/www/html
 
-# Create .env file from environment variables if not exists
-if [ ! -f .env ]; then
-    echo ">> Creating .env file from environment variables..."
-    env | grep -E '^(APP_|DB_|REDIS_|QUEUE_|CACHE_|LOG_|JWT_|SERVICE_|TRUSTED_|MAIL_|SESSION_)' > .env 2>/dev/null || true
-    grep -q "^APP_KEY=" .env 2>/dev/null || echo "APP_KEY=" >> .env
-fi
-
 # Ensure storage directories exist
 mkdir -p storage/logs storage/framework/cache/data storage/framework/sessions storage/framework/views bootstrap/cache
 
+# Set permissions early
+chown -R www-data:www-data /var/www/html/storage /var/www/html/bootstrap/cache 2>/dev/null || true
+chmod -R 775 /var/www/html/storage /var/www/html/bootstrap/cache
+
 # Wait for MySQL
-echo ">> Waiting for MySQL at ${DB_HOST:-auth-mysql}:${DB_PORT:-3306}..."
-max_retries=60
+echo ">> Waiting for MySQL at ${DB_HOST:-mysql}:${DB_PORT:-3306}..."
+max_retries=30
 count=0
-while ! mysqladmin ping -h"${DB_HOST:-auth-mysql}" -P"${DB_PORT:-3306}" --silent 2>/dev/null; do
+while ! nc -z "${DB_HOST:-mysql}" "${DB_PORT:-3306}" 2>/dev/null; do
     count=$((count + 1))
     if [ $count -ge $max_retries ]; then
-        echo ">> ERROR: MySQL not available after ${max_retries} attempts"
+        echo ">> WARNING: MySQL not available after ${max_retries} attempts"
         echo ">> Continuing anyway..."
         break
     fi
@@ -33,10 +30,19 @@ while ! mysqladmin ping -h"${DB_HOST:-auth-mysql}" -P"${DB_PORT:-3306}" --silent
 done
 echo ">> MySQL check completed!"
 
+# Clear ALL cache
+echo ">> Clearing all cache..."
+php artisan config:clear 2>/dev/null || true
+php artisan cache:clear 2>/dev/null || true
+php artisan route:clear 2>/dev/null || true
+php artisan view:clear 2>/dev/null || true
+php artisan event:clear 2>/dev/null || true
+rm -rf bootstrap/cache/*.php 2>/dev/null || true
+
 # Generate APP_KEY if missing
 if [ -z "$APP_KEY" ] || [ "$APP_KEY" = "" ]; then
     echo ">> Generating APP_KEY..."
-    php artisan key:generate --force --no-interaction
+    php artisan key:generate --force --no-interaction 2>&1 || echo ">> Key generation skipped"
 fi
 
 # Generate JWT_SECRET if missing
@@ -45,40 +51,37 @@ if [ -z "$JWT_SECRET" ] || [ "$JWT_SECRET" = "" ]; then
     php artisan jwt:secret --force --no-interaction 2>/dev/null || echo ">> JWT secret generation skipped"
 fi
 
-# Clear old cache
-echo ">> Clearing old cache..."
-php artisan config:clear 2>/dev/null || true
-php artisan route:clear 2>/dev/null || true
-php artisan view:clear 2>/dev/null || true
-
 # Run migrations
 echo ">> Running migrations..."
 php artisan migrate --force --no-interaction 2>&1 || echo ">> Migration warning (might already be up to date)"
 
-# Seed only if needed
+# Seed only if needed (check if roles table is empty)
 echo ">> Checking if seeding is needed..."
-ROLE_COUNT=$(php artisan tinker --execute="echo \App\Models\Role::count();" 2>/dev/null || echo "0")
+ROLE_COUNT=$(php artisan tinker --execute="echo \App\Models\Role::count();" 2>/dev/null | tail -1 || echo "0")
 if [ "$ROLE_COUNT" = "0" ] || [ -z "$ROLE_COUNT" ]; then
     echo ">> Running seeders..."
     php artisan db:seed --force --no-interaction 2>/dev/null || echo ">> Seeding skipped"
 fi
 
-# Production cache
-echo ">> Caching configuration..."
-php artisan config:cache --no-interaction 2>&1 || echo ">> Config cache warning"
+# DO NOT cache config - we rely on environment variables at runtime
+# Only cache routes for performance
+echo ">> Caching routes..."
 php artisan route:cache --no-interaction 2>&1 || echo ">> Route cache warning"
-php artisan view:cache --no-interaction 2>&1 || echo ">> View cache warning"
-php artisan event:cache --no-interaction 2>&1 || echo ">> Event cache warning"
+echo ">> Config cache SKIPPED (using env vars at runtime)"
 
 # Storage link
 php artisan storage:link --force --no-interaction 2>/dev/null || true
 
-# Permissions
+# Final permissions
 chown -R www-data:www-data /var/www/html/storage /var/www/html/bootstrap/cache
 chmod -R 775 /var/www/html/storage /var/www/html/bootstrap/cache
 
 echo "========================================="
 echo "  Auth Service Ready! (Production)"
+echo "========================================="
+echo ">> APP_DEBUG: ${APP_DEBUG:-false}"
+echo ">> APP_ENV: ${APP_ENV:-production}"
+echo ">> DB_HOST: ${DB_HOST:-mysql}"
 echo "========================================="
 
 exec "$@"
