@@ -142,6 +142,15 @@ class BusinessProfileController extends Controller
                 ->store($uploadPath, 'public');
         }
 
+        // Avatar
+        if ($request->hasFile('avatar')) {
+            if ($profile && $profile->avatar) {
+                Storage::disk('public')->delete($profile->avatar);
+            }
+            $data['avatar'] = $request->file('avatar')
+                ->store($uploadPath . '/avatars', 'public');
+        }
+
         return $data;
     }
 }

@@ -23,6 +23,7 @@ class BusinessProfile extends Model
         'national_id_number',
         'national_id_image',
         'company_logo',
+        'avatar',
         'company_address',
         'company_address_ar',
         'contact_phone',

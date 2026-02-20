@@ -499,36 +499,20 @@
 						"body": {
 							"mode": "formdata",
 							"formdata": [
-								{
-									"key": "company_name",
-									"value": "شركة محمد",
-									"type": "text"
-								},
-								{
-									"key": "company_name_ar",
-									"value": "شركة محمد التجارية",
-									"type": "text"
-								},
-								{
-									"key": "commercial_registration_number",
-									"value": "1234567890",
-									"type": "text"
-								},
-								{
-									"key": "contact_phone",
-									"value": "0511111111",
-									"type": "text"
-								},
-								{
-									"key": "contact_email",
-									"value": "merchant@test.com",
-									"type": "text"
-								},
-								{
-									"key": "business_type",
-									"value": "merchant",
-									"type": "text"
-								}
+								{"key": "company_name", "value": "شركة محمد", "type": "text", "description": "required - Company name"},
+								{"key": "company_name_ar", "value": "شركة محمد التجارية", "type": "text", "description": "optional - Company name in Arabic"},
+								{"key": "commercial_registration_number", "value": "1234567890", "type": "text", "description": "optional - CR number"},
+								{"key": "commercial_registration_image", "type": "file", "src": "", "description": "optional - CR image (jpeg,png,jpg,webp,pdf max:5MB)", "disabled": true},
+								{"key": "national_id_number", "value": "1098765432", "type": "text", "description": "optional - National ID number", "disabled": true},
+								{"key": "national_id_image", "type": "file", "src": "", "description": "optional - National ID image (jpeg,png,jpg,webp,pdf max:5MB)", "disabled": true},
+								{"key": "company_logo", "type": "file", "src": "", "description": "optional - Company logo (jpeg,png,jpg,webp max:2MB)", "disabled": true},
+								{"key": "avatar", "type": "file", "src": "", "description": "optional - Profile avatar (jpeg,png,jpg,webp max:2MB)", "disabled": true},
+								{"key": "company_address", "value": "شارع الأمير محمد", "type": "text", "description": "optional - Company address", "disabled": true},
+								{"key": "company_address_ar", "value": "شارع الأمير محمد - جدة", "type": "text", "description": "optional - Address in Arabic", "disabled": true},
+								{"key": "contact_phone", "value": "0511111111", "type": "text", "description": "required - Contact phone"},
+								{"key": "contact_email", "value": "merchant@test.com", "type": "text", "description": "optional - Contact email"},
+								{"key": "website", "value": "https://merchant-shop.com", "type": "text", "description": "optional - Website URL", "disabled": true},
+								{"key": "business_type", "value": "merchant", "type": "text", "description": "required - investor|merchant|both"}
 							]
 						},
 						"url": {
@@ -584,11 +568,20 @@
 						"body": {
 							"mode": "formdata",
 							"formdata": [
-								{
-									"key": "company_name",
-									"value": "شركة محمد المحدثة",
-									"type": "text"
-								}
+								{"key": "company_name", "value": "شركة محمد المحدثة", "type": "text", "description": "optional - Company name"},
+								{"key": "company_name_ar", "value": "شركة محمد التجارية المحدثة", "type": "text", "description": "optional - Arabic name", "disabled": true},
+								{"key": "commercial_registration_number", "value": "1234567890", "type": "text", "description": "optional - CR number", "disabled": true},
+								{"key": "commercial_registration_image", "type": "file", "src": "", "description": "optional - CR image", "disabled": true},
+								{"key": "national_id_number", "value": "1098765432", "type": "text", "description": "optional - National ID", "disabled": true},
+								{"key": "national_id_image", "type": "file", "src": "", "description": "optional - ID image", "disabled": true},
+								{"key": "company_logo", "type": "file", "src": "", "description": "optional - Logo (max:2MB)", "disabled": true},
+								{"key": "avatar", "type": "file", "src": "", "description": "optional - Avatar (max:2MB)", "disabled": true},
+								{"key": "company_address", "value": "شارع محدث", "type": "text", "description": "optional", "disabled": true},
+								{"key": "company_address_ar", "value": "شارع محدث - جدة", "type": "text", "description": "optional", "disabled": true},
+								{"key": "contact_phone", "value": "0511111111", "type": "text", "description": "optional", "disabled": true},
+								{"key": "contact_email", "value": "merchant-updated@test.com", "type": "text", "description": "optional", "disabled": true},
+								{"key": "website", "value": "https://updated-shop.com", "type": "text", "description": "optional", "disabled": true},
+								{"key": "business_type", "value": "merchant", "type": "text", "description": "optional", "disabled": true}
 							]
 						},
 						"url": {
@@ -1434,6 +1427,96 @@
 								"notifications",
 								"read-all"
 							]
+						}
+					}
+				}
+			]
+		},
+		{
+			"name": "Merchant Spaces (تصفح المساحات)",
+			"item": [
+				{
+					"name": "Browse Available Spaces",
+					"request": {
+						"method": "GET",
+						"header": [
+							{"key": "Accept", "value": "application/json"},
+							{"key": "Accept-Language", "value": "ar"},
+							{"key": "X-Platform", "value": "web"}
+						],
+						"url": {
+							"raw": "{{expo_url}}/v1/merchant/spaces",
+							"host": ["{{expo_url}}"],
+							"path": ["v1", "merchant", "spaces"],
+							"query": [
+								{"key": "event_id", "value": "", "disabled": true},
+								{"key": "section_id", "value": "", "disabled": true},
+								{"key": "space_type", "value": "", "disabled": true},
+								{"key": "min_price", "value": "", "disabled": true},
+								{"key": "max_price", "value": "", "disabled": true},
+								{"key": "min_area", "value": "", "disabled": true},
+								{"key": "max_area", "value": "", "disabled": true},
+								{"key": "floor_number", "value": "", "disabled": true},
+								{"key": "service_id", "value": "", "disabled": true},
+								{"key": "search", "value": "", "disabled": true},
+								{"key": "sort_by", "value": "price_total", "disabled": true},
+								{"key": "sort_order", "value": "asc", "disabled": true},
+								{"key": "per_page", "value": "15", "disabled": true}
+							]
+						}
+					}
+				},
+				{
+					"name": "Show Space Details",
+					"request": {
+						"method": "GET",
+						"header": [
+							{"key": "Accept", "value": "application/json"},
+							{"key": "Accept-Language", "value": "ar"},
+							{"key": "X-Platform", "value": "web"}
+						],
+						"url": {
+							"raw": "{{expo_url}}/v1/merchant/spaces/{{space_id}}",
+							"host": ["{{expo_url}}"],
+							"path": ["v1", "merchant", "spaces", "{{space_id}}"]
+						}
+					}
+				}
+			]
+		},
+		{
+			"name": "Merchant Services (تصفح الخدمات)",
+			"item": [
+				{
+					"name": "Browse Services",
+					"request": {
+						"method": "GET",
+						"header": [
+							{"key": "Accept", "value": "application/json"},
+							{"key": "Accept-Language", "value": "ar"}
+						],
+						"url": {
+							"raw": "{{expo_url}}/v1/merchant/services",
+							"host": ["{{expo_url}}"],
+							"path": ["v1", "merchant", "services"],
+							"query": [
+								{"key": "search", "value": "", "disabled": true}
+							]
+						}
+					}
+				},
+				{
+					"name": "Show Service Details",
+					"request": {
+						"method": "GET",
+						"header": [
+							{"key": "Accept", "value": "application/json"},
+							{"key": "Accept-Language", "value": "ar"}
+						],
+						"url": {
+							"raw": "{{expo_url}}/v1/merchant/services/{{service_id}}",
+							"host": ["{{expo_url}}"],
+							"path": ["v1", "merchant", "services", "{{service_id}}"]
 						}
 					}
 				}

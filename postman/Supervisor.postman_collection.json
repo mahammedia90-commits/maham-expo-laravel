@@ -1,0 +1,517 @@
+{
+	"info": {
+		"_postman_id": "sup-b2c3d4e5-f6a7-8901-bcde-f12345678901",
+		"name": "Supervisor (مشرف)",
+		"description": "Maham Expo API - Supervisor (مشرف) Collection\n\nA supervisor user can:\n- View dashboard statistics (same as admin)\n- View events, spaces, sections, services (read-only - NO create/update/delete)\n- Approve/reject visit requests (after investor approval)\n- Approve/reject rental requests (after investor approval)\n- Record payments\n- View and manage business profiles (approve/reject)\n\nNOTE: Supervisors CANNOT delete anything!",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"auth": {
+		"type": "bearer",
+		"bearer": [
+			{
+				"key": "token",
+				"value": "{{supervisor_token}}",
+				"type": "string"
+			}
+		]
+	},
+	"variable": [
+		{"key": "auth_url", "value": "http://localhost:8001/api"},
+		{"key": "expo_url", "value": "http://localhost:8002/api"},
+		{"key": "supervisor_token", "value": ""},
+		{"key": "event_id", "value": ""},
+		{"key": "space_id", "value": ""},
+		{"key": "section_id", "value": ""},
+		{"key": "service_id", "value": ""},
+		{"key": "visit_request_id", "value": ""},
+		{"key": "rental_request_id", "value": ""},
+		{"key": "profile_id", "value": ""}
+	],
+	"item": [
+		{
+			"name": "Auth (تسجيل الدخول)",
+			"item": [
+				{
+					"name": "Login",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"var jsonData = pm.response.json();",
+									"if (jsonData.data && jsonData.data.token) {",
+									"    pm.collectionVariables.set('supervisor_token', jsonData.data.token);",
+									"    pm.environment.set('supervisor_token', jsonData.data.token);",
+									"    console.log('supervisor_token saved');",
+									"}"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"auth": {"type": "noauth"},
+						"method": "POST",
+						"header": [
+							{"key": "Content-Type", "value": "application/json"},
+							{"key": "Accept", "value": "application/json"},
+							{"key": "Accept-Language", "value": "ar"}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"identifier\": \"supervisor@maham-expo.com\",\n  \"password\": \"Supervisor@123456\"\n}"
+						},
+						"url": {
+							"raw": "{{auth_url}}/auth/login",
+							"host": ["{{auth_url}}"],
+							"path": ["auth", "login"]
+						}
+					}
+				},
+				{
+					"name": "Me (معلوماتي)",
+					"request": {
+						"method": "GET",
+						"header": [
+							{"key": "Accept", "value": "application/json"},
+							{"key": "Accept-Language", "value": "ar"}
+						],
+						"url": {
+							"raw": "{{auth_url}}/auth/me",
+							"host": ["{{auth_url}}"],
+							"path": ["auth", "me"]
+						}
+					}
+				}
+			]
+		},
+		{
+			"name": "Dashboard (لوحة التحكم)",
+			"item": [
+				{
+					"name": "Get Dashboard Stats",
+					"request": {
+						"method": "GET",
+						"header": [
+							{"key": "Accept", "value": "application/json"},
+							{"key": "Accept-Language", "value": "ar"}
+						],
+						"url": {
+							"raw": "{{expo_url}}/v1/supervisor/dashboard",
+							"host": ["{{expo_url}}"],
+							"path": ["v1", "supervisor", "dashboard"],
+							"query": [
+								{"key": "event_id", "value": "", "disabled": true},
+								{"key": "spaces_period", "value": "month", "disabled": true},
+								{"key": "revenue_period", "value": "month", "disabled": true}
+							]
+						}
+					}
+				}
+			]
+		},
+		{
+			"name": "Events (الفعاليات) - قراءة فقط",
+			"item": [
+				{
+					"name": "List Events",
+					"request": {
+						"method": "GET",
+						"header": [
+							{"key": "Accept", "value": "application/json"},
+							{"key": "Accept-Language", "value": "ar"}
+						],
+						"url": {
+							"raw": "{{expo_url}}/v1/supervisor/events",
+							"host": ["{{expo_url}}"],
+							"path": ["v1", "supervisor", "events"],
+							"query": [
+								{"key": "search", "value": "", "disabled": true},
+								{"key": "status", "value": "published", "disabled": true},
+								{"key": "city_id", "value": "", "disabled": true},
+								{"key": "category_id", "value": "", "disabled": true}
+							]
+						}
+					}
+				},
+				{
+					"name": "Show Event",
+					"request": {
+						"method": "GET",
+						"header": [
+							{"key": "Accept", "value": "application/json"},
+							{"key": "Accept-Language", "value": "ar"}
+						],
+						"url": {
+							"raw": "{{expo_url}}/v1/supervisor/events/{{event_id}}",
+							"host": ["{{expo_url}}"],
+							"path": ["v1", "supervisor", "events", "{{event_id}}"]
+						}
+					}
+				},
+				{
+					"name": "List Event Sections",
+					"request": {
+						"method": "GET",
+						"header": [
+							{"key": "Accept", "value": "application/json"},
+							{"key": "Accept-Language", "value": "ar"}
+						],
+						"url": {
+							"raw": "{{expo_url}}/v1/supervisor/events/{{event_id}}/sections",
+							"host": ["{{expo_url}}"],
+							"path": ["v1", "supervisor", "events", "{{event_id}}", "sections"]
+						}
+					}
+				},
+				{
+					"name": "List Event Spaces",
+					"request": {
+						"method": "GET",
+						"header": [
+							{"key": "Accept", "value": "application/json"},
+							{"key": "Accept-Language", "value": "ar"}
+						],
+						"url": {
+							"raw": "{{expo_url}}/v1/supervisor/events/{{event_id}}/spaces",
+							"host": ["{{expo_url}}"],
+							"path": ["v1", "supervisor", "events", "{{event_id}}", "spaces"]
+						}
+					}
+				}
+			]
+		},
+		{
+			"name": "Sections (الأقسام) - قراءة فقط",
+			"item": [
+				{
+					"name": "Show Section",
+					"request": {
+						"method": "GET",
+						"header": [
+							{"key": "Accept", "value": "application/json"},
+							{"key": "Accept-Language", "value": "ar"}
+						],
+						"url": {
+							"raw": "{{expo_url}}/v1/supervisor/sections/{{section_id}}",
+							"host": ["{{expo_url}}"],
+							"path": ["v1", "supervisor", "sections", "{{section_id}}"]
+						}
+					}
+				}
+			]
+		},
+		{
+			"name": "Spaces (المساحات) - قراءة فقط",
+			"item": [
+				{
+					"name": "Show Space",
+					"request": {
+						"method": "GET",
+						"header": [
+							{"key": "Accept", "value": "application/json"},
+							{"key": "Accept-Language", "value": "ar"}
+						],
+						"url": {
+							"raw": "{{expo_url}}/v1/supervisor/spaces/{{space_id}}",
+							"host": ["{{expo_url}}"],
+							"path": ["v1", "supervisor", "spaces", "{{space_id}}"]
+						}
+					}
+				}
+			]
+		},
+		{
+			"name": "Services (الخدمات) - قراءة فقط",
+			"item": [
+				{
+					"name": "List Services",
+					"request": {
+						"method": "GET",
+						"header": [
+							{"key": "Accept", "value": "application/json"},
+							{"key": "Accept-Language", "value": "ar"}
+						],
+						"url": {
+							"raw": "{{expo_url}}/v1/supervisor/services",
+							"host": ["{{expo_url}}"],
+							"path": ["v1", "supervisor", "services"]
+						}
+					}
+				},
+				{
+					"name": "Show Service",
+					"request": {
+						"method": "GET",
+						"header": [
+							{"key": "Accept", "value": "application/json"},
+							{"key": "Accept-Language", "value": "ar"}
+						],
+						"url": {
+							"raw": "{{expo_url}}/v1/supervisor/services/{{service_id}}",
+							"host": ["{{expo_url}}"],
+							"path": ["v1", "supervisor", "services", "{{service_id}}"]
+						}
+					}
+				}
+			]
+		},
+		{
+			"name": "Visit Requests (طلبات الزيارة)",
+			"item": [
+				{
+					"name": "List Visit Requests",
+					"request": {
+						"method": "GET",
+						"header": [
+							{"key": "Accept", "value": "application/json"},
+							{"key": "Accept-Language", "value": "ar"}
+						],
+						"url": {
+							"raw": "{{expo_url}}/v1/supervisor/visit-requests",
+							"host": ["{{expo_url}}"],
+							"path": ["v1", "supervisor", "visit-requests"],
+							"query": [
+								{"key": "status", "value": "pending", "disabled": true},
+								{"key": "investor_status", "value": "approved", "disabled": true, "description": "Filter ready for supervisor approval"},
+								{"key": "event_id", "value": "", "disabled": true},
+								{"key": "search", "value": "", "disabled": true}
+							]
+						}
+					}
+				},
+				{
+					"name": "Show Visit Request",
+					"request": {
+						"method": "GET",
+						"header": [
+							{"key": "Accept", "value": "application/json"},
+							{"key": "Accept-Language", "value": "ar"}
+						],
+						"url": {
+							"raw": "{{expo_url}}/v1/supervisor/visit-requests/{{visit_request_id}}",
+							"host": ["{{expo_url}}"],
+							"path": ["v1", "supervisor", "visit-requests", "{{visit_request_id}}"]
+						}
+					}
+				},
+				{
+					"name": "Approve Visit Request",
+					"request": {
+						"method": "PUT",
+						"header": [
+							{"key": "Content-Type", "value": "application/json"},
+							{"key": "Accept", "value": "application/json"},
+							{"key": "Accept-Language", "value": "ar"}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"notes\": \"تمت الموافقة من المشرف\"\n}"
+						},
+						"url": {
+							"raw": "{{expo_url}}/v1/supervisor/visit-requests/{{visit_request_id}}/approve",
+							"host": ["{{expo_url}}"],
+							"path": ["v1", "supervisor", "visit-requests", "{{visit_request_id}}", "approve"]
+						}
+					}
+				},
+				{
+					"name": "Reject Visit Request",
+					"request": {
+						"method": "PUT",
+						"header": [
+							{"key": "Content-Type", "value": "application/json"},
+							{"key": "Accept", "value": "application/json"},
+							{"key": "Accept-Language", "value": "ar"}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"reason\": \"السبب: عدم استيفاء الشروط\"\n}"
+						},
+						"url": {
+							"raw": "{{expo_url}}/v1/supervisor/visit-requests/{{visit_request_id}}/reject",
+							"host": ["{{expo_url}}"],
+							"path": ["v1", "supervisor", "visit-requests", "{{visit_request_id}}", "reject"]
+						}
+					}
+				}
+			]
+		},
+		{
+			"name": "Rental Requests (طلبات الإيجار)",
+			"item": [
+				{
+					"name": "List Rental Requests",
+					"request": {
+						"method": "GET",
+						"header": [
+							{"key": "Accept", "value": "application/json"},
+							{"key": "Accept-Language", "value": "ar"}
+						],
+						"url": {
+							"raw": "{{expo_url}}/v1/supervisor/rental-requests",
+							"host": ["{{expo_url}}"],
+							"path": ["v1", "supervisor", "rental-requests"],
+							"query": [
+								{"key": "status", "value": "pending", "disabled": true},
+								{"key": "investor_status", "value": "approved", "disabled": true},
+								{"key": "payment_status", "value": "", "disabled": true},
+								{"key": "search", "value": "", "disabled": true}
+							]
+						}
+					}
+				},
+				{
+					"name": "Show Rental Request",
+					"request": {
+						"method": "GET",
+						"header": [
+							{"key": "Accept", "value": "application/json"},
+							{"key": "Accept-Language", "value": "ar"}
+						],
+						"url": {
+							"raw": "{{expo_url}}/v1/supervisor/rental-requests/{{rental_request_id}}",
+							"host": ["{{expo_url}}"],
+							"path": ["v1", "supervisor", "rental-requests", "{{rental_request_id}}"]
+						}
+					}
+				},
+				{
+					"name": "Approve Rental Request",
+					"request": {
+						"method": "PUT",
+						"header": [
+							{"key": "Content-Type", "value": "application/json"},
+							{"key": "Accept", "value": "application/json"},
+							{"key": "Accept-Language", "value": "ar"}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"notes\": \"تمت الموافقة من المشرف\"\n}"
+						},
+						"url": {
+							"raw": "{{expo_url}}/v1/supervisor/rental-requests/{{rental_request_id}}/approve",
+							"host": ["{{expo_url}}"],
+							"path": ["v1", "supervisor", "rental-requests", "{{rental_request_id}}", "approve"]
+						}
+					}
+				},
+				{
+					"name": "Reject Rental Request",
+					"request": {
+						"method": "PUT",
+						"header": [
+							{"key": "Content-Type", "value": "application/json"},
+							{"key": "Accept", "value": "application/json"},
+							{"key": "Accept-Language", "value": "ar"}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"reason\": \"المستندات غير مكتملة\"\n}"
+						},
+						"url": {
+							"raw": "{{expo_url}}/v1/supervisor/rental-requests/{{rental_request_id}}/reject",
+							"host": ["{{expo_url}}"],
+							"path": ["v1", "supervisor", "rental-requests", "{{rental_request_id}}", "reject"]
+						}
+					}
+				},
+				{
+					"name": "Record Payment",
+					"request": {
+						"method": "POST",
+						"header": [
+							{"key": "Content-Type", "value": "application/json"},
+							{"key": "Accept", "value": "application/json"},
+							{"key": "Accept-Language", "value": "ar"}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"amount\": 5000,\n  \"payment_method\": \"bank_transfer\",\n  \"notes\": \"دفعة أولى\"\n}"
+						},
+						"url": {
+							"raw": "{{expo_url}}/v1/supervisor/rental-requests/{{rental_request_id}}/payment",
+							"host": ["{{expo_url}}"],
+							"path": ["v1", "supervisor", "rental-requests", "{{rental_request_id}}", "payment"]
+						}
+					}
+				}
+			]
+		},
+		{
+			"name": "Business Profiles (الملفات التجارية)",
+			"item": [
+				{
+					"name": "List Profiles",
+					"request": {
+						"method": "GET",
+						"header": [
+							{"key": "Accept", "value": "application/json"},
+							{"key": "Accept-Language", "value": "ar"}
+						],
+						"url": {
+							"raw": "{{expo_url}}/v1/supervisor/profiles",
+							"host": ["{{expo_url}}"],
+							"path": ["v1", "supervisor", "profiles"],
+							"query": [
+								{"key": "status", "value": "pending", "disabled": true},
+								{"key": "business_type", "value": "", "disabled": true},
+								{"key": "search", "value": "", "disabled": true}
+							]
+						}
+					}
+				},
+				{
+					"name": "Show Profile",
+					"request": {
+						"method": "GET",
+						"header": [
+							{"key": "Accept", "value": "application/json"},
+							{"key": "Accept-Language", "value": "ar"}
+						],
+						"url": {
+							"raw": "{{expo_url}}/v1/supervisor/profiles/{{profile_id}}",
+							"host": ["{{expo_url}}"],
+							"path": ["v1", "supervisor", "profiles", "{{profile_id}}"]
+						}
+					}
+				},
+				{
+					"name": "Approve Profile",
+					"request": {
+						"method": "PUT",
+						"header": [
+							{"key": "Accept", "value": "application/json"},
+							{"key": "Accept-Language", "value": "ar"}
+						],
+						"url": {
+							"raw": "{{expo_url}}/v1/supervisor/profiles/{{profile_id}}/approve",
+							"host": ["{{expo_url}}"],
+							"path": ["v1", "supervisor", "profiles", "{{profile_id}}", "approve"]
+						}
+					}
+				},
+				{
+					"name": "Reject Profile",
+					"request": {
+						"method": "PUT",
+						"header": [
+							{"key": "Content-Type", "value": "application/json"},
+							{"key": "Accept", "value": "application/json"},
+							{"key": "Accept-Language", "value": "ar"}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"reason\": \"السجل التجاري غير صالح\"\n}"
+						},
+						"url": {
+							"raw": "{{expo_url}}/v1/supervisor/profiles/{{profile_id}}/reject",
+							"host": ["{{expo_url}}"],
+							"path": ["v1", "supervisor", "profiles", "{{profile_id}}", "reject"]
+						}
+					}
+				}
+			]
+		}
+	]
+}

@@ -478,33 +478,35 @@
 					"request": {
 						"method": "POST",
 						"header": [
-							{
-								"key": "Accept",
-								"value": "application/json"
-							},
-							{
-								"key": "Content-Type",
-								"value": "application/json"
-							},
-							{
-								"key": "Authorization",
-								"value": "Bearer {{token}}"
-							},
-							{
-								"key": "Accept-Language",
-								"value": "ar"
-							}
+							{"key": "Accept", "value": "application/json"},
+							{"key": "Authorization", "value": "Bearer {{token}}"},
+							{"key": "Accept-Language", "value": "ar"}
 						],
 						"body": {
-							"mode": "raw",
-							"raw": "{\n    \"business_type\": \"investor\",\n    \"company_name\": \"شركة الاستثمارات العقارية\",\n    \"company_name_en\": \"Real Estate Investment Co.\",\n    \"commercial_register\": \"1234567890\",\n    \"tax_number\": \"300000000000003\",\n    \"phone\": \"+966501234567\",\n    \"email\": \"company@example.com\",\n    \"address\": \"الرياض، حي العليا\",\n    \"description\": \"شركة متخصصة في الاستثمارات العقارية\"\n}"
+							"mode": "formdata",
+							"formdata": [
+								{"key": "company_name", "value": "شركة الاستثمارات العقارية", "type": "text"},
+								{"key": "company_name_ar", "value": "شركة الاستثمارات العقارية", "type": "text"},
+								{"key": "commercial_registration_number", "value": "1234567890", "type": "text"},
+								{"key": "national_id_number", "value": "1234567890", "type": "text"},
+								{"key": "company_address", "value": "Riyadh, Olaya District", "type": "text"},
+								{"key": "company_address_ar", "value": "الرياض، حي العليا", "type": "text"},
+								{"key": "contact_phone", "value": "+966501234567", "type": "text"},
+								{"key": "contact_email", "value": "company@example.com", "type": "text"},
+								{"key": "website", "value": "https://example.com", "type": "text", "disabled": true},
+								{"key": "business_type", "value": "investor", "description": "investor | merchant", "type": "text"},
+								{"key": "commercial_registration_image", "type": "file", "src": "", "disabled": true},
+								{"key": "national_id_image", "type": "file", "src": "", "disabled": true},
+								{"key": "company_logo", "type": "file", "src": "", "disabled": true},
+								{"key": "avatar", "type": "file", "src": "", "disabled": true}
+							]
 						},
 						"url": {
-							"raw": "{{base_url}}/profile",
+							"raw": "{{base_url}}/v1/profile",
 							"host": ["{{base_url}}"],
-							"path": ["profile"]
+							"path": ["v1", "profile"]
 						},
-						"description": "إنشاء ملف تجاري جديد\n\nbusiness_type:\n- `investor` - مستثمر\n- `merchant` - تاجر"
+						"description": "إنشاء ملف تجاري جديد\n\nbusiness_type:\n- `investor` - مستثمر\n- `merchant` - تاجر\n\nFiles (optional):\n- commercial_registration_image: jpeg,png,jpg,webp,pdf (max 5MB)\n- national_id_image: jpeg,png,jpg,webp,pdf (max 5MB)\n- company_logo: jpeg,png,jpg,webp (max 2MB)\n- avatar: jpeg,png,jpg,webp (max 2MB)"
 					}
 				},
 				{
@@ -512,33 +514,35 @@
 					"request": {
 						"method": "PUT",
 						"header": [
-							{
-								"key": "Accept",
-								"value": "application/json"
-							},
-							{
-								"key": "Content-Type",
-								"value": "application/json"
-							},
-							{
-								"key": "Authorization",
-								"value": "Bearer {{token}}"
-							},
-							{
-								"key": "Accept-Language",
-								"value": "ar"
-							}
+							{"key": "Accept", "value": "application/json"},
+							{"key": "Authorization", "value": "Bearer {{token}}"},
+							{"key": "Accept-Language", "value": "ar"}
 						],
 						"body": {
-							"mode": "raw",
-							"raw": "{\n    \"company_name\": \"شركة الاستثمارات العقارية المحدثة\",\n    \"phone\": \"+966509876543\",\n    \"description\": \"وصف محدث للشركة\"\n}"
+							"mode": "formdata",
+							"formdata": [
+								{"key": "company_name", "value": "شركة الاستثمارات المحدثة", "type": "text", "disabled": true},
+								{"key": "company_name_ar", "value": "شركة الاستثمارات المحدثة", "type": "text", "disabled": true},
+								{"key": "commercial_registration_number", "value": "1234567890", "type": "text", "disabled": true},
+								{"key": "national_id_number", "value": "1234567890", "type": "text", "disabled": true},
+								{"key": "company_address", "value": "Riyadh, Olaya District", "type": "text", "disabled": true},
+								{"key": "company_address_ar", "value": "الرياض، حي العليا", "type": "text", "disabled": true},
+								{"key": "contact_phone", "value": "+966509876543", "type": "text", "disabled": true},
+								{"key": "contact_email", "value": "updated@example.com", "type": "text", "disabled": true},
+								{"key": "website", "value": "https://updated.com", "type": "text", "disabled": true},
+								{"key": "business_type", "value": "investor", "type": "text", "disabled": true},
+								{"key": "commercial_registration_image", "type": "file", "src": "", "disabled": true},
+								{"key": "national_id_image", "type": "file", "src": "", "disabled": true},
+								{"key": "company_logo", "type": "file", "src": "", "disabled": true},
+								{"key": "avatar", "type": "file", "src": "", "disabled": true}
+							]
 						},
 						"url": {
-							"raw": "{{base_url}}/profile",
+							"raw": "{{base_url}}/v1/profile",
 							"host": ["{{base_url}}"],
-							"path": ["profile"]
+							"path": ["v1", "profile"]
 						},
-						"description": "تحديث الملف التجاري"
+						"description": "تحديث الملف التجاري - Enable only the fields you want to update"
 					}
 				}
 			]

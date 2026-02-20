@@ -71,8 +71,13 @@
             <div class="hidden md:flex items-center gap-6 text-sm">
                 <a href="#features" class="nav-link text-gray-400 hover:text-white transition">الميزات</a>
                 <a href="#public-api" class="nav-link text-gray-400 hover:text-white transition">العامة</a>
+                <a href="#statistics-api" class="nav-link text-gray-400 hover:text-white transition">الإحصائيات</a>
                 <a href="#user-api" class="nav-link text-gray-400 hover:text-white transition">المستخدم</a>
+                <a href="#merchant-api" class="nav-link text-gray-400 hover:text-white transition">التاجر</a>
+                <a href="#investor-api" class="nav-link text-gray-400 hover:text-white transition">المستثمر</a>
                 <a href="#admin-api" class="nav-link text-gray-400 hover:text-white transition">الإدارة</a>
+                <a href="#supervisor-api" class="nav-link text-gray-400 hover:text-white transition">المشرف</a>
+                <a href="#superadmin-api" class="nav-link text-gray-400 hover:text-white transition">المدير العام</a>
                 <a href="#quickstart" class="nav-link text-gray-400 hover:text-white transition">البدء السريع</a>
             </div>
             <div class="flex items-center gap-2">
@@ -304,6 +309,32 @@
                 </div>
             </div>
         </div>
+
+        <!-- Statistics (Public) -->
+        <div id="statistics-api" class="glass border border-white/5 rounded-2xl overflow-hidden">
+            <div class="px-6 py-3 border-b border-white/5 bg-white/[0.02]">
+                <h5 class="text-xs font-bold text-gray-400 flex items-center gap-2">
+                    <svg class="w-3.5 h-3.5 text-violet-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z"/></svg>
+                    الإحصائيات - Statistics
+                </h5>
+            </div>
+            @php
+                $statsEps = [
+                    ['GET', '/api/v1/statistics', 'إحصائيات المنصة', 'نظرة عامة شاملة — الفعاليات، المساحات، التصنيفات، المدن'],
+                    ['GET', '/api/v1/statistics/events', 'إحصائيات الفعاليات', 'التوزيع حسب التصنيف والمدينة مع الأعداد'],
+                    ['GET', '/api/v1/statistics/spaces', 'إحصائيات المساحات', 'التوزيع حسب الحالة والنوع ونطاق الأسعار'],
+                ];
+            @endphp
+            @foreach($statsEps as $ep)
+            <div class="endpoint-row flex items-center px-6 py-3.5 gap-3 {{ !$loop->last ? 'border-b border-white/5' : '' }}">
+                <span class="method-badge font-bold px-2 py-0.5 rounded font-mono min-w-[56px] text-center bg-emerald-500/20 text-emerald-400">{{ $ep[0] }}</span>
+                <code class="text-xs text-gray-300 font-mono" dir="ltr">{{ $ep[1] }}</code>
+                <span class="text-xs text-gray-600">{{ $ep[2] }}</span>
+                <span class="mr-auto"></span>
+                <span class="text-[10px] px-2 py-0.5 rounded-full bg-green-500/10 text-green-400 font-semibold">public</span>
+            </div>
+            @endforeach
+        </div>
     </section>
 
     <div class="glow-line max-w-4xl mx-auto"></div>
@@ -331,8 +362,8 @@
                 @php
                     $profileEps = [
                         ['GET', '/api/profile', 'عرض الملف التجاري', 'بيانات الملف التجاري الحالي مع حالة التحقق'],
-                        ['POST', '/api/profile', 'إنشاء ملف تجاري', 'company_name, commercial_reg, phone, city, address, description'],
-                        ['PUT', '/api/profile', 'تحديث الملف التجاري', 'تحديث بيانات الملف التجاري'],
+                        ['POST', '/api/profile', 'إنشاء ملف تجاري', 'formdata: company_name, phone, type, avatar, logo, CR image, ID image'],
+                        ['PUT', '/api/profile', 'تحديث الملف التجاري', 'formdata: تحديث بيانات الملف مع رفع ملفات جديدة'],
                     ];
                 @endphp
                 @foreach($profileEps as $ep)
@@ -524,6 +555,16 @@
 }</code></pre>
                     </div>
                 </div>
+            </div>
+        </div>
+
+        <!-- Admin Statistics -->
+        <div class="mb-6 glass border border-white/5 rounded-2xl overflow-hidden">
+            <div class="px-6 py-4 border-b border-white/5 flex items-center gap-3">
+                <span class="method-badge font-bold px-2.5 py-1 rounded-md bg-emerald-500/20 text-emerald-400 font-mono">GET</span>
+                <code class="text-sm text-gray-300 font-mono" dir="ltr">/api/v1/admin/statistics</code>
+                <span class="text-xs text-gray-600 mr-auto">الإحصائيات — نفس بيانات لوحة التحكم</span>
+                <span class="text-[10px] px-2 py-0.5 rounded-full bg-rose-500/10 text-rose-400 font-semibold">admin</span>
             </div>
         </div>
 
@@ -737,6 +778,453 @@
 
     <div class="glow-line max-w-4xl mx-auto"></div>
 
+    <!-- Supervisor API Endpoints -->
+    <section id="supervisor-api" class="section-anchor max-w-7xl mx-auto px-6 py-16">
+        <div class="flex items-center gap-3 mb-2">
+            <div class="w-1 h-8 bg-orange-500 rounded-full"></div>
+            <h3 class="text-2xl font-bold">واجهة المشرف</h3>
+            <span class="text-xs bg-orange-500/10 text-orange-400 px-2.5 py-1 rounded-full">Supervisor API</span>
+        </div>
+        <p class="text-gray-500 text-sm mb-8 mr-4">نقاط الوصول للمشرف - مشاهدة الفعاليات والمساحات، إدارة الطلبات والملفات التجارية (بدون حذف)</p>
+
+        <div class="mb-4 p-3 bg-orange-500/5 border border-orange-500/10 rounded-xl">
+            <p class="text-xs text-orange-400/80"><span class="font-bold">الصلاحيات:</span> تتطلب دور <code class="text-orange-300/60">supervisor</code> أو <code class="text-orange-300/60">admin</code> أو <code class="text-orange-300/60">super-admin</code></p>
+        </div>
+
+        <!-- Supervisor Dashboard + Read-only -->
+        <div class="mb-6 glass border border-white/5 rounded-2xl overflow-hidden">
+            <div class="px-6 py-3 border-b border-white/5 bg-white/[0.02]">
+                <h5 class="text-xs font-bold text-gray-400 flex items-center gap-2">
+                    <svg class="w-3.5 h-3.5 text-orange-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 17v-2m3 2v-4m3 4v-6m2 10H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"/></svg>
+                    لوحة التحكم واستعراض البيانات - Dashboard & Browse (Read-Only)
+                </h5>
+            </div>
+            <div class="divide-y divide-white/5">
+                @php
+                    $supBrowseEps = [
+                        ['GET', '/api/v1/supervisor/dashboard', 'إحصائيات لوحة التحكم', 'نفس إحصائيات الأدمن'],
+                        ['GET', '/api/v1/supervisor/statistics', 'الإحصائيات', 'نفس بيانات لوحة التحكم'],
+                        ['GET', '/api/v1/supervisor/events', 'قائمة الفعاليات', 'استعراض فقط'],
+                        ['GET', '/api/v1/supervisor/events/{event}', 'تفاصيل فعالية', 'بدون تعديل/حذف'],
+                        ['GET', '/api/v1/supervisor/events/{event}/sections', 'أقسام الفعالية', 'استعراض فقط'],
+                        ['GET', '/api/v1/supervisor/events/{event}/spaces', 'مساحات الفعالية', 'استعراض فقط'],
+                        ['GET', '/api/v1/supervisor/sections/{section}', 'تفاصيل قسم', 'استعراض فقط'],
+                        ['GET', '/api/v1/supervisor/spaces/{space}', 'تفاصيل مساحة', 'استعراض فقط'],
+                        ['GET', '/api/v1/supervisor/services', 'قائمة الخدمات', 'استعراض فقط'],
+                        ['GET', '/api/v1/supervisor/services/{service}', 'تفاصيل خدمة', 'استعراض فقط'],
+                    ];
+                @endphp
+                @foreach($supBrowseEps as $ep)
+                <div class="endpoint-row flex items-center px-6 py-3 gap-3">
+                    <span class="method-badge font-bold px-2 py-0.5 rounded font-mono min-w-[56px] text-center bg-emerald-500/20 text-emerald-400">{{ $ep[0] }}</span>
+                    <code class="text-xs text-gray-300 font-mono whitespace-nowrap" dir="ltr">{{ $ep[1] }}</code>
+                    <span class="text-xs text-gray-600">{{ $ep[2] }}</span>
+                    <span class="mr-auto"></span>
+                    <span class="text-[10px] px-2 py-0.5 rounded-full bg-orange-500/10 text-orange-400 font-semibold">supervisor</span>
+                </div>
+                @endforeach
+            </div>
+        </div>
+
+        <!-- Supervisor Visit/Rental Requests -->
+        <div class="mb-6 glass border border-white/5 rounded-2xl overflow-hidden">
+            <div class="px-6 py-3 border-b border-white/5 bg-white/[0.02]">
+                <h5 class="text-xs font-bold text-gray-400 flex items-center gap-2">
+                    <svg class="w-3.5 h-3.5 text-orange-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2m-6 9l2 2 4-4"/></svg>
+                    إدارة الطلبات - Request Management (بعد موافقة المستثمر)
+                </h5>
+            </div>
+            <div class="divide-y divide-white/5">
+                @php
+                    $supRequestEps = [
+                        ['GET', '/api/v1/supervisor/visit-requests', 'قائمة طلبات الزيارة', 'فلترة حسب الحالة'],
+                        ['GET', '/api/v1/supervisor/visit-requests/{id}', 'تفاصيل طلب زيارة', 'البيانات الكاملة'],
+                        ['PUT', '/api/v1/supervisor/visit-requests/{id}/approve', 'قبول طلب زيارة', 'بعد موافقة المستثمر'],
+                        ['PUT', '/api/v1/supervisor/visit-requests/{id}/reject', 'رفض طلب زيارة', 'مع سبب الرفض'],
+                        ['GET', '/api/v1/supervisor/rental-requests', 'قائمة طلبات الإيجار', 'فلترة حسب الحالة والمدفوعات'],
+                        ['GET', '/api/v1/supervisor/rental-requests/{id}', 'تفاصيل طلب إيجار', 'مع سجل المدفوعات'],
+                        ['PUT', '/api/v1/supervisor/rental-requests/{id}/approve', 'قبول طلب إيجار', 'بعد موافقة المستثمر'],
+                        ['PUT', '/api/v1/supervisor/rental-requests/{id}/reject', 'رفض طلب إيجار', 'مع سبب الرفض'],
+                        ['POST', '/api/v1/supervisor/rental-requests/{id}/payment', 'تسجيل دفعة', 'تسجيل دفعة للإيجار'],
+                    ];
+                @endphp
+                @foreach($supRequestEps as $ep)
+                <div class="endpoint-row flex items-center px-6 py-3 gap-3">
+                    <span class="method-badge font-bold px-2 py-0.5 rounded font-mono min-w-[56px] text-center {{ $ep[0] === 'GET' ? 'bg-emerald-500/20 text-emerald-400' : ($ep[0] === 'POST' ? 'bg-blue-500/20 text-blue-400' : 'bg-amber-500/20 text-amber-400') }}">{{ $ep[0] }}</span>
+                    <code class="text-xs text-gray-300 font-mono whitespace-nowrap" dir="ltr">{{ $ep[1] }}</code>
+                    <span class="text-xs text-gray-600">{{ $ep[2] }}</span>
+                    <span class="mr-auto"></span>
+                    <span class="text-[10px] px-2 py-0.5 rounded-full bg-orange-500/10 text-orange-400 font-semibold">supervisor</span>
+                </div>
+                @endforeach
+            </div>
+        </div>
+
+        <!-- Supervisor Profiles -->
+        <div class="glass border border-white/5 rounded-2xl overflow-hidden">
+            <div class="px-6 py-3 border-b border-white/5 bg-white/[0.02]">
+                <h5 class="text-xs font-bold text-gray-400 flex items-center gap-2">
+                    <svg class="w-3.5 h-3.5 text-purple-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"/></svg>
+                    إدارة الملفات التجارية - Profiles Management
+                </h5>
+            </div>
+            <div class="divide-y divide-white/5">
+                @php
+                    $supProfileEps = [
+                        ['GET', '/api/v1/supervisor/profiles', 'قائمة الملفات التجارية', 'فلترة حسب الحالة'],
+                        ['GET', '/api/v1/supervisor/profiles/{id}', 'تفاصيل ملف تجاري', 'البيانات مع المستندات'],
+                        ['PUT', '/api/v1/supervisor/profiles/{id}/approve', 'قبول الملف', 'الموافقة على الملف'],
+                        ['PUT', '/api/v1/supervisor/profiles/{id}/reject', 'رفض الملف', 'مع سبب الرفض'],
+                    ];
+                @endphp
+                @foreach($supProfileEps as $ep)
+                <div class="endpoint-row flex items-center px-6 py-3 gap-3">
+                    <span class="method-badge font-bold px-2 py-0.5 rounded font-mono min-w-[56px] text-center {{ $ep[0] === 'GET' ? 'bg-emerald-500/20 text-emerald-400' : 'bg-amber-500/20 text-amber-400' }}">{{ $ep[0] }}</span>
+                    <code class="text-xs text-gray-300 font-mono whitespace-nowrap" dir="ltr">{{ $ep[1] }}</code>
+                    <span class="text-xs text-gray-600">{{ $ep[2] }}</span>
+                    <span class="mr-auto"></span>
+                    <span class="text-[10px] px-2 py-0.5 rounded-full bg-orange-500/10 text-orange-400 font-semibold">supervisor</span>
+                </div>
+                @endforeach
+            </div>
+        </div>
+    </section>
+
+    <div class="glow-line max-w-4xl mx-auto"></div>
+
+    <!-- Super Admin API Endpoints -->
+    <section id="superadmin-api" class="section-anchor max-w-7xl mx-auto px-6 py-16">
+        <div class="flex items-center gap-3 mb-2">
+            <div class="w-1 h-8 bg-red-500 rounded-full"></div>
+            <h3 class="text-2xl font-bold">واجهة المدير العام</h3>
+            <span class="text-xs bg-red-500/10 text-red-400 px-2.5 py-1 rounded-full">Super Admin API</span>
+        </div>
+        <p class="text-gray-500 text-sm mb-8 mr-4">صلاحيات كاملة - إدارة النظام والتصنيفات والمدن والمستخدمين والإعدادات</p>
+
+        <div class="mb-4 p-3 bg-red-500/5 border border-red-500/10 rounded-xl">
+            <p class="text-xs text-red-400/80"><span class="font-bold">الصلاحيات:</span> تتطلب دور <code class="text-red-300/60">super-admin</code> فقط - أعلى مستوى صلاحيات</p>
+        </div>
+
+        <!-- Super Admin Dashboard -->
+        <div class="mb-6 glass border border-white/5 rounded-2xl overflow-hidden">
+            <div class="px-6 py-4 border-b border-white/5 flex items-center gap-3">
+                <span class="method-badge font-bold px-2.5 py-1 rounded-md bg-emerald-500/20 text-emerald-400 font-mono">GET</span>
+                <code class="text-sm text-gray-300 font-mono" dir="ltr">/api/v1/super-admin/dashboard</code>
+                <span class="text-xs text-gray-600 mr-auto">لوحة تحكم مع إحصائيات النظام والتحليلات</span>
+                <span class="text-[10px] px-2 py-0.5 rounded-full bg-red-500/10 text-red-400 font-semibold">super-admin</span>
+            </div>
+            <div class="p-4 bg-white/[0.02]">
+                <p class="text-[10px] text-gray-600"><span class="text-red-400/60 font-bold">Query Params:</span> <code class="text-gray-500">analytics_period, spaces_period, revenue_period</code> (all|today|week|month|year) + <code class="text-gray-500">event_id</code></p>
+            </div>
+        </div>
+
+        <!-- Super Admin Statistics -->
+        <div class="mb-6 glass border border-white/5 rounded-2xl overflow-hidden">
+            <div class="px-6 py-4 border-b border-white/5 flex items-center gap-3">
+                <span class="method-badge font-bold px-2.5 py-1 rounded-md bg-emerald-500/20 text-emerald-400 font-mono">GET</span>
+                <code class="text-sm text-gray-300 font-mono" dir="ltr">/api/v1/super-admin/statistics</code>
+                <span class="text-xs text-gray-600 mr-auto">الإحصائيات — نفس بيانات لوحة التحكم</span>
+                <span class="text-[10px] px-2 py-0.5 rounded-full bg-red-500/10 text-red-400 font-semibold">super-admin</span>
+            </div>
+        </div>
+
+        <!-- Super Admin Categories -->
+        <div class="mb-6 glass border border-white/5 rounded-2xl overflow-hidden">
+            <div class="px-6 py-3 border-b border-white/5 bg-white/[0.02]">
+                <h5 class="text-xs font-bold text-gray-400 flex items-center gap-2">
+                    <svg class="w-3.5 h-3.5 text-emerald-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 7h.01M7 3h5c.512 0 1.024.195 1.414.586l7 7a2 2 0 010 2.828l-7 7a2 2 0 01-2.828 0l-7-7A1.994 1.994 0 013 12V7a4 4 0 014-4z"/></svg>
+                    إدارة التصنيفات - Categories CRUD
+                </h5>
+            </div>
+            <div class="divide-y divide-white/5">
+                @php
+                    $saCatEps = [
+                        ['GET', '/api/v1/super-admin/categories', 'قائمة التصنيفات', 'بحث وفلترة'],
+                        ['POST', '/api/v1/super-admin/categories', 'إنشاء تصنيف', 'name, name_ar, icon, is_active'],
+                        ['GET', '/api/v1/super-admin/categories/{id}', 'تفاصيل تصنيف', 'البيانات الكاملة'],
+                        ['PUT', '/api/v1/super-admin/categories/{id}', 'تحديث تصنيف', 'تعديل البيانات'],
+                        ['DELETE', '/api/v1/super-admin/categories/{id}', 'حذف تصنيف', 'لا يمكن حذفه إذا مرتبط بفعاليات'],
+                    ];
+                @endphp
+                @foreach($saCatEps as $ep)
+                <div class="endpoint-row flex items-center px-6 py-3 gap-3">
+                    <span class="method-badge font-bold px-2 py-0.5 rounded font-mono min-w-[56px] text-center {{ $ep[0] === 'GET' ? 'bg-emerald-500/20 text-emerald-400' : ($ep[0] === 'POST' ? 'bg-blue-500/20 text-blue-400' : ($ep[0] === 'PUT' ? 'bg-amber-500/20 text-amber-400' : 'bg-rose-500/20 text-rose-400')) }}">{{ $ep[0] }}</span>
+                    <code class="text-xs text-gray-300 font-mono whitespace-nowrap" dir="ltr">{{ $ep[1] }}</code>
+                    <span class="text-xs text-gray-600">{{ $ep[2] }}</span>
+                    <span class="mr-auto"></span>
+                    <span class="text-[10px] px-2 py-0.5 rounded-full bg-red-500/10 text-red-400 font-semibold">super-admin</span>
+                </div>
+                @endforeach
+            </div>
+        </div>
+
+        <!-- Super Admin Cities -->
+        <div class="mb-6 glass border border-white/5 rounded-2xl overflow-hidden">
+            <div class="px-6 py-3 border-b border-white/5 bg-white/[0.02]">
+                <h5 class="text-xs font-bold text-gray-400 flex items-center gap-2">
+                    <svg class="w-3.5 h-3.5 text-teal-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"/><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"/></svg>
+                    إدارة المدن - Cities CRUD
+                </h5>
+            </div>
+            <div class="divide-y divide-white/5">
+                @php
+                    $saCityEps = [
+                        ['GET', '/api/v1/super-admin/cities', 'قائمة المدن', 'بحث وفلترة حسب المنطقة'],
+                        ['POST', '/api/v1/super-admin/cities', 'إنشاء مدينة', 'name, name_ar, region, lat, lng'],
+                        ['GET', '/api/v1/super-admin/cities/{id}', 'تفاصيل مدينة', 'البيانات الكاملة'],
+                        ['PUT', '/api/v1/super-admin/cities/{id}', 'تحديث مدينة', 'تعديل البيانات'],
+                        ['DELETE', '/api/v1/super-admin/cities/{id}', 'حذف مدينة', 'لا يمكن حذفها إذا مرتبطة بفعاليات'],
+                    ];
+                @endphp
+                @foreach($saCityEps as $ep)
+                <div class="endpoint-row flex items-center px-6 py-3 gap-3">
+                    <span class="method-badge font-bold px-2 py-0.5 rounded font-mono min-w-[56px] text-center {{ $ep[0] === 'GET' ? 'bg-emerald-500/20 text-emerald-400' : ($ep[0] === 'POST' ? 'bg-blue-500/20 text-blue-400' : ($ep[0] === 'PUT' ? 'bg-amber-500/20 text-amber-400' : 'bg-rose-500/20 text-rose-400')) }}">{{ $ep[0] }}</span>
+                    <code class="text-xs text-gray-300 font-mono whitespace-nowrap" dir="ltr">{{ $ep[1] }}</code>
+                    <span class="text-xs text-gray-600">{{ $ep[2] }}</span>
+                    <span class="mr-auto"></span>
+                    <span class="text-[10px] px-2 py-0.5 rounded-full bg-red-500/10 text-red-400 font-semibold">super-admin</span>
+                </div>
+                @endforeach
+            </div>
+        </div>
+
+        <!-- Super Admin Users + Settings -->
+        <div class="grid md:grid-cols-2 gap-4">
+            <div class="glass border border-white/5 rounded-2xl overflow-hidden">
+                <div class="px-6 py-3 border-b border-white/5 bg-white/[0.02]">
+                    <h5 class="text-xs font-bold text-gray-400 flex items-center gap-2">
+                        <svg class="w-3.5 h-3.5 text-purple-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4.354a4 4 0 110 5.292M15 21H3v-1a6 6 0 0112 0v1zm0 0h6v-1a6 6 0 00-9-5.197M13 7a4 4 0 11-8 0 4 4 0 018 0z"/></svg>
+                        إدارة المستخدمين - Users
+                    </h5>
+                </div>
+                <div class="divide-y divide-white/5">
+                    @php
+                        $saUserEps = [
+                            ['GET', '/api/v1/super-admin/users', 'القائمة'],
+                            ['GET', '/api/v1/super-admin/users/{id}', 'التفاصيل'],
+                            ['PUT', '/api/v1/super-admin/users/{id}/approve', 'قبول'],
+                            ['PUT', '/api/v1/super-admin/users/{id}/reject', 'رفض'],
+                            ['PUT', '/api/v1/super-admin/users/{id}/suspend', 'تعليق'],
+                        ];
+                    @endphp
+                    @foreach($saUserEps as $ep)
+                    <div class="endpoint-row flex items-center px-5 py-2.5 gap-2">
+                        <span class="method-badge font-bold px-1.5 py-0.5 rounded font-mono min-w-[44px] text-center {{ $ep[0] === 'GET' ? 'bg-emerald-500/15 text-emerald-400' : 'bg-amber-500/15 text-amber-400' }}">{{ $ep[0] }}</span>
+                        <code class="text-[11px] text-gray-400 font-mono" dir="ltr">{{ $ep[1] }}</code>
+                        <span class="text-[11px] text-gray-600 mr-auto">{{ $ep[2] }}</span>
+                    </div>
+                    @endforeach
+                </div>
+            </div>
+            <div class="glass border border-white/5 rounded-2xl overflow-hidden">
+                <div class="px-6 py-3 border-b border-white/5 bg-white/[0.02]">
+                    <h5 class="text-xs font-bold text-gray-400 flex items-center gap-2">
+                        <svg class="w-3.5 h-3.5 text-cyan-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.066 2.573c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.573 1.066c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.066-2.573c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z"/><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"/></svg>
+                        إعدادات النظام - Settings
+                    </h5>
+                </div>
+                <div class="divide-y divide-white/5">
+                    @php
+                        $saSettEps = [
+                            ['GET', '/api/v1/super-admin/settings', 'جميع الإعدادات'],
+                            ['GET', '/api/v1/super-admin/settings/{key}', 'إعداد محدد'],
+                            ['PUT', '/api/v1/super-admin/settings', 'تحديث الإعدادات'],
+                        ];
+                    @endphp
+                    @foreach($saSettEps as $ep)
+                    <div class="endpoint-row flex items-center px-5 py-2.5 gap-2">
+                        <span class="method-badge font-bold px-1.5 py-0.5 rounded font-mono min-w-[44px] text-center {{ $ep[0] === 'GET' ? 'bg-emerald-500/15 text-emerald-400' : 'bg-amber-500/15 text-amber-400' }}">{{ $ep[0] }}</span>
+                        <code class="text-[11px] text-gray-400 font-mono" dir="ltr">{{ $ep[1] }}</code>
+                        <span class="text-[11px] text-gray-600 mr-auto">{{ $ep[2] }}</span>
+                    </div>
+                    @endforeach
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <div class="glow-line max-w-4xl mx-auto"></div>
+
+    <!-- Investor API Endpoints -->
+    <section id="investor-api" class="section-anchor max-w-7xl mx-auto px-6 py-16">
+        <div class="flex items-center gap-3 mb-2">
+            <div class="w-1 h-8 bg-indigo-500 rounded-full"></div>
+            <h3 class="text-2xl font-bold">واجهة المستثمر</h3>
+            <span class="text-xs bg-indigo-500/10 text-indigo-400 px-2.5 py-1 rounded-full">Investor API</span>
+        </div>
+        <p class="text-gray-500 text-sm mb-8 mr-4">إدارة المساحات الخاصة، الموافقة على الطلبات، تتبع الإيرادات والمدفوعات</p>
+
+        <div class="mb-4 p-3 bg-indigo-500/5 border border-indigo-500/10 rounded-xl">
+            <p class="text-xs text-indigo-400/80"><span class="font-bold">الصلاحيات:</span> تتطلب دور <code class="text-indigo-300/60">investor</code></p>
+        </div>
+
+        <!-- Investor Spaces -->
+        <div class="mb-6 glass border border-white/5 rounded-2xl overflow-hidden">
+            <div class="px-6 py-3 border-b border-white/5 bg-white/[0.02]">
+                <h5 class="text-xs font-bold text-gray-400 flex items-center gap-2">
+                    <svg class="w-3.5 h-3.5 text-indigo-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4"/></svg>
+                    لوحة التحكم وإدارة المساحات - Dashboard & Spaces
+                </h5>
+            </div>
+            <div class="divide-y divide-white/5">
+                @php
+                    $invSpaceEps = [
+                        ['GET', '/api/v1/investor/dashboard', 'لوحة التحكم', 'إحصائيات المستثمر'],
+                        ['GET', '/api/v1/investor/statistics', 'الإحصائيات', 'نفس بيانات لوحة التحكم'],
+                        ['GET', '/api/v1/investor/spaces', 'قائمة مساحاتي', 'المساحات الخاصة بالمستثمر'],
+                        ['POST', '/api/v1/investor/spaces', 'إنشاء مساحة', 'event_id, section_id, name, area, price, type'],
+                        ['GET', '/api/v1/investor/spaces/{id}', 'تفاصيل مساحة', 'البيانات مع الخدمات'],
+                        ['PUT', '/api/v1/investor/spaces/{id}', 'تحديث مساحة', 'تعديل بيانات المساحة'],
+                        ['DELETE', '/api/v1/investor/spaces/{id}', 'حذف مساحة', 'حذف المساحة الخاصة'],
+                        ['POST', '/api/v1/investor/spaces/{id}/services', 'إضافة خدمات', 'ربط خدمات بالمساحة'],
+                        ['DELETE', '/api/v1/investor/spaces/{id}/services', 'إزالة خدمات', 'فك ربط خدمات'],
+                    ];
+                @endphp
+                @foreach($invSpaceEps as $ep)
+                <div class="endpoint-row flex items-center px-6 py-3 gap-3">
+                    <span class="method-badge font-bold px-2 py-0.5 rounded font-mono min-w-[56px] text-center {{ $ep[0] === 'GET' ? 'bg-emerald-500/20 text-emerald-400' : ($ep[0] === 'POST' ? 'bg-blue-500/20 text-blue-400' : ($ep[0] === 'PUT' ? 'bg-amber-500/20 text-amber-400' : 'bg-rose-500/20 text-rose-400')) }}">{{ $ep[0] }}</span>
+                    <code class="text-xs text-gray-300 font-mono whitespace-nowrap" dir="ltr">{{ $ep[1] }}</code>
+                    <span class="text-xs text-gray-600">{{ $ep[2] }}</span>
+                    <span class="mr-auto"></span>
+                    <span class="text-[10px] px-2 py-0.5 rounded-full bg-indigo-500/10 text-indigo-400 font-semibold">investor</span>
+                </div>
+                @endforeach
+            </div>
+        </div>
+
+        <!-- Investor Rental & Visit Requests + Payments -->
+        <div class="glass border border-white/5 rounded-2xl overflow-hidden">
+            <div class="px-6 py-3 border-b border-white/5 bg-white/[0.02]">
+                <h5 class="text-xs font-bold text-gray-400 flex items-center gap-2">
+                    <svg class="w-3.5 h-3.5 text-amber-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 9V7a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2m2 4h10a2 2 0 002-2v-6a2 2 0 00-2-2H9a2 2 0 00-2 2v6a2 2 0 002 2zm7-5a2 2 0 11-4 0 2 2 0 014 0z"/></svg>
+                    الطلبات والمدفوعات - Requests & Payments
+                </h5>
+            </div>
+            <div class="divide-y divide-white/5">
+                @php
+                    $invRequestEps = [
+                        ['GET', '/api/v1/investor/rental-requests', 'طلبات الإيجار', 'الطلبات على مساحات المستثمر'],
+                        ['GET', '/api/v1/investor/rental-requests/pending-count', 'عدد المعلّقة', 'طلبات بانتظار الموافقة'],
+                        ['GET', '/api/v1/investor/rental-requests/{id}', 'تفاصيل طلب إيجار', 'البيانات الكاملة'],
+                        ['PUT', '/api/v1/investor/rental-requests/{id}/approve', 'قبول طلب إيجار', 'الخطوة الأولى من الموافقة'],
+                        ['PUT', '/api/v1/investor/rental-requests/{id}/reject', 'رفض طلب إيجار', 'مع ملاحظات'],
+                        ['GET', '/api/v1/investor/visit-requests', 'طلبات الزيارة', 'لفعاليات المستثمر'],
+                        ['GET', '/api/v1/investor/visit-requests/pending-count', 'عدد المعلّقة', 'زيارات بانتظار الموافقة'],
+                        ['GET', '/api/v1/investor/visit-requests/{id}', 'تفاصيل طلب زيارة', 'البيانات الكاملة'],
+                        ['PUT', '/api/v1/investor/visit-requests/{id}/approve', 'قبول طلب زيارة', 'الخطوة الأولى'],
+                        ['PUT', '/api/v1/investor/visit-requests/{id}/reject', 'رفض طلب زيارة', 'مع ملاحظات'],
+                        ['GET', '/api/v1/investor/payments', 'سجل المدفوعات', 'جميع المدفوعات مع الفلترة'],
+                        ['GET', '/api/v1/investor/payments/summary', 'ملخص الإيرادات', 'إجمالي ومفصّل'],
+                        ['GET', '/api/v1/investor/payments/{id}', 'تفاصيل دفعة', 'البيانات الكاملة'],
+                    ];
+                @endphp
+                @foreach($invRequestEps as $ep)
+                <div class="endpoint-row flex items-center px-6 py-3 gap-3">
+                    <span class="method-badge font-bold px-2 py-0.5 rounded font-mono min-w-[56px] text-center {{ $ep[0] === 'GET' ? 'bg-emerald-500/20 text-emerald-400' : 'bg-amber-500/20 text-amber-400' }}">{{ $ep[0] }}</span>
+                    <code class="text-xs text-gray-300 font-mono whitespace-nowrap" dir="ltr">{{ $ep[1] }}</code>
+                    <span class="text-xs text-gray-600">{{ $ep[2] }}</span>
+                    <span class="mr-auto"></span>
+                    <span class="text-[10px] px-2 py-0.5 rounded-full bg-indigo-500/10 text-indigo-400 font-semibold">investor</span>
+                </div>
+                @endforeach
+            </div>
+            <div class="p-4 bg-white/[0.02]">
+                <p class="text-[10px] text-gray-600"><span class="text-indigo-400/60 font-bold">ملاحظة:</span> موافقة المستثمر هي الخطوة الأولى - بعدها يحتاج الطلب موافقة المشرف/الأدمن</p>
+            </div>
+        </div>
+    </section>
+
+    <div class="glow-line max-w-4xl mx-auto"></div>
+
+    <!-- Merchant API Endpoints -->
+    <section id="merchant-api" class="section-anchor max-w-7xl mx-auto px-6 py-16">
+        <div class="flex items-center gap-3 mb-2">
+            <div class="w-1 h-8 bg-sky-500 rounded-full"></div>
+            <h3 class="text-2xl font-bold">واجهة التاجر</h3>
+            <span class="text-xs bg-sky-500/10 text-sky-400 px-2.5 py-1 rounded-full">Merchant API</span>
+        </div>
+        <p class="text-gray-500 text-sm mb-8 mr-4">استعراض الفعاليات والمساحات والخدمات، تقديم طلبات الزيارة والإيجار</p>
+
+        <div class="mb-4 p-3 bg-sky-500/5 border border-sky-500/10 rounded-xl">
+            <p class="text-xs text-sky-400/80"><span class="font-bold">الصلاحيات:</span> تتطلب دور <code class="text-sky-300/60">merchant</code> - طلبات الإيجار تتطلب ملف تجاري موثق</p>
+        </div>
+
+        <!-- Merchant Browse -->
+        <div class="mb-6 glass border border-white/5 rounded-2xl overflow-hidden">
+            <div class="px-6 py-3 border-b border-white/5 bg-white/[0.02]">
+                <h5 class="text-xs font-bold text-gray-400 flex items-center gap-2">
+                    <svg class="w-3.5 h-3.5 text-sky-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"/></svg>
+                    لوحة التحكم واستعراض البيانات - Dashboard & Browse
+                </h5>
+            </div>
+            <div class="divide-y divide-white/5">
+                @php
+                    $mBrowseEps = [
+                        ['GET', '/api/v1/merchant/dashboard', 'لوحة التحكم', 'إحصائيات التاجر'],
+                        ['GET', '/api/v1/merchant/statistics', 'الإحصائيات', 'نفس بيانات لوحة التحكم'],
+                        ['GET', '/api/v1/merchant/events', 'قائمة الفعاليات', 'بحث وفلترة'],
+                        ['GET', '/api/v1/merchant/events/{id}', 'تفاصيل فعالية', 'البيانات الكاملة'],
+                        ['GET', '/api/v1/merchant/events/{id}/sections', 'أقسام الفعالية', 'عرض الأقسام'],
+                        ['GET', '/api/v1/merchant/events/{id}/spaces', 'مساحات الفعالية', 'المساحات المتاحة'],
+                        ['GET', '/api/v1/merchant/spaces', 'تصفح المساحات', 'فلترة حسب النوع والسعر والمساحة'],
+                        ['GET', '/api/v1/merchant/spaces/{id}', 'تفاصيل مساحة', 'البيانات مع الخدمات'],
+                        ['GET', '/api/v1/merchant/services', 'قائمة الخدمات', 'الخدمات المتاحة'],
+                        ['GET', '/api/v1/merchant/services/{id}', 'تفاصيل خدمة', 'البيانات الكاملة'],
+                    ];
+                @endphp
+                @foreach($mBrowseEps as $ep)
+                <div class="endpoint-row flex items-center px-6 py-3 gap-3">
+                    <span class="method-badge font-bold px-2 py-0.5 rounded font-mono min-w-[56px] text-center bg-emerald-500/20 text-emerald-400">{{ $ep[0] }}</span>
+                    <code class="text-xs text-gray-300 font-mono whitespace-nowrap" dir="ltr">{{ $ep[1] }}</code>
+                    <span class="text-xs text-gray-600">{{ $ep[2] }}</span>
+                    <span class="mr-auto"></span>
+                    <span class="text-[10px] px-2 py-0.5 rounded-full bg-sky-500/10 text-sky-400 font-semibold">merchant</span>
+                </div>
+                @endforeach
+            </div>
+        </div>
+
+        <!-- Merchant Requests -->
+        <div class="glass border border-white/5 rounded-2xl overflow-hidden">
+            <div class="px-6 py-3 border-b border-white/5 bg-white/[0.02]">
+                <h5 class="text-xs font-bold text-gray-400 flex items-center gap-2">
+                    <svg class="w-3.5 h-3.5 text-amber-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2"/></svg>
+                    طلبات الزيارة والإيجار - Visit & Rental Requests
+                </h5>
+            </div>
+            <div class="divide-y divide-white/5">
+                @php
+                    $mRequestEps = [
+                        ['GET', '/api/v1/merchant/visit-requests', 'طلبات الزيارة', 'طلبات التاجر'],
+                        ['POST', '/api/v1/merchant/visit-requests', 'طلب زيارة جديد', 'event_id, visit_date, visitors_count'],
+                        ['GET', '/api/v1/merchant/visit-requests/{id}', 'تفاصيل طلب', 'البيانات الكاملة'],
+                        ['PUT', '/api/v1/merchant/visit-requests/{id}', 'تحديث الطلب', 'تعديل البيانات'],
+                        ['DELETE', '/api/v1/merchant/visit-requests/{id}', 'إلغاء الطلب', 'حذف الطلب'],
+                        ['GET', '/api/v1/merchant/rental-requests', 'طلبات الإيجار', 'يتطلب ملف موثق'],
+                        ['POST', '/api/v1/merchant/rental-requests', 'طلب إيجار جديد', 'space_id, start_date, end_date'],
+                        ['GET', '/api/v1/merchant/rental-requests/{id}', 'تفاصيل طلب', 'مع المدفوعات'],
+                        ['PUT', '/api/v1/merchant/rental-requests/{id}', 'تحديث الطلب', 'تعديل البيانات'],
+                        ['DELETE', '/api/v1/merchant/rental-requests/{id}', 'إلغاء الطلب', 'حذف الطلب'],
+                    ];
+                @endphp
+                @foreach($mRequestEps as $ep)
+                <div class="endpoint-row flex items-center px-6 py-3 gap-3">
+                    <span class="method-badge font-bold px-2 py-0.5 rounded font-mono min-w-[56px] text-center {{ $ep[0] === 'GET' ? 'bg-emerald-500/20 text-emerald-400' : ($ep[0] === 'POST' ? 'bg-blue-500/20 text-blue-400' : ($ep[0] === 'PUT' ? 'bg-amber-500/20 text-amber-400' : 'bg-rose-500/20 text-rose-400')) }}">{{ $ep[0] }}</span>
+                    <code class="text-xs text-gray-300 font-mono whitespace-nowrap" dir="ltr">{{ $ep[1] }}</code>
+                    <span class="text-xs text-gray-600">{{ $ep[2] }}</span>
+                    <span class="mr-auto"></span>
+                    <span class="text-[10px] px-2 py-0.5 rounded-full bg-sky-500/10 text-sky-400 font-semibold">merchant</span>
+                </div>
+                @endforeach
+            </div>
+            <div class="p-4 bg-white/[0.02]">
+                <p class="text-[10px] text-gray-600"><span class="text-purple-400/60 font-bold">ملاحظة:</span> طلبات الإيجار تتطلب ملف تجاري موثق وتمر بموافقة المستثمر ثم المشرف/الأدمن</p>
+            </div>
+        </div>
+    </section>
+
+    <div class="glow-line max-w-4xl mx-auto"></div>
+
     <!-- Quick Start -->
     <section id="quickstart" class="section-anchor max-w-7xl mx-auto px-6 py-16">
         <div class="flex items-center gap-3 mb-2">
@@ -833,12 +1321,21 @@
                         Copy
                     </button>
                 </div>
-                <pre class="p-5 text-sm overflow-x-auto" dir="ltr"><code class="text-gray-300" id="code-dashboard"><span class="comment"># إحصائيات عامة</span>
-<span class="cmd">curl</span> <span class="url">http://localhost:8002/api/admin/dashboard</span> \
+                <pre class="p-5 text-sm overflow-x-auto" dir="ltr"><code class="text-gray-300" id="code-dashboard"><span class="comment"># إحصائيات المنصة (عامة - بدون مصادقة)</span>
+<span class="cmd">curl</span> <span class="url">http://localhost:8002/api/v1/statistics</span>
+
+<span class="comment"># إحصائيات الفعاليات (عامة)</span>
+<span class="cmd">curl</span> <span class="url">http://localhost:8002/api/v1/statistics/events</span>
+
+<span class="comment"># إحصائيات المساحات (عامة)</span>
+<span class="cmd">curl</span> <span class="url">http://localhost:8002/api/v1/statistics/spaces</span>
+
+<span class="comment"># إحصائيات الأدمن (تتطلب مصادقة)</span>
+<span class="cmd">curl</span> <span class="url">http://localhost:8002/api/v1/admin/statistics</span> \
   <span class="flag">-H</span> <span class="str">"Authorization: Bearer {admin-token}"</span>
 
-<span class="comment"># إحصائيات حسب الفترة</span>
-<span class="cmd">curl</span> <span class="str">"<span class="url">http://localhost:8002/api/admin/dashboard?spaces_period=month&revenue_period=week</span>"</span> \
+<span class="comment"># لوحة تحكم الأدمن حسب الفترة</span>
+<span class="cmd">curl</span> <span class="str">"<span class="url">http://localhost:8002/api/v1/admin/dashboard?spaces_period=month&revenue_period=week</span>"</span> \
   <span class="flag">-H</span> <span class="str">"Authorization: Bearer {admin-token}"</span></code></pre>
             </div>
         </div>

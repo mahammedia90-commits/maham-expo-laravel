@@ -22,6 +22,7 @@ class BusinessProfileResource extends JsonResource
             'commercial_registration_image' => $this->when($isOwnerOrAdmin, $this->commercial_registration_image),
             'national_id_image' => $this->when($isOwnerOrAdmin, $this->national_id_image),
             'company_logo' => $this->company_logo,
+            'avatar' => $this->avatar,
             'company_address' => $this->localized_company_address,
             'contact_phone' => $this->contact_phone,
             'contact_email' => $this->contact_email,

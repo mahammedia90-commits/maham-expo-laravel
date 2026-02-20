@@ -1,0 +1,497 @@
+{
+	"info": {
+		"_postman_id": "sa-a1b2c3d4-e5f6-7890-abcd-ef1234567890",
+		"name": "Super Admin (مدير عام)",
+		"description": "Maham Expo API - Super Admin Collection\n\nA super admin user can:\n- Full system access (everything admin can do)\n- Manage categories (CRUD)\n- Manage cities (CRUD)\n- Manage users/profiles (approve, reject, suspend)\n- System settings management\n- Extended dashboard with analytics (most viewed events/spaces by platform)",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"auth": {
+		"type": "bearer",
+		"bearer": [
+			{
+				"key": "token",
+				"value": "{{super_admin_token}}",
+				"type": "string"
+			}
+		]
+	},
+	"variable": [
+		{"key": "auth_url", "value": "http://localhost:8001/api"},
+		{"key": "expo_url", "value": "http://localhost:8002/api"},
+		{"key": "super_admin_token", "value": ""},
+		{"key": "category_id", "value": ""},
+		{"key": "city_id", "value": ""},
+		{"key": "profile_id", "value": ""}
+	],
+	"item": [
+		{
+			"name": "Auth (تسجيل الدخول)",
+			"item": [
+				{
+					"name": "Login",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"var jsonData = pm.response.json();",
+									"if (jsonData.data && jsonData.data.token) {",
+									"    pm.collectionVariables.set('super_admin_token', jsonData.data.token);",
+									"    pm.environment.set('super_admin_token', jsonData.data.token);",
+									"    console.log('super_admin_token saved');",
+									"}"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"auth": {"type": "noauth"},
+						"method": "POST",
+						"header": [
+							{"key": "Content-Type", "value": "application/json"},
+							{"key": "Accept", "value": "application/json"},
+							{"key": "Accept-Language", "value": "ar"}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"identifier\": \"super-admin@maham-expo.com\",\n  \"password\": \"SuperAdmin@123456\"\n}"
+						},
+						"url": {
+							"raw": "{{auth_url}}/auth/login",
+							"host": ["{{auth_url}}"],
+							"path": ["auth", "login"]
+						}
+					}
+				},
+				{
+					"name": "Me (معلوماتي)",
+					"request": {
+						"method": "GET",
+						"header": [
+							{"key": "Accept", "value": "application/json"},
+							{"key": "Accept-Language", "value": "ar"}
+						],
+						"url": {
+							"raw": "{{auth_url}}/auth/me",
+							"host": ["{{auth_url}}"],
+							"path": ["auth", "me"]
+						}
+					}
+				}
+			]
+		},
+		{
+			"name": "Dashboard (لوحة التحكم)",
+			"item": [
+				{
+					"name": "Get Dashboard Stats",
+					"request": {
+						"method": "GET",
+						"header": [
+							{"key": "Accept", "value": "application/json"},
+							{"key": "Accept-Language", "value": "ar"}
+						],
+						"url": {
+							"raw": "{{expo_url}}/v1/super-admin/dashboard",
+							"host": ["{{expo_url}}"],
+							"path": ["v1", "super-admin", "dashboard"]
+						}
+					}
+				},
+				{
+					"name": "Dashboard with Filters",
+					"request": {
+						"method": "GET",
+						"header": [
+							{"key": "Accept", "value": "application/json"},
+							{"key": "Accept-Language", "value": "ar"}
+						],
+						"url": {
+							"raw": "{{expo_url}}/v1/super-admin/dashboard?analytics_period=month&spaces_period=month&revenue_period=year",
+							"host": ["{{expo_url}}"],
+							"path": ["v1", "super-admin", "dashboard"],
+							"query": [
+								{"key": "analytics_period", "value": "month", "description": "today|week|month|year|all"},
+								{"key": "spaces_period", "value": "month"},
+								{"key": "revenue_period", "value": "year"},
+								{"key": "event_id", "value": "", "disabled": true}
+							]
+						}
+					}
+				}
+			]
+		},
+		{
+			"name": "Categories (الفئات)",
+			"item": [
+				{
+					"name": "List Categories",
+					"request": {
+						"method": "GET",
+						"header": [
+							{"key": "Accept", "value": "application/json"},
+							{"key": "Accept-Language", "value": "ar"}
+						],
+						"url": {
+							"raw": "{{expo_url}}/v1/super-admin/categories",
+							"host": ["{{expo_url}}"],
+							"path": ["v1", "super-admin", "categories"],
+							"query": [
+								{"key": "search", "value": "", "disabled": true},
+								{"key": "is_active", "value": "true", "disabled": true},
+								{"key": "sort_by", "value": "sort_order", "disabled": true},
+								{"key": "sort_order", "value": "asc", "disabled": true},
+								{"key": "per_page", "value": "15", "disabled": true}
+							]
+						}
+					}
+				},
+				{
+					"name": "Create Category",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"var jsonData = pm.response.json();",
+									"if (jsonData.data && jsonData.data.id) {",
+									"    pm.collectionVariables.set('category_id', jsonData.data.id);",
+									"}"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{"key": "Content-Type", "value": "application/json"},
+							{"key": "Accept", "value": "application/json"},
+							{"key": "Accept-Language", "value": "ar"}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"name\": \"Technology\",\n  \"name_ar\": \"تقنية\",\n  \"icon\": \"laptop\",\n  \"description\": \"Technology events and exhibitions\",\n  \"description_ar\": \"فعاليات ومعارض تقنية\",\n  \"is_active\": true,\n  \"sort_order\": 1\n}"
+						},
+						"url": {
+							"raw": "{{expo_url}}/v1/super-admin/categories",
+							"host": ["{{expo_url}}"],
+							"path": ["v1", "super-admin", "categories"]
+						}
+					}
+				},
+				{
+					"name": "Show Category",
+					"request": {
+						"method": "GET",
+						"header": [
+							{"key": "Accept", "value": "application/json"},
+							{"key": "Accept-Language", "value": "ar"}
+						],
+						"url": {
+							"raw": "{{expo_url}}/v1/super-admin/categories/{{category_id}}",
+							"host": ["{{expo_url}}"],
+							"path": ["v1", "super-admin", "categories", "{{category_id}}"]
+						}
+					}
+				},
+				{
+					"name": "Update Category",
+					"request": {
+						"method": "PUT",
+						"header": [
+							{"key": "Content-Type", "value": "application/json"},
+							{"key": "Accept", "value": "application/json"},
+							{"key": "Accept-Language", "value": "ar"}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"name\": \"Tech & Innovation\",\n  \"name_ar\": \"التقنية والابتكار\",\n  \"is_active\": true\n}"
+						},
+						"url": {
+							"raw": "{{expo_url}}/v1/super-admin/categories/{{category_id}}",
+							"host": ["{{expo_url}}"],
+							"path": ["v1", "super-admin", "categories", "{{category_id}}"]
+						}
+					}
+				},
+				{
+					"name": "Delete Category",
+					"request": {
+						"method": "DELETE",
+						"header": [
+							{"key": "Accept", "value": "application/json"},
+							{"key": "Accept-Language", "value": "ar"}
+						],
+						"url": {
+							"raw": "{{expo_url}}/v1/super-admin/categories/{{category_id}}",
+							"host": ["{{expo_url}}"],
+							"path": ["v1", "super-admin", "categories", "{{category_id}}"]
+						}
+					}
+				}
+			]
+		},
+		{
+			"name": "Cities (المدن)",
+			"item": [
+				{
+					"name": "List Cities",
+					"request": {
+						"method": "GET",
+						"header": [
+							{"key": "Accept", "value": "application/json"},
+							{"key": "Accept-Language", "value": "ar"}
+						],
+						"url": {
+							"raw": "{{expo_url}}/v1/super-admin/cities",
+							"host": ["{{expo_url}}"],
+							"path": ["v1", "super-admin", "cities"],
+							"query": [
+								{"key": "search", "value": "", "disabled": true},
+								{"key": "is_active", "value": "true", "disabled": true},
+								{"key": "per_page", "value": "15", "disabled": true}
+							]
+						}
+					}
+				},
+				{
+					"name": "Create City",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"var jsonData = pm.response.json();",
+									"if (jsonData.data && jsonData.data.id) {",
+									"    pm.collectionVariables.set('city_id', jsonData.data.id);",
+									"}"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{"key": "Content-Type", "value": "application/json"},
+							{"key": "Accept", "value": "application/json"},
+							{"key": "Accept-Language", "value": "ar"}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"name\": \"Riyadh\",\n  \"name_ar\": \"الرياض\",\n  \"region\": \"Central\",\n  \"region_ar\": \"المنطقة الوسطى\",\n  \"latitude\": 24.7136,\n  \"longitude\": 46.6753,\n  \"is_active\": true,\n  \"sort_order\": 1\n}"
+						},
+						"url": {
+							"raw": "{{expo_url}}/v1/super-admin/cities",
+							"host": ["{{expo_url}}"],
+							"path": ["v1", "super-admin", "cities"]
+						}
+					}
+				},
+				{
+					"name": "Show City",
+					"request": {
+						"method": "GET",
+						"header": [
+							{"key": "Accept", "value": "application/json"},
+							{"key": "Accept-Language", "value": "ar"}
+						],
+						"url": {
+							"raw": "{{expo_url}}/v1/super-admin/cities/{{city_id}}",
+							"host": ["{{expo_url}}"],
+							"path": ["v1", "super-admin", "cities", "{{city_id}}"]
+						}
+					}
+				},
+				{
+					"name": "Update City",
+					"request": {
+						"method": "PUT",
+						"header": [
+							{"key": "Content-Type", "value": "application/json"},
+							{"key": "Accept", "value": "application/json"},
+							{"key": "Accept-Language", "value": "ar"}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"name\": \"Riyadh Capital\",\n  \"name_ar\": \"الرياض العاصمة\"\n}"
+						},
+						"url": {
+							"raw": "{{expo_url}}/v1/super-admin/cities/{{city_id}}",
+							"host": ["{{expo_url}}"],
+							"path": ["v1", "super-admin", "cities", "{{city_id}}"]
+						}
+					}
+				},
+				{
+					"name": "Delete City",
+					"request": {
+						"method": "DELETE",
+						"header": [
+							{"key": "Accept", "value": "application/json"},
+							{"key": "Accept-Language", "value": "ar"}
+						],
+						"url": {
+							"raw": "{{expo_url}}/v1/super-admin/cities/{{city_id}}",
+							"host": ["{{expo_url}}"],
+							"path": ["v1", "super-admin", "cities", "{{city_id}}"]
+						}
+					}
+				}
+			]
+		},
+		{
+			"name": "Users (المستخدمين)",
+			"item": [
+				{
+					"name": "List Users/Profiles",
+					"request": {
+						"method": "GET",
+						"header": [
+							{"key": "Accept", "value": "application/json"},
+							{"key": "Accept-Language", "value": "ar"}
+						],
+						"url": {
+							"raw": "{{expo_url}}/v1/super-admin/users",
+							"host": ["{{expo_url}}"],
+							"path": ["v1", "super-admin", "users"],
+							"query": [
+								{"key": "status", "value": "pending", "disabled": true, "description": "pending|approved|rejected|suspended"},
+								{"key": "business_type", "value": "merchant", "disabled": true},
+								{"key": "search", "value": "", "disabled": true},
+								{"key": "per_page", "value": "15", "disabled": true}
+							]
+						}
+					}
+				},
+				{
+					"name": "Show User/Profile",
+					"request": {
+						"method": "GET",
+						"header": [
+							{"key": "Accept", "value": "application/json"},
+							{"key": "Accept-Language", "value": "ar"}
+						],
+						"url": {
+							"raw": "{{expo_url}}/v1/super-admin/users/{{profile_id}}",
+							"host": ["{{expo_url}}"],
+							"path": ["v1", "super-admin", "users", "{{profile_id}}"]
+						}
+					}
+				},
+				{
+					"name": "Approve Profile",
+					"request": {
+						"method": "PUT",
+						"header": [
+							{"key": "Accept", "value": "application/json"},
+							{"key": "Accept-Language", "value": "ar"}
+						],
+						"url": {
+							"raw": "{{expo_url}}/v1/super-admin/users/{{profile_id}}/approve",
+							"host": ["{{expo_url}}"],
+							"path": ["v1", "super-admin", "users", "{{profile_id}}", "approve"]
+						}
+					}
+				},
+				{
+					"name": "Reject Profile",
+					"request": {
+						"method": "PUT",
+						"header": [
+							{"key": "Content-Type", "value": "application/json"},
+							{"key": "Accept", "value": "application/json"},
+							{"key": "Accept-Language", "value": "ar"}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"reason\": \"المستندات غير مكتملة\"\n}"
+						},
+						"url": {
+							"raw": "{{expo_url}}/v1/super-admin/users/{{profile_id}}/reject",
+							"host": ["{{expo_url}}"],
+							"path": ["v1", "super-admin", "users", "{{profile_id}}", "reject"]
+						}
+					}
+				},
+				{
+					"name": "Suspend Profile",
+					"request": {
+						"method": "PUT",
+						"header": [
+							{"key": "Content-Type", "value": "application/json"},
+							{"key": "Accept", "value": "application/json"},
+							{"key": "Accept-Language", "value": "ar"}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"reason\": \"مخالفة شروط الاستخدام\"\n}"
+						},
+						"url": {
+							"raw": "{{expo_url}}/v1/super-admin/users/{{profile_id}}/suspend",
+							"host": ["{{expo_url}}"],
+							"path": ["v1", "super-admin", "users", "{{profile_id}}", "suspend"]
+						}
+					}
+				}
+			]
+		},
+		{
+			"name": "Settings (الإعدادات)",
+			"item": [
+				{
+					"name": "Get All Settings",
+					"request": {
+						"method": "GET",
+						"header": [
+							{"key": "Accept", "value": "application/json"},
+							{"key": "Accept-Language", "value": "ar"}
+						],
+						"url": {
+							"raw": "{{expo_url}}/v1/super-admin/settings",
+							"host": ["{{expo_url}}"],
+							"path": ["v1", "super-admin", "settings"]
+						}
+					}
+				},
+				{
+					"name": "Get Setting by Key",
+					"request": {
+						"method": "GET",
+						"header": [
+							{"key": "Accept", "value": "application/json"},
+							{"key": "Accept-Language", "value": "ar"}
+						],
+						"url": {
+							"raw": "{{expo_url}}/v1/super-admin/settings/site_name",
+							"host": ["{{expo_url}}"],
+							"path": ["v1", "super-admin", "settings", "site_name"]
+						}
+					}
+				},
+				{
+					"name": "Update Settings",
+					"request": {
+						"method": "PUT",
+						"header": [
+							{"key": "Content-Type", "value": "application/json"},
+							{"key": "Accept", "value": "application/json"},
+							{"key": "Accept-Language", "value": "ar"}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"settings\": {\n    \"site_name\": \"Maham Expo\",\n    \"site_name_ar\": \"معرض محام\",\n    \"contact_email\": \"info@mahamexpo.sa\",\n    \"contact_phone\": \"+966500000000\",\n    \"maintenance_mode\": false,\n    \"auto_approve_profiles\": false,\n    \"max_visit_requests_per_day\": 10,\n    \"max_rental_requests_per_merchant\": 5\n  }\n}"
+						},
+						"url": {
+							"raw": "{{expo_url}}/v1/super-admin/settings",
+							"host": ["{{expo_url}}"],
+							"path": ["v1", "super-admin", "settings"]
+						}
+					}
+				}
+			]
+		}
+	]
+}

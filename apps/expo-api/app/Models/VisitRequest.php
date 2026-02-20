@@ -31,6 +31,10 @@ class VisitRequest extends Model
         'reviewed_at',
         'rejection_reason',
         'admin_notes',
+        'investor_status',
+        'investor_reviewed_by',
+        'investor_reviewed_at',
+        'investor_notes',
     ];
 
     protected $casts = [

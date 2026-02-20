@@ -344,7 +344,10 @@ class ServiceController extends Controller
                         'id' => $user->id,
                         'name' => $user->name,
                         'email' => $user->email,
-                        'roles' => $user->roles->pluck('name'),
+                        'phone' => $user->phone,
+                        'status' => $user->status,
+                        'roles' => $user->roles->pluck('name')->toArray(),
+                        'permissions' => $user->getAllPermissions()->pluck('name')->toArray(),
                     ],
                     'expires_at' => $payload->get('exp'),
                 ]
@@ -491,8 +494,8 @@ class ServiceController extends Controller
                 'email' => $user->email,
                 'phone' => $user->phone,
                 'status' => $user->status,
-                'roles' => $user->roles->pluck('name'),
-                'permissions' => $user->getAllPermissions(),
+                'roles' => $user->roles->pluck('name')->toArray(),
+                'permissions' => $user->getAllPermissions()->pluck('name')->toArray(),
             ]
         ]);
     }

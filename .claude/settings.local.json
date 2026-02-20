@@ -22,7 +22,9 @@
       "Bash(for f in *.json)",
       "Bash(do echo \"=== $f ===\")",
       "Bash(git -C /Users/atif/Desktop/maham-expo remote:*)",
-      "Bash(git -C /Users/atif/Desktop/maham-expo branch:*)"
+      "Bash(git -C /Users/atif/Desktop/maham-expo branch:*)",
+      "Bash(find:*)",
+      "Bash(/opt/homebrew/bin/php artisan route:list:*)"
     ]
   }
 }

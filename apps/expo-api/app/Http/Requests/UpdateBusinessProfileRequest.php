@@ -23,6 +23,7 @@ class UpdateBusinessProfileRequest extends FormRequest
             'national_id_number' => ['nullable', 'string', 'max:20'],
             'national_id_image' => ['nullable', 'image', 'mimes:jpeg,png,jpg,webp,pdf', 'max:5120'],
             'company_logo' => ['nullable', 'image', 'mimes:jpeg,png,jpg,webp', 'max:2048'],
+            'avatar' => ['nullable', 'image', 'mimes:jpeg,png,jpg,webp', 'max:2048'],
             'company_address' => ['nullable', 'string', 'max:500'],
             'company_address_ar' => ['nullable', 'string', 'max:500'],
             'contact_phone' => ['sometimes', 'string', 'max:20'],
