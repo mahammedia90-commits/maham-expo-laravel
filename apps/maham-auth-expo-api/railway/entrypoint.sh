@@ -84,7 +84,11 @@ chmod -R 775 /var/www/html/storage /var/www/html/bootstrap/cache
 
 echo "========================================="
 echo "  Auth Service Ready! (Railway)"
-echo "  Listening on port: $RAILWAY_PORT"
+echo "  Listening on port: $RAILWAY_PORT" 
 echo "========================================="
 
-exec "$@"
+echo ">> Starting Laravel directly on port $RAILWAY_PORT..."
+php artisan serve --host=0.0.0.0 --port=$RAILWAY_PORT
+echo ">> Laravel server stopped, exiting."
+
+
