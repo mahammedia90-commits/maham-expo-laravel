@@ -97,6 +97,7 @@ services:
     # Uncomment to expose MySQL externally (not recommended for production)
     # ports:
     #   - "3306:3306"
+    
   redis:
     image: redis:7-alpine
     restart: unless-stopped

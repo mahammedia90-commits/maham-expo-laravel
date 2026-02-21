@@ -41,35 +41,49 @@ services:
       context: ./apps/maham-auth-expo-api
       dockerfile: Dockerfile.prod
       target: production
+    container_name: auth-service
     restart: always
     environment:
       APP_NAME: "Maham Auth Service"
+      APP_KEY: ${APP_KEY:-base64:G2CYidOMABhjU2jIrZfcqx3tOwUIIrQa3yDTtAhFjBY=}
       APP_ENV: production
       APP_DEBUG: "false"
-      APP_KEY: ${AUTH_APP_KEY:-}
       APP_URL: ${AUTH_APP_URL:-https://auth-service-api.mahamexpo.sa}
       DB_CONNECTION: mysql
       DB_HOST: auth-mysql
       DB_PORT: 3306
       DB_DATABASE: auth_service
       DB_USERNAME: ${AUTH_DB_USER:-auth_user}
-      DB_PASSWORD: ${AUTH_DB_PASSWORD:-secret}
+      DB_PASSWORD: ${AUTH_DB_PASSWORD:?AUTH_DB_PASSWORD is required} 
       QUEUE_CONNECTION: redis
       CACHE_STORE: redis
       CACHE_PREFIX: auth_
       REDIS_HOST: auth-redis
       REDIS_PORT: 6379
       REDIS_PASSWORD: ${REDIS_PASSWORD:-}
-      JWT_SECRET: ${JWT_SECRET:-}
-      SERVICE_TOKEN: ${SERVICE_TOKEN:-}
-      TRUSTED_SERVICE_IPS: ${TRUSTED_SERVICE_IPS:-172.0.0.0/8,10.0.0.0/8,192.168.0.0/16}
+      JWT_SECRET: ${JWT_SECRET:-dVefKKh4jZQm5gfGIzfKpCuUDpcwAh2i8V9L8jfhiH8giFuze6wavfVpAqIqyhFv}
+      SERVICE_TOKEN: ${SERVICE_TOKEN:?SERVICE_TOKEN is required}
+      TRUSTED_SERVICE_IPS: ${TRUSTED_SERVICE_IPS:-172.0.0.0/8}
       LOG_CHANNEL: stack
       LOG_LEVEL: warning
     depends_on:
-      - auth-mysql
-      - auth-redis
+      auth-mysql:
+        condition: service_healthy
+      auth-redis:
+        condition: service_healthy
     networks:
       - microservices
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost/api/health"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 60s
+    deploy:
+      resources:
+        limits:
+          memory: 512M
+          cpus: "0.5"
 
   # ============================================
   # Expo API Service
@@ -79,12 +93,13 @@ services:
       context: ./apps/expo-api
       dockerfile: Dockerfile.prod
       target: production
+    container_name: expo-api
     restart: always
     environment:
       APP_NAME: "Maham Expo API"
       APP_ENV: production
       APP_DEBUG: "false"
-      APP_KEY: ${EXPO_APP_KEY:-}
+      APP_KEY: ${APP_KEY:-base64:zj7tVa17PgRCiKIdg9yNdWoFYVNRlCJPWPr0NGswRfo=}
       APP_URL: ${EXPO_APP_URL:-https://expo-service-api.mahamexpo.sa}
       APP_LOCALE: ar
       DB_CONNECTION: mysql
@@ -92,38 +107,53 @@ services:
       DB_PORT: 3306
       DB_DATABASE: maham_expo_api
       DB_USERNAME: ${EXPO_DB_USER:-expo_user}
-      DB_PASSWORD: ${EXPO_DB_PASSWORD:-secret}
+      DB_PASSWORD: ${EXPO_DB_PASSWORD:?EXPO_DB_PASSWORD is required}
       QUEUE_CONNECTION: redis
       CACHE_STORE: redis
       CACHE_PREFIX: expo_
       REDIS_HOST: expo-redis
       REDIS_PORT: 6379
       REDIS_PASSWORD: ${REDIS_PASSWORD:-}
-      AUTH_SERVICE_URL: http://auth-service
-      AUTH_SERVICE_TOKEN: ${SERVICE_TOKEN:-}
+      AUTH_SERVICE_URL: ${AUTH_SERVICE_URL:-https://auth-service-api.mahamexpo.sa}
+      AUTH_SERVICE_TOKEN: ${SERVICE_TOKEN:?SERVICE_TOKEN is required}
       AUTH_SERVICE_TIMEOUT: 10
       AUTH_SERVICE_CACHE_TTL: 300
       RATE_LIMIT_PER_MINUTE: 60
       LOG_CHANNEL: stack
       LOG_LEVEL: warning
     depends_on:
-      - expo-mysql
-      - expo-redis
-      - auth-service
+      expo-mysql:
+        condition: service_healthy
+      expo-redis:
+        condition: service_healthy
+      auth-service:
+        condition: service_healthy
     networks:
       - microservices
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost/api/health"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 60s
+    deploy:
+      resources:
+        limits:
+          memory: 512M
+          cpus: "0.5"
 
   # ============================================
   # Auth MySQL
   # ============================================
   auth-mysql:
     image: mysql:8.0
+    container_name: auth-mysql
     restart: always
     environment:
-      MYSQL_ROOT_PASSWORD: ${AUTH_MYSQL_ROOT_PASSWORD:-rootpassword}
+      MYSQL_ROOT_PASSWORD: ${AUTH_MYSQL_ROOT_PASSWORD:-rootpassword123}
       MYSQL_DATABASE: auth_service
       MYSQL_USER: ${AUTH_DB_USER:-auth_user}
-      MYSQL_PASSWORD: ${AUTH_DB_PASSWORD:-secret}
+      MYSQL_PASSWORD: ${AUTH_DB_PASSWORD:-password123}
     volumes:
       - auth-mysql-data:/var/lib/mysql
     networks:
@@ -134,18 +164,33 @@ services:
       --collation-server=utf8mb4_unicode_ci
       --innodb-buffer-pool-size=256M
       --max-connections=200
+      --slow-query-log=1
+      --long-query-time=2
+    healthcheck:
+      test: ["CMD", "mysqladmin", "ping", "-h", "localhost"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+      start_period: 30s
+    deploy:
+      resources:
+        limits:
+          memory: 512M
+          cpus: "0.5"
 
   # ============================================
-  # Expo MySQL
+  # Expo MySQL 
+
   # ============================================
   expo-mysql:
     image: mysql:8.0
+    container_name: expo-mysql
     restart: always
     environment:
-      MYSQL_ROOT_PASSWORD: ${EXPO_MYSQL_ROOT_PASSWORD:-rootpassword}
+      MYSQL_ROOT_PASSWORD: ${EXPO_MYSQL_ROOT_PASSWORD:-rootpassword123}
       MYSQL_DATABASE: maham_expo_api
       MYSQL_USER: ${EXPO_DB_USER:-expo_user}
-      MYSQL_PASSWORD: ${EXPO_DB_PASSWORD:-secret}
+      MYSQL_PASSWORD: ${EXPO_DB_PASSWORD:-password123}
     volumes:
       - expo-mysql-data:/var/lib/mysql
     networks:
@@ -156,40 +201,73 @@ services:
       --collation-server=utf8mb4_unicode_ci
       --innodb-buffer-pool-size=256M
       --max-connections=200
+      --slow-query-log=1
+      --long-query-time=2
+    healthcheck:
+      test: ["CMD", "mysqladmin", "ping", "-h", "localhost"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+      start_period: 30s
+    deploy:
+      resources:
+        limits:
+          memory: 512M
+          cpus: "0.5"
 
   # ============================================
   # Auth Redis
   # ============================================
   auth-redis:
     image: redis:7-alpine
+    container_name: auth-redis
     restart: always
     command: redis-server --maxmemory 128mb --maxmemory-policy allkeys-lru --appendonly yes
     volumes:
       - auth-redis-data:/data
     networks:
       - microservices
+    healthcheck:
+      test: ["CMD", "redis-cli", "ping"]
+      interval: 10s
+      timeout: 5s
+      retries: 3
+    deploy:
+      resources:
+        limits:
+          memory: 192M
+          cpus: "0.25"
 
   # ============================================
   # Expo Redis
   # ============================================
   expo-redis:
     image: redis:7-alpine
+    container_name: expo-redis
     restart: always
     command: redis-server --maxmemory 128mb --maxmemory-policy allkeys-lru --appendonly yes
     volumes:
       - expo-redis-data:/data
     networks:
       - microservices
+    healthcheck:
+      test: ["CMD", "redis-cli", "ping"]
+      interval: 10s
+      timeout: 5s
+      retries: 3
+    deploy:
+      resources:
+        limits:
+          memory: 192M
+          cpus: "0.25"
 
 networks:
   microservices:
     driver: bridge
+    name: maham_network
 
 volumes:
   auth-mysql-data:
   auth-redis-data:
   expo-mysql-data:
   expo-redis-data:
-  certbot-etc:
-  certbot-var:
-  certbot-webroot:
