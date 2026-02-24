@@ -71,12 +71,12 @@ php artisan migrate --force --no-interaction 2>&1 || echo ">> Migration warning 
 echo ">> Running seeders..."
 php artisan db:seed --force --no-interaction 2>/dev/null || echo ">> Seeding skipped (might already be seeded)"
 
-# Production cache
-echo ">> Caching configuration..."
-php artisan config:cache --no-interaction 2>&1 || echo ">> Config cache warning"
+# DO NOT cache config - we rely on environment variables at runtime
+# Only cache routes and views for performance
+echo ">> Caching routes and views..."
 php artisan route:cache --no-interaction 2>&1 || echo ">> Route cache warning"
 php artisan view:cache --no-interaction 2>&1 || echo ">> View cache warning"
-php artisan event:cache --no-interaction 2>&1 || echo ">> Event cache warning"
+echo ">> Config cache SKIPPED (using env vars at runtime)"
 
 # Storage link
 php artisan storage:link --force --no-interaction 2>/dev/null || true

@@ -101,6 +101,10 @@ class BusinessProfileSeeder extends Seeder
         ];
 
         foreach ($profiles as $profile) {
+            if (BusinessProfile::where('user_id', $profile['user_id'])->exists()) {
+                $this->command->info("Skipped existing profile: {$profile['company_name']}");
+                continue;
+            }
             BusinessProfile::create($profile);
             $this->command->info("Created profile: {$profile['company_name']}");
         }

@@ -126,6 +126,11 @@ class VisitRequestSeeder extends Seeder
             ];
         }
 
+        if (VisitRequest::count() > 0) {
+            $this->command->info('Visit requests already seeded, skipping.');
+            return;
+        }
+
         foreach ($visitRequests as $data) {
             VisitRequest::create($data);
         }

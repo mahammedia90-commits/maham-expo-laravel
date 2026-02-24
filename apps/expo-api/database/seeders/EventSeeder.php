@@ -30,6 +30,12 @@ class EventSeeder extends Seeder
             $sections = $eventData['sections'] ?? [];
             unset($eventData['sections']);
 
+            // Skip if event already exists
+            if (Event::where('name', $eventData['name'])->exists()) {
+                $this->command->info("Skipped existing event: {$eventData['name']}");
+                continue;
+            }
+
             $event = Event::create($eventData);
 
             foreach ($sections as $sectionData) {

@@ -78,6 +78,11 @@ class FavoriteSeeder extends Seeder
             ];
         }
 
+        if (Favorite::count() > 0) {
+            $this->command->info('Favorites already seeded, skipping.');
+            return;
+        }
+
         foreach ($favorites as $favorite) {
             Favorite::create($favorite);
         }

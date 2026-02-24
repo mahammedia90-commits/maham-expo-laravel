@@ -121,6 +121,11 @@ class NotificationSeeder extends Seeder
             ],
         ];
 
+        if (Notification::count() > 0) {
+            $this->command->info('Notifications already seeded, skipping.');
+            return;
+        }
+
         foreach ($notifications as $notification) {
             Notification::create($notification);
         }

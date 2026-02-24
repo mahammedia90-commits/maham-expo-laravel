@@ -148,6 +148,11 @@ class RentalRequestSeeder extends Seeder
             }
         }
 
+        if (RentalRequest::count() > 0) {
+            $this->command->info('Rental requests already seeded, skipping.');
+            return;
+        }
+
         foreach ($rentalRequests as $data) {
             RentalRequest::create($data);
         }
