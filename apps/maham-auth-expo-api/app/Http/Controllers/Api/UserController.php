@@ -53,10 +53,10 @@ class UserController extends Controller
         $perPage = min($request->input('per_page', 15), 100);
         $users = $query->paginate($perPage);
 
-        return response()->json([
+        return response()->json([ 
             'success' => true,
             'data' => UserResource::collection($users),
-            'meta' => [
+            'pagination' => [
                 'current_page' => $users->currentPage(),
                 'last_page' => $users->lastPage(),
                 'per_page' => $users->perPage(),

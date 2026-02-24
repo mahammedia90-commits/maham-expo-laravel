@@ -97,6 +97,28 @@ class SampleUsersSeeder extends Seeder
                 'email_verified_at' => now(),
                 'role' => 'investor',
             ],
+            // Sponsor 1 - TechGroup (sponsor user_id 16)
+            [
+                'id' => '00000000-0000-0000-0000-000000000016',
+                'name' => 'Abdulrahman Al-Fahad',
+                'email' => 'sponsor1@techgroup.sa',
+                'phone' => '0551112233',
+                'password' => Hash::make('password'),
+                'status' => 'active',
+                'email_verified_at' => now(),
+                'role' => 'sponsor',
+            ],
+            // Sponsor 2 - Media Partners (sponsor user_id 17)
+            [
+                'id' => '00000000-0000-0000-0000-000000000017',
+                'name' => 'Majed Al-Shammari',
+                'email' => 'sponsor2@mediapartners.sa',
+                'phone' => '0554445566',
+                'password' => Hash::make('password'),
+                'status' => 'active',
+                'email_verified_at' => now(),
+                'role' => 'sponsor',
+            ],
             // Regular user (no business profile)
             [
                 'name' => 'Visitor User',

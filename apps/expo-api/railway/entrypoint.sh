@@ -21,13 +21,6 @@ fi
 # Ensure storage directories exist
 mkdir -p storage/logs storage/framework/cache/data storage/framework/sessions storage/framework/views bootstrap/cache
 
-# Replace {{PORT}} placeholder in nginx config with actual Railway PORT
-sed "s/{{PORT}}/$RAILWAY_PORT/g" /etc/nginx/nginx-template.conf > /etc/nginx/sites-available/default
-
-# Remove default nginx config if exists
-rm -f /etc/nginx/sites-enabled/default
-ln -sf /etc/nginx/sites-available/default /etc/nginx/sites-enabled/default
-
 # Wait for MySQL (Railway MySQL or external DB)
 if [ -n "$DB_HOST" ]; then
     echo ">> Waiting for MySQL at $DB_HOST:${DB_PORT:-3306}..."
@@ -78,4 +71,14 @@ echo "  Expo API Ready! (Railway)"
 echo "  Listening on port: $RAILWAY_PORT"
 echo "========================================="
 
-exec "$@"
+# Start queue worker in background
+echo ">> Starting queue worker in background..."
+php artisan queue:work redis --sleep=3 --tries=3 --max-time=3600 &
+
+# Start scheduler in background
+echo ">> Starting scheduler in background..."
+(while true; do php artisan schedule:run --no-interaction 2>&1; sleep 60; done) &
+
+# Start Laravel on Railway PORT (foreground - keeps container alive)
+echo ">> Starting Laravel directly on port $RAILWAY_PORT..."
+php artisan serve --host=0.0.0.0 --port=$RAILWAY_PORT

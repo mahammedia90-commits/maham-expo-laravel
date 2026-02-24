@@ -90,6 +90,149 @@ return [
     'notification' => [
         'marked_as_read' => 'Notification marked as read',
         'all_marked_as_read' => 'All notifications marked as read',
+        'preferences_updated' => 'Notification preferences updated successfully',
+    ],
+
+    // ================== RATING ==================
+    'rating' => [
+        'created' => 'Rating submitted successfully',
+        'updated' => 'Rating updated successfully',
+        'deleted' => 'Rating deleted successfully',
+        'approved' => 'Rating approved',
+        'rejected' => 'Rating rejected',
+        'already_rated' => 'You have already rated this item',
+        'not_found' => 'Rating not found',
+    ],
+
+    // ================== SUPPORT TICKET ==================
+    'support_ticket' => [
+        'not_found' => 'Support ticket not found',
+        'created' => 'Support ticket created successfully',
+        'reply_added' => 'Reply added successfully',
+        'assigned' => 'Ticket assigned successfully',
+        'resolved' => 'Ticket resolved successfully',
+        'closed' => 'Ticket closed',
+        'reopened' => 'Ticket reopened',
+        'already_closed' => 'Ticket is already closed',
+    ],
+
+    // ================== RENTAL CONTRACT ==================
+    'rental_contract' => [
+        'not_found' => 'Rental contract not found',
+        'created' => 'Rental contract created successfully',
+        'updated' => 'Rental contract updated successfully',
+        'approved' => 'Rental contract approved and activated',
+        'rejected' => 'Rental contract rejected',
+        'terminated' => 'Rental contract terminated',
+        'cannot_be_modified' => 'Contract cannot be modified in this state',
+        'not_pending' => 'Contract is not pending approval',
+        'signed' => 'Contract signed successfully',
+    ],
+
+    // ================== INVOICE ==================
+    'invoice' => [
+        'not_found' => 'Invoice not found',
+        'created' => 'Invoice created successfully',
+        'updated' => 'Invoice updated successfully',
+        'issued' => 'Invoice issued successfully',
+        'marked_paid' => 'Invoice marked as paid',
+        'cancelled' => 'Invoice cancelled',
+        'cannot_be_modified' => 'Invoice cannot be modified in this state',
+        'already_paid' => 'Invoice is already paid',
+    ],
+
+    // ================== PAGE ==================
+    'page' => [
+        'not_found' => 'Page not found',
+        'created' => 'Page created successfully',
+        'updated' => 'Page updated successfully',
+        'deleted' => 'Page deleted successfully',
+    ],
+
+    // ================== FAQ ==================
+    'faq' => [
+        'not_found' => 'FAQ not found',
+        'created' => 'FAQ created successfully',
+        'updated' => 'FAQ updated successfully',
+        'deleted' => 'FAQ deleted successfully',
+        'helpful_recorded' => 'Thank you for your feedback',
+    ],
+
+    // ================== BANNER ==================
+    'banner' => [
+        'not_found' => 'Banner not found',
+        'created' => 'Banner created successfully',
+        'updated' => 'Banner updated successfully',
+        'deleted' => 'Banner deleted successfully',
+    ],
+
+    // ================== SPONSOR ==================
+    'sponsor' => [
+        'not_found' => 'Sponsor not found',
+        'created' => 'Sponsor created successfully',
+        'updated' => 'Sponsor updated successfully',
+        'deleted' => 'Sponsor deleted successfully',
+        'approved' => 'Sponsor approved successfully',
+        'activated' => 'Sponsor activated successfully',
+        'suspended' => 'Sponsor suspended',
+        'deactivated' => 'Sponsor deactivated',
+        'already_exists' => 'Sponsor already exists for this event',
+        'not_active' => 'Sponsor is not active',
+        'has_active_contracts' => 'Cannot delete sponsor with active contracts',
+    ],
+
+    // ================== SPONSOR PACKAGE ==================
+    'sponsor_package' => [
+        'not_found' => 'Sponsor package not found',
+        'created' => 'Sponsor package created successfully',
+        'updated' => 'Sponsor package updated successfully',
+        'deleted' => 'Sponsor package deleted successfully',
+        'not_available' => 'This sponsor package is not available',
+        'full' => 'This sponsor package has reached maximum sponsors',
+        'has_active_contracts' => 'Cannot delete package with active contracts',
+    ],
+
+    // ================== SPONSOR CONTRACT ==================
+    'sponsor_contract' => [
+        'not_found' => 'Sponsor contract not found',
+        'created' => 'Sponsor contract created successfully',
+        'updated' => 'Sponsor contract updated successfully',
+        'approved' => 'Sponsor contract approved and activated',
+        'rejected' => 'Sponsor contract rejected',
+        'completed' => 'Sponsor contract completed',
+        'cancelled' => 'Sponsor contract cancelled',
+        'cannot_be_modified' => 'Contract cannot be modified in this state',
+        'already_active' => 'Contract is already active',
+        'payment_recorded' => 'Payment recorded successfully',
+    ],
+
+    // ================== SPONSOR PAYMENT ==================
+    'sponsor_payment' => [
+        'not_found' => 'Sponsor payment not found',
+        'created' => 'Payment schedule created successfully',
+        'updated' => 'Payment updated successfully',
+        'marked_paid' => 'Payment marked as paid',
+        'already_paid' => 'Payment is already paid',
+    ],
+
+    // ================== SPONSOR BENEFIT ==================
+    'sponsor_benefit' => [
+        'not_found' => 'Sponsor benefit not found',
+        'created' => 'Benefit added successfully',
+        'updated' => 'Benefit updated successfully',
+        'delivered' => 'Benefit marked as delivered',
+    ],
+
+    // ================== SPONSOR ASSET ==================
+    'sponsor_asset' => [
+        'not_found' => 'Sponsor asset not found',
+        'uploaded' => 'Asset uploaded successfully',
+        'updated' => 'Asset updated successfully',
+        'deleted' => 'Asset deleted successfully',
+        'approved' => 'Asset approved',
+        'rejected' => 'Asset rejected',
+        'upload_failed' => 'Asset upload failed',
+        'limit_reached' => 'Maximum number of assets reached',
     ],
 
     // ================== VALIDATION ==================

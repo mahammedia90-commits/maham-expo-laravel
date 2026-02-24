@@ -145,7 +145,7 @@ class ApiResponse
         $response = [
             'success' => true,
             'data' => $paginator->items(),
-            'meta' => [
+            'pagination' => [  
                 'current_page' => $paginator->currentPage(),
                 'last_page' => $paginator->lastPage(),
                 'per_page' => $paginator->perPage(),

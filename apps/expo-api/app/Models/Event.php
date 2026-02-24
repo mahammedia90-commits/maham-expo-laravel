@@ -41,6 +41,9 @@ class Event extends Model
         'status',
         'is_featured',
         'views_count',
+        'expected_visitors',
+        'investment_opportunity_rating',
+        'promotional_video',
         'created_by',
     ];
 
@@ -56,6 +59,8 @@ class Event extends Model
         'status' => EventStatus::class,
         'is_featured' => 'boolean',
         'views_count' => 'integer',
+        'expected_visitors' => 'integer',
+        'investment_opportunity_rating' => 'decimal:1',
         'latitude' => 'decimal:8',
         'longitude' => 'decimal:8',
     ];
@@ -92,6 +97,26 @@ class Event extends Model
     public function favorites(): MorphMany
     {
         return $this->morphMany(Favorite::class, 'favoritable');
+    }
+
+    public function sponsors(): HasMany
+    {
+        return $this->hasMany(Sponsor::class);
+    }
+
+    public function sponsorPackages(): HasMany
+    {
+        return $this->hasMany(SponsorPackage::class);
+    }
+
+    public function ratings(): MorphMany
+    {
+        return $this->morphMany(Rating::class, 'rateable');
+    }
+
+    public function rentalContracts(): HasMany
+    {
+        return $this->hasMany(RentalContract::class);
     }
 
     /* ========================================

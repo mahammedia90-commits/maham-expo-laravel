@@ -21,7 +21,7 @@ class CheckPermission
             );
         }
 
-        if ($user->hasRole('super-admin')) {
+        if ($user->hasRole('super-admin')) { 
             return $next($request);
         }
 

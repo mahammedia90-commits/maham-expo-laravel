@@ -4,7 +4,7 @@
 # This file is optimized for Coolify on Hostinger VPS
 
 services:
-  auth-api:
+  auth-api: 
     build:
       context: .
       dockerfile: Dockerfile.prod

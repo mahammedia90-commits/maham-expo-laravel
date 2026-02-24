@@ -25,10 +25,12 @@ class ServiceController extends Controller
             'data' => $services->map(function ($service) {
                 return [
                     'id' => $service->id,
-                    'name' => $service->name,
+                    'name' => $service->name, 
                     'display_name' => $service->display_name,
                     'description' => $service->description,
                     'status' => $service->status,
+                    'is_active' => $service->is_active,
+                    'allowed_permissions' => $service->allowed_permissions,
                     'last_used_at' => $service->last_used_at?->toISOString(),
                     'created_at' => $service->created_at->toISOString(),
                 ];
@@ -315,7 +317,7 @@ class ServiceController extends Controller
                     'message' => 'IP غير مسموح',
                 ], 403);
             }
-        }
+        } 
 
         $userToken = $request->input('token');
 

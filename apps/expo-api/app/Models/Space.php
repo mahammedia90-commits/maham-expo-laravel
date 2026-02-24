@@ -39,6 +39,11 @@ class Space extends Model
         'space_type',
         'payment_system',
         'rental_duration',
+        'allowed_business_type',
+        'investor_conditions',
+        'investor_conditions_ar',
+        'operational_notes',
+        'operational_notes_ar',
         'latitude',
         'longitude',
         'address',
@@ -89,6 +94,16 @@ class Space extends Model
     public function favorites(): MorphMany
     {
         return $this->morphMany(Favorite::class, 'favoritable');
+    }
+
+    public function ratings(): MorphMany
+    {
+        return $this->morphMany(Rating::class, 'rateable');
+    }
+
+    public function rentalContracts(): HasMany
+    {
+        return $this->hasMany(RentalContract::class);
     }
 
     /* ========================================
@@ -176,6 +191,26 @@ class Space extends Model
     public function getLocalizedAddressAttribute(): ?string
     {
         return app()->getLocale() === 'ar' ? ($this->address_ar ?? $this->address) : $this->address;
+    }
+
+    public function getLocalizedInvestorConditionsAttribute(): ?string
+    {
+        return app()->getLocale() === 'ar' ? ($this->investor_conditions_ar ?? $this->investor_conditions) : $this->investor_conditions;
+    }
+
+    public function getLocalizedOperationalNotesAttribute(): ?string
+    {
+        return app()->getLocale() === 'ar' ? ($this->operational_notes_ar ?? $this->operational_notes) : $this->operational_notes;
+    }
+
+    public function getAverageRatingAttribute(): float
+    {
+        return round($this->ratings()->where('is_approved', true)->avg('overall_rating') ?? 0, 1);
+    }
+
+    public function getRatingsCountAttribute(): int
+    {
+        return $this->ratings()->where('is_approved', true)->count();
     }
 
     public function getMainImageAttribute(): ?string

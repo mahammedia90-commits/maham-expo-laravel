@@ -30,6 +30,7 @@ return [
     'roles' => [
         'investor' => 'مستثمر',
         'merchant' => 'تاجر',
+        'sponsor' => 'راعي',
         'admin' => 'مشرف',
         'super-admin' => 'مدير النظام',
     ],
@@ -42,6 +43,11 @@ return [
     'request_prefixes' => [
         'visit' => 'VR',
         'rental' => 'RR',
+        'sponsor_contract' => 'SC',
+        'sponsor_payment' => 'SP',
+        'rental_contract' => 'RC',
+        'invoice' => 'INV',
+        'ticket' => 'TK',
     ],
 
     /*
@@ -57,6 +63,10 @@ return [
             'events' => 'uploads/events',
             'spaces' => 'uploads/spaces',
             'profiles' => 'uploads/profiles',
+            'sponsors' => 'uploads/sponsors',
+            'sponsor_assets' => 'uploads/sponsor-assets',
+            'banners' => 'uploads/banners',
+            'tickets' => 'uploads/tickets',
         ],
     ],
 
@@ -83,6 +93,11 @@ return [
             'cities' => 3600,
             'events' => 1800, // 30 minutes
             'spaces' => 1800,
+            'sponsors' => 1800,
+            'sponsor_packages' => 3600,
+            'pages' => 7200, // 2 hours
+            'faqs' => 3600,
+            'banners' => 1800,
         ],
     ],
 
@@ -106,5 +121,50 @@ return [
         'min_rental_days' => 1,
         'requires_verified_profile' => true,
         'cancellation_allowed_before_hours' => 48,
+    ],
+
+    /*
+    |--------------------------------------------------------------------------
+    | Sponsor Settings
+    |--------------------------------------------------------------------------
+    */
+    'sponsor' => [
+        'max_assets_per_sponsor' => 20,
+        'max_asset_size' => 10240, // 10MB in KB
+        'allowed_asset_types' => ['jpg', 'jpeg', 'png', 'webp', 'pdf', 'mp4'],
+    ],
+
+    /*
+    |--------------------------------------------------------------------------
+    | Rating Settings
+    |--------------------------------------------------------------------------
+    */
+    'rating' => [
+        'min_rating' => 1,
+        'max_rating' => 5,
+        'auto_approve' => true,
+    ],
+
+    /*
+    |--------------------------------------------------------------------------
+    | Support Ticket Settings
+    |--------------------------------------------------------------------------
+    */
+    'support' => [
+        'max_attachments' => 5,
+        'max_attachment_size' => 5120, // 5MB
+        'auto_close_after_days' => 30,
+    ],
+
+    /*
+    |--------------------------------------------------------------------------
+    | Invoice Settings
+    |--------------------------------------------------------------------------
+    */
+    'invoice' => [
+        'tax_rate' => 15, // 15% VAT
+        'currency' => 'SAR',
+        'company_name' => 'Maham Expo',
+        'company_name_ar' => 'معرض مهام',
     ],
 ];

@@ -75,6 +75,55 @@ class ApiErrorCode
     // ================== NOTIFICATION ERRORS ==================
     public const NOTIFICATION_NOT_FOUND = 'notification_not_found';
 
+    // ================== SPONSOR ERRORS ==================
+    public const SPONSOR_NOT_FOUND = 'sponsor_not_found';
+    public const SPONSOR_NOT_ACTIVE = 'sponsor_not_active';
+    public const SPONSOR_ALREADY_EXISTS = 'sponsor_already_exists';
+
+    // ================== SPONSOR PACKAGE ERRORS ==================
+    public const SPONSOR_PACKAGE_NOT_FOUND = 'sponsor_package_not_found';
+    public const SPONSOR_PACKAGE_NOT_AVAILABLE = 'sponsor_package_not_available';
+    public const SPONSOR_PACKAGE_FULL = 'sponsor_package_full';
+
+    // ================== SPONSOR CONTRACT ERRORS ==================
+    public const SPONSOR_CONTRACT_NOT_FOUND = 'sponsor_contract_not_found';
+    public const SPONSOR_CONTRACT_CANNOT_BE_MODIFIED = 'sponsor_contract_cannot_be_modified';
+    public const SPONSOR_CONTRACT_ALREADY_ACTIVE = 'sponsor_contract_already_active';
+
+    // ================== SPONSOR PAYMENT ERRORS ==================
+    public const SPONSOR_PAYMENT_NOT_FOUND = 'sponsor_payment_not_found';
+    public const SPONSOR_PAYMENT_ALREADY_PAID = 'sponsor_payment_already_paid';
+
+    // ================== SPONSOR ASSET ERRORS ==================
+    public const SPONSOR_ASSET_NOT_FOUND = 'sponsor_asset_not_found';
+    public const SPONSOR_ASSET_NOT_APPROVED = 'sponsor_asset_not_approved';
+    public const SPONSOR_ASSET_UPLOAD_FAILED = 'sponsor_asset_upload_failed';
+    public const SPONSOR_ASSET_LIMIT_REACHED = 'sponsor_asset_limit_reached';
+
+    // ================== RATING ERRORS ==================
+    public const RATING_NOT_FOUND = 'rating_not_found';
+    public const RATING_ALREADY_EXISTS = 'rating_already_exists';
+
+    // ================== SUPPORT TICKET ERRORS ==================
+    public const TICKET_NOT_FOUND = 'ticket_not_found';
+    public const TICKET_CLOSED = 'ticket_closed';
+    public const TICKET_ALREADY_ASSIGNED = 'ticket_already_assigned';
+
+    // ================== RENTAL CONTRACT ERRORS ==================
+    public const RENTAL_CONTRACT_NOT_FOUND = 'rental_contract_not_found';
+    public const RENTAL_CONTRACT_CANNOT_BE_MODIFIED = 'rental_contract_cannot_be_modified';
+    public const RENTAL_CONTRACT_NOT_PENDING = 'rental_contract_not_pending';
+
+    // ================== INVOICE ERRORS ==================
+    public const INVOICE_NOT_FOUND = 'invoice_not_found';
+    public const INVOICE_CANNOT_BE_MODIFIED = 'invoice_cannot_be_modified';
+    public const INVOICE_ALREADY_PAID = 'invoice_already_paid';
+
+    // ================== CMS ERRORS ==================
+    public const PAGE_NOT_FOUND = 'page_not_found';
+    public const FAQ_NOT_FOUND = 'faq_not_found';
+    public const BANNER_NOT_FOUND = 'banner_not_found';
+
     // ================== FILE ERRORS ==================
     public const FILE_UPLOAD_FAILED = 'file_upload_failed';
     public const FILE_NOT_FOUND = 'file_not_found';
@@ -121,7 +170,11 @@ class ApiErrorCode
             self::VISIT_REQUEST_CANNOT_BE_CANCELLED,
             self::RENTAL_REQUEST_CANNOT_BE_MODIFIED,
             self::RENTAL_REQUEST_CANNOT_BE_CANCELLED,
-            self::PROFILE_CANNOT_BE_MODIFIED => 403,
+            self::PROFILE_CANNOT_BE_MODIFIED,
+            self::SPONSOR_CONTRACT_CANNOT_BE_MODIFIED,
+            self::RENTAL_CONTRACT_CANNOT_BE_MODIFIED,
+            self::INVOICE_CANNOT_BE_MODIFIED,
+            self::TICKET_CLOSED => 403,
 
             // 404 Not Found
             self::RESOURCE_NOT_FOUND,
@@ -134,7 +187,19 @@ class ApiErrorCode
             self::CITY_NOT_FOUND,
             self::FAVORITE_NOT_FOUND,
             self::NOTIFICATION_NOT_FOUND,
-            self::FILE_NOT_FOUND => 404,
+            self::FILE_NOT_FOUND,
+            self::SPONSOR_NOT_FOUND,
+            self::SPONSOR_PACKAGE_NOT_FOUND,
+            self::SPONSOR_CONTRACT_NOT_FOUND,
+            self::SPONSOR_PAYMENT_NOT_FOUND,
+            self::SPONSOR_ASSET_NOT_FOUND,
+            self::RATING_NOT_FOUND,
+            self::TICKET_NOT_FOUND,
+            self::RENTAL_CONTRACT_NOT_FOUND,
+            self::INVOICE_NOT_FOUND,
+            self::PAGE_NOT_FOUND,
+            self::FAQ_NOT_FOUND,
+            self::BANNER_NOT_FOUND => 404,
 
             // 409 Conflict
             self::RESOURCE_ALREADY_EXISTS,
@@ -142,7 +207,14 @@ class ApiErrorCode
             self::RENTAL_REQUEST_ALREADY_EXISTS,
             self::PROFILE_ALREADY_EXISTS,
             self::FAVORITE_ALREADY_EXISTS,
-            self::SPACE_ALREADY_RENTED => 409,
+            self::SPACE_ALREADY_RENTED,
+            self::SPONSOR_ALREADY_EXISTS,
+            self::SPONSOR_CONTRACT_ALREADY_ACTIVE,
+            self::SPONSOR_PAYMENT_ALREADY_PAID,
+            self::SPONSOR_PACKAGE_FULL,
+            self::RATING_ALREADY_EXISTS,
+            self::TICKET_ALREADY_ASSIGNED,
+            self::INVOICE_ALREADY_PAID => 409,
 
             // 422 Unprocessable Entity
             self::RESOURCE_CREATION_FAILED,
@@ -154,7 +226,13 @@ class ApiErrorCode
             self::SPACE_NOT_AVAILABLE,
             self::PROFILE_PENDING,
             self::PROFILE_REJECTED,
-            self::FILE_UPLOAD_FAILED => 422,
+            self::FILE_UPLOAD_FAILED,
+            self::SPONSOR_NOT_ACTIVE,
+            self::SPONSOR_PACKAGE_NOT_AVAILABLE,
+            self::SPONSOR_ASSET_NOT_APPROVED,
+            self::SPONSOR_ASSET_UPLOAD_FAILED,
+            self::SPONSOR_ASSET_LIMIT_REACHED,
+            self::RENTAL_CONTRACT_NOT_PENDING => 422,
 
             // 429 Too Many Requests
             self::RATE_LIMIT_EXCEEDED => 429,

@@ -173,6 +173,130 @@ class RolesAndPermissionsSeeder extends Seeder
                 'create' => 'إنشاء دفعة',
                 'refund' => 'استرداد دفعة',
             ],
+
+            // ==================== الرعاة ====================
+            'sponsors' => [
+                'view' => 'عرض الرعاة',
+                'create' => 'إنشاء راعي',
+                'update' => 'تعديل راعي',
+                'delete' => 'حذف راعي',
+                'approve' => 'اعتماد راعي',
+                'reject' => 'رفض راعي',
+                'view-all' => 'عرض جميع الرعاة',
+            ],
+
+            // ==================== باقات الرعاية ====================
+            'sponsor-packages' => [
+                'view' => 'عرض باقات الرعاية',
+                'create' => 'إنشاء باقة رعاية',
+                'update' => 'تعديل باقة رعاية',
+                'delete' => 'حذف باقة رعاية',
+            ],
+
+            // ==================== عقود الرعاية ====================
+            'sponsor-contracts' => [
+                'view' => 'عرض عقود الرعاية',
+                'create' => 'إنشاء عقد رعاية',
+                'update' => 'تعديل عقد رعاية',
+                'approve' => 'اعتماد عقد رعاية',
+                'reject' => 'رفض عقد رعاية',
+                'view-all' => 'عرض جميع عقود الرعاية',
+            ],
+
+            // ==================== مدفوعات الرعاية ====================
+            'sponsor-payments' => [
+                'view' => 'عرض مدفوعات الرعاية',
+                'create' => 'إنشاء دفعة رعاية',
+                'view-all' => 'عرض جميع مدفوعات الرعاية',
+            ],
+
+            // ==================== أصول الراعي (مواد إعلانية) ====================
+            'sponsor-assets' => [
+                'view' => 'عرض مواد الراعي',
+                'create' => 'رفع مادة إعلانية',
+                'update' => 'تعديل مادة إعلانية',
+                'delete' => 'حذف مادة إعلانية',
+                'approve' => 'اعتماد مادة إعلانية',
+            ],
+
+            // ==================== تتبع ظهور الراعي ====================
+            'sponsor-exposure' => [
+                'view' => 'عرض إحصائيات الظهور',
+            ],
+
+            // ==================== نظام التقييمات ====================
+            'ratings' => [
+                'view'       => 'عرض التقييمات',
+                'create'     => 'إضافة تقييم',
+                'update'     => 'تعديل التقييم',
+                'delete'     => 'حذف تقييم',
+                'approve'    => 'اعتماد تقييم',
+                'reject'     => 'رفض تقييم',
+                'view-all'   => 'عرض جميع التقييمات',
+            ],
+
+            // ==================== تذاكر الدعم ====================
+            'support-tickets' => [
+                'view'       => 'عرض تذاكر الدعم الخاصة',
+                'create'     => 'إنشاء تذكرة دعم',
+                'update'     => 'تعديل تذكرة دعم',
+                'close'      => 'إغلاق تذكرة دعم',
+                'reply'      => 'الرد على تذكرة دعم',
+                'view-all'   => 'عرض جميع التذاكر',
+                'assign'     => 'تعيين تذكرة لموظف',
+                'delete'     => 'حذف تذكرة دعم',
+            ],
+
+            // ==================== عقود الاستئجار ====================
+            'rental-contracts' => [
+                'view'       => 'عرض عقود الاستئجار الخاصة',
+                'create'     => 'إنشاء عقد استئجار',
+                'update'     => 'تعديل عقد استئجار',
+                'sign'       => 'توقيع عقد استئجار',
+                'approve'    => 'اعتماد عقد استئجار',
+                'reject'     => 'رفض عقد استئجار',
+                'terminate'  => 'إنهاء عقد استئجار',
+                'view-all'   => 'عرض جميع عقود الاستئجار',
+            ],
+
+            // ==================== الفواتير ====================
+            'invoices' => [
+                'view'       => 'عرض الفواتير الخاصة',
+                'create'     => 'إنشاء فاتورة',
+                'update'     => 'تعديل فاتورة',
+                'issue'      => 'إصدار فاتورة',
+                'mark-paid'  => 'تسجيل دفع فاتورة',
+                'cancel'     => 'إلغاء فاتورة',
+                'view-all'   => 'عرض جميع الفواتير',
+            ],
+
+            // ==================== إدارة المحتوى (CMS) ====================
+            'pages' => [
+                'view'   => 'عرض الصفحات',
+                'create' => 'إنشاء صفحة',
+                'update' => 'تعديل صفحة',
+                'delete' => 'حذف صفحة',
+            ],
+
+            'faqs' => [
+                'view'   => 'عرض الأسئلة الشائعة',
+                'create' => 'إضافة سؤال شائع',
+                'update' => 'تعديل سؤال شائع',
+                'delete' => 'حذف سؤال شائع',
+            ],
+
+            'banners' => [
+                'view'   => 'عرض الإعلانات',
+                'create' => 'إنشاء إعلان',
+                'update' => 'تعديل إعلان',
+                'delete' => 'حذف إعلان',
+            ],
+
+            // ==================== تفضيلات الإشعارات ====================
+            'notification-preferences' => [
+                'view'   => 'عرض تفضيلات الإشعارات',
+                'update' => 'تعديل تفضيلات الإشعارات',
+            ],
         ];
 
         $permissions = [];
@@ -258,6 +382,42 @@ class RolesAndPermissionsSeeder extends Seeder
             // التقارير والمالية
             'reports.view', 'reports.export',
             'payments.view', 'payments.create', 'payments.refund',
+
+            // الرعاة - إدارة كاملة
+            'sponsors.view', 'sponsors.create', 'sponsors.update', 'sponsors.delete',
+            'sponsors.approve', 'sponsors.reject', 'sponsors.view-all',
+            'sponsor-packages.view', 'sponsor-packages.create', 'sponsor-packages.update', 'sponsor-packages.delete',
+            'sponsor-contracts.view', 'sponsor-contracts.create', 'sponsor-contracts.update',
+            'sponsor-contracts.approve', 'sponsor-contracts.reject', 'sponsor-contracts.view-all',
+            'sponsor-payments.view', 'sponsor-payments.create', 'sponsor-payments.view-all',
+            'sponsor-assets.view', 'sponsor-assets.approve',
+            'sponsor-exposure.view',
+
+            // التقييمات - إدارة كاملة
+            'ratings.view', 'ratings.create', 'ratings.update', 'ratings.delete',
+            'ratings.approve', 'ratings.reject', 'ratings.view-all',
+
+            // تذاكر الدعم - إدارة كاملة
+            'support-tickets.view', 'support-tickets.create', 'support-tickets.update',
+            'support-tickets.close', 'support-tickets.reply', 'support-tickets.view-all',
+            'support-tickets.assign', 'support-tickets.delete',
+
+            // عقود الاستئجار - إدارة كاملة
+            'rental-contracts.view', 'rental-contracts.create', 'rental-contracts.update',
+            'rental-contracts.sign', 'rental-contracts.approve', 'rental-contracts.reject',
+            'rental-contracts.terminate', 'rental-contracts.view-all',
+
+            // الفواتير - إدارة كاملة
+            'invoices.view', 'invoices.create', 'invoices.update',
+            'invoices.issue', 'invoices.mark-paid', 'invoices.cancel', 'invoices.view-all',
+
+            // CMS - إدارة كاملة
+            'pages.view', 'pages.create', 'pages.update', 'pages.delete',
+            'faqs.view', 'faqs.create', 'faqs.update', 'faqs.delete',
+            'banners.view', 'banners.create', 'banners.update', 'banners.delete',
+
+            // تفضيلات الإشعارات
+            'notification-preferences.view', 'notification-preferences.update',
         ];
         $admin->syncPermissions($adminPermissions);
         $this->command->info("   ✅ Admin: " . count($adminPermissions) . " صلاحية");
@@ -295,6 +455,34 @@ class RolesAndPermissionsSeeder extends Seeder
             // التقارير
             'reports.view',
             'payments.view',
+
+            // الرعاة - عرض + موافقة/رفض عقود
+            'sponsors.view', 'sponsors.view-all',
+            'sponsor-contracts.view', 'sponsor-contracts.view-all',
+            'sponsor-contracts.approve', 'sponsor-contracts.reject',
+            'sponsor-packages.view',
+            'sponsor-payments.view',
+            'sponsor-assets.view',
+
+            // التقييمات - عرض + اعتماد/رفض
+            'ratings.view', 'ratings.view-all', 'ratings.approve', 'ratings.reject',
+
+            // تذاكر الدعم - عرض + رد + إغلاق + تعيين
+            'support-tickets.view', 'support-tickets.view-all',
+            'support-tickets.reply', 'support-tickets.close', 'support-tickets.assign',
+
+            // عقود الاستئجار - عرض + اعتماد/رفض
+            'rental-contracts.view', 'rental-contracts.view-all',
+            'rental-contracts.approve', 'rental-contracts.reject',
+
+            // الفواتير - عرض + إصدار + تسجيل دفع
+            'invoices.view', 'invoices.view-all',
+            'invoices.issue', 'invoices.mark-paid',
+
+            // CMS - عرض فقط
+            'pages.view',
+            'faqs.view',
+            'banners.view',
         ];
         $moderator->syncPermissions($moderatorPermissions);
         $this->command->info("   ✅ Moderator: " . count($moderatorPermissions) . " صلاحية");
@@ -337,6 +525,22 @@ class RolesAndPermissionsSeeder extends Seeder
 
             // عرض المدفوعات الخاصة به
             'payments.view',
+
+            // التقييمات - إنشاء وتعديل وحذف (للكيانات التي تعامل معها)
+            'ratings.view', 'ratings.create', 'ratings.update', 'ratings.delete',
+
+            // تذاكر الدعم - إنشاء والمتابعة
+            'support-tickets.view', 'support-tickets.create',
+            'support-tickets.reply', 'support-tickets.close',
+
+            // عقود الاستئجار - عرض وتوقيع (عقوده هو)
+            'rental-contracts.view', 'rental-contracts.sign',
+
+            // الفواتير - عرض الخاصة به
+            'invoices.view',
+
+            // تفضيلات الإشعارات
+            'notification-preferences.view', 'notification-preferences.update',
         ];
         $merchant->syncPermissions($merchantPermissions);
         $this->command->info("   ✅ Merchant (تاجر): " . count($merchantPermissions) . " صلاحية");
@@ -386,9 +590,74 @@ class RolesAndPermissionsSeeder extends Seeder
 
             // التقارير (إحصائيات مساحاته)
             'reports.view',
+
+            // التقييمات - عرض (تقييمات مساحاته)
+            'ratings.view',
+
+            // تذاكر الدعم - إنشاء والمتابعة
+            'support-tickets.view', 'support-tickets.create',
+            'support-tickets.reply', 'support-tickets.close',
+
+            // عقود الاستئجار - عرض وتوقيع (عقود مساحاته)
+            'rental-contracts.view', 'rental-contracts.sign',
+
+            // الفواتير - عرض الخاصة به
+            'invoices.view',
+
+            // تفضيلات الإشعارات
+            'notification-preferences.view', 'notification-preferences.update',
         ];
         $investor->syncPermissions($investorPermissions);
         $this->command->info("   ✅ Investor (مستثمر): " . count($investorPermissions) . " صلاحية");
+
+        // ============================================================
+        // Sponsor - راعي (يرعى فعاليات ومعارض)
+        // ============================================================
+        $sponsor = Role::firstOrCreate(
+            ['name' => 'sponsor'],
+            [
+                'display_name' => 'راعي',
+                'description' => 'راعي يرعى فعاليات ومعارض - يدير عقوده ومواده الإعلانية ويتابع ظهوره',
+                'is_system' => true,
+                'level' => 20,
+            ]
+        );
+        $sponsorPermissions = [
+            // الملف التجاري
+            'profiles.view', 'profiles.create', 'profiles.update',
+
+            // الإشعارات
+            'notifications.view', 'notifications.update',
+
+            // عرض الفعاليات
+            'events.view',
+            'categories.view',
+            'cities.view',
+
+            // الرعاة - عقوده ومدفوعاته (read-only)
+            'sponsors.view',
+            'sponsor-contracts.view',
+            'sponsor-payments.view',
+            'sponsor-packages.view',
+
+            // المواد الإعلانية - CRUD كامل
+            'sponsor-assets.view', 'sponsor-assets.create', 'sponsor-assets.update', 'sponsor-assets.delete',
+
+            // تتبع الظهور
+            'sponsor-exposure.view',
+
+            // تذاكر الدعم - إنشاء والمتابعة
+            'support-tickets.view', 'support-tickets.create',
+            'support-tickets.reply', 'support-tickets.close',
+
+            // الفواتير - عرض الخاصة به
+            'invoices.view',
+
+            // تفضيلات الإشعارات
+            'notification-preferences.view', 'notification-preferences.update',
+        ];
+        $sponsor->syncPermissions($sponsorPermissions);
+        $this->command->info("   ✅ Sponsor (راعي): " . count($sponsorPermissions) . " صلاحية");
 
         // ============================================================
         // User - مستخدم عادي (زائر)
@@ -419,6 +688,13 @@ class RolesAndPermissionsSeeder extends Seeder
 
             // طلبات الزيارة فقط (بدون استئجار)
             'visit-requests.view', 'visit-requests.create', 'visit-requests.update', 'visit-requests.delete',
+
+            // تذاكر الدعم - إنشاء والمتابعة
+            'support-tickets.view', 'support-tickets.create',
+            'support-tickets.reply', 'support-tickets.close',
+
+            // تفضيلات الإشعارات
+            'notification-preferences.view', 'notification-preferences.update',
         ];
         $user->syncPermissions($userPermissions);
         $this->command->info("   ✅ User (مستخدم): " . count($userPermissions) . " صلاحية");

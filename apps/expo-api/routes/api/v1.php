@@ -9,10 +9,24 @@ use App\Http\Controllers\Api\NotificationController;
 use App\Http\Controllers\Api\RentalRequestController;
 use App\Http\Controllers\Api\ServiceController;
 use App\Http\Controllers\Api\SpaceController;
+use App\Http\Controllers\Api\SponsorController;
 use App\Http\Controllers\Api\StatisticsController;
 use App\Http\Controllers\Api\VisitRequestController;
+use App\Http\Controllers\Api\RatingController;
+use App\Http\Controllers\Api\SupportTicketController;
+use App\Http\Controllers\Api\InvoiceController;
+use App\Http\Controllers\Api\PageController;
+use App\Http\Controllers\Api\FaqController;
+use App\Http\Controllers\Api\BannerController;
+use App\Http\Controllers\Api\NotificationPreferenceController;
 
 // Admin Controllers
+use App\Http\Controllers\Api\Admin\SponsorController as AdminSponsorController;
+use App\Http\Controllers\Api\Admin\SponsorPackageController as AdminSponsorPackageController;
+use App\Http\Controllers\Api\Admin\SponsorContractController as AdminSponsorContractController;
+use App\Http\Controllers\Api\Admin\SponsorPaymentController as AdminSponsorPaymentController;
+use App\Http\Controllers\Api\Admin\SponsorBenefitController as AdminSponsorBenefitController;
+use App\Http\Controllers\Api\Admin\SponsorAssetController as AdminSponsorAssetController;
 use App\Http\Controllers\Api\Admin\EventController as AdminEventController;
 use App\Http\Controllers\Api\Admin\SectionController as AdminSectionController;
 use App\Http\Controllers\Api\Admin\ServiceController as AdminServiceController;
@@ -22,6 +36,13 @@ use App\Http\Controllers\Api\Admin\RentalRequestController as AdminRentalRequest
 use App\Http\Controllers\Api\Admin\BusinessProfileController as AdminBusinessProfileController;
 use App\Http\Controllers\Api\Admin\DashboardController as AdminDashboardController;
 use App\Http\Controllers\Api\Admin\StatisticsController as AdminStatisticsController;
+use App\Http\Controllers\Api\Admin\RatingController as AdminRatingController;
+use App\Http\Controllers\Api\Admin\SupportTicketController as AdminSupportTicketController;
+use App\Http\Controllers\Api\Admin\RentalContractController as AdminRentalContractController;
+use App\Http\Controllers\Api\Admin\InvoiceController as AdminInvoiceController;
+use App\Http\Controllers\Api\Admin\PageController as AdminPageController;
+use App\Http\Controllers\Api\Admin\FaqController as AdminFaqController;
+use App\Http\Controllers\Api\Admin\BannerController as AdminBannerController;
 
 // Investor Controllers
 use App\Http\Controllers\Api\Investor\DashboardController as InvestorDashboardController;
@@ -46,6 +67,14 @@ use App\Http\Controllers\Api\Supervisor\StatisticsController as SupervisorStatis
 use App\Http\Controllers\Api\Supervisor\RentalRequestController as SupervisorRentalRequestController;
 use App\Http\Controllers\Api\Supervisor\VisitRequestController as SupervisorVisitRequestController;
 
+// Sponsor Controllers
+use App\Http\Controllers\Api\Sponsor\DashboardController as SponsorDashboardController;
+use App\Http\Controllers\Api\Sponsor\StatisticsController as SponsorStatisticsController;
+use App\Http\Controllers\Api\Sponsor\ContractController as SponsorContractController;
+use App\Http\Controllers\Api\Sponsor\PaymentController as SponsorPaymentController;
+use App\Http\Controllers\Api\Sponsor\AssetController as SponsorAssetController;
+use App\Http\Controllers\Api\Sponsor\ExposureController as SponsorExposureController;
+
 // SuperAdmin Controllers
 use App\Http\Controllers\Api\SuperAdmin\DashboardController as SuperAdminDashboardController;
 use App\Http\Controllers\Api\SuperAdmin\StatisticsController as SuperAdminStatisticsController;
@@ -55,6 +84,7 @@ use App\Http\Controllers\Api\SuperAdmin\UserController as SuperAdminUserControll
 use App\Http\Controllers\Api\SuperAdmin\SettingController as SuperAdminSettingController;
 
 use App\Http\Middleware\AuthServiceMiddleware;
+use App\Http\Middleware\CheckPermission;
 use App\Http\Middleware\CheckRole;
 use App\Http\Middleware\CheckVerifiedProfile;
 use App\Http\Middleware\SetLocale;
@@ -97,6 +127,10 @@ Route::middleware([SetLocale::class, 'throttle:60,1'])->group(function () {
         Route::get('/events/{event}/spaces', [EventController::class, 'spaces']);
         Route::get('/events/{event}/sections', [EventController::class, 'sections']);
 
+        // Sponsors (Public)
+        Route::get('/events/{event}/sponsors', [SponsorController::class, 'index']);
+        Route::get('/events/{event}/sponsor-packages', [SponsorController::class, 'packages']);
+
         // Spaces (Public)
         Route::get('/spaces/{space}', [SpaceController::class, 'show']);
 
@@ -109,6 +143,28 @@ Route::middleware([SetLocale::class, 'throttle:60,1'])->group(function () {
             Route::get('/events', [StatisticsController::class, 'events']);
             Route::get('/spaces', [StatisticsController::class, 'spaces']);
         });
+
+        // Ratings (Public - Read)
+        Route::prefix('ratings')->group(function () {
+            Route::get('/', [RatingController::class, 'index']);
+            Route::get('/summary', [RatingController::class, 'summary']);
+        });
+
+        // Pages (Public - CMS)
+        Route::get('/pages', [PageController::class, 'index']);
+        Route::get('/pages/{slug}', [PageController::class, 'show']);
+
+        // FAQs (Public)
+        Route::prefix('faqs')->group(function () {
+            Route::get('/', [FaqController::class, 'index']);
+            Route::get('/categories', [FaqController::class, 'categories']);
+            Route::get('/{faq}', [FaqController::class, 'show']);
+            Route::post('/{faq}/helpful', [FaqController::class, 'helpful']);
+        });
+
+        // Banners (Public)
+        Route::get('/banners', [BannerController::class, 'index']);
+        Route::post('/banners/{banner}/click', [BannerController::class, 'click']);
 
         // ==================== AUTHENTICATED ROUTES ====================
 
@@ -130,10 +186,54 @@ Route::middleware([SetLocale::class, 'throttle:60,1'])->group(function () {
 
             // Notifications
             Route::prefix('notifications')->group(function () {
-                Route::get('/', [NotificationController::class, 'index']);
-                Route::get('/unread-count', [NotificationController::class, 'unreadCount']);
-                Route::put('/{notification}/read', [NotificationController::class, 'markAsRead']);
-                Route::put('/read-all', [NotificationController::class, 'markAllAsRead']);
+                Route::get('/', [NotificationController::class, 'index'])
+                    ->middleware(CheckPermission::class . ':notifications.view');
+                Route::get('/unread-count', [NotificationController::class, 'unreadCount'])
+                    ->middleware(CheckPermission::class . ':notifications.view');
+                Route::put('/{notification}/read', [NotificationController::class, 'markAsRead'])
+                    ->middleware(CheckPermission::class . ':notifications.update');
+                Route::put('/read-all', [NotificationController::class, 'markAllAsRead'])
+                    ->middleware(CheckPermission::class . ':notifications.update');
+
+                // Notification Preferences
+                Route::get('/preferences', [NotificationPreferenceController::class, 'show'])
+                    ->middleware(CheckPermission::class . ':notification-preferences.view');
+                Route::put('/preferences', [NotificationPreferenceController::class, 'update'])
+                    ->middleware(CheckPermission::class . ':notification-preferences.update');
+            });
+
+            // Ratings (Authenticated - Create/Update/Delete)
+            Route::prefix('ratings')->group(function () {
+                Route::post('/', [RatingController::class, 'store'])
+                    ->middleware(CheckPermission::class . ':ratings.create');
+                Route::put('/{rating}', [RatingController::class, 'update'])
+                    ->middleware(CheckPermission::class . ':ratings.update');
+                Route::delete('/{rating}', [RatingController::class, 'destroy'])
+                    ->middleware(CheckPermission::class . ':ratings.delete');
+            });
+
+            // Support Tickets (Authenticated)
+            Route::prefix('support-tickets')->group(function () {
+                Route::get('/', [SupportTicketController::class, 'index'])
+                    ->middleware(CheckPermission::class . ':support-tickets.view');
+                Route::post('/', [SupportTicketController::class, 'store'])
+                    ->middleware(CheckPermission::class . ':support-tickets.create');
+                Route::get('/{supportTicket}', [SupportTicketController::class, 'show'])
+                    ->middleware(CheckPermission::class . ':support-tickets.view');
+                Route::post('/{supportTicket}/reply', [SupportTicketController::class, 'reply'])
+                    ->middleware(CheckPermission::class . ':support-tickets.reply');
+                Route::put('/{supportTicket}/close', [SupportTicketController::class, 'close'])
+                    ->middleware(CheckPermission::class . ':support-tickets.close');
+                Route::put('/{supportTicket}/reopen', [SupportTicketController::class, 'reopen'])
+                    ->middleware(CheckPermission::class . ':support-tickets.create');
+            });
+
+            // Invoices (Authenticated - own invoices)
+            Route::prefix('invoices')->group(function () {
+                Route::get('/', [InvoiceController::class, 'index'])
+                    ->middleware(CheckPermission::class . ':invoices.view');
+                Route::get('/{invoice}', [InvoiceController::class, 'show'])
+                    ->middleware(CheckPermission::class . ':invoices.view');
             });
 
             // Visit Requests (Legacy - for backward compatibility)
@@ -275,6 +375,174 @@ Route::middleware([SetLocale::class, 'throttle:60,1'])->group(function () {
                     Route::put('/{profile}/approve', [AdminBusinessProfileController::class, 'approve']);
                     Route::put('/{profile}/reject', [AdminBusinessProfileController::class, 'reject']);
                 });
+
+                // Sponsors Management
+                Route::prefix('sponsors')->group(function () {
+                    Route::get('/', [AdminSponsorController::class, 'index']);
+                    Route::post('/', [AdminSponsorController::class, 'store']);
+                    Route::get('/{sponsor}', [AdminSponsorController::class, 'show']);
+                    Route::put('/{sponsor}', [AdminSponsorController::class, 'update']);
+                    Route::delete('/{sponsor}', [AdminSponsorController::class, 'destroy']);
+                    Route::put('/{sponsor}/approve', [AdminSponsorController::class, 'approve']);
+                    Route::put('/{sponsor}/activate', [AdminSponsorController::class, 'activate']);
+                    Route::put('/{sponsor}/suspend', [AdminSponsorController::class, 'suspend']);
+                });
+
+                // Sponsor Packages Management
+                Route::get('/events/{event}/sponsor-packages', [AdminSponsorPackageController::class, 'index']);
+                Route::post('/events/{event}/sponsor-packages', [AdminSponsorPackageController::class, 'store']);
+                Route::prefix('sponsor-packages')->group(function () {
+                    Route::get('/{sponsorPackage}', [AdminSponsorPackageController::class, 'show']);
+                    Route::put('/{sponsorPackage}', [AdminSponsorPackageController::class, 'update']);
+                    Route::delete('/{sponsorPackage}', [AdminSponsorPackageController::class, 'destroy']);
+                });
+
+                // Sponsor Contracts Management
+                Route::prefix('sponsor-contracts')->group(function () {
+                    Route::get('/', [AdminSponsorContractController::class, 'index']);
+                    Route::post('/', [AdminSponsorContractController::class, 'store']);
+                    Route::get('/{sponsorContract}', [AdminSponsorContractController::class, 'show']);
+                    Route::put('/{sponsorContract}', [AdminSponsorContractController::class, 'update']);
+                    Route::put('/{sponsorContract}/approve', [AdminSponsorContractController::class, 'approve']);
+                    Route::put('/{sponsorContract}/reject', [AdminSponsorContractController::class, 'reject']);
+                    Route::put('/{sponsorContract}/complete', [AdminSponsorContractController::class, 'complete']);
+                });
+
+                // Sponsor Payments Management
+                Route::prefix('sponsor-payments')->group(function () {
+                    Route::get('/', [AdminSponsorPaymentController::class, 'index']);
+                    Route::post('/', [AdminSponsorPaymentController::class, 'store']);
+                    Route::get('/{sponsorPayment}', [AdminSponsorPaymentController::class, 'show']);
+                    Route::put('/{sponsorPayment}', [AdminSponsorPaymentController::class, 'update']);
+                    Route::put('/{sponsorPayment}/mark-paid', [AdminSponsorPaymentController::class, 'markPaid']);
+                });
+
+                // Sponsor Benefits Management
+                Route::prefix('sponsor-benefits')->group(function () {
+                    Route::get('/', [AdminSponsorBenefitController::class, 'index']);
+                    Route::post('/', [AdminSponsorBenefitController::class, 'store']);
+                    Route::get('/{sponsorBenefit}', [AdminSponsorBenefitController::class, 'show']);
+                    Route::put('/{sponsorBenefit}', [AdminSponsorBenefitController::class, 'update']);
+                    Route::put('/{sponsorBenefit}/deliver', [AdminSponsorBenefitController::class, 'markDelivered']);
+                });
+
+                // Sponsor Assets Management
+                Route::prefix('sponsor-assets')->group(function () {
+                    Route::get('/', [AdminSponsorAssetController::class, 'index']);
+                    Route::get('/{sponsorAsset}', [AdminSponsorAssetController::class, 'show']);
+                    Route::put('/{sponsorAsset}/approve', [AdminSponsorAssetController::class, 'approve']);
+                    Route::put('/{sponsorAsset}/reject', [AdminSponsorAssetController::class, 'reject']);
+                });
+
+                // Ratings Management
+                Route::prefix('ratings')->group(function () {
+                    Route::get('/', [AdminRatingController::class, 'index'])
+                        ->middleware(CheckPermission::class . ':ratings.view-all');
+                    Route::get('/{rating}', [AdminRatingController::class, 'show'])
+                        ->middleware(CheckPermission::class . ':ratings.view-all');
+                    Route::put('/{rating}/approve', [AdminRatingController::class, 'approve'])
+                        ->middleware(CheckPermission::class . ':ratings.approve');
+                    Route::put('/{rating}/reject', [AdminRatingController::class, 'reject'])
+                        ->middleware(CheckPermission::class . ':ratings.reject');
+                    Route::delete('/{rating}', [AdminRatingController::class, 'destroy'])
+                        ->middleware(CheckPermission::class . ':ratings.delete');
+                });
+
+                // Support Tickets Management
+                Route::prefix('support-tickets')->group(function () {
+                    Route::get('/', [AdminSupportTicketController::class, 'index'])
+                        ->middleware(CheckPermission::class . ':support-tickets.view-all');
+                    Route::get('/{supportTicket}', [AdminSupportTicketController::class, 'show'])
+                        ->middleware(CheckPermission::class . ':support-tickets.view-all');
+                    Route::put('/{supportTicket}/assign', [AdminSupportTicketController::class, 'assign'])
+                        ->middleware(CheckPermission::class . ':support-tickets.assign');
+                    Route::post('/{supportTicket}/reply', [AdminSupportTicketController::class, 'reply'])
+                        ->middleware(CheckPermission::class . ':support-tickets.reply');
+                    Route::put('/{supportTicket}/resolve', [AdminSupportTicketController::class, 'resolve'])
+                        ->middleware(CheckPermission::class . ':support-tickets.close');
+                    Route::put('/{supportTicket}/close', [AdminSupportTicketController::class, 'close'])
+                        ->middleware(CheckPermission::class . ':support-tickets.close');
+                    Route::delete('/{supportTicket}', [AdminSupportTicketController::class, 'destroy'])
+                        ->middleware(CheckPermission::class . ':support-tickets.delete');
+                });
+
+                // Rental Contracts Management
+                Route::prefix('rental-contracts')->group(function () {
+                    Route::get('/', [AdminRentalContractController::class, 'index'])
+                        ->middleware(CheckPermission::class . ':rental-contracts.view-all');
+                    Route::post('/', [AdminRentalContractController::class, 'store'])
+                        ->middleware(CheckPermission::class . ':rental-contracts.create');
+                    Route::get('/{rentalContract}', [AdminRentalContractController::class, 'show'])
+                        ->middleware(CheckPermission::class . ':rental-contracts.view-all');
+                    Route::put('/{rentalContract}', [AdminRentalContractController::class, 'update'])
+                        ->middleware(CheckPermission::class . ':rental-contracts.update');
+                    Route::put('/{rentalContract}/approve', [AdminRentalContractController::class, 'approve'])
+                        ->middleware(CheckPermission::class . ':rental-contracts.approve');
+                    Route::put('/{rentalContract}/reject', [AdminRentalContractController::class, 'reject'])
+                        ->middleware(CheckPermission::class . ':rental-contracts.reject');
+                    Route::put('/{rentalContract}/terminate', [AdminRentalContractController::class, 'terminate'])
+                        ->middleware(CheckPermission::class . ':rental-contracts.terminate');
+                });
+
+                // Invoices Management
+                Route::prefix('invoices')->group(function () {
+                    Route::get('/', [AdminInvoiceController::class, 'index'])
+                        ->middleware(CheckPermission::class . ':invoices.view-all');
+                    Route::post('/', [AdminInvoiceController::class, 'store'])
+                        ->middleware(CheckPermission::class . ':invoices.create');
+                    Route::get('/{invoice}', [AdminInvoiceController::class, 'show'])
+                        ->middleware(CheckPermission::class . ':invoices.view-all');
+                    Route::put('/{invoice}', [AdminInvoiceController::class, 'update'])
+                        ->middleware(CheckPermission::class . ':invoices.update');
+                    Route::put('/{invoice}/issue', [AdminInvoiceController::class, 'issue'])
+                        ->middleware(CheckPermission::class . ':invoices.issue');
+                    Route::put('/{invoice}/mark-paid', [AdminInvoiceController::class, 'markPaid'])
+                        ->middleware(CheckPermission::class . ':invoices.mark-paid');
+                    Route::put('/{invoice}/cancel', [AdminInvoiceController::class, 'cancel'])
+                        ->middleware(CheckPermission::class . ':invoices.cancel');
+                });
+
+                // Pages Management (CMS)
+                Route::prefix('pages')->group(function () {
+                    Route::get('/', [AdminPageController::class, 'index'])
+                        ->middleware(CheckPermission::class . ':pages.view');
+                    Route::post('/', [AdminPageController::class, 'store'])
+                        ->middleware(CheckPermission::class . ':pages.create');
+                    Route::get('/{page}', [AdminPageController::class, 'show'])
+                        ->middleware(CheckPermission::class . ':pages.view');
+                    Route::put('/{page}', [AdminPageController::class, 'update'])
+                        ->middleware(CheckPermission::class . ':pages.update');
+                    Route::delete('/{page}', [AdminPageController::class, 'destroy'])
+                        ->middleware(CheckPermission::class . ':pages.delete');
+                });
+
+                // FAQs Management
+                Route::prefix('faqs')->group(function () {
+                    Route::get('/', [AdminFaqController::class, 'index'])
+                        ->middleware(CheckPermission::class . ':faqs.view');
+                    Route::post('/', [AdminFaqController::class, 'store'])
+                        ->middleware(CheckPermission::class . ':faqs.create');
+                    Route::get('/{faq}', [AdminFaqController::class, 'show'])
+                        ->middleware(CheckPermission::class . ':faqs.view');
+                    Route::put('/{faq}', [AdminFaqController::class, 'update'])
+                        ->middleware(CheckPermission::class . ':faqs.update');
+                    Route::delete('/{faq}', [AdminFaqController::class, 'destroy'])
+                        ->middleware(CheckPermission::class . ':faqs.delete');
+                });
+
+                // Banners Management
+                Route::prefix('banners')->group(function () {
+                    Route::get('/', [AdminBannerController::class, 'index'])
+                        ->middleware(CheckPermission::class . ':banners.view');
+                    Route::post('/', [AdminBannerController::class, 'store'])
+                        ->middleware(CheckPermission::class . ':banners.create');
+                    Route::get('/{banner}', [AdminBannerController::class, 'show'])
+                        ->middleware(CheckPermission::class . ':banners.view');
+                    Route::put('/{banner}', [AdminBannerController::class, 'update'])
+                        ->middleware(CheckPermission::class . ':banners.update');
+                    Route::delete('/{banner}', [AdminBannerController::class, 'destroy'])
+                        ->middleware(CheckPermission::class . ':banners.delete');
+                });
             });
 
             // ==================== SUPERVISOR ROUTES ====================
@@ -338,6 +606,82 @@ Route::middleware([SetLocale::class, 'throttle:60,1'])->group(function () {
                     Route::put('/{profile}/approve', [AdminBusinessProfileController::class, 'approve']);
                     Route::put('/{profile}/reject', [AdminBusinessProfileController::class, 'reject']);
                 });
+
+                // Sponsors (read-only + approve/reject contracts)
+                Route::prefix('sponsors')->group(function () {
+                    Route::get('/', [AdminSponsorController::class, 'index']);
+                    Route::get('/{sponsor}', [AdminSponsorController::class, 'show']);
+                });
+
+                Route::prefix('sponsor-contracts')->group(function () {
+                    Route::get('/', [AdminSponsorContractController::class, 'index']);
+                    Route::get('/{sponsorContract}', [AdminSponsorContractController::class, 'show']);
+                    Route::put('/{sponsorContract}/approve', [AdminSponsorContractController::class, 'approve']);
+                    Route::put('/{sponsorContract}/reject', [AdminSponsorContractController::class, 'reject']);
+                });
+
+                // Support Tickets (view + resolve)
+                Route::prefix('support-tickets')->group(function () {
+                    Route::get('/', [AdminSupportTicketController::class, 'index'])
+                        ->middleware(CheckPermission::class . ':support-tickets.view-all');
+                    Route::get('/{supportTicket}', [AdminSupportTicketController::class, 'show'])
+                        ->middleware(CheckPermission::class . ':support-tickets.view-all');
+                    Route::post('/{supportTicket}/reply', [AdminSupportTicketController::class, 'reply'])
+                        ->middleware(CheckPermission::class . ':support-tickets.reply');
+                    Route::put('/{supportTicket}/resolve', [AdminSupportTicketController::class, 'resolve'])
+                        ->middleware(CheckPermission::class . ':support-tickets.close');
+                });
+
+                // Rental Contracts (read-only + approve/reject)
+                Route::prefix('rental-contracts')->group(function () {
+                    Route::get('/', [AdminRentalContractController::class, 'index'])
+                        ->middleware(CheckPermission::class . ':rental-contracts.view-all');
+                    Route::get('/{rentalContract}', [AdminRentalContractController::class, 'show'])
+                        ->middleware(CheckPermission::class . ':rental-contracts.view-all');
+                    Route::put('/{rentalContract}/approve', [AdminRentalContractController::class, 'approve'])
+                        ->middleware(CheckPermission::class . ':rental-contracts.approve');
+                    Route::put('/{rentalContract}/reject', [AdminRentalContractController::class, 'reject'])
+                        ->middleware(CheckPermission::class . ':rental-contracts.reject');
+                });
+            });
+
+            // ==================== SPONSOR ROUTES ====================
+            // Sponsor self-service: view contracts, payments, assets, exposure
+
+            Route::prefix('sponsor')->middleware([CheckRole::class . ':sponsor'])->group(function () {
+
+                // Dashboard
+                Route::get('/dashboard', [SponsorDashboardController::class, 'index']);
+
+                // Statistics
+                Route::get('/statistics', [SponsorStatisticsController::class, 'index']);
+
+                // Contracts (read-only)
+                Route::prefix('contracts')->group(function () {
+                    Route::get('/', [SponsorContractController::class, 'index']);
+                    Route::get('/{sponsorContract}', [SponsorContractController::class, 'show']);
+                });
+
+                // Payments (read-only)
+                Route::prefix('payments')->group(function () {
+                    Route::get('/', [SponsorPaymentController::class, 'index']);
+                    Route::get('/{sponsorPayment}', [SponsorPaymentController::class, 'show']);
+                });
+
+                // Assets (CRUD)
+                Route::prefix('assets')->group(function () {
+                    Route::get('/', [SponsorAssetController::class, 'index']);
+                    Route::post('/', [SponsorAssetController::class, 'store']);
+                    Route::get('/{sponsorAsset}', [SponsorAssetController::class, 'show']);
+                    Route::put('/{sponsorAsset}', [SponsorAssetController::class, 'update']);
+                    Route::delete('/{sponsorAsset}', [SponsorAssetController::class, 'destroy']);
+                });
+
+                // Exposure/ROI
+                Route::prefix('exposure')->group(function () {
+                    Route::get('/', [SponsorExposureController::class, 'index']);
+                    Route::get('/summary', [SponsorExposureController::class, 'summary']);
+                });
             });
 
             // ==================== INVESTOR ROUTES ====================
@@ -388,6 +732,16 @@ Route::middleware([SetLocale::class, 'throttle:60,1'])->group(function () {
                     Route::get('/summary', [InvestorPaymentController::class, 'summary']);
                     Route::get('/{rentalRequest}', [InvestorPaymentController::class, 'show']);
                 });
+
+                // Rental Contracts (investor signs their own contracts)
+                Route::prefix('rental-contracts')->group(function () {
+                    Route::get('/', [AdminRentalContractController::class, 'index'])
+                        ->middleware(CheckPermission::class . ':rental-contracts.view');
+                    Route::get('/{rentalContract}', [AdminRentalContractController::class, 'show'])
+                        ->middleware(CheckPermission::class . ':rental-contracts.view');
+                    Route::put('/{rentalContract}/sign', [AdminRentalContractController::class, 'signByInvestor'])
+                        ->middleware(CheckPermission::class . ':rental-contracts.sign');
+                });
             });
 
             // ==================== MERCHANT ROUTES ====================
@@ -437,6 +791,16 @@ Route::middleware([SetLocale::class, 'throttle:60,1'])->group(function () {
                     Route::get('/{rentalRequest}', [MerchantRentalRequestController::class, 'show']);
                     Route::put('/{rentalRequest}', [MerchantRentalRequestController::class, 'update']);
                     Route::delete('/{rentalRequest}', [MerchantRentalRequestController::class, 'destroy']);
+                });
+
+                // Rental Contracts (merchant signs their own contracts)
+                Route::prefix('rental-contracts')->group(function () {
+                    Route::get('/', [AdminRentalContractController::class, 'index'])
+                        ->middleware(CheckPermission::class . ':rental-contracts.view');
+                    Route::get('/{rentalContract}', [AdminRentalContractController::class, 'show'])
+                        ->middleware(CheckPermission::class . ':rental-contracts.view');
+                    Route::put('/{rentalContract}/sign', [AdminRentalContractController::class, 'signByMerchant'])
+                        ->middleware(CheckPermission::class . ':rental-contracts.sign');
                 });
             });
 
