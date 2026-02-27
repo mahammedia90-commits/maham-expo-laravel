@@ -173,14 +173,13 @@ class SponsorContract extends Model
         $prefix = config('expo-api.request_prefixes.sponsor_contract', 'SC');
         $date = now()->format('Ymd');
 
-        $lastContract = self::whereDate('created_at', now()->toDateString())
-            ->orderBy('created_at', 'desc')
-            ->first();
+        $lastNumber = self::where('contract_number', 'like', "{$prefix}-{$date}-%")
+            ->orderByDesc('contract_number')
+            ->value('contract_number');
 
-        if ($lastContract && preg_match('/(\d+)$/', $lastContract->contract_number, $matches)) {
+        $sequence = 1;
+        if ($lastNumber && preg_match('/(\d+)$/', $lastNumber, $matches)) {
             $sequence = intval($matches[1]) + 1;
-        } else {
-            $sequence = 1;
         }
 
         return sprintf('%s-%s-%05d', $prefix, $date, $sequence);

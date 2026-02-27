@@ -1,0 +1,185 @@
+{
+	"info": {
+		"_postman_id": "public-api-001",
+		"name": "Maham Expo - Public API",
+		"description": "Public endpoints that do not require authentication.\nBase URL: http://localhost:8002/api",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					"pm.request.addHeader({ key: 'Accept', value: 'application/json' });",
+					"pm.request.addHeader({ key: 'Accept-Language', value: pm.environment.get('language') || 'ar' });"
+				]
+			}
+		}
+	],
+	"item": [
+		{
+			"name": "🏥 Health",
+			"item": [
+				{
+					"name": "Health Check",
+					"request": { "method": "GET", "url": { "raw": "{{expo_url}}/health", "host": ["{{expo_url}}"], "path": ["health"] } }
+				}
+			]
+		},
+		{
+			"name": "📅 Events",
+			"item": [
+				{
+					"name": "List Events",
+					"request": { "method": "GET", "url": { "raw": "{{expo_url}}/v1/events?page=1&per_page=15", "host": ["{{expo_url}}"], "path": ["v1","events"], "query": [{"key":"page","value":"1"},{"key":"per_page","value":"15"}] } }
+				},
+				{
+					"name": "Featured Events",
+					"request": { "method": "GET", "url": { "raw": "{{expo_url}}/v1/events/featured", "host": ["{{expo_url}}"], "path": ["v1","events","featured"] } }
+				},
+				{
+					"name": "Show Event",
+					"request": { "method": "GET", "url": { "raw": "{{expo_url}}/v1/events/{{event_id}}", "host": ["{{expo_url}}"], "path": ["v1","events","{{event_id}}"] } }
+				},
+				{
+					"name": "Event Sections",
+					"request": { "method": "GET", "url": { "raw": "{{expo_url}}/v1/events/{{event_id}}/sections", "host": ["{{expo_url}}"], "path": ["v1","events","{{event_id}}","sections"] } }
+				},
+				{
+					"name": "Event Spaces",
+					"request": { "method": "GET", "url": { "raw": "{{expo_url}}/v1/events/{{event_id}}/spaces", "host": ["{{expo_url}}"], "path": ["v1","events","{{event_id}}","spaces"] } }
+				},
+				{
+					"name": "Event Sponsors",
+					"request": { "method": "GET", "url": { "raw": "{{expo_url}}/v1/events/{{event_id}}/sponsors", "host": ["{{expo_url}}"], "path": ["v1","events","{{event_id}}","sponsors"] } }
+				},
+				{
+					"name": "Event Sponsor Packages",
+					"request": { "method": "GET", "url": { "raw": "{{expo_url}}/v1/events/{{event_id}}/sponsor-packages", "host": ["{{expo_url}}"], "path": ["v1","events","{{event_id}}","sponsor-packages"] } }
+				}
+			]
+		},
+		{
+			"name": "📍 Spaces",
+			"item": [
+				{
+					"name": "Show Space",
+					"request": { "method": "GET", "url": { "raw": "{{expo_url}}/v1/spaces/{{space_id}}", "host": ["{{expo_url}}"], "path": ["v1","spaces","{{space_id}}"] } }
+				}
+			]
+		},
+		{
+			"name": "📁 Categories",
+			"item": [
+				{
+					"name": "List Categories",
+					"request": { "method": "GET", "url": { "raw": "{{expo_url}}/v1/categories", "host": ["{{expo_url}}"], "path": ["v1","categories"] } }
+				},
+				{
+					"name": "Show Category",
+					"request": { "method": "GET", "url": { "raw": "{{expo_url}}/v1/categories/{{category_id}}", "host": ["{{expo_url}}"], "path": ["v1","categories","{{category_id}}"] } }
+				}
+			]
+		},
+		{
+			"name": "🏙️ Cities",
+			"item": [
+				{
+					"name": "List Cities",
+					"request": { "method": "GET", "url": { "raw": "{{expo_url}}/v1/cities", "host": ["{{expo_url}}"], "path": ["v1","cities"] } }
+				},
+				{
+					"name": "Show City",
+					"request": { "method": "GET", "url": { "raw": "{{expo_url}}/v1/cities/{{city_id}}", "host": ["{{expo_url}}"], "path": ["v1","cities","{{city_id}}"] } }
+				}
+			]
+		},
+		{
+			"name": "🔧 Services",
+			"item": [
+				{
+					"name": "List Services",
+					"request": { "method": "GET", "url": { "raw": "{{expo_url}}/v1/services", "host": ["{{expo_url}}"], "path": ["v1","services"] } }
+				}
+			]
+		},
+		{
+			"name": "🎯 Banners",
+			"item": [
+				{
+					"name": "List Banners",
+					"request": { "method": "GET", "url": { "raw": "{{expo_url}}/v1/banners", "host": ["{{expo_url}}"], "path": ["v1","banners"] } }
+				},
+				{
+					"name": "Click Banner",
+					"request": { "method": "POST", "url": { "raw": "{{expo_url}}/v1/banners/{{banner_id}}/click", "host": ["{{expo_url}}"], "path": ["v1","banners","{{banner_id}}","click"] } }
+				}
+			]
+		},
+		{
+			"name": "❓ FAQs",
+			"item": [
+				{
+					"name": "List FAQs",
+					"request": { "method": "GET", "url": { "raw": "{{expo_url}}/v1/faqs", "host": ["{{expo_url}}"], "path": ["v1","faqs"] } }
+				},
+				{
+					"name": "FAQ Categories",
+					"request": { "method": "GET", "url": { "raw": "{{expo_url}}/v1/faqs/categories", "host": ["{{expo_url}}"], "path": ["v1","faqs","categories"] } }
+				},
+				{
+					"name": "Show FAQ",
+					"request": { "method": "GET", "url": { "raw": "{{expo_url}}/v1/faqs/{{faq_id}}", "host": ["{{expo_url}}"], "path": ["v1","faqs","{{faq_id}}"] } }
+				},
+				{
+					"name": "Mark FAQ Helpful",
+					"request": { "method": "POST", "url": { "raw": "{{expo_url}}/v1/faqs/{{faq_id}}/helpful", "host": ["{{expo_url}}"], "path": ["v1","faqs","{{faq_id}}","helpful"] } }
+				}
+			]
+		},
+		{
+			"name": "📄 Pages",
+			"item": [
+				{
+					"name": "List Pages",
+					"request": { "method": "GET", "url": { "raw": "{{expo_url}}/v1/pages", "host": ["{{expo_url}}"], "path": ["v1","pages"] } }
+				},
+				{
+					"name": "Show Page by Slug",
+					"request": { "method": "GET", "url": { "raw": "{{expo_url}}/v1/pages/about-us", "host": ["{{expo_url}}"], "path": ["v1","pages","about-us"] } }
+				}
+			]
+		},
+		{
+			"name": "⭐ Ratings (Public)",
+			"item": [
+				{
+					"name": "List Ratings",
+					"request": { "method": "GET", "url": { "raw": "{{expo_url}}/v1/ratings?rateable_type=event&rateable_id={{event_id}}", "host": ["{{expo_url}}"], "path": ["v1","ratings"], "query": [{"key":"rateable_type","value":"event"},{"key":"rateable_id","value":"{{event_id}}"}] } }
+				},
+				{
+					"name": "Ratings Summary",
+					"request": { "method": "GET", "url": { "raw": "{{expo_url}}/v1/ratings/summary?rateable_type=event&rateable_id={{event_id}}", "host": ["{{expo_url}}"], "path": ["v1","ratings","summary"], "query": [{"key":"rateable_type","value":"event"},{"key":"rateable_id","value":"{{event_id}}"}] } }
+				}
+			]
+		},
+		{
+			"name": "📊 Statistics (Public)",
+			"item": [
+				{
+					"name": "General Statistics",
+					"request": { "method": "GET", "url": { "raw": "{{expo_url}}/v1/statistics", "host": ["{{expo_url}}"], "path": ["v1","statistics"] } }
+				},
+				{
+					"name": "Event Statistics",
+					"request": { "method": "GET", "url": { "raw": "{{expo_url}}/v1/statistics/events", "host": ["{{expo_url}}"], "path": ["v1","statistics","events"] } }
+				},
+				{
+					"name": "Space Statistics",
+					"request": { "method": "GET", "url": { "raw": "{{expo_url}}/v1/statistics/spaces", "host": ["{{expo_url}}"], "path": ["v1","statistics","spaces"] } }
+				}
+			]
+		}
+	]
+}

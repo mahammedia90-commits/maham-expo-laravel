@@ -1,1524 +1,336 @@
 {
 	"info": {
-		"_postman_id": "m1e2r3c4-h5a6-n7t8-9abc-def012345678",
-		"name": "Merchant (تاجر)",
-		"description": "Maham Expo - Merchant (تاجر) Collection\n\nA merchant user can:\n- Login, manage profile\n- Create business profile\n- Browse events/spaces\n- Create visit requests and rental requests\n- Manage favorites and notifications",
+		"name": "Maham Expo - Merchant",
+		"description": "Merchant role endpoints for Maham Expo API.\nLogin as merchant first, then use the token for authenticated requests.",
 		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
 	},
-	"auth": {
-		"type": "bearer",
-		"bearer": [
-			{
-				"key": "token",
-				"value": "{{merchant_token}}",
-				"type": "string"
-			}
-		]
-	},
-	"variable": [
-		{
-			"key": "auth_url",
-			"value": "http://localhost:8001/api"
-		},
-		{
-			"key": "expo_url",
-			"value": "http://localhost:8002/api"
-		},
-		{
-			"key": "merchant_token",
-			"value": ""
-		},
-		{
-			"key": "event_id",
-			"value": ""
-		},
-		{
-			"key": "space_id",
-			"value": ""
-		},
-		{
-			"key": "visit_request_id",
-			"value": ""
-		},
-		{
-			"key": "rental_request_id",
-			"value": ""
-		},
-		{
-			"key": "favorite_id",
-			"value": ""
-		},
-		{
-			"key": "notification_id",
-			"value": ""
-		}
+	"auth": { "type": "bearer", "bearer": [{ "key": "token", "value": "{{merchant_token}}", "type": "string" }] },
+	"event": [
+		{ "listen": "prerequest", "script": { "type": "text/javascript", "exec": ["pm.request.addHeader({ key: 'Accept', value: 'application/json' });", "pm.request.addHeader({ key: 'Accept-Language', value: pm.environment.get('language') || 'ar' });"] } }
 	],
 	"item": [
 		{
-			"name": "Auth (تسجيل الدخول)",
+			"name": "🔐 Auth",
 			"item": [
 				{
-					"name": "Register",
-					"event": [
-						{
-							"listen": "test",
-							"script": {
-								"exec": [
-									"var jsonData = pm.response.json();",
-									"if (jsonData.data && jsonData.data.token) {",
-									"    pm.collectionVariables.set('merchant_token', jsonData.data.token);",
-									"    console.log('merchant_token saved successfully');",
-									"}"
-								],
-								"type": "text/javascript"
-							}
-						}
-					],
+					"name": "Login as Merchant",
+					"event": [{ "listen": "test", "script": { "type": "text/javascript", "exec": ["if(pm.response.code===200){var d=pm.response.json();if(d.data&&d.data.token){pm.environment.set('merchant_token',d.data.token);pm.environment.set('auth_token',d.data.token);}}"] } }],
 					"request": {
-						"auth": {
-							"type": "noauth"
-						},
+						"auth": { "type": "noauth" },
 						"method": "POST",
-						"header": [
-							{
-								"key": "Content-Type",
-								"value": "application/json"
-							},
-							{
-								"key": "Accept",
-								"value": "application/json"
-							},
-							{
-								"key": "Accept-Language",
-								"value": "ar"
-							}
-						],
-						"body": {
-							"mode": "raw",
-							"raw": "{\n  \"name\": \"محمد التاجر\",\n  \"email\": \"merchant@test.com\",\n  \"password\": \"Test@123456\",\n  \"password_confirmation\": \"Test@123456\",\n  \"phone\": \"0511111111\"\n}"
-						},
-						"url": {
-							"raw": "{{auth_url}}/auth/register",
-							"host": [
-								"{{auth_url}}"
-							],
-							"path": [
-								"auth",
-								"register"
-							]
-						}
+						"header": [{"key":"Content-Type","value":"application/json"}],
+						"body": { "mode": "raw", "raw": "{\n    \"identifier\": \"merchant@example.com\",\n    \"password\": \"password\",\n    \"service_token\": \"{{service_token}}\",\n    \"service_name\": \"maham-expo\"\n}" },
+						"url": { "raw": "{{auth_url}}/v1/auth/login", "host": ["{{auth_url}}"], "path": ["v1","auth","login"] }
+					}
+				}
+			]
+		},
+		{
+			"name": "📊 Dashboard & Stats",
+			"item": [
+				{
+					"name": "Dashboard",
+					"request": { "method": "GET", "url": { "raw": "{{expo_url}}/v1/merchant/dashboard", "host": ["{{expo_url}}"], "path": ["v1","merchant","dashboard"] } }
+				},
+				{
+					"name": "Statistics",
+					"request": { "method": "GET", "url": { "raw": "{{expo_url}}/v1/merchant/statistics", "host": ["{{expo_url}}"], "path": ["v1","merchant","statistics"] } }
+				}
+			]
+		},
+		{
+			"name": "📅 Events",
+			"item": [
+				{
+					"name": "List Events",
+					"request": { "method": "GET", "url": { "raw": "{{expo_url}}/v1/merchant/events", "host": ["{{expo_url}}"], "path": ["v1","merchant","events"] } }
+				},
+				{
+					"name": "Show Event",
+					"request": { "method": "GET", "url": { "raw": "{{expo_url}}/v1/merchant/events/{{event_id}}", "host": ["{{expo_url}}"], "path": ["v1","merchant","events","{{event_id}}"] } }
+				},
+				{
+					"name": "Event Sections",
+					"request": { "method": "GET", "url": { "raw": "{{expo_url}}/v1/merchant/events/{{event_id}}/sections", "host": ["{{expo_url}}"], "path": ["v1","merchant","events","{{event_id}}","sections"] } }
+				},
+				{
+					"name": "Event Spaces",
+					"request": { "method": "GET", "url": { "raw": "{{expo_url}}/v1/merchant/events/{{event_id}}/spaces", "host": ["{{expo_url}}"], "path": ["v1","merchant","events","{{event_id}}","spaces"] } }
+				}
+			]
+		},
+		{
+			"name": "📍 Spaces",
+			"item": [
+				{
+					"name": "List Spaces",
+					"request": { "method": "GET", "url": { "raw": "{{expo_url}}/v1/merchant/spaces", "host": ["{{expo_url}}"], "path": ["v1","merchant","spaces"] } }
+				},
+				{
+					"name": "Show Space",
+					"request": { "method": "GET", "url": { "raw": "{{expo_url}}/v1/merchant/spaces/{{space_id}}", "host": ["{{expo_url}}"], "path": ["v1","merchant","spaces","{{space_id}}"] } }
+				}
+			]
+		},
+		{
+			"name": "🔧 Services",
+			"item": [
+				{
+					"name": "List Services",
+					"request": { "method": "GET", "url": { "raw": "{{expo_url}}/v1/merchant/services", "host": ["{{expo_url}}"], "path": ["v1","merchant","services"] } }
+				},
+				{
+					"name": "Show Service",
+					"request": { "method": "GET", "url": { "raw": "{{expo_url}}/v1/merchant/services/{{service_id}}", "host": ["{{expo_url}}"], "path": ["v1","merchant","services","{{service_id}}"] } }
+				}
+			]
+		},
+		{
+			"name": "👁️ Visit Requests",
+			"item": [
+				{
+					"name": "List Visit Requests",
+					"request": { "method": "GET", "url": { "raw": "{{expo_url}}/v1/merchant/visit-requests", "host": ["{{expo_url}}"], "path": ["v1","merchant","visit-requests"] } }
+				},
+				{
+					"name": "Create Visit Request",
+					"request": {
+						"method": "POST",
+						"header": [{"key":"Content-Type","value":"application/json"}],
+						"body": { "mode": "raw", "raw": "{\n    \"event_id\": \"{{event_id}}\",\n    \"visit_date\": \"2025-03-01\",\n    \"visit_time\": \"10:00\",\n    \"notes\": \"Interested in booth spaces\",\n    \"contact_name\": \"Ahmed Mohammed\",\n    \"contact_phone\": \"+966500000001\",\n    \"contact_email\": \"ahmed@merchant.com\"\n}" },
+						"url": { "raw": "{{expo_url}}/v1/merchant/visit-requests", "host": ["{{expo_url}}"], "path": ["v1","merchant","visit-requests"] }
 					}
 				},
 				{
-					"name": "Login",
-					"event": [
-						{
-							"listen": "test",
-							"script": {
-								"exec": [
-									"var jsonData = pm.response.json();",
-									"if (jsonData.data && jsonData.data.token) {",
-									"    pm.collectionVariables.set('merchant_token', jsonData.data.token);",
-									"    console.log('merchant_token saved successfully');",
-									"}"
-								],
-								"type": "text/javascript"
-							}
-						}
-					],
+					"name": "Show Visit Request",
+					"request": { "method": "GET", "url": { "raw": "{{expo_url}}/v1/merchant/visit-requests/{{visit_request_id}}", "host": ["{{expo_url}}"], "path": ["v1","merchant","visit-requests","{{visit_request_id}}"] } }
+				},
+				{
+					"name": "Update Visit Request",
 					"request": {
-						"auth": {
-							"type": "noauth"
-						},
-						"method": "POST",
-						"header": [
-							{
-								"key": "Content-Type",
-								"value": "application/json"
-							},
-							{
-								"key": "Accept",
-								"value": "application/json"
-							},
-							{
-								"key": "Accept-Language",
-								"value": "ar"
-							}
-						],
-						"body": {
-							"mode": "raw",
-							"raw": "{\n  \"identifier\": \"merchant@test.com\",\n  \"password\": \"Test@123456\"\n}"
-						},
-						"url": {
-							"raw": "{{auth_url}}/auth/login",
-							"host": [
-								"{{auth_url}}"
-							],
-							"path": [
-								"auth",
-								"login"
-							]
-						}
+						"method": "PUT",
+						"header": [{"key":"Content-Type","value":"application/json"}],
+						"body": { "mode": "raw", "raw": "{\n    \"visit_date\": \"2025-03-15\",\n    \"visit_time\": \"14:00\",\n    \"notes\": \"Updated: need larger space\"\n}" },
+						"url": { "raw": "{{expo_url}}/v1/merchant/visit-requests/{{visit_request_id}}", "host": ["{{expo_url}}"], "path": ["v1","merchant","visit-requests","{{visit_request_id}}"] }
 					}
 				},
 				{
-					"name": "Get Me",
+					"name": "Delete Visit Request",
+					"request": { "method": "DELETE", "url": { "raw": "{{expo_url}}/v1/merchant/visit-requests/{{visit_request_id}}", "host": ["{{expo_url}}"], "path": ["v1","merchant","visit-requests","{{visit_request_id}}"] } }
+				}
+			]
+		},
+		{
+			"name": "🏠 Rental Requests",
+			"item": [
+				{
+					"name": "List Rental Requests",
+					"request": { "method": "GET", "url": { "raw": "{{expo_url}}/v1/merchant/rental-requests", "host": ["{{expo_url}}"], "path": ["v1","merchant","rental-requests"] } }
+				},
+				{
+					"name": "Create Rental Request",
 					"request": {
-						"method": "GET",
-						"header": [
-							{
-								"key": "Accept",
-								"value": "application/json"
-							},
-							{
-								"key": "Accept-Language",
-								"value": "ar"
-							}
-						],
-						"url": {
-							"raw": "{{auth_url}}/auth/me",
-							"host": [
-								"{{auth_url}}"
-							],
-							"path": [
-								"auth",
-								"me"
-							]
-						}
+						"method": "POST",
+						"header": [{"key":"Content-Type","value":"application/json"}],
+						"body": { "mode": "raw", "raw": "{\n    \"space_id\": \"{{space_id}}\",\n    \"start_date\": \"2025-03-01\",\n    \"end_date\": \"2025-03-10\",\n    \"notes\": \"Need space for product display booth\"\n}" },
+						"url": { "raw": "{{expo_url}}/v1/merchant/rental-requests", "host": ["{{expo_url}}"], "path": ["v1","merchant","rental-requests"] }
 					}
 				},
 				{
-					"name": "Change Password",
+					"name": "Show Rental Request",
+					"request": { "method": "GET", "url": { "raw": "{{expo_url}}/v1/merchant/rental-requests/{{rental_request_id}}", "host": ["{{expo_url}}"], "path": ["v1","merchant","rental-requests","{{rental_request_id}}"] } }
+				},
+				{
+					"name": "Update Rental Request",
+					"request": {
+						"method": "PUT",
+						"header": [{"key":"Content-Type","value":"application/json"}],
+						"body": { "mode": "raw", "raw": "{\n    \"start_date\": \"2025-03-05\",\n    \"end_date\": \"2025-03-15\",\n    \"notes\": \"Extended rental period\"\n}" },
+						"url": { "raw": "{{expo_url}}/v1/merchant/rental-requests/{{rental_request_id}}", "host": ["{{expo_url}}"], "path": ["v1","merchant","rental-requests","{{rental_request_id}}"] }
+					}
+				},
+				{
+					"name": "Delete Rental Request",
+					"request": { "method": "DELETE", "url": { "raw": "{{expo_url}}/v1/merchant/rental-requests/{{rental_request_id}}", "host": ["{{expo_url}}"], "path": ["v1","merchant","rental-requests","{{rental_request_id}}"] } }
+				}
+			]
+		},
+		{
+			"name": "📋 Rental Contracts",
+			"item": [
+				{
+					"name": "List Contracts",
+					"request": { "method": "GET", "url": { "raw": "{{expo_url}}/v1/merchant/rental-contracts", "host": ["{{expo_url}}"], "path": ["v1","merchant","rental-contracts"] } }
+				},
+				{
+					"name": "Show Contract",
+					"request": { "method": "GET", "url": { "raw": "{{expo_url}}/v1/merchant/rental-contracts/{{rental_contract_id}}", "host": ["{{expo_url}}"], "path": ["v1","merchant","rental-contracts","{{rental_contract_id}}"] } }
+				},
+				{
+					"name": "Sign Contract",
+					"request": { "method": "PUT", "url": { "raw": "{{expo_url}}/v1/merchant/rental-contracts/{{rental_contract_id}}/sign", "host": ["{{expo_url}}"], "path": ["v1","merchant","rental-contracts","{{rental_contract_id}}","sign"] } }
+				}
+			]
+		},
+		{
+			"name": "👤 Profile",
+			"item": [
+				{
+					"name": "Get My Profile",
+					"request": { "method": "GET", "url": { "raw": "{{expo_url}}/v1/profile", "host": ["{{expo_url}}"], "path": ["v1","profile"] } }
+				},
+				{
+					"name": "Create Profile",
 					"request": {
 						"method": "POST",
-						"header": [
-							{
-								"key": "Content-Type",
-								"value": "application/json"
-							},
-							{
-								"key": "Accept",
-								"value": "application/json"
-							},
-							{
-								"key": "Accept-Language",
-								"value": "ar"
-							}
-						],
-						"body": {
-							"mode": "raw",
-							"raw": "{\n  \"current_password\": \"Test@123456\",\n  \"password\": \"NewPass@123\",\n  \"password_confirmation\": \"NewPass@123\"\n}"
-						},
-						"url": {
-							"raw": "{{auth_url}}/auth/change-password",
-							"host": [
-								"{{auth_url}}"
-							],
-							"path": [
-								"auth",
-								"change-password"
-							]
-						}
+						"header": [{"key":"Content-Type","value":"application/json"}],
+						"body": { "mode": "raw", "raw": "{\n    \"company_name\": \"Merchant Trading Co.\",\n    \"company_name_ar\": \"شركة التاجر للتجارة\",\n    \"commercial_registration_number\": \"1234567890\",\n    \"national_id_number\": \"1234567890\",\n    \"contact_phone\": \"+966500000001\",\n    \"contact_email\": \"info@merchant.com\",\n    \"website\": \"https://merchant.com\",\n    \"business_type\": \"company\"\n}" },
+						"url": { "raw": "{{expo_url}}/v1/profile", "host": ["{{expo_url}}"], "path": ["v1","profile"] }
 					}
 				},
 				{
 					"name": "Update Profile",
 					"request": {
 						"method": "PUT",
-						"header": [
-							{
-								"key": "Content-Type",
-								"value": "application/json"
-							},
-							{
-								"key": "Accept",
-								"value": "application/json"
-							},
-							{
-								"key": "Accept-Language",
-								"value": "ar"
-							}
-						],
-						"body": {
-							"mode": "raw",
-							"raw": "{\n  \"name\": \"محمد التاجر المحدث\"\n}"
-						},
-						"url": {
-							"raw": "{{auth_url}}/auth/profile",
-							"host": [
-								"{{auth_url}}"
-							],
-							"path": [
-								"auth",
-								"profile"
-							]
-						}
-					}
-				},
-				{
-					"name": "Refresh Token",
-					"event": [
-						{
-							"listen": "test",
-							"script": {
-								"exec": [
-									"var jsonData = pm.response.json();",
-									"if (jsonData.data && jsonData.data.token) {",
-									"    pm.collectionVariables.set('merchant_token', jsonData.data.token);",
-									"    console.log('merchant_token refreshed successfully');",
-									"}"
-								],
-								"type": "text/javascript"
-							}
-						}
-					],
-					"request": {
-						"method": "POST",
-						"header": [
-							{
-								"key": "Accept",
-								"value": "application/json"
-							},
-							{
-								"key": "Accept-Language",
-								"value": "ar"
-							}
-						],
-						"url": {
-							"raw": "{{auth_url}}/auth/refresh",
-							"host": [
-								"{{auth_url}}"
-							],
-							"path": [
-								"auth",
-								"refresh"
-							]
-						}
-					}
-				},
-				{
-					"name": "Forgot Password",
-					"request": {
-						"method": "POST",
-						"header": [
-							{
-								"key": "Accept",
-								"value": "application/json"
-							},
-							{
-								"key": "Accept-Language",
-								"value": "ar"
-							},
-							{
-								"key": "Content-Type",
-								"value": "application/json"
-							}
-						],
-						"url": {
-							"raw": "{{auth_url}}/auth/forgot-password",
-							"host": [
-								"{{auth_url}}"
-							],
-							"path": [
-								"auth",
-								"forgot-password"
-							]
-						},
-						"auth": {
-							"type": "noauth"
-						},
-						"body": {
-							"mode": "raw",
-							"raw": "{\n\t\"email\": \"merchant@test.com\"\n}",
-							"options": {
-								"raw": {
-									"language": "json"
-								}
-							}
-						}
-					},
-					"response": []
-				},
-				{
-					"name": "Reset Password",
-					"request": {
-						"method": "POST",
-						"header": [
-							{
-								"key": "Accept",
-								"value": "application/json"
-							},
-							{
-								"key": "Accept-Language",
-								"value": "ar"
-							},
-							{
-								"key": "Content-Type",
-								"value": "application/json"
-							}
-						],
-						"url": {
-							"raw": "{{auth_url}}/auth/reset-password",
-							"host": [
-								"{{auth_url}}"
-							],
-							"path": [
-								"auth",
-								"reset-password"
-							]
-						},
-						"auth": {
-							"type": "noauth"
-						},
-						"body": {
-							"mode": "raw",
-							"raw": "{\n\t\"email\": \"merchant@test.com\",\n\t\"token\": \"reset-token-here\",\n\t\"password\": \"Test@123456\",\n\t\"password_confirmation\": \"Test@123456\"\n}",
-							"options": {
-								"raw": {
-									"language": "json"
-								}
-							}
-						}
-					},
-					"response": []
-				},
-				{
-					"name": "Send Email Verification",
-					"request": {
-						"method": "POST",
-						"header": [
-							{
-								"key": "Accept",
-								"value": "application/json"
-							},
-							{
-								"key": "Accept-Language",
-								"value": "ar"
-							}
-						],
-						"url": {
-							"raw": "{{auth_url}}/auth/email/send-verification",
-							"host": [
-								"{{auth_url}}"
-							],
-							"path": [
-								"auth",
-								"email",
-								"send-verification"
-							]
-						}
-					},
-					"response": []
-				},
-				{
-					"name": "Verify Email",
-					"request": {
-						"method": "POST",
-						"header": [
-							{
-								"key": "Accept",
-								"value": "application/json"
-							},
-							{
-								"key": "Accept-Language",
-								"value": "ar"
-							},
-							{
-								"key": "Content-Type",
-								"value": "application/json"
-							}
-						],
-						"url": {
-							"raw": "{{auth_url}}/auth/email/verify",
-							"host": [
-								"{{auth_url}}"
-							],
-							"path": [
-								"auth",
-								"email",
-								"verify"
-							]
-						},
-						"body": {
-							"mode": "raw",
-							"raw": "{\n\t\"code\": \"123456\"\n}",
-							"options": {
-								"raw": {
-									"language": "json"
-								}
-							}
-						}
-					},
-					"response": []
-				},
-				{
-					"name": "Logout",
-					"request": {
-						"method": "POST",
-						"header": [
-							{
-								"key": "Accept",
-								"value": "application/json"
-							},
-							{
-								"key": "Accept-Language",
-								"value": "ar"
-							}
-						],
-						"url": {
-							"raw": "{{auth_url}}/auth/logout",
-							"host": [
-								"{{auth_url}}"
-							],
-							"path": [
-								"auth",
-								"logout"
-							]
-						}
+						"header": [{"key":"Content-Type","value":"application/json"}],
+						"body": { "mode": "raw", "raw": "{\n    \"company_name\": \"Updated Merchant Co.\",\n    \"contact_phone\": \"+966500000099\"\n}" },
+						"url": { "raw": "{{expo_url}}/v1/profile", "host": ["{{expo_url}}"], "path": ["v1","profile"] }
 					}
 				}
 			]
 		},
 		{
-			"name": "Business Profile (الملف التجاري)",
+			"name": "❤️ Favorites",
 			"item": [
-				{
-					"name": "Create Business Profile",
-					"request": {
-						"method": "POST",
-						"header": [
-							{
-								"key": "Accept",
-								"value": "application/json"
-							},
-							{
-								"key": "Accept-Language",
-								"value": "ar"
-							}
-						],
-						"body": {
-							"mode": "formdata",
-							"formdata": [
-								{"key": "company_name", "value": "شركة محمد", "type": "text", "description": "required - Company name"},
-								{"key": "company_name_ar", "value": "شركة محمد التجارية", "type": "text", "description": "optional - Company name in Arabic"},
-								{"key": "commercial_registration_number", "value": "1234567890", "type": "text", "description": "optional - CR number"},
-								{"key": "commercial_registration_image", "type": "file", "src": "", "description": "optional - CR image (jpeg,png,jpg,webp,pdf max:5MB)", "disabled": true},
-								{"key": "national_id_number", "value": "1098765432", "type": "text", "description": "optional - National ID number", "disabled": true},
-								{"key": "national_id_image", "type": "file", "src": "", "description": "optional - National ID image (jpeg,png,jpg,webp,pdf max:5MB)", "disabled": true},
-								{"key": "company_logo", "type": "file", "src": "", "description": "optional - Company logo (jpeg,png,jpg,webp max:2MB)", "disabled": true},
-								{"key": "avatar", "type": "file", "src": "", "description": "optional - Profile avatar (jpeg,png,jpg,webp max:2MB)", "disabled": true},
-								{"key": "company_address", "value": "شارع الأمير محمد", "type": "text", "description": "optional - Company address", "disabled": true},
-								{"key": "company_address_ar", "value": "شارع الأمير محمد - جدة", "type": "text", "description": "optional - Address in Arabic", "disabled": true},
-								{"key": "contact_phone", "value": "0511111111", "type": "text", "description": "required - Contact phone"},
-								{"key": "contact_email", "value": "merchant@test.com", "type": "text", "description": "optional - Contact email"},
-								{"key": "website", "value": "https://merchant-shop.com", "type": "text", "description": "optional - Website URL", "disabled": true},
-								{"key": "business_type", "value": "merchant", "type": "text", "description": "required - investor|merchant|both"}
-							]
-						},
-						"url": {
-							"raw": "{{expo_url}}/profile",
-							"host": [
-								"{{expo_url}}"
-							],
-							"path": [
-								"profile"
-							]
-						}
-					}
-				},
-				{
-					"name": "Get Business Profile",
-					"request": {
-						"method": "GET",
-						"header": [
-							{
-								"key": "Accept",
-								"value": "application/json"
-							},
-							{
-								"key": "Accept-Language",
-								"value": "ar"
-							}
-						],
-						"url": {
-							"raw": "{{expo_url}}/profile",
-							"host": [
-								"{{expo_url}}"
-							],
-							"path": [
-								"profile"
-							]
-						}
-					}
-				},
-				{
-					"name": "Update Business Profile",
-					"request": {
-						"method": "PUT",
-						"header": [
-							{
-								"key": "Accept",
-								"value": "application/json"
-							},
-							{
-								"key": "Accept-Language",
-								"value": "ar"
-							}
-						],
-						"body": {
-							"mode": "formdata",
-							"formdata": [
-								{"key": "company_name", "value": "شركة محمد المحدثة", "type": "text", "description": "optional - Company name"},
-								{"key": "company_name_ar", "value": "شركة محمد التجارية المحدثة", "type": "text", "description": "optional - Arabic name", "disabled": true},
-								{"key": "commercial_registration_number", "value": "1234567890", "type": "text", "description": "optional - CR number", "disabled": true},
-								{"key": "commercial_registration_image", "type": "file", "src": "", "description": "optional - CR image", "disabled": true},
-								{"key": "national_id_number", "value": "1098765432", "type": "text", "description": "optional - National ID", "disabled": true},
-								{"key": "national_id_image", "type": "file", "src": "", "description": "optional - ID image", "disabled": true},
-								{"key": "company_logo", "type": "file", "src": "", "description": "optional - Logo (max:2MB)", "disabled": true},
-								{"key": "avatar", "type": "file", "src": "", "description": "optional - Avatar (max:2MB)", "disabled": true},
-								{"key": "company_address", "value": "شارع محدث", "type": "text", "description": "optional", "disabled": true},
-								{"key": "company_address_ar", "value": "شارع محدث - جدة", "type": "text", "description": "optional", "disabled": true},
-								{"key": "contact_phone", "value": "0511111111", "type": "text", "description": "optional", "disabled": true},
-								{"key": "contact_email", "value": "merchant-updated@test.com", "type": "text", "description": "optional", "disabled": true},
-								{"key": "website", "value": "https://updated-shop.com", "type": "text", "description": "optional", "disabled": true},
-								{"key": "business_type", "value": "merchant", "type": "text", "description": "optional", "disabled": true}
-							]
-						},
-						"url": {
-							"raw": "{{expo_url}}/profile",
-							"host": [
-								"{{expo_url}}"
-							],
-							"path": [
-								"profile"
-							]
-						}
-					}
-				}
-			]
-		},
-		{
-			"name": "Browse Events (تصفح الفعاليات)",
-			"item": [
-				{
-					"name": "List Events",
-					"request": {
-						"method": "GET",
-						"header": [
-							{
-								"key": "Accept",
-								"value": "application/json"
-							},
-							{
-								"key": "Accept-Language",
-								"value": "ar"
-							}
-						],
-						"url": {
-							"raw": "{{expo_url}}/events?page=1",
-							"host": [
-								"{{expo_url}}"
-							],
-							"path": [
-								"events"
-							],
-							"query": [
-								{
-									"key": "page",
-									"value": "1"
-								},
-								{
-									"key": "search",
-									"value": "",
-									"disabled": true
-								},
-								{
-									"key": "city_id",
-									"value": "",
-									"disabled": true
-								},
-								{
-									"key": "category_id",
-									"value": "",
-									"disabled": true
-								},
-								{
-									"key": "sort_by",
-									"value": "start_date",
-									"disabled": true
-								},
-								{
-									"key": "sort_order",
-									"value": "asc",
-									"disabled": true
-								}
-							]
-						}
-					}
-				},
-				{
-					"name": "Featured Events",
-					"request": {
-						"method": "GET",
-						"header": [
-							{
-								"key": "Accept",
-								"value": "application/json"
-							},
-							{
-								"key": "Accept-Language",
-								"value": "ar"
-							}
-						],
-						"url": {
-							"raw": "{{expo_url}}/events/featured",
-							"host": [
-								"{{expo_url}}"
-							],
-							"path": [
-								"events",
-								"featured"
-							]
-						}
-					}
-				},
-				{
-					"name": "Show Event",
-					"request": {
-						"method": "GET",
-						"header": [
-							{
-								"key": "Accept",
-								"value": "application/json"
-							},
-							{
-								"key": "Accept-Language",
-								"value": "ar"
-							}
-						],
-						"url": {
-							"raw": "{{expo_url}}/events/{{event_id}}",
-							"host": [
-								"{{expo_url}}"
-							],
-							"path": [
-								"events",
-								"{{event_id}}"
-							]
-						}
-					}
-				},
-				{
-					"name": "Event Spaces",
-					"request": {
-						"method": "GET",
-						"header": [
-							{
-								"key": "Accept",
-								"value": "application/json"
-							},
-							{
-								"key": "Accept-Language",
-								"value": "ar"
-							}
-						],
-						"url": {
-							"raw": "{{expo_url}}/events/{{event_id}}/spaces?available_only=true",
-							"host": [
-								"{{expo_url}}"
-							],
-							"path": [
-								"events",
-								"{{event_id}}",
-								"spaces"
-							],
-							"query": [
-								{
-									"key": "available_only",
-									"value": "true"
-								},
-								{
-									"key": "min_price",
-									"value": "",
-									"disabled": true
-								},
-								{
-									"key": "max_price",
-									"value": "",
-									"disabled": true
-								},
-								{
-									"key": "space_type",
-									"value": "",
-									"disabled": true
-								},
-								{
-									"key": "sort_by",
-									"value": "price_per_day",
-									"disabled": true
-								}
-							]
-						}
-					}
-				},
-				{
-					"name": "Event Sections",
-					"request": {
-						"method": "GET",
-						"header": [
-							{
-								"key": "Accept",
-								"value": "application/json"
-							},
-							{
-								"key": "Accept-Language",
-								"value": "ar"
-							}
-						],
-						"url": {
-							"raw": "{{expo_url}}/events/{{event_id}}/sections",
-							"host": [
-								"{{expo_url}}"
-							],
-							"path": [
-								"events",
-								"{{event_id}}",
-								"sections"
-							]
-						}
-					}
-				},
-				{
-					"name": "Show Space",
-					"request": {
-						"method": "GET",
-						"header": [
-							{
-								"key": "Accept",
-								"value": "application/json"
-							},
-							{
-								"key": "Accept-Language",
-								"value": "ar"
-							}
-						],
-						"url": {
-							"raw": "{{expo_url}}/spaces/{{space_id}}",
-							"host": [
-								"{{expo_url}}"
-							],
-							"path": [
-								"spaces",
-								"{{space_id}}"
-							]
-						}
-					}
-				},
-				{
-					"name": "List Categories",
-					"request": {
-						"method": "GET",
-						"header": [
-							{
-								"key": "Accept",
-								"value": "application/json"
-							},
-							{
-								"key": "Accept-Language",
-								"value": "ar"
-							}
-						],
-						"url": {
-							"raw": "{{expo_url}}/categories",
-							"host": [
-								"{{expo_url}}"
-							],
-							"path": [
-								"categories"
-							]
-						}
-					}
-				},
-				{
-					"name": "List Cities",
-					"request": {
-						"method": "GET",
-						"header": [
-							{
-								"key": "Accept",
-								"value": "application/json"
-							},
-							{
-								"key": "Accept-Language",
-								"value": "ar"
-							}
-						],
-						"url": {
-							"raw": "{{expo_url}}/cities",
-							"host": [
-								"{{expo_url}}"
-							],
-							"path": [
-								"cities"
-							]
-						}
-					}
-				},
-				{
-					"name": "List Services",
-					"request": {
-						"method": "GET",
-						"header": [
-							{
-								"key": "Accept",
-								"value": "application/json"
-							},
-							{
-								"key": "Accept-Language",
-								"value": "ar"
-							}
-						],
-						"url": {
-							"raw": "{{expo_url}}/services",
-							"host": [
-								"{{expo_url}}"
-							],
-							"path": [
-								"services"
-							]
-						}
-					}
-				}
-			]
-		},
-		{
-			"name": "Visit Requests (طلبات الزيارة)",
-			"item": [
-				{
-					"name": "Create Visit Request",
-					"event": [
-						{
-							"listen": "test",
-							"script": {
-								"exec": [
-									"var jsonData = pm.response.json();",
-									"if (jsonData.data && jsonData.data.id) {",
-									"    pm.collectionVariables.set('visit_request_id', jsonData.data.id);",
-									"    console.log('visit_request_id saved: ' + jsonData.data.id);",
-									"}"
-								],
-								"type": "text/javascript"
-							}
-						}
-					],
-					"request": {
-						"method": "POST",
-						"header": [
-							{
-								"key": "Content-Type",
-								"value": "application/json"
-							},
-							{
-								"key": "Accept",
-								"value": "application/json"
-							},
-							{
-								"key": "Accept-Language",
-								"value": "ar"
-							}
-						],
-						"body": {
-							"mode": "raw",
-							"raw": "{\n  \"event_id\": \"{{event_id}}\",\n  \"visit_date\": \"2025-06-15\",\n  \"visitors_count\": 3,\n  \"notes\": \"Business visit\",\n  \"contact_phone\": \"0511111111\"\n}"
-						},
-						"url": {
-							"raw": "{{expo_url}}/visit-requests",
-							"host": [
-								"{{expo_url}}"
-							],
-							"path": [
-								"visit-requests"
-							]
-						}
-					}
-				},
-				{
-					"name": "List Visit Requests",
-					"request": {
-						"method": "GET",
-						"header": [
-							{
-								"key": "Accept",
-								"value": "application/json"
-							},
-							{
-								"key": "Accept-Language",
-								"value": "ar"
-							}
-						],
-						"url": {
-							"raw": "{{expo_url}}/visit-requests",
-							"host": [
-								"{{expo_url}}"
-							],
-							"path": [
-								"visit-requests"
-							]
-						}
-					}
-				},
-				{
-					"name": "Show Visit Request",
-					"request": {
-						"method": "GET",
-						"header": [
-							{
-								"key": "Accept",
-								"value": "application/json"
-							},
-							{
-								"key": "Accept-Language",
-								"value": "ar"
-							}
-						],
-						"url": {
-							"raw": "{{expo_url}}/visit-requests/{{visit_request_id}}",
-							"host": [
-								"{{expo_url}}"
-							],
-							"path": [
-								"visit-requests",
-								"{{visit_request_id}}"
-							]
-						}
-					}
-				},
-				{
-					"name": "Update Visit Request",
-					"request": {
-						"method": "PUT",
-						"header": [
-							{
-								"key": "Content-Type",
-								"value": "application/json"
-							},
-							{
-								"key": "Accept",
-								"value": "application/json"
-							},
-							{
-								"key": "Accept-Language",
-								"value": "ar"
-							}
-						],
-						"body": {
-							"mode": "raw",
-							"raw": "{\n  \"visit_date\": \"2025-06-20\",\n  \"visitors_count\": 5\n}"
-						},
-						"url": {
-							"raw": "{{expo_url}}/visit-requests/{{visit_request_id}}",
-							"host": [
-								"{{expo_url}}"
-							],
-							"path": [
-								"visit-requests",
-								"{{visit_request_id}}"
-							]
-						}
-					}
-				},
-				{
-					"name": "Delete Visit Request",
-					"request": {
-						"method": "DELETE",
-						"header": [
-							{
-								"key": "Accept",
-								"value": "application/json"
-							},
-							{
-								"key": "Accept-Language",
-								"value": "ar"
-							}
-						],
-						"url": {
-							"raw": "{{expo_url}}/visit-requests/{{visit_request_id}}",
-							"host": [
-								"{{expo_url}}"
-							],
-							"path": [
-								"visit-requests",
-								"{{visit_request_id}}"
-							]
-						}
-					}
-				}
-			]
-		},
-		{
-			"name": "Rental Requests (طلبات الإيجار)",
-			"item": [
-				{
-					"name": "Create Rental Request",
-					"event": [
-						{
-							"listen": "test",
-							"script": {
-								"exec": [
-									"var jsonData = pm.response.json();",
-									"if (jsonData.data && jsonData.data.id) {",
-									"    pm.collectionVariables.set('rental_request_id', jsonData.data.id);",
-									"    console.log('rental_request_id saved: ' + jsonData.data.id);",
-									"}"
-								],
-								"type": "text/javascript"
-							}
-						}
-					],
-					"request": {
-						"method": "POST",
-						"header": [
-							{
-								"key": "Content-Type",
-								"value": "application/json"
-							},
-							{
-								"key": "Accept",
-								"value": "application/json"
-							},
-							{
-								"key": "Accept-Language",
-								"value": "ar"
-							}
-						],
-						"body": {
-							"mode": "raw",
-							"raw": "{\n  \"space_id\": \"{{space_id}}\",\n  \"start_date\": \"2025-06-15\",\n  \"end_date\": \"2025-06-30\",\n  \"notes\": \"Need booth for shop\"\n}"
-						},
-						"url": {
-							"raw": "{{expo_url}}/rental-requests",
-							"host": [
-								"{{expo_url}}"
-							],
-							"path": [
-								"rental-requests"
-							]
-						}
-					}
-				},
-				{
-					"name": "List Rental Requests",
-					"request": {
-						"method": "GET",
-						"header": [
-							{
-								"key": "Accept",
-								"value": "application/json"
-							},
-							{
-								"key": "Accept-Language",
-								"value": "ar"
-							}
-						],
-						"url": {
-							"raw": "{{expo_url}}/rental-requests",
-							"host": [
-								"{{expo_url}}"
-							],
-							"path": [
-								"rental-requests"
-							]
-						}
-					}
-				},
-				{
-					"name": "Show Rental Request",
-					"request": {
-						"method": "GET",
-						"header": [
-							{
-								"key": "Accept",
-								"value": "application/json"
-							},
-							{
-								"key": "Accept-Language",
-								"value": "ar"
-							}
-						],
-						"url": {
-							"raw": "{{expo_url}}/rental-requests/{{rental_request_id}}",
-							"host": [
-								"{{expo_url}}"
-							],
-							"path": [
-								"rental-requests",
-								"{{rental_request_id}}"
-							]
-						}
-					}
-				},
-				{
-					"name": "Update Rental Request",
-					"request": {
-						"method": "PUT",
-						"header": [
-							{
-								"key": "Content-Type",
-								"value": "application/json"
-							},
-							{
-								"key": "Accept",
-								"value": "application/json"
-							},
-							{
-								"key": "Accept-Language",
-								"value": "ar"
-							}
-						],
-						"body": {
-							"mode": "raw",
-							"raw": "{\n  \"notes\": \"Updated notes\"\n}"
-						},
-						"url": {
-							"raw": "{{expo_url}}/rental-requests/{{rental_request_id}}",
-							"host": [
-								"{{expo_url}}"
-							],
-							"path": [
-								"rental-requests",
-								"{{rental_request_id}}"
-							]
-						}
-					}
-				},
-				{
-					"name": "Delete Rental Request",
-					"request": {
-						"method": "DELETE",
-						"header": [
-							{
-								"key": "Accept",
-								"value": "application/json"
-							},
-							{
-								"key": "Accept-Language",
-								"value": "ar"
-							}
-						],
-						"url": {
-							"raw": "{{expo_url}}/rental-requests/{{rental_request_id}}",
-							"host": [
-								"{{expo_url}}"
-							],
-							"path": [
-								"rental-requests",
-								"{{rental_request_id}}"
-							]
-						}
-					}
-				}
-			]
-		},
-		{
-			"name": "Favorites (المفضلة)",
-			"item": [
-				{
-					"name": "Add Favorite",
-					"event": [
-						{
-							"listen": "test",
-							"script": {
-								"exec": [
-									"var jsonData = pm.response.json();",
-									"if (jsonData.data && jsonData.data.id) {",
-									"    pm.collectionVariables.set('favorite_id', jsonData.data.id);",
-									"    console.log('favorite_id saved: ' + jsonData.data.id);",
-									"}"
-								],
-								"type": "text/javascript"
-							}
-						}
-					],
-					"request": {
-						"method": "POST",
-						"header": [
-							{
-								"key": "Content-Type",
-								"value": "application/json"
-							},
-							{
-								"key": "Accept",
-								"value": "application/json"
-							},
-							{
-								"key": "Accept-Language",
-								"value": "ar"
-							}
-						],
-						"body": {
-							"mode": "raw",
-							"raw": "{\n  \"favoritable_id\": \"{{event_id}}\",\n  \"favoritable_type\": \"event\"\n}"
-						},
-						"url": {
-							"raw": "{{expo_url}}/favorites",
-							"host": [
-								"{{expo_url}}"
-							],
-							"path": [
-								"favorites"
-							]
-						}
-					}
-				},
 				{
 					"name": "List Favorites",
+					"request": { "method": "GET", "url": { "raw": "{{expo_url}}/v1/favorites", "host": ["{{expo_url}}"], "path": ["v1","favorites"] } }
+				},
+				{
+					"name": "Toggle Favorite",
 					"request": {
-						"method": "GET",
-						"header": [
-							{
-								"key": "Accept",
-								"value": "application/json"
-							},
-							{
-								"key": "Accept-Language",
-								"value": "ar"
-							}
-						],
-						"url": {
-							"raw": "{{expo_url}}/favorites",
-							"host": [
-								"{{expo_url}}"
-							],
-							"path": [
-								"favorites"
-							]
-						}
+						"method": "POST",
+						"header": [{"key":"Content-Type","value":"application/json"}],
+						"body": { "mode": "raw", "raw": "{\n    \"type\": \"event\",\n    \"id\": \"{{event_id}}\"\n}" },
+						"url": { "raw": "{{expo_url}}/v1/favorites", "host": ["{{expo_url}}"], "path": ["v1","favorites"] }
 					}
 				},
 				{
 					"name": "Remove Favorite",
-					"request": {
-						"method": "DELETE",
-						"header": [
-							{
-								"key": "Accept",
-								"value": "application/json"
-							},
-							{
-								"key": "Accept-Language",
-								"value": "ar"
-							}
-						],
-						"url": {
-							"raw": "{{expo_url}}/favorites/{{favorite_id}}",
-							"host": [
-								"{{expo_url}}"
-							],
-							"path": [
-								"favorites",
-								"{{favorite_id}}"
-							]
-						}
-					}
+					"request": { "method": "DELETE", "url": { "raw": "{{expo_url}}/v1/favorites/{{favorite_id}}", "host": ["{{expo_url}}"], "path": ["v1","favorites","{{favorite_id}}"] } }
 				}
 			]
 		},
 		{
-			"name": "Notifications (الإشعارات)",
+			"name": "⭐ Ratings",
+			"item": [
+				{
+					"name": "Create Rating",
+					"request": {
+						"method": "POST",
+						"header": [{"key":"Content-Type","value":"application/json"}],
+						"body": { "mode": "raw", "raw": "{\n    \"rateable_type\": \"event\",\n    \"rateable_id\": \"{{event_id}}\",\n    \"overall_rating\": 5,\n    \"cleanliness_rating\": 4,\n    \"location_rating\": 5,\n    \"facilities_rating\": 4,\n    \"value_rating\": 5,\n    \"communication_rating\": 4,\n    \"comment\": \"Great expo!\"\n}" },
+						"url": { "raw": "{{expo_url}}/v1/ratings", "host": ["{{expo_url}}"], "path": ["v1","ratings"] }
+					}
+				},
+				{
+					"name": "Update Rating",
+					"request": {
+						"method": "PUT",
+						"header": [{"key":"Content-Type","value":"application/json"}],
+						"body": { "mode": "raw", "raw": "{\n    \"overall_rating\": 4,\n    \"comment\": \"Updated review\"\n}" },
+						"url": { "raw": "{{expo_url}}/v1/ratings/{{rating_id}}", "host": ["{{expo_url}}"], "path": ["v1","ratings","{{rating_id}}"] }
+					}
+				},
+				{
+					"name": "Delete Rating",
+					"request": { "method": "DELETE", "url": { "raw": "{{expo_url}}/v1/ratings/{{rating_id}}", "host": ["{{expo_url}}"], "path": ["v1","ratings","{{rating_id}}"] } }
+				}
+			]
+		},
+		{
+			"name": "🔔 Notifications",
 			"item": [
 				{
 					"name": "List Notifications",
-					"request": {
-						"method": "GET",
-						"header": [
-							{
-								"key": "Accept",
-								"value": "application/json"
-							},
-							{
-								"key": "Accept-Language",
-								"value": "ar"
-							}
-						],
-						"url": {
-							"raw": "{{expo_url}}/notifications",
-							"host": [
-								"{{expo_url}}"
-							],
-							"path": [
-								"notifications"
-							]
-						}
-					}
+					"request": { "method": "GET", "url": { "raw": "{{expo_url}}/v1/notifications", "host": ["{{expo_url}}"], "path": ["v1","notifications"] } }
 				},
 				{
-					"name": "Unread Notifications Count",
-					"request": {
-						"method": "GET",
-						"header": [
-							{
-								"key": "Accept",
-								"value": "application/json"
-							},
-							{
-								"key": "Accept-Language",
-								"value": "ar"
-							}
-						],
-						"url": {
-							"raw": "{{expo_url}}/notifications/unread-count",
-							"host": [
-								"{{expo_url}}"
-							],
-							"path": [
-								"notifications",
-								"unread-count"
-							]
-						}
-					}
+					"name": "Unread Count",
+					"request": { "method": "GET", "url": { "raw": "{{expo_url}}/v1/notifications/unread-count", "host": ["{{expo_url}}"], "path": ["v1","notifications","unread-count"] } }
 				},
 				{
-					"name": "Mark Notification Read",
+					"name": "Mark as Read",
+					"request": { "method": "PUT", "url": { "raw": "{{expo_url}}/v1/notifications/{{notification_id}}/read", "host": ["{{expo_url}}"], "path": ["v1","notifications","{{notification_id}}","read"] } }
+				},
+				{
+					"name": "Mark All Read",
+					"request": { "method": "PUT", "url": { "raw": "{{expo_url}}/v1/notifications/read-all", "host": ["{{expo_url}}"], "path": ["v1","notifications","read-all"] } }
+				},
+				{
+					"name": "Get Preferences",
+					"request": { "method": "GET", "url": { "raw": "{{expo_url}}/v1/notifications/preferences", "host": ["{{expo_url}}"], "path": ["v1","notifications","preferences"] } }
+				},
+				{
+					"name": "Update Preferences",
 					"request": {
 						"method": "PUT",
-						"header": [
-							{
-								"key": "Accept",
-								"value": "application/json"
-							},
-							{
-								"key": "Accept-Language",
-								"value": "ar"
-							}
-						],
-						"url": {
-							"raw": "{{expo_url}}/notifications/{{notification_id}}/read",
-							"host": [
-								"{{expo_url}}"
-							],
-							"path": [
-								"notifications",
-								"{{notification_id}}",
-								"read"
-							]
-						}
-					}
-				},
-				{
-					"name": "Mark All Notifications Read",
-					"request": {
-						"method": "PUT",
-						"header": [
-							{
-								"key": "Accept",
-								"value": "application/json"
-							},
-							{
-								"key": "Accept-Language",
-								"value": "ar"
-							}
-						],
-						"url": {
-							"raw": "{{expo_url}}/notifications/read-all",
-							"host": [
-								"{{expo_url}}"
-							],
-							"path": [
-								"notifications",
-								"read-all"
-							]
-						}
+						"header": [{"key":"Content-Type","value":"application/json"}],
+						"body": { "mode": "raw", "raw": "{\n    \"email_enabled\": true,\n    \"push_enabled\": true,\n    \"in_app_enabled\": true,\n    \"notify_request_updates\": true,\n    \"notify_payment_reminders\": true,\n    \"notify_event_updates\": true,\n    \"notify_contract_milestones\": true,\n    \"notify_promotions\": false,\n    \"notify_support_updates\": true,\n    \"notify_ratings\": true\n}" },
+						"url": { "raw": "{{expo_url}}/v1/notifications/preferences", "host": ["{{expo_url}}"], "path": ["v1","notifications","preferences"] }
 					}
 				}
 			]
 		},
 		{
-			"name": "Merchant Spaces (تصفح المساحات)",
+			"name": "🎫 Support Tickets",
 			"item": [
 				{
-					"name": "Browse Available Spaces",
+					"name": "List Tickets",
+					"request": { "method": "GET", "url": { "raw": "{{expo_url}}/v1/support-tickets", "host": ["{{expo_url}}"], "path": ["v1","support-tickets"] } }
+				},
+				{
+					"name": "Create Ticket",
 					"request": {
-						"method": "GET",
-						"header": [
-							{"key": "Accept", "value": "application/json"},
-							{"key": "Accept-Language", "value": "ar"},
-							{"key": "X-Platform", "value": "web"}
-						],
-						"url": {
-							"raw": "{{expo_url}}/v1/merchant/spaces",
-							"host": ["{{expo_url}}"],
-							"path": ["v1", "merchant", "spaces"],
-							"query": [
-								{"key": "event_id", "value": "", "disabled": true},
-								{"key": "section_id", "value": "", "disabled": true},
-								{"key": "space_type", "value": "", "disabled": true},
-								{"key": "min_price", "value": "", "disabled": true},
-								{"key": "max_price", "value": "", "disabled": true},
-								{"key": "min_area", "value": "", "disabled": true},
-								{"key": "max_area", "value": "", "disabled": true},
-								{"key": "floor_number", "value": "", "disabled": true},
-								{"key": "service_id", "value": "", "disabled": true},
-								{"key": "search", "value": "", "disabled": true},
-								{"key": "sort_by", "value": "price_total", "disabled": true},
-								{"key": "sort_order", "value": "asc", "disabled": true},
-								{"key": "per_page", "value": "15", "disabled": true}
-							]
-						}
+						"method": "POST",
+						"header": [{"key":"Content-Type","value":"application/json"}],
+						"body": { "mode": "raw", "raw": "{\n    \"subject\": \"Rental Payment Issue\",\n    \"subject_ar\": \"مشكلة في دفع الإيجار\",\n    \"description\": \"Cannot complete payment for space rental\",\n    \"description_ar\": \"لا أستطيع إتمام دفع إيجار المساحة\",\n    \"category\": \"payment\",\n    \"priority\": \"high\"\n}" },
+						"url": { "raw": "{{expo_url}}/v1/support-tickets", "host": ["{{expo_url}}"], "path": ["v1","support-tickets"] }
 					}
 				},
 				{
-					"name": "Show Space Details",
+					"name": "Show Ticket",
+					"request": { "method": "GET", "url": { "raw": "{{expo_url}}/v1/support-tickets/{{support_ticket_id}}", "host": ["{{expo_url}}"], "path": ["v1","support-tickets","{{support_ticket_id}}"] } }
+				},
+				{
+					"name": "Reply to Ticket",
 					"request": {
-						"method": "GET",
-						"header": [
-							{"key": "Accept", "value": "application/json"},
-							{"key": "Accept-Language", "value": "ar"},
-							{"key": "X-Platform", "value": "web"}
-						],
-						"url": {
-							"raw": "{{expo_url}}/v1/merchant/spaces/{{space_id}}",
-							"host": ["{{expo_url}}"],
-							"path": ["v1", "merchant", "spaces", "{{space_id}}"]
-						}
+						"method": "POST",
+						"header": [{"key":"Content-Type","value":"application/json"}],
+						"body": { "mode": "raw", "raw": "{\n    \"message\": \"Thank you for the update\",\n    \"message_ar\": \"شكراً على التحديث\"\n}" },
+						"url": { "raw": "{{expo_url}}/v1/support-tickets/{{support_ticket_id}}/reply", "host": ["{{expo_url}}"], "path": ["v1","support-tickets","{{support_ticket_id}}","reply"] }
 					}
+				},
+				{
+					"name": "Close Ticket",
+					"request": { "method": "PUT", "url": { "raw": "{{expo_url}}/v1/support-tickets/{{support_ticket_id}}/close", "host": ["{{expo_url}}"], "path": ["v1","support-tickets","{{support_ticket_id}}","close"] } }
+				},
+				{
+					"name": "Reopen Ticket",
+					"request": { "method": "PUT", "url": { "raw": "{{expo_url}}/v1/support-tickets/{{support_ticket_id}}/reopen", "host": ["{{expo_url}}"], "path": ["v1","support-tickets","{{support_ticket_id}}","reopen"] } }
 				}
 			]
 		},
 		{
-			"name": "Merchant Services (تصفح الخدمات)",
+			"name": "🧾 Invoices",
 			"item": [
 				{
-					"name": "Browse Services",
-					"request": {
-						"method": "GET",
-						"header": [
-							{"key": "Accept", "value": "application/json"},
-							{"key": "Accept-Language", "value": "ar"}
-						],
-						"url": {
-							"raw": "{{expo_url}}/v1/merchant/services",
-							"host": ["{{expo_url}}"],
-							"path": ["v1", "merchant", "services"],
-							"query": [
-								{"key": "search", "value": "", "disabled": true}
-							]
-						}
-					}
+					"name": "List My Invoices",
+					"request": { "method": "GET", "url": { "raw": "{{expo_url}}/v1/invoices", "host": ["{{expo_url}}"], "path": ["v1","invoices"] } }
 				},
 				{
-					"name": "Show Service Details",
-					"request": {
-						"method": "GET",
-						"header": [
-							{"key": "Accept", "value": "application/json"},
-							{"key": "Accept-Language", "value": "ar"}
-						],
-						"url": {
-							"raw": "{{expo_url}}/v1/merchant/services/{{service_id}}",
-							"host": ["{{expo_url}}"],
-							"path": ["v1", "merchant", "services", "{{service_id}}"]
-						}
-					}
+					"name": "Show Invoice",
+					"request": { "method": "GET", "url": { "raw": "{{expo_url}}/v1/invoices/{{invoice_id}}", "host": ["{{expo_url}}"], "path": ["v1","invoices","{{invoice_id}}"] } }
 				}
 			]
 		}
