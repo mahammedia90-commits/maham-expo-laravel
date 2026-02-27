@@ -105,6 +105,10 @@
                         <li><a href="#events" class="sidebar-link block py-2 px-3 text-sm text-gray-600 rounded-lg"><span class="badge method-get text-white ml-1">GET</span> <span data-ar="الفعاليات" data-en="Events">الفعاليات</span></a></li>
                         <li><a href="#spaces" class="sidebar-link block py-2 px-3 text-sm text-gray-600 rounded-lg"><span class="badge method-get text-white ml-1">GET</span> <span data-ar="المساحات" data-en="Spaces">المساحات</span></a></li>
                         <li><a href="#services-public" class="sidebar-link block py-2 px-3 text-sm text-gray-600 rounded-lg"><span class="badge method-get text-white ml-1">GET</span> <span data-ar="الخدمات" data-en="Services">الخدمات</span></a></li>
+                        <li><a href="#statistics" class="sidebar-link block py-2 px-3 text-sm text-gray-600 rounded-lg"><span class="badge method-get text-white ml-1">GET</span> <span data-ar="الإحصائيات" data-en="Statistics">الإحصائيات</span></a></li>
+                        <li><a href="#sponsors-public" class="sidebar-link block py-2 px-3 text-sm text-gray-600 rounded-lg" data-ar="الرعاة" data-en="Sponsors">الرعاة</a></li>
+                        <li><a href="#ratings-public" class="sidebar-link block py-2 px-3 text-sm text-gray-600 rounded-lg" data-ar="التقييمات" data-en="Ratings">التقييمات</a></li>
+                        <li><a href="#cms-public" class="sidebar-link block py-2 px-3 text-sm text-gray-600 rounded-lg" data-ar="صفحات و أسئلة وبانرات" data-en="Pages, FAQs & Banners">صفحات وأسئلة وبانرات</a></li>
                     </ul>
                 </div>
                 <div>
@@ -113,6 +117,9 @@
                         <li><a href="#profile" class="sidebar-link block py-2 px-3 text-sm text-gray-600 rounded-lg" data-ar="الملف التجاري" data-en="Business Profile">الملف التجاري</a></li>
                         <li><a href="#favorites" class="sidebar-link block py-2 px-3 text-sm text-gray-600 rounded-lg" data-ar="المفضلة" data-en="Favorites">المفضلة</a></li>
                         <li><a href="#notifications" class="sidebar-link block py-2 px-3 text-sm text-gray-600 rounded-lg" data-ar="الإشعارات" data-en="Notifications">الإشعارات</a></li>
+                        <li><a href="#ratings-user" class="sidebar-link block py-2 px-3 text-sm text-gray-600 rounded-lg" data-ar="التقييمات" data-en="Ratings">التقييمات</a></li>
+                        <li><a href="#support-tickets" class="sidebar-link block py-2 px-3 text-sm text-gray-600 rounded-lg" data-ar="تذاكر الدعم" data-en="Support Tickets">تذاكر الدعم</a></li>
+                        <li><a href="#invoices-user" class="sidebar-link block py-2 px-3 text-sm text-gray-600 rounded-lg" data-ar="الفواتير" data-en="Invoices">الفواتير</a></li>
                         <li><a href="#visit-requests" class="sidebar-link block py-2 px-3 text-sm text-gray-600 rounded-lg" data-ar="طلبات الزيارة" data-en="Visit Requests">طلبات الزيارة</a></li>
                         <li><a href="#rental-requests" class="sidebar-link block py-2 px-3 text-sm text-gray-600 rounded-lg" data-ar="طلبات الإيجار" data-en="Rental Requests">طلبات الإيجار</a></li>
                     </ul>
@@ -121,13 +128,28 @@
                     <h3 class="text-xs font-semibold text-gray-400 uppercase tracking-wider mb-2 px-3" data-ar="الإدارة" data-en="Admin">الإدارة</h3>
                     <ul class="space-y-0.5">
                         <li><a href="#admin-dashboard" class="sidebar-link block py-2 px-3 text-sm text-gray-600 rounded-lg"><span class="badge method-get text-white ml-1">GET</span> <span data-ar="لوحة التحكم" data-en="Dashboard">لوحة التحكم</span></a></li>
-                        <li><a href="#admin-events" class="sidebar-link block py-2 px-3 text-sm text-gray-600 rounded-lg" data-ar="إدارة الفعاليات" data-en="Events Management">إدارة الفعاليات</a></li>
-                        <li><a href="#admin-sections" class="sidebar-link block py-2 px-3 text-sm text-gray-600 rounded-lg" data-ar="إدارة الأقسام" data-en="Sections">إدارة الأقسام</a></li>
-                        <li><a href="#admin-spaces" class="sidebar-link block py-2 px-3 text-sm text-gray-600 rounded-lg" data-ar="إدارة المساحات" data-en="Spaces">إدارة المساحات</a></li>
-                        <li><a href="#admin-services" class="sidebar-link block py-2 px-3 text-sm text-gray-600 rounded-lg" data-ar="إدارة الخدمات" data-en="Services">إدارة الخدمات</a></li>
+                        <li><a href="#admin-events" class="sidebar-link block py-2 px-3 text-sm text-gray-600 rounded-lg" data-ar="إدارة الفعاليات" data-en="Events">إدارة الفعاليات</a></li>
+                        <li><a href="#admin-sections" class="sidebar-link block py-2 px-3 text-sm text-gray-600 rounded-lg" data-ar="الأقسام" data-en="Sections">الأقسام</a></li>
+                        <li><a href="#admin-spaces" class="sidebar-link block py-2 px-3 text-sm text-gray-600 rounded-lg" data-ar="المساحات" data-en="Spaces">المساحات</a></li>
+                        <li><a href="#admin-services" class="sidebar-link block py-2 px-3 text-sm text-gray-600 rounded-lg" data-ar="الخدمات" data-en="Services">الخدمات</a></li>
                         <li><a href="#admin-visit-requests" class="sidebar-link block py-2 px-3 text-sm text-gray-600 rounded-lg" data-ar="طلبات الزيارة" data-en="Visit Requests">طلبات الزيارة</a></li>
                         <li><a href="#admin-rental-requests" class="sidebar-link block py-2 px-3 text-sm text-gray-600 rounded-lg" data-ar="طلبات الإيجار" data-en="Rental Requests">طلبات الإيجار</a></li>
-                        <li><a href="#admin-profiles" class="sidebar-link block py-2 px-3 text-sm text-gray-600 rounded-lg" data-ar="الملفات التجارية" data-en="Business Profiles">الملفات التجارية</a></li>
+                        <li><a href="#admin-profiles" class="sidebar-link block py-2 px-3 text-sm text-gray-600 rounded-lg" data-ar="الملفات التجارية" data-en="Profiles">الملفات التجارية</a></li>
+                        <li><a href="#admin-sponsors" class="sidebar-link block py-2 px-3 text-sm text-gray-600 rounded-lg" data-ar="الرعاة" data-en="Sponsors">الرعاة</a></li>
+                        <li><a href="#admin-ratings" class="sidebar-link block py-2 px-3 text-sm text-gray-600 rounded-lg" data-ar="التقييمات" data-en="Ratings">التقييمات</a></li>
+                        <li><a href="#admin-tickets" class="sidebar-link block py-2 px-3 text-sm text-gray-600 rounded-lg" data-ar="التذاكر" data-en="Tickets">التذاكر</a></li>
+                        <li><a href="#admin-contracts" class="sidebar-link block py-2 px-3 text-sm text-gray-600 rounded-lg" data-ar="العقود والفواتير" data-en="Contracts & Invoices">العقود والفواتير</a></li>
+                        <li><a href="#admin-cms" class="sidebar-link block py-2 px-3 text-sm text-gray-600 rounded-lg" data-ar="إدارة المحتوى" data-en="CMS">إدارة المحتوى</a></li>
+                    </ul>
+                </div>
+                <div>
+                    <h3 class="text-xs font-semibold text-gray-400 uppercase tracking-wider mb-2 px-3" data-ar="الأدوار" data-en="Roles">الأدوار</h3>
+                    <ul class="space-y-0.5">
+                        <li><a href="#supervisor-api" class="sidebar-link block py-2 px-3 text-sm text-gray-600 rounded-lg" data-ar="المشرف" data-en="Supervisor">المشرف</a></li>
+                        <li><a href="#superadmin-api" class="sidebar-link block py-2 px-3 text-sm text-gray-600 rounded-lg" data-ar="المدير العام" data-en="Super Admin">المدير العام</a></li>
+                        <li><a href="#investor-api" class="sidebar-link block py-2 px-3 text-sm text-gray-600 rounded-lg" data-ar="المستثمر" data-en="Investor">المستثمر</a></li>
+                        <li><a href="#sponsor-api" class="sidebar-link block py-2 px-3 text-sm text-gray-600 rounded-lg" data-ar="الراعي" data-en="Sponsor">الراعي</a></li>
+                        <li><a href="#merchant-api" class="sidebar-link block py-2 px-3 text-sm text-gray-600 rounded-lg" data-ar="التاجر" data-en="Merchant">التاجر</a></li>
                     </ul>
                 </div>
                 <div>
@@ -343,7 +365,16 @@
                                             <tr class="border-b"><td class="p-3"><code>category_id</code></td><td class="p-3">uuid</td><td class="p-3" data-ar="فلتر حسب التصنيف" data-en="Filter by category">فلتر حسب التصنيف</td></tr>
                                             <tr class="border-b"><td class="p-3"><code>city_id</code></td><td class="p-3">uuid</td><td class="p-3" data-ar="فلتر حسب المدينة" data-en="Filter by city">فلتر حسب المدينة</td></tr>
                                             <tr class="border-b"><td class="p-3"><code>status</code></td><td class="p-3">string</td><td class="p-3" data-ar="فلتر حسب الحالة" data-en="Filter by status">فلتر حسب الحالة</td></tr>
-                                            <tr><td class="p-3"><code>per_page</code></td><td class="p-3">integer</td><td class="p-3" data-ar="عدد النتائج (افتراضي: 15)" data-en="Results per page (default: 15)">عدد النتائج (افتراضي: 15)</td></tr>
+                                            <tr class="border-b"><td class="p-3"><code>featured</code></td><td class="p-3">boolean</td><td class="p-3" data-ar="الفعاليات المميزة فقط" data-en="Featured events only">الفعاليات المميزة فقط</td></tr>
+                                            <tr class="border-b"><td class="p-3"><code>start_date</code></td><td class="p-3">date</td><td class="p-3" data-ar="فلتر تاريخ البداية (من)" data-en="Filter start date (from)">فلتر تاريخ البداية (من)</td></tr>
+                                            <tr class="border-b"><td class="p-3"><code>end_date</code></td><td class="p-3">date</td><td class="p-3" data-ar="فلتر تاريخ النهاية (إلى)" data-en="Filter end date (to)">فلتر تاريخ النهاية (إلى)</td></tr>
+                                            <tr class="border-b"><td class="p-3"><code>rental_duration</code></td><td class="p-3">string</td><td class="p-3" data-ar="فلتر مدة الإيجار" data-en="Filter by rental duration">فلتر مدة الإيجار</td></tr>
+                                            <tr class="border-b"><td class="p-3"><code>min_price</code></td><td class="p-3">numeric</td><td class="p-3" data-ar="الحد الأدنى للسعر" data-en="Minimum price">الحد الأدنى للسعر</td></tr>
+                                            <tr class="border-b"><td class="p-3"><code>max_price</code></td><td class="p-3">numeric</td><td class="p-3" data-ar="الحد الأعلى للسعر" data-en="Maximum price">الحد الأعلى للسعر</td></tr>
+                                            <tr class="border-b"><td class="p-3"><code>min_area</code></td><td class="p-3">numeric</td><td class="p-3" data-ar="الحد الأدنى للمساحة (م²)" data-en="Minimum area (sqm)">الحد الأدنى للمساحة (م²)</td></tr>
+                                            <tr class="border-b"><td class="p-3"><code>max_area</code></td><td class="p-3">numeric</td><td class="p-3" data-ar="الحد الأعلى للمساحة (م²)" data-en="Maximum area (sqm)">الحد الأعلى للمساحة (م²)</td></tr>
+                                            <tr class="border-b"><td class="p-3"><code>sort</code></td><td class="p-3">string</td><td class="p-3" data-ar="ترتيب النتائج" data-en="Sort results">ترتيب النتائج</td></tr>
+                                            <tr><td class="p-3"><code>per_page</code></td><td class="p-3">integer</td><td class="p-3" data-ar="عدد النتائج (افتراضي: 15، أقصى: 50)" data-en="Results per page (default: 15, max: 50)">عدد النتائج (افتراضي: 15، أقصى: 50)</td></tr>
                                         </tbody>
                                     </table>
                                 </div>
@@ -402,6 +433,69 @@
                     </div>
                 </section>
 
+                {{-- STATISTICS --}}
+                <section id="statistics" class="mb-20">
+                    <h2 class="text-3xl font-bold mb-6" data-ar="الإحصائيات" data-en="Statistics">الإحصائيات</h2>
+                    <div class="overflow-x-auto bg-white rounded-xl border border-gray-200">
+                        <table class="w-full text-sm">
+                            <thead><tr class="bg-gray-50 border-b"><th class="p-3 text-right">Method</th><th class="p-3 text-right">Endpoint</th><th class="p-3 text-right" data-ar="الوصف" data-en="Description">الوصف</th><th class="p-3 text-right">Auth</th></tr></thead>
+                            <tbody>
+                                <tr class="border-b"><td class="p-3"><span class="badge method-get text-white">GET</span></td><td class="p-3"><code>/statistics</code></td><td class="p-3" data-ar="إحصائيات المنصة الشاملة" data-en="Platform overview statistics">إحصائيات المنصة الشاملة</td><td class="p-3"><span class="badge bg-green-100 text-green-700">Public</span></td></tr>
+                                <tr class="border-b"><td class="p-3"><span class="badge method-get text-white">GET</span></td><td class="p-3"><code>/statistics/events</code></td><td class="p-3" data-ar="إحصائيات الفعاليات" data-en="Events statistics">إحصائيات الفعاليات</td><td class="p-3"><span class="badge bg-green-100 text-green-700">Public</span></td></tr>
+                                <tr><td class="p-3"><span class="badge method-get text-white">GET</span></td><td class="p-3"><code>/statistics/spaces</code></td><td class="p-3" data-ar="إحصائيات المساحات" data-en="Spaces statistics">إحصائيات المساحات</td><td class="p-3"><span class="badge bg-green-100 text-green-700">Public</span></td></tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </section>
+
+                {{-- SPONSORS PUBLIC --}}
+                <section id="sponsors-public" class="mb-20">
+                    <h2 class="text-3xl font-bold mb-6" data-ar="الرعاة" data-en="Sponsors">الرعاة</h2>
+                    <div class="overflow-x-auto bg-white rounded-xl border border-gray-200">
+                        <table class="w-full text-sm">
+                            <thead><tr class="bg-gray-50 border-b"><th class="p-3 text-right">Method</th><th class="p-3 text-right">Endpoint</th><th class="p-3 text-right" data-ar="الوصف" data-en="Description">الوصف</th><th class="p-3 text-right">Auth</th></tr></thead>
+                            <tbody>
+                                <tr class="border-b"><td class="p-3"><span class="badge method-get text-white">GET</span></td><td class="p-3"><code>/events/{event}/sponsors</code></td><td class="p-3" data-ar="رعاة فعالية" data-en="Event sponsors">رعاة فعالية</td><td class="p-3"><span class="badge bg-green-100 text-green-700">Public</span></td></tr>
+                                <tr><td class="p-3"><span class="badge method-get text-white">GET</span></td><td class="p-3"><code>/events/{event}/sponsor-packages</code></td><td class="p-3" data-ar="باقات الرعاية" data-en="Sponsor packages">باقات الرعاية</td><td class="p-3"><span class="badge bg-green-100 text-green-700">Public</span></td></tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </section>
+
+                {{-- RATINGS PUBLIC --}}
+                <section id="ratings-public" class="mb-20">
+                    <h2 class="text-3xl font-bold mb-6" data-ar="التقييمات" data-en="Ratings">التقييمات</h2>
+                    <div class="overflow-x-auto bg-white rounded-xl border border-gray-200">
+                        <table class="w-full text-sm">
+                            <thead><tr class="bg-gray-50 border-b"><th class="p-3 text-right">Method</th><th class="p-3 text-right">Endpoint</th><th class="p-3 text-right" data-ar="الوصف" data-en="Description">الوصف</th><th class="p-3 text-right">Auth</th></tr></thead>
+                            <tbody>
+                                <tr class="border-b"><td class="p-3"><span class="badge method-get text-white">GET</span></td><td class="p-3"><code>/ratings</code></td><td class="p-3" data-ar="قائمة التقييمات المعتمدة" data-en="List approved ratings">قائمة التقييمات المعتمدة</td><td class="p-3"><span class="badge bg-green-100 text-green-700">Public</span></td></tr>
+                                <tr><td class="p-3"><span class="badge method-get text-white">GET</span></td><td class="p-3"><code>/ratings/summary</code></td><td class="p-3" data-ar="ملخص التقييمات والمتوسط" data-en="Ratings summary & average">ملخص التقييمات والمتوسط</td><td class="p-3"><span class="badge bg-green-100 text-green-700">Public</span></td></tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </section>
+
+                {{-- PAGES, FAQS, BANNERS PUBLIC --}}
+                <section id="cms-public" class="mb-20">
+                    <h2 class="text-3xl font-bold mb-6" data-ar="صفحات وأسئلة وبانرات" data-en="Pages, FAQs & Banners">صفحات وأسئلة وبانرات</h2>
+                    <div class="overflow-x-auto bg-white rounded-xl border border-gray-200">
+                        <table class="w-full text-sm">
+                            <thead><tr class="bg-gray-50 border-b"><th class="p-3 text-right">Method</th><th class="p-3 text-right">Endpoint</th><th class="p-3 text-right" data-ar="الوصف" data-en="Description">الوصف</th></tr></thead>
+                            <tbody>
+                                <tr class="border-b"><td class="p-3"><span class="badge method-get text-white">GET</span></td><td class="p-3"><code>/pages</code></td><td class="p-3" data-ar="الصفحات المنشورة" data-en="Published pages">الصفحات المنشورة</td></tr>
+                                <tr class="border-b"><td class="p-3"><span class="badge method-get text-white">GET</span></td><td class="p-3"><code>/pages/{slug}</code></td><td class="p-3" data-ar="محتوى صفحة" data-en="Page content by slug">محتوى صفحة</td></tr>
+                                <tr class="border-b"><td class="p-3"><span class="badge method-get text-white">GET</span></td><td class="p-3"><code>/faqs</code></td><td class="p-3" data-ar="الأسئلة الشائعة" data-en="Frequently asked questions">الأسئلة الشائعة</td></tr>
+                                <tr class="border-b"><td class="p-3"><span class="badge method-get text-white">GET</span></td><td class="p-3"><code>/faqs/categories</code></td><td class="p-3" data-ar="تصنيفات الأسئلة" data-en="FAQ categories">تصنيفات الأسئلة</td></tr>
+                                <tr class="border-b"><td class="p-3"><span class="badge method-get text-white">GET</span></td><td class="p-3"><code>/faqs/{faq}</code></td><td class="p-3" data-ar="تفاصيل سؤال" data-en="FAQ details">تفاصيل سؤال</td></tr>
+                                <tr class="border-b"><td class="p-3"><span class="badge method-post text-white">POST</span></td><td class="p-3"><code>/faqs/{faq}/helpful</code></td><td class="p-3" data-ar="تقييم الإجابة (مفيدة؟)" data-en="Rate answer helpfulness">تقييم الإجابة (مفيدة؟)</td></tr>
+                                <tr class="border-b"><td class="p-3"><span class="badge method-get text-white">GET</span></td><td class="p-3"><code>/banners</code></td><td class="p-3" data-ar="البانرات النشطة" data-en="Active banners">البانرات النشطة</td></tr>
+                                <tr><td class="p-3"><span class="badge method-post text-white">POST</span></td><td class="p-3"><code>/banners/{banner}/click</code></td><td class="p-3" data-ar="تسجيل نقرة على بانر" data-en="Track banner click">تسجيل نقرة على بانر</td></tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </section>
+
                 {{-- ==================== USER ENDPOINTS ==================== --}}
 
                 {{-- BUSINESS PROFILE --}}
@@ -423,11 +517,19 @@
                                         <thead><tr class="border-b bg-gray-50"><th class="p-3 text-right">Field</th><th class="p-3 text-right">Type</th><th class="p-3 text-right">Required</th><th class="p-3 text-right">Rules</th></tr></thead>
                                         <tbody>
                                             <tr class="border-b"><td class="p-3"><code>company_name</code></td><td class="p-3">string</td><td class="p-3"><span class="text-red-500">*</span></td><td class="p-3">max:255</td></tr>
-                                            <tr class="border-b"><td class="p-3"><code>commercial_reg</code></td><td class="p-3">string</td><td class="p-3"><span class="text-red-500">*</span></td><td class="p-3" data-ar="رقم السجل التجاري" data-en="Commercial registration">رقم السجل التجاري</td></tr>
-                                            <tr class="border-b"><td class="p-3"><code>phone</code></td><td class="p-3">string</td><td class="p-3"><span class="text-red-500">*</span></td><td class="p-3">max:20</td></tr>
-                                            <tr class="border-b"><td class="p-3"><code>city</code></td><td class="p-3">string</td><td class="p-3"><span class="text-red-500">*</span></td><td class="p-3">max:100</td></tr>
-                                            <tr class="border-b"><td class="p-3"><code>address</code></td><td class="p-3">string</td><td class="p-3 text-gray-400">-</td><td class="p-3">max:500</td></tr>
-                                            <tr><td class="p-3"><code>description</code></td><td class="p-3">string</td><td class="p-3 text-gray-400">-</td><td class="p-3">max:1000</td></tr>
+                                            <tr class="border-b"><td class="p-3"><code>company_name_ar</code></td><td class="p-3">string</td><td class="p-3 text-gray-400">-</td><td class="p-3">max:255</td></tr>
+                                            <tr class="border-b"><td class="p-3"><code>business_type</code></td><td class="p-3">enum</td><td class="p-3"><span class="text-red-500">*</span></td><td class="p-3" data-ar="نوع النشاط التجاري" data-en="Business type enum">نوع النشاط التجاري</td></tr>
+                                            <tr class="border-b"><td class="p-3"><code>contact_phone</code></td><td class="p-3">string</td><td class="p-3"><span class="text-red-500">*</span></td><td class="p-3">max:20</td></tr>
+                                            <tr class="border-b"><td class="p-3"><code>contact_email</code></td><td class="p-3">string</td><td class="p-3 text-gray-400">-</td><td class="p-3">email, max:255</td></tr>
+                                            <tr class="border-b"><td class="p-3"><code>commercial_registration_number</code></td><td class="p-3">string</td><td class="p-3 text-gray-400">-</td><td class="p-3" data-ar="رقم السجل التجاري، max:50" data-en="Commercial reg number, max:50">رقم السجل التجاري، max:50</td></tr>
+                                            <tr class="border-b"><td class="p-3"><code>commercial_registration_image</code></td><td class="p-3">file</td><td class="p-3 text-gray-400">-</td><td class="p-3">image (jpeg,png,jpg,webp,pdf), max:5MB</td></tr>
+                                            <tr class="border-b"><td class="p-3"><code>national_id_number</code></td><td class="p-3">string</td><td class="p-3 text-gray-400">-</td><td class="p-3">max:20</td></tr>
+                                            <tr class="border-b"><td class="p-3"><code>national_id_image</code></td><td class="p-3">file</td><td class="p-3 text-gray-400">-</td><td class="p-3">image (jpeg,png,jpg,webp,pdf), max:5MB</td></tr>
+                                            <tr class="border-b"><td class="p-3"><code>company_logo</code></td><td class="p-3">file</td><td class="p-3 text-gray-400">-</td><td class="p-3">image (jpeg,png,jpg,webp), max:2MB</td></tr>
+                                            <tr class="border-b"><td class="p-3"><code>avatar</code></td><td class="p-3">file</td><td class="p-3 text-gray-400">-</td><td class="p-3">image (jpeg,png,jpg,webp), max:2MB</td></tr>
+                                            <tr class="border-b"><td class="p-3"><code>company_address</code></td><td class="p-3">string</td><td class="p-3 text-gray-400">-</td><td class="p-3">max:500</td></tr>
+                                            <tr class="border-b"><td class="p-3"><code>company_address_ar</code></td><td class="p-3">string</td><td class="p-3 text-gray-400">-</td><td class="p-3">max:500</td></tr>
+                                            <tr><td class="p-3"><code>website</code></td><td class="p-3">string</td><td class="p-3 text-gray-400">-</td><td class="p-3">url, max:255</td></tr>
                                         </tbody>
                                     </table>
                                 </div>
@@ -466,7 +568,7 @@
                             <thead><tr class="bg-gray-50 border-b"><th class="p-3 text-right">Method</th><th class="p-3 text-right">Endpoint</th><th class="p-3 text-right" data-ar="الوصف" data-en="Description">الوصف</th><th class="p-3 text-right">Auth</th></tr></thead>
                             <tbody>
                                 <tr class="border-b"><td class="p-3"><span class="badge method-get text-white">GET</span></td><td class="p-3"><code>/favorites</code></td><td class="p-3" data-ar="قائمة المفضلة" data-en="List favorites">قائمة المفضلة</td><td class="p-3"><span class="badge bg-yellow-100 text-yellow-700">Auth</span></td></tr>
-                                <tr class="border-b"><td class="p-3"><span class="badge method-post text-white">POST</span></td><td class="p-3"><code>/favorites</code></td><td class="p-3" data-ar="إضافة للمفضلة" data-en="Add to favorites">إضافة للمفضلة</td><td class="p-3"><span class="badge bg-yellow-100 text-yellow-700">Auth</span></td></tr>
+                                <tr class="border-b"><td class="p-3"><span class="badge method-post text-white">POST</span></td><td class="p-3"><code>/favorites</code></td><td class="p-3" data-ar="إضافة للمفضلة (type: event|space, id: uuid)" data-en="Add to favorites (type: event|space, id: uuid)">إضافة للمفضلة (type: event|space, id: uuid)</td><td class="p-3"><span class="badge bg-yellow-100 text-yellow-700">Auth</span></td></tr>
                                 <tr><td class="p-3"><span class="badge method-delete text-white">DEL</span></td><td class="p-3"><code>/favorites/{favorite}</code></td><td class="p-3" data-ar="إزالة من المفضلة" data-en="Remove from favorites">إزالة من المفضلة</td><td class="p-3"><span class="badge bg-yellow-100 text-yellow-700">Auth</span></td></tr>
                             </tbody>
                         </table>
@@ -483,7 +585,97 @@
                                 <tr class="border-b"><td class="p-3"><span class="badge method-get text-white">GET</span></td><td class="p-3"><code>/notifications</code></td><td class="p-3" data-ar="قائمة الإشعارات" data-en="List notifications">قائمة الإشعارات</td></tr>
                                 <tr class="border-b"><td class="p-3"><span class="badge method-get text-white">GET</span></td><td class="p-3"><code>/notifications/unread-count</code></td><td class="p-3" data-ar="عدد غير المقروءة" data-en="Unread count">عدد غير المقروءة</td></tr>
                                 <tr class="border-b"><td class="p-3"><span class="badge method-put text-white">PUT</span></td><td class="p-3"><code>/notifications/{notification}/read</code></td><td class="p-3" data-ar="تحديد كمقروء" data-en="Mark as read">تحديد كمقروء</td></tr>
-                                <tr><td class="p-3"><span class="badge method-put text-white">PUT</span></td><td class="p-3"><code>/notifications/read-all</code></td><td class="p-3" data-ar="قراءة الكل" data-en="Mark all as read">قراءة الكل</td></tr>
+                                <tr class="border-b"><td class="p-3"><span class="badge method-put text-white">PUT</span></td><td class="p-3"><code>/notifications/read-all</code></td><td class="p-3" data-ar="قراءة الكل" data-en="Mark all as read">قراءة الكل</td></tr>
+                                <tr class="border-b bg-gray-50/50"><td colspan="4" class="p-2 font-bold text-gray-600 text-xs uppercase" data-ar="تفضيلات الإشعارات" data-en="Notification Preferences">تفضيلات الإشعارات</td></tr>
+                                <tr class="border-b"><td class="p-3"><span class="badge method-get text-white">GET</span></td><td class="p-3"><code>/notifications/preferences</code></td><td class="p-3" data-ar="عرض تفضيلات الإشعارات" data-en="Get notification preferences">عرض تفضيلات الإشعارات</td></tr>
+                                <tr><td class="p-3"><span class="badge method-put text-white">PUT</span></td><td class="p-3"><code>/notifications/preferences</code></td><td class="p-3" data-ar="تحديث تفضيلات الإشعارات" data-en="Update notification preferences">تحديث تفضيلات الإشعارات</td></tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </section>
+
+                {{-- RATINGS USER --}}
+                <section id="ratings-user" class="mb-20">
+                    <h2 class="text-3xl font-bold mb-6" data-ar="التقييمات (مستخدم)" data-en="Ratings (User)">التقييمات (مستخدم)</h2>
+                    <div class="endpoint-card mb-6">
+                        <div class="bg-blue-50 border-b border-blue-100 p-5 flex items-center gap-3">
+                            <span class="badge method-post text-white text-xs">POST</span>
+                            <code class="text-gray-800 font-semibold">/ratings</code>
+                            <span class="mr-auto text-sm text-gray-500" data-ar="إنشاء تقييم" data-en="Create rating">إنشاء تقييم</span>
+                            <span class="badge bg-yellow-100 text-yellow-700">Auth</span>
+                        </div>
+                        <div class="p-5">
+                            <div class="overflow-x-auto">
+                                <table class="param-table w-full text-sm">
+                                    <thead><tr class="border-b bg-gray-50"><th class="p-3 text-right">Field</th><th class="p-3 text-right">Type</th><th class="p-3 text-right">Required</th><th class="p-3 text-right" data-ar="الوصف" data-en="Description">الوصف</th></tr></thead>
+                                    <tbody>
+                                        <tr class="border-b"><td class="p-3"><code>rateable_type</code></td><td class="p-3">string</td><td class="p-3"><span class="text-red-500">*</span></td><td class="p-3" data-ar="نوع العنصر (event, space)" data-en="Item type">نوع العنصر (event, space)</td></tr>
+                                        <tr class="border-b"><td class="p-3"><code>rateable_id</code></td><td class="p-3">uuid</td><td class="p-3"><span class="text-red-500">*</span></td><td class="p-3" data-ar="معرف العنصر" data-en="Item ID">معرف العنصر</td></tr>
+                                        <tr class="border-b"><td class="p-3"><code>score</code></td><td class="p-3">integer</td><td class="p-3"><span class="text-red-500">*</span></td><td class="p-3">1-5</td></tr>
+                                        <tr><td class="p-3"><code>comment</code></td><td class="p-3">string</td><td class="p-3 text-gray-400">-</td><td class="p-3">max:1000</td></tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="overflow-x-auto bg-white rounded-xl border border-gray-200">
+                        <table class="w-full text-sm">
+                            <thead><tr class="bg-gray-50 border-b"><th class="p-3 text-right">Method</th><th class="p-3 text-right">Endpoint</th><th class="p-3 text-right" data-ar="الوصف" data-en="Description">الوصف</th></tr></thead>
+                            <tbody>
+                                <tr class="border-b"><td class="p-3"><span class="badge method-put text-white">PUT</span></td><td class="p-3"><code>/ratings/{rating}</code></td><td class="p-3" data-ar="تعديل تقييم" data-en="Update rating">تعديل تقييم</td></tr>
+                                <tr><td class="p-3"><span class="badge method-delete text-white">DEL</span></td><td class="p-3"><code>/ratings/{rating}</code></td><td class="p-3" data-ar="حذف تقييم" data-en="Delete rating">حذف تقييم</td></tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </section>
+
+                {{-- SUPPORT TICKETS --}}
+                <section id="support-tickets" class="mb-20">
+                    <h2 class="text-3xl font-bold mb-6" data-ar="تذاكر الدعم" data-en="Support Tickets">تذاكر الدعم</h2>
+                    <div class="endpoint-card mb-6">
+                        <div class="bg-blue-50 border-b border-blue-100 p-5 flex items-center gap-3">
+                            <span class="badge method-post text-white text-xs">POST</span>
+                            <code class="text-gray-800 font-semibold">/support-tickets</code>
+                            <span class="mr-auto text-sm text-gray-500" data-ar="إنشاء تذكرة دعم" data-en="Create support ticket">إنشاء تذكرة دعم</span>
+                            <span class="badge bg-yellow-100 text-yellow-700">Auth</span>
+                        </div>
+                        <div class="p-5">
+                            <div class="overflow-x-auto">
+                                <table class="param-table w-full text-sm">
+                                    <thead><tr class="border-b bg-gray-50"><th class="p-3 text-right">Field</th><th class="p-3 text-right">Type</th><th class="p-3 text-right">Required</th><th class="p-3 text-right" data-ar="الوصف" data-en="Description">الوصف</th></tr></thead>
+                                    <tbody>
+                                        <tr class="border-b"><td class="p-3"><code>subject</code></td><td class="p-3">string</td><td class="p-3"><span class="text-red-500">*</span></td><td class="p-3">max:255</td></tr>
+                                        <tr class="border-b"><td class="p-3"><code>message</code></td><td class="p-3">string</td><td class="p-3"><span class="text-red-500">*</span></td><td class="p-3">max:5000</td></tr>
+                                        <tr class="border-b"><td class="p-3"><code>priority</code></td><td class="p-3">string</td><td class="p-3 text-gray-400">-</td><td class="p-3">low, medium, high (default: medium)</td></tr>
+                                        <tr><td class="p-3"><code>category</code></td><td class="p-3">string</td><td class="p-3 text-gray-400">-</td><td class="p-3" data-ar="تصنيف التذكرة" data-en="Ticket category">تصنيف التذكرة</td></tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="overflow-x-auto bg-white rounded-xl border border-gray-200">
+                        <table class="w-full text-sm">
+                            <thead><tr class="bg-gray-50 border-b"><th class="p-3 text-right">Method</th><th class="p-3 text-right">Endpoint</th><th class="p-3 text-right" data-ar="الوصف" data-en="Description">الوصف</th></tr></thead>
+                            <tbody>
+                                <tr class="border-b"><td class="p-3"><span class="badge method-get text-white">GET</span></td><td class="p-3"><code>/support-tickets</code></td><td class="p-3" data-ar="قائمة تذاكري" data-en="My tickets">قائمة تذاكري</td></tr>
+                                <tr class="border-b"><td class="p-3"><span class="badge method-get text-white">GET</span></td><td class="p-3"><code>/support-tickets/{id}</code></td><td class="p-3" data-ar="تفاصيل تذكرة" data-en="Ticket details">تفاصيل تذكرة</td></tr>
+                                <tr class="border-b"><td class="p-3"><span class="badge method-post text-white">POST</span></td><td class="p-3"><code>/support-tickets/{id}/reply</code></td><td class="p-3" data-ar="الرد على تذكرة" data-en="Reply to ticket">الرد على تذكرة</td></tr>
+                                <tr class="border-b"><td class="p-3"><span class="badge method-put text-white">PUT</span></td><td class="p-3"><code>/support-tickets/{id}/close</code></td><td class="p-3" data-ar="إغلاق تذكرة" data-en="Close ticket">إغلاق تذكرة</td></tr>
+                                <tr><td class="p-3"><span class="badge method-put text-white">PUT</span></td><td class="p-3"><code>/support-tickets/{id}/reopen</code></td><td class="p-3" data-ar="إعادة فتح تذكرة" data-en="Reopen ticket">إعادة فتح تذكرة</td></tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </section>
+
+                {{-- INVOICES USER --}}
+                <section id="invoices-user" class="mb-20">
+                    <h2 class="text-3xl font-bold mb-6" data-ar="الفواتير" data-en="Invoices">الفواتير</h2>
+                    <div class="overflow-x-auto bg-white rounded-xl border border-gray-200">
+                        <table class="w-full text-sm">
+                            <thead><tr class="bg-gray-50 border-b"><th class="p-3 text-right">Method</th><th class="p-3 text-right">Endpoint</th><th class="p-3 text-right" data-ar="الوصف" data-en="Description">الوصف</th><th class="p-3 text-right">Auth</th></tr></thead>
+                            <tbody>
+                                <tr class="border-b"><td class="p-3"><span class="badge method-get text-white">GET</span></td><td class="p-3"><code>/invoices</code></td><td class="p-3" data-ar="قائمة فواتيري" data-en="My invoices">قائمة فواتيري</td><td class="p-3"><span class="badge bg-yellow-100 text-yellow-700">Auth</span></td></tr>
+                                <tr><td class="p-3"><span class="badge method-get text-white">GET</span></td><td class="p-3"><code>/invoices/{invoice}</code></td><td class="p-3" data-ar="تفاصيل فاتورة" data-en="Invoice details">تفاصيل فاتورة</td><td class="p-3"><span class="badge bg-yellow-100 text-yellow-700">Auth</span></td></tr>
                             </tbody>
                         </table>
                     </div>
@@ -505,10 +697,12 @@
                                 <table class="param-table w-full text-sm">
                                     <thead><tr class="border-b bg-gray-50"><th class="p-3 text-right">Field</th><th class="p-3 text-right">Type</th><th class="p-3 text-right">Required</th><th class="p-3 text-right">Rules</th></tr></thead>
                                     <tbody>
-                                        <tr class="border-b"><td class="p-3"><code>event_id</code></td><td class="p-3">uuid</td><td class="p-3"><span class="text-red-500">*</span></td><td class="p-3" data-ar="معرف الفعالية" data-en="Event ID">معرف الفعالية</td></tr>
-                                        <tr class="border-b"><td class="p-3"><code>visit_date</code></td><td class="p-3">date</td><td class="p-3"><span class="text-red-500">*</span></td><td class="p-3" data-ar="تاريخ الزيارة (مستقبلي)" data-en="Visit date (future)">تاريخ الزيارة (مستقبلي)</td></tr>
-                                        <tr class="border-b"><td class="p-3"><code>visitors_count</code></td><td class="p-3">integer</td><td class="p-3"><span class="text-red-500">*</span></td><td class="p-3">min:1</td></tr>
-                                        <tr><td class="p-3"><code>notes</code></td><td class="p-3">string</td><td class="p-3 text-gray-400">-</td><td class="p-3">max:500</td></tr>
+                                        <tr class="border-b"><td class="p-3"><code>event_id</code></td><td class="p-3">uuid</td><td class="p-3"><span class="text-red-500">*</span></td><td class="p-3" data-ar="معرف الفعالية (موجود في جدول events)" data-en="Event ID (must exist in events)">معرف الفعالية (موجود في جدول events)</td></tr>
+                                        <tr class="border-b"><td class="p-3"><code>visit_date</code></td><td class="p-3">date</td><td class="p-3"><span class="text-red-500">*</span></td><td class="p-3" data-ar="تاريخ الزيارة (اليوم أو مستقبلي، ضمن تواريخ الفعالية)" data-en="Visit date (today or future, within event dates)">تاريخ الزيارة (اليوم أو مستقبلي، ضمن تواريخ الفعالية)</td></tr>
+                                        <tr class="border-b"><td class="p-3"><code>visit_time</code></td><td class="p-3">string</td><td class="p-3 text-gray-400">-</td><td class="p-3" data-ar="وقت الزيارة بصيغة H:i (مثال: 14:30)" data-en="Visit time format H:i (e.g. 14:30)">وقت الزيارة بصيغة H:i (مثال: 14:30)</td></tr>
+                                        <tr class="border-b"><td class="p-3"><code>visitors_count</code></td><td class="p-3">integer</td><td class="p-3"><span class="text-red-500">*</span></td><td class="p-3" data-ar="min:1، max:10 (افتراضي)" data-en="min:1, max:10 (default)">min:1، max:10 (افتراضي)</td></tr>
+                                        <tr class="border-b"><td class="p-3"><code>notes</code></td><td class="p-3">string</td><td class="p-3 text-gray-400">-</td><td class="p-3">max:1000</td></tr>
+                                        <tr><td class="p-3"><code>contact_phone</code></td><td class="p-3">string</td><td class="p-3 text-gray-400">-</td><td class="p-3">max:20</td></tr>
                                     </tbody>
                                 </table>
                             </div>
@@ -571,10 +765,10 @@
                                 <table class="param-table w-full text-sm">
                                     <thead><tr class="border-b bg-gray-50"><th class="p-3 text-right">Field</th><th class="p-3 text-right">Type</th><th class="p-3 text-right">Required</th><th class="p-3 text-right">Rules</th></tr></thead>
                                     <tbody>
-                                        <tr class="border-b"><td class="p-3"><code>space_id</code></td><td class="p-3">uuid</td><td class="p-3"><span class="text-red-500">*</span></td><td class="p-3" data-ar="معرف المساحة" data-en="Space ID">معرف المساحة</td></tr>
-                                        <tr class="border-b"><td class="p-3"><code>start_date</code></td><td class="p-3">date</td><td class="p-3"><span class="text-red-500">*</span></td><td class="p-3" data-ar="تاريخ البداية" data-en="Start date">تاريخ البداية</td></tr>
-                                        <tr class="border-b"><td class="p-3"><code>end_date</code></td><td class="p-3">date</td><td class="p-3"><span class="text-red-500">*</span></td><td class="p-3" data-ar="تاريخ النهاية (بعد البداية)" data-en="End date (after start)">تاريخ النهاية (بعد البداية)</td></tr>
-                                        <tr><td class="p-3"><code>notes</code></td><td class="p-3">string</td><td class="p-3 text-gray-400">-</td><td class="p-3">max:500</td></tr>
+                                        <tr class="border-b"><td class="p-3"><code>space_id</code></td><td class="p-3">uuid</td><td class="p-3"><span class="text-red-500">*</span></td><td class="p-3" data-ar="معرف المساحة (موجود في جدول spaces)" data-en="Space ID (must exist in spaces)">معرف المساحة (موجود في جدول spaces)</td></tr>
+                                        <tr class="border-b"><td class="p-3"><code>start_date</code></td><td class="p-3">date</td><td class="p-3"><span class="text-red-500">*</span></td><td class="p-3" data-ar="تاريخ البداية (اليوم أو مستقبلي، ضمن تواريخ الفعالية)" data-en="Start date (today or future, within event dates)">تاريخ البداية (اليوم أو مستقبلي، ضمن تواريخ الفعالية)</td></tr>
+                                        <tr class="border-b"><td class="p-3"><code>end_date</code></td><td class="p-3">date</td><td class="p-3"><span class="text-red-500">*</span></td><td class="p-3" data-ar="تاريخ النهاية (بعد أو يساوي البداية)" data-en="End date (>= start_date)">تاريخ النهاية (بعد أو يساوي البداية)</td></tr>
+                                        <tr><td class="p-3"><code>notes</code></td><td class="p-3">string</td><td class="p-3 text-gray-400">-</td><td class="p-3">max:1000</td></tr>
                                     </tbody>
                                 </table>
                             </div>
@@ -625,6 +819,15 @@
                         <span class="font-semibold text-red-800" data-ar="يتطلب دور:" data-en="Requires role:">يتطلب دور:</span>
                         <code class="text-red-700">admin</code> | <code class="text-red-700">super-admin</code>
                     </div>
+                    <div class="overflow-x-auto bg-white rounded-xl border border-gray-200 mb-6">
+                        <table class="w-full text-sm">
+                            <thead><tr class="bg-gray-50 border-b"><th class="p-3 text-right">Method</th><th class="p-3 text-right">Endpoint</th><th class="p-3 text-right" data-ar="الوصف" data-en="Description">الوصف</th></tr></thead>
+                            <tbody>
+                                <tr class="border-b"><td class="p-3"><span class="badge method-get text-white">GET</span></td><td class="p-3"><code>/admin/dashboard</code></td><td class="p-3" data-ar="إحصائيات لوحة التحكم" data-en="Dashboard statistics">إحصائيات لوحة التحكم</td></tr>
+                                <tr><td class="p-3"><span class="badge method-get text-white">GET</span></td><td class="p-3"><code>/admin/statistics</code></td><td class="p-3" data-ar="إحصائيات تفصيلية" data-en="Detailed statistics">إحصائيات تفصيلية</td></tr>
+                            </tbody>
+                        </table>
+                    </div>
                     <div class="endpoint-card">
                         <div class="bg-emerald-50 border-b border-emerald-100 p-5 flex items-center gap-3">
                             <span class="badge method-get text-white text-xs">GET</span>
@@ -665,7 +868,7 @@
                 {{-- ADMIN EVENTS --}}
                 <section id="admin-events" class="mb-20">
                     <h2 class="text-3xl font-bold mb-6" data-ar="إدارة الفعاليات" data-en="Events Management">إدارة الفعاليات</h2>
-                    <div class="overflow-x-auto bg-white rounded-xl border border-gray-200">
+                    <div class="overflow-x-auto bg-white rounded-xl border border-gray-200 mb-6">
                         <table class="w-full text-sm">
                             <thead><tr class="bg-gray-50 border-b"><th class="p-3 text-right">Method</th><th class="p-3 text-right">Endpoint</th><th class="p-3 text-right" data-ar="الوصف" data-en="Description">الوصف</th></tr></thead>
                             <tbody>
@@ -680,6 +883,114 @@
                                 <tr><td class="p-3"><span class="badge method-post text-white">POST</span></td><td class="p-3"><code>/admin/events/{event}/spaces</code></td><td class="p-3" data-ar="إنشاء مساحة" data-en="Create space">إنشاء مساحة</td></tr>
                             </tbody>
                         </table>
+                    </div>
+
+                    {{-- Event Create Fields --}}
+                    <div class="endpoint-card mb-6">
+                        <div class="bg-blue-50 border-b border-blue-100 p-5 flex items-center gap-3">
+                            <span class="badge method-post text-white text-xs">POST</span>
+                            <code class="text-gray-800 font-semibold">/admin/events</code>
+                            <span class="mr-auto text-sm text-gray-500" data-ar="حقول إنشاء فعالية" data-en="Create event fields">حقول إنشاء فعالية</span>
+                        </div>
+                        <div class="p-5">
+                            <div class="overflow-x-auto">
+                                <table class="param-table w-full text-sm">
+                                    <thead><tr class="border-b bg-gray-50"><th class="p-3 text-right">Field</th><th class="p-3 text-right">Type</th><th class="p-3 text-right">Required</th><th class="p-3 text-right">Rules</th></tr></thead>
+                                    <tbody>
+                                        <tr class="border-b"><td class="p-3"><code>name</code></td><td class="p-3">string</td><td class="p-3"><span class="text-red-500">*</span></td><td class="p-3">max:255</td></tr>
+                                        <tr class="border-b"><td class="p-3"><code>name_ar</code></td><td class="p-3">string</td><td class="p-3"><span class="text-red-500">*</span></td><td class="p-3">max:255</td></tr>
+                                        <tr class="border-b"><td class="p-3"><code>description</code></td><td class="p-3">string</td><td class="p-3 text-gray-400">-</td><td class="p-3">max:5000</td></tr>
+                                        <tr class="border-b"><td class="p-3"><code>description_ar</code></td><td class="p-3">string</td><td class="p-3 text-gray-400">-</td><td class="p-3">max:5000</td></tr>
+                                        <tr class="border-b"><td class="p-3"><code>category_id</code></td><td class="p-3">uuid</td><td class="p-3"><span class="text-red-500">*</span></td><td class="p-3" data-ar="موجود في categories" data-en="exists in categories">exists in categories</td></tr>
+                                        <tr class="border-b"><td class="p-3"><code>city_id</code></td><td class="p-3">uuid</td><td class="p-3"><span class="text-red-500">*</span></td><td class="p-3" data-ar="موجود في cities" data-en="exists in cities">exists in cities</td></tr>
+                                        <tr class="border-b"><td class="p-3"><code>address</code></td><td class="p-3">string</td><td class="p-3"><span class="text-red-500">*</span></td><td class="p-3">max:500</td></tr>
+                                        <tr class="border-b"><td class="p-3"><code>address_ar</code></td><td class="p-3">string</td><td class="p-3 text-gray-400">-</td><td class="p-3">max:500</td></tr>
+                                        <tr class="border-b"><td class="p-3"><code>latitude</code></td><td class="p-3">numeric</td><td class="p-3 text-gray-400">-</td><td class="p-3">-90 to 90</td></tr>
+                                        <tr class="border-b"><td class="p-3"><code>longitude</code></td><td class="p-3">numeric</td><td class="p-3 text-gray-400">-</td><td class="p-3">-180 to 180</td></tr>
+                                        <tr class="border-b"><td class="p-3"><code>start_date</code></td><td class="p-3">date</td><td class="p-3"><span class="text-red-500">*</span></td><td class="p-3">Y-m-d</td></tr>
+                                        <tr class="border-b"><td class="p-3"><code>end_date</code></td><td class="p-3">date</td><td class="p-3"><span class="text-red-500">*</span></td><td class="p-3">>= start_date</td></tr>
+                                        <tr class="border-b"><td class="p-3"><code>opening_time</code></td><td class="p-3">string</td><td class="p-3 text-gray-400">-</td><td class="p-3">H:i</td></tr>
+                                        <tr class="border-b"><td class="p-3"><code>closing_time</code></td><td class="p-3">string</td><td class="p-3 text-gray-400">-</td><td class="p-3">H:i</td></tr>
+                                        <tr class="border-b"><td class="p-3"><code>images[]</code></td><td class="p-3">file[]</td><td class="p-3 text-gray-400">-</td><td class="p-3">max:10, jpeg/png/jpg/webp, 5MB each</td></tr>
+                                        <tr class="border-b"><td class="p-3"><code>images_360[]</code></td><td class="p-3">file[]</td><td class="p-3 text-gray-400">-</td><td class="p-3">max:5, jpeg/png/jpg/webp, 10MB each</td></tr>
+                                        <tr class="border-b"><td class="p-3"><code>features[]</code></td><td class="p-3">array</td><td class="p-3 text-gray-400">-</td><td class="p-3">max:50 items</td></tr>
+                                        <tr class="border-b"><td class="p-3"><code>features_ar[]</code></td><td class="p-3">array</td><td class="p-3 text-gray-400">-</td><td class="p-3">max:50 items</td></tr>
+                                        <tr class="border-b"><td class="p-3"><code>organizer_name</code></td><td class="p-3">string</td><td class="p-3 text-gray-400">-</td><td class="p-3">max:255</td></tr>
+                                        <tr class="border-b"><td class="p-3"><code>organizer_phone</code></td><td class="p-3">string</td><td class="p-3 text-gray-400">-</td><td class="p-3">max:20</td></tr>
+                                        <tr class="border-b"><td class="p-3"><code>organizer_email</code></td><td class="p-3">string</td><td class="p-3 text-gray-400">-</td><td class="p-3">email, max:255</td></tr>
+                                        <tr class="border-b"><td class="p-3"><code>website</code></td><td class="p-3">string</td><td class="p-3 text-gray-400">-</td><td class="p-3">url, max:255</td></tr>
+                                        <tr class="border-b"><td class="p-3"><code>status</code></td><td class="p-3">enum</td><td class="p-3 text-gray-400">-</td><td class="p-3">EventStatus</td></tr>
+                                        <tr><td class="p-3"><code>is_featured</code></td><td class="p-3">boolean</td><td class="p-3 text-gray-400">-</td><td class="p-3">true/false</td></tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+
+                    {{-- Section Create Fields --}}
+                    <div class="endpoint-card mb-6">
+                        <div class="bg-blue-50 border-b border-blue-100 p-5 flex items-center gap-3">
+                            <span class="badge method-post text-white text-xs">POST</span>
+                            <code class="text-gray-800 font-semibold">/admin/events/{event}/sections</code>
+                            <span class="mr-auto text-sm text-gray-500" data-ar="حقول إنشاء قسم" data-en="Create section fields">حقول إنشاء قسم</span>
+                        </div>
+                        <div class="p-5">
+                            <div class="overflow-x-auto">
+                                <table class="param-table w-full text-sm">
+                                    <thead><tr class="border-b bg-gray-50"><th class="p-3 text-right">Field</th><th class="p-3 text-right">Type</th><th class="p-3 text-right">Required</th><th class="p-3 text-right">Rules</th></tr></thead>
+                                    <tbody>
+                                        <tr class="border-b"><td class="p-3"><code>name</code></td><td class="p-3">string</td><td class="p-3"><span class="text-red-500">*</span></td><td class="p-3">max:255</td></tr>
+                                        <tr class="border-b"><td class="p-3"><code>name_ar</code></td><td class="p-3">string</td><td class="p-3 text-gray-400">-</td><td class="p-3">max:255</td></tr>
+                                        <tr class="border-b"><td class="p-3"><code>description</code></td><td class="p-3">string</td><td class="p-3 text-gray-400">-</td><td class="p-3">max:2000</td></tr>
+                                        <tr class="border-b"><td class="p-3"><code>description_ar</code></td><td class="p-3">string</td><td class="p-3 text-gray-400">-</td><td class="p-3">max:2000</td></tr>
+                                        <tr class="border-b"><td class="p-3"><code>icon</code></td><td class="p-3">string</td><td class="p-3 text-gray-400">-</td><td class="p-3">max:100</td></tr>
+                                        <tr class="border-b"><td class="p-3"><code>is_active</code></td><td class="p-3">boolean</td><td class="p-3 text-gray-400">-</td><td class="p-3">true/false</td></tr>
+                                        <tr><td class="p-3"><code>sort_order</code></td><td class="p-3">integer</td><td class="p-3 text-gray-400">-</td><td class="p-3">min:0</td></tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+
+                    {{-- Space Create Fields --}}
+                    <div class="endpoint-card">
+                        <div class="bg-blue-50 border-b border-blue-100 p-5 flex items-center gap-3">
+                            <span class="badge method-post text-white text-xs">POST</span>
+                            <code class="text-gray-800 font-semibold">/admin/events/{event}/spaces</code>
+                            <span class="mr-auto text-sm text-gray-500" data-ar="حقول إنشاء مساحة" data-en="Create space fields">حقول إنشاء مساحة</span>
+                        </div>
+                        <div class="p-5">
+                            <div class="overflow-x-auto">
+                                <table class="param-table w-full text-sm">
+                                    <thead><tr class="border-b bg-gray-50"><th class="p-3 text-right">Field</th><th class="p-3 text-right">Type</th><th class="p-3 text-right">Required</th><th class="p-3 text-right">Rules</th></tr></thead>
+                                    <tbody>
+                                        <tr class="border-b"><td class="p-3"><code>name</code></td><td class="p-3">string</td><td class="p-3"><span class="text-red-500">*</span></td><td class="p-3">max:255</td></tr>
+                                        <tr class="border-b"><td class="p-3"><code>name_ar</code></td><td class="p-3">string</td><td class="p-3 text-gray-400">-</td><td class="p-3">max:255</td></tr>
+                                        <tr class="border-b"><td class="p-3"><code>description</code></td><td class="p-3">string</td><td class="p-3 text-gray-400">-</td><td class="p-3">max:2000</td></tr>
+                                        <tr class="border-b"><td class="p-3"><code>description_ar</code></td><td class="p-3">string</td><td class="p-3 text-gray-400">-</td><td class="p-3">max:2000</td></tr>
+                                        <tr class="border-b"><td class="p-3"><code>location_code</code></td><td class="p-3">string</td><td class="p-3"><span class="text-red-500">*</span></td><td class="p-3" data-ar="max:20، فريد لكل فعالية" data-en="max:20, unique per event">max:20، فريد لكل فعالية</td></tr>
+                                        <tr class="border-b"><td class="p-3"><code>area_sqm</code></td><td class="p-3">numeric</td><td class="p-3"><span class="text-red-500">*</span></td><td class="p-3">min:1, max:999999</td></tr>
+                                        <tr class="border-b"><td class="p-3"><code>price_per_day</code></td><td class="p-3">numeric</td><td class="p-3 text-gray-400">-</td><td class="p-3">min:0</td></tr>
+                                        <tr class="border-b"><td class="p-3"><code>price_total</code></td><td class="p-3">numeric</td><td class="p-3"><span class="text-red-500">*</span></td><td class="p-3">min:0</td></tr>
+                                        <tr class="border-b"><td class="p-3"><code>section_id</code></td><td class="p-3">uuid</td><td class="p-3 text-gray-400">-</td><td class="p-3" data-ar="قسم من نفس الفعالية" data-en="Section from same event">قسم من نفس الفعالية</td></tr>
+                                        <tr class="border-b"><td class="p-3"><code>space_type</code></td><td class="p-3">enum</td><td class="p-3 text-gray-400">-</td><td class="p-3">SpaceType</td></tr>
+                                        <tr class="border-b"><td class="p-3"><code>payment_system</code></td><td class="p-3">enum</td><td class="p-3 text-gray-400">-</td><td class="p-3">PaymentSystem</td></tr>
+                                        <tr class="border-b"><td class="p-3"><code>rental_duration</code></td><td class="p-3">enum</td><td class="p-3 text-gray-400">-</td><td class="p-3">RentalDuration</td></tr>
+                                        <tr class="border-b"><td class="p-3"><code>floor_number</code></td><td class="p-3">integer</td><td class="p-3 text-gray-400">-</td><td class="p-3">-10 to 200</td></tr>
+                                        <tr class="border-b"><td class="p-3"><code>images[]</code></td><td class="p-3">file[]</td><td class="p-3 text-gray-400">-</td><td class="p-3">max:10, jpeg/png/jpg/webp, 5MB</td></tr>
+                                        <tr class="border-b"><td class="p-3"><code>images_360[]</code></td><td class="p-3">file[]</td><td class="p-3 text-gray-400">-</td><td class="p-3">max:5, 10MB each</td></tr>
+                                        <tr class="border-b"><td class="p-3"><code>amenities[]</code></td><td class="p-3">array</td><td class="p-3 text-gray-400">-</td><td class="p-3">max:50 items</td></tr>
+                                        <tr class="border-b"><td class="p-3"><code>amenities_ar[]</code></td><td class="p-3">array</td><td class="p-3 text-gray-400">-</td><td class="p-3">max:50 items</td></tr>
+                                        <tr class="border-b"><td class="p-3"><code>latitude</code></td><td class="p-3">numeric</td><td class="p-3 text-gray-400">-</td><td class="p-3">-90 to 90</td></tr>
+                                        <tr class="border-b"><td class="p-3"><code>longitude</code></td><td class="p-3">numeric</td><td class="p-3 text-gray-400">-</td><td class="p-3">-180 to 180</td></tr>
+                                        <tr class="border-b"><td class="p-3"><code>address</code></td><td class="p-3">string</td><td class="p-3 text-gray-400">-</td><td class="p-3">max:500</td></tr>
+                                        <tr class="border-b"><td class="p-3"><code>address_ar</code></td><td class="p-3">string</td><td class="p-3 text-gray-400">-</td><td class="p-3">max:500</td></tr>
+                                        <tr class="border-b"><td class="p-3"><code>services[]</code></td><td class="p-3">uuid[]</td><td class="p-3 text-gray-400">-</td><td class="p-3" data-ar="max:20، معرفات خدمات" data-en="max:20, service UUIDs">max:20، معرفات خدمات</td></tr>
+                                        <tr><td class="p-3"><code>status</code></td><td class="p-3">enum</td><td class="p-3 text-gray-400">-</td><td class="p-3">SpaceStatus</td></tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
                     </div>
                 </section>
 
@@ -728,6 +1039,29 @@
                             </tbody>
                         </table>
                     </div>
+                    <div class="endpoint-card">
+                        <div class="bg-blue-50 border-b border-blue-100 p-5 flex items-center gap-3">
+                            <span class="badge method-post text-white text-xs">POST</span>
+                            <code class="text-gray-800 font-semibold">/admin/services</code>
+                            <span class="mr-auto text-sm text-gray-500" data-ar="حقول إنشاء خدمة" data-en="Create service fields">حقول إنشاء خدمة</span>
+                        </div>
+                        <div class="p-5">
+                            <div class="overflow-x-auto">
+                                <table class="param-table w-full text-sm">
+                                    <thead><tr class="border-b bg-gray-50"><th class="p-3 text-right">Field</th><th class="p-3 text-right">Type</th><th class="p-3 text-right">Required</th><th class="p-3 text-right">Rules</th></tr></thead>
+                                    <tbody>
+                                        <tr class="border-b"><td class="p-3"><code>name</code></td><td class="p-3">string</td><td class="p-3"><span class="text-red-500">*</span></td><td class="p-3">max:255</td></tr>
+                                        <tr class="border-b"><td class="p-3"><code>name_ar</code></td><td class="p-3">string</td><td class="p-3 text-gray-400">-</td><td class="p-3">max:255</td></tr>
+                                        <tr class="border-b"><td class="p-3"><code>description</code></td><td class="p-3">string</td><td class="p-3 text-gray-400">-</td><td class="p-3">max:2000</td></tr>
+                                        <tr class="border-b"><td class="p-3"><code>description_ar</code></td><td class="p-3">string</td><td class="p-3 text-gray-400">-</td><td class="p-3">max:2000</td></tr>
+                                        <tr class="border-b"><td class="p-3"><code>icon</code></td><td class="p-3">string</td><td class="p-3 text-gray-400">-</td><td class="p-3">max:100</td></tr>
+                                        <tr class="border-b"><td class="p-3"><code>is_active</code></td><td class="p-3">boolean</td><td class="p-3 text-gray-400">-</td><td class="p-3">true/false</td></tr>
+                                        <tr><td class="p-3"><code>sort_order</code></td><td class="p-3">integer</td><td class="p-3 text-gray-400">-</td><td class="p-3">min:0</td></tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
                 </section>
 
                 {{-- ADMIN VISIT REQUESTS --}}
@@ -739,8 +1073,8 @@
                             <tbody>
                                 <tr class="border-b"><td class="p-3"><span class="badge method-get text-white">GET</span></td><td class="p-3"><code>/admin/visit-requests</code></td><td class="p-3" data-ar="قائمة جميع الطلبات" data-en="List all requests">قائمة جميع الطلبات</td></tr>
                                 <tr class="border-b"><td class="p-3"><span class="badge method-get text-white">GET</span></td><td class="p-3"><code>/admin/visit-requests/{visitRequest}</code></td><td class="p-3" data-ar="تفاصيل طلب" data-en="Show request">تفاصيل طلب</td></tr>
-                                <tr class="border-b"><td class="p-3"><span class="badge method-put text-white">PUT</span></td><td class="p-3"><code>/admin/visit-requests/{visitRequest}/approve</code></td><td class="p-3" data-ar="قبول الطلب" data-en="Approve request">قبول الطلب</td></tr>
-                                <tr><td class="p-3"><span class="badge method-put text-white">PUT</span></td><td class="p-3"><code>/admin/visit-requests/{visitRequest}/reject</code></td><td class="p-3" data-ar="رفض الطلب" data-en="Reject request">رفض الطلب</td></tr>
+                                <tr class="border-b"><td class="p-3"><span class="badge method-put text-white">PUT</span></td><td class="p-3"><code>/admin/visit-requests/{visitRequest}/approve</code></td><td class="p-3" data-ar="قبول الطلب (notes: اختياري)" data-en="Approve (notes: optional)">قبول الطلب (notes: اختياري)</td></tr>
+                                <tr><td class="p-3"><span class="badge method-put text-white">PUT</span></td><td class="p-3"><code>/admin/visit-requests/{visitRequest}/reject</code></td><td class="p-3" data-ar="رفض الطلب (reason: مطلوب، max:1000)" data-en="Reject (reason: required, max:1000)">رفض الطلب (reason: مطلوب، max:1000)</td></tr>
                             </tbody>
                         </table>
                     </div>
@@ -774,6 +1108,371 @@
                                 <tr class="border-b"><td class="p-3"><span class="badge method-get text-white">GET</span></td><td class="p-3"><code>/admin/profiles/{profile}</code></td><td class="p-3" data-ar="تفاصيل ملف تجاري" data-en="Show profile">تفاصيل ملف تجاري</td></tr>
                                 <tr class="border-b"><td class="p-3"><span class="badge method-put text-white">PUT</span></td><td class="p-3"><code>/admin/profiles/{profile}/approve</code></td><td class="p-3" data-ar="قبول الملف" data-en="Approve profile">قبول الملف</td></tr>
                                 <tr><td class="p-3"><span class="badge method-put text-white">PUT</span></td><td class="p-3"><code>/admin/profiles/{profile}/reject</code></td><td class="p-3" data-ar="رفض الملف" data-en="Reject profile">رفض الملف</td></tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </section>
+
+                {{-- ADMIN SPONSORS --}}
+                <section id="admin-sponsors" class="mb-20">
+                    <h2 class="text-3xl font-bold mb-6" data-ar="إدارة الرعاة" data-en="Sponsors Management">إدارة الرعاة</h2>
+                    <div class="overflow-x-auto bg-white rounded-xl border border-gray-200">
+                        <table class="w-full text-sm">
+                            <thead><tr class="bg-gray-50 border-b"><th class="p-3 text-right">Method</th><th class="p-3 text-right">Endpoint</th><th class="p-3 text-right" data-ar="الوصف" data-en="Description">الوصف</th></tr></thead>
+                            <tbody>
+                                <tr class="border-b"><td class="p-3"><span class="badge method-get text-white">GET</span></td><td class="p-3"><code>/admin/sponsors</code></td><td class="p-3" data-ar="قائمة الرعاة" data-en="List sponsors">قائمة الرعاة</td></tr>
+                                <tr class="border-b"><td class="p-3"><span class="badge method-post text-white">POST</span></td><td class="p-3"><code>/admin/sponsors</code></td><td class="p-3" data-ar="إنشاء راعي" data-en="Create sponsor">إنشاء راعي</td></tr>
+                                <tr class="border-b"><td class="p-3"><span class="badge method-get text-white">GET</span></td><td class="p-3"><code>/admin/sponsors/{sponsor}</code></td><td class="p-3" data-ar="تفاصيل راعي" data-en="Show sponsor">تفاصيل راعي</td></tr>
+                                <tr class="border-b"><td class="p-3"><span class="badge method-put text-white">PUT</span></td><td class="p-3"><code>/admin/sponsors/{sponsor}</code></td><td class="p-3" data-ar="تحديث راعي" data-en="Update sponsor">تحديث راعي</td></tr>
+                                <tr class="border-b"><td class="p-3"><span class="badge method-delete text-white">DEL</span></td><td class="p-3"><code>/admin/sponsors/{sponsor}</code></td><td class="p-3" data-ar="حذف راعي" data-en="Delete sponsor">حذف راعي</td></tr>
+                                <tr class="border-b"><td class="p-3"><span class="badge method-put text-white">PUT</span></td><td class="p-3"><code>/admin/sponsors/{sponsor}/approve</code></td><td class="p-3" data-ar="قبول راعي" data-en="Approve">قبول راعي</td></tr>
+                                <tr class="border-b"><td class="p-3"><span class="badge method-put text-white">PUT</span></td><td class="p-3"><code>/admin/sponsors/{sponsor}/activate</code></td><td class="p-3" data-ar="تفعيل راعي" data-en="Activate">تفعيل راعي</td></tr>
+                                <tr class="border-b"><td class="p-3"><span class="badge method-put text-white">PUT</span></td><td class="p-3"><code>/admin/sponsors/{sponsor}/suspend</code></td><td class="p-3" data-ar="تعليق راعي" data-en="Suspend">تعليق راعي</td></tr>
+                                <tr class="border-b bg-gray-50/50"><td colspan="3" class="p-2 font-bold text-gray-600 text-xs uppercase" data-ar="باقات الرعاية" data-en="Sponsor Packages">باقات الرعاية</td></tr>
+                                <tr class="border-b"><td class="p-3"><span class="badge method-get text-white">GET</span></td><td class="p-3"><code>/admin/events/{event}/sponsor-packages</code></td><td class="p-3" data-ar="باقات الفعالية" data-en="Event packages">باقات الفعالية</td></tr>
+                                <tr class="border-b"><td class="p-3"><span class="badge method-post text-white">POST</span></td><td class="p-3"><code>/admin/events/{event}/sponsor-packages</code></td><td class="p-3" data-ar="إنشاء باقة" data-en="Create package">إنشاء باقة</td></tr>
+                                <tr class="border-b"><td class="p-3"><span class="badge method-get text-white">GET</span></td><td class="p-3"><code>/admin/sponsor-packages/{id}</code></td><td class="p-3" data-ar="تفاصيل باقة" data-en="Show package">تفاصيل باقة</td></tr>
+                                <tr class="border-b"><td class="p-3"><span class="badge method-put text-white">PUT</span></td><td class="p-3"><code>/admin/sponsor-packages/{id}</code></td><td class="p-3" data-ar="تحديث باقة" data-en="Update package">تحديث باقة</td></tr>
+                                <tr class="border-b"><td class="p-3"><span class="badge method-delete text-white">DEL</span></td><td class="p-3"><code>/admin/sponsor-packages/{id}</code></td><td class="p-3" data-ar="حذف باقة" data-en="Delete package">حذف باقة</td></tr>
+                                <tr class="border-b bg-gray-50/50"><td colspan="3" class="p-2 font-bold text-gray-600 text-xs uppercase" data-ar="عقود ومدفوعات ومزايا وملفات" data-en="Contracts, Payments, Benefits & Assets">عقود ومدفوعات ومزايا وملفات</td></tr>
+                                <tr class="border-b"><td class="p-3"><span class="badge method-get text-white">GET</span></td><td class="p-3"><code>/admin/sponsor-contracts</code></td><td class="p-3" data-ar="قائمة العقود" data-en="List contracts">قائمة العقود</td></tr>
+                                <tr class="border-b"><td class="p-3"><span class="badge method-post text-white">POST</span></td><td class="p-3"><code>/admin/sponsor-contracts</code></td><td class="p-3" data-ar="إنشاء عقد" data-en="Create contract">إنشاء عقد</td></tr>
+                                <tr class="border-b"><td class="p-3"><span class="badge method-put text-white">PUT</span></td><td class="p-3"><code>/admin/sponsor-contracts/{id}/approve</code></td><td class="p-3" data-ar="قبول عقد" data-en="Approve contract">قبول عقد</td></tr>
+                                <tr class="border-b"><td class="p-3"><span class="badge method-put text-white">PUT</span></td><td class="p-3"><code>/admin/sponsor-contracts/{id}/reject</code></td><td class="p-3" data-ar="رفض عقد" data-en="Reject contract">رفض عقد</td></tr>
+                                <tr class="border-b"><td class="p-3"><span class="badge method-put text-white">PUT</span></td><td class="p-3"><code>/admin/sponsor-contracts/{id}/complete</code></td><td class="p-3" data-ar="إكمال عقد" data-en="Complete contract">إكمال عقد</td></tr>
+                                <tr class="border-b"><td class="p-3"><span class="badge method-get text-white">GET</span></td><td class="p-3"><code>/admin/sponsor-contracts/{id}</code></td><td class="p-3" data-ar="تفاصيل عقد" data-en="Show contract">تفاصيل عقد</td></tr>
+                                <tr class="border-b"><td class="p-3"><span class="badge method-put text-white">PUT</span></td><td class="p-3"><code>/admin/sponsor-contracts/{id}</code></td><td class="p-3" data-ar="تحديث عقد" data-en="Update contract">تحديث عقد</td></tr>
+                                <tr class="border-b bg-gray-50/50"><td colspan="3" class="p-2 font-bold text-gray-600 text-xs uppercase" data-ar="مدفوعات الرعاة" data-en="Sponsor Payments">مدفوعات الرعاة</td></tr>
+                                <tr class="border-b"><td class="p-3"><span class="badge method-get text-white">GET</span></td><td class="p-3"><code>/admin/sponsor-payments</code></td><td class="p-3" data-ar="قائمة المدفوعات" data-en="List payments">قائمة المدفوعات</td></tr>
+                                <tr class="border-b"><td class="p-3"><span class="badge method-post text-white">POST</span></td><td class="p-3"><code>/admin/sponsor-payments</code></td><td class="p-3" data-ar="إنشاء دفعة" data-en="Create payment">إنشاء دفعة</td></tr>
+                                <tr class="border-b"><td class="p-3"><span class="badge method-get text-white">GET</span></td><td class="p-3"><code>/admin/sponsor-payments/{id}</code></td><td class="p-3" data-ar="تفاصيل دفعة" data-en="Show payment">تفاصيل دفعة</td></tr>
+                                <tr class="border-b"><td class="p-3"><span class="badge method-put text-white">PUT</span></td><td class="p-3"><code>/admin/sponsor-payments/{id}</code></td><td class="p-3" data-ar="تحديث دفعة" data-en="Update payment">تحديث دفعة</td></tr>
+                                <tr class="border-b"><td class="p-3"><span class="badge method-put text-white">PUT</span></td><td class="p-3"><code>/admin/sponsor-payments/{id}/mark-paid</code></td><td class="p-3" data-ar="تأكيد الدفع" data-en="Mark as paid">تأكيد الدفع</td></tr>
+                                <tr class="border-b bg-gray-50/50"><td colspan="3" class="p-2 font-bold text-gray-600 text-xs uppercase" data-ar="مزايا الرعاة" data-en="Sponsor Benefits">مزايا الرعاة</td></tr>
+                                <tr class="border-b"><td class="p-3"><span class="badge method-get text-white">GET</span></td><td class="p-3"><code>/admin/sponsor-benefits</code></td><td class="p-3" data-ar="قائمة المزايا" data-en="List benefits">قائمة المزايا</td></tr>
+                                <tr class="border-b"><td class="p-3"><span class="badge method-post text-white">POST</span></td><td class="p-3"><code>/admin/sponsor-benefits</code></td><td class="p-3" data-ar="إنشاء ميزة" data-en="Create benefit">إنشاء ميزة</td></tr>
+                                <tr class="border-b"><td class="p-3"><span class="badge method-get text-white">GET</span></td><td class="p-3"><code>/admin/sponsor-benefits/{id}</code></td><td class="p-3" data-ar="تفاصيل ميزة" data-en="Show benefit">تفاصيل ميزة</td></tr>
+                                <tr class="border-b"><td class="p-3"><span class="badge method-put text-white">PUT</span></td><td class="p-3"><code>/admin/sponsor-benefits/{id}</code></td><td class="p-3" data-ar="تحديث ميزة" data-en="Update benefit">تحديث ميزة</td></tr>
+                                <tr class="border-b"><td class="p-3"><span class="badge method-put text-white">PUT</span></td><td class="p-3"><code>/admin/sponsor-benefits/{id}/deliver</code></td><td class="p-3" data-ar="تأكيد التسليم" data-en="Mark delivered">تأكيد التسليم</td></tr>
+                                <tr class="border-b bg-gray-50/50"><td colspan="3" class="p-2 font-bold text-gray-600 text-xs uppercase" data-ar="ملفات الرعاة" data-en="Sponsor Assets">ملفات الرعاة</td></tr>
+                                <tr class="border-b"><td class="p-3"><span class="badge method-get text-white">GET</span></td><td class="p-3"><code>/admin/sponsor-assets</code></td><td class="p-3" data-ar="قائمة الملفات" data-en="List assets">قائمة الملفات</td></tr>
+                                <tr class="border-b"><td class="p-3"><span class="badge method-get text-white">GET</span></td><td class="p-3"><code>/admin/sponsor-assets/{id}</code></td><td class="p-3" data-ar="تفاصيل ملف" data-en="Show asset">تفاصيل ملف</td></tr>
+                                <tr class="border-b"><td class="p-3"><span class="badge method-put text-white">PUT</span></td><td class="p-3"><code>/admin/sponsor-assets/{id}/approve</code></td><td class="p-3" data-ar="قبول ملف راعي" data-en="Approve asset">قبول ملف راعي</td></tr>
+                                <tr><td class="p-3"><span class="badge method-put text-white">PUT</span></td><td class="p-3"><code>/admin/sponsor-assets/{id}/reject</code></td><td class="p-3" data-ar="رفض ملف راعي" data-en="Reject asset">رفض ملف راعي</td></tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </section>
+
+                {{-- ADMIN RATINGS --}}
+                <section id="admin-ratings" class="mb-20">
+                    <h2 class="text-3xl font-bold mb-6" data-ar="إدارة التقييمات" data-en="Ratings Management">إدارة التقييمات</h2>
+                    <div class="overflow-x-auto bg-white rounded-xl border border-gray-200">
+                        <table class="w-full text-sm">
+                            <thead><tr class="bg-gray-50 border-b"><th class="p-3 text-right">Method</th><th class="p-3 text-right">Endpoint</th><th class="p-3 text-right" data-ar="الوصف" data-en="Description">الوصف</th></tr></thead>
+                            <tbody>
+                                <tr class="border-b"><td class="p-3"><span class="badge method-get text-white">GET</span></td><td class="p-3"><code>/admin/ratings</code></td><td class="p-3" data-ar="قائمة جميع التقييمات" data-en="List all ratings">جميع التقييمات</td></tr>
+                                <tr class="border-b"><td class="p-3"><span class="badge method-get text-white">GET</span></td><td class="p-3"><code>/admin/ratings/{rating}</code></td><td class="p-3" data-ar="تفاصيل تقييم" data-en="Show rating">تفاصيل تقييم</td></tr>
+                                <tr class="border-b"><td class="p-3"><span class="badge method-put text-white">PUT</span></td><td class="p-3"><code>/admin/ratings/{rating}/approve</code></td><td class="p-3" data-ar="قبول تقييم" data-en="Approve rating">قبول تقييم</td></tr>
+                                <tr class="border-b"><td class="p-3"><span class="badge method-put text-white">PUT</span></td><td class="p-3"><code>/admin/ratings/{rating}/reject</code></td><td class="p-3" data-ar="رفض تقييم" data-en="Reject rating">رفض تقييم</td></tr>
+                                <tr><td class="p-3"><span class="badge method-delete text-white">DEL</span></td><td class="p-3"><code>/admin/ratings/{rating}</code></td><td class="p-3" data-ar="حذف تقييم" data-en="Delete rating">حذف تقييم</td></tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </section>
+
+                {{-- ADMIN SUPPORT TICKETS --}}
+                <section id="admin-tickets" class="mb-20">
+                    <h2 class="text-3xl font-bold mb-6" data-ar="إدارة التذاكر" data-en="Tickets Management">إدارة التذاكر</h2>
+                    <div class="overflow-x-auto bg-white rounded-xl border border-gray-200">
+                        <table class="w-full text-sm">
+                            <thead><tr class="bg-gray-50 border-b"><th class="p-3 text-right">Method</th><th class="p-3 text-right">Endpoint</th><th class="p-3 text-right" data-ar="الوصف" data-en="Description">الوصف</th></tr></thead>
+                            <tbody>
+                                <tr class="border-b"><td class="p-3"><span class="badge method-get text-white">GET</span></td><td class="p-3"><code>/admin/support-tickets</code></td><td class="p-3" data-ar="جميع التذاكر" data-en="All tickets">جميع التذاكر</td></tr>
+                                <tr class="border-b"><td class="p-3"><span class="badge method-get text-white">GET</span></td><td class="p-3"><code>/admin/support-tickets/{id}</code></td><td class="p-3" data-ar="تفاصيل تذكرة" data-en="Ticket details">تفاصيل تذكرة</td></tr>
+                                <tr class="border-b"><td class="p-3"><span class="badge method-put text-white">PUT</span></td><td class="p-3"><code>/admin/support-tickets/{id}/assign</code></td><td class="p-3" data-ar="تعيين موظف" data-en="Assign agent">تعيين موظف</td></tr>
+                                <tr class="border-b"><td class="p-3"><span class="badge method-post text-white">POST</span></td><td class="p-3"><code>/admin/support-tickets/{id}/reply</code></td><td class="p-3" data-ar="الرد" data-en="Reply">الرد</td></tr>
+                                <tr class="border-b"><td class="p-3"><span class="badge method-put text-white">PUT</span></td><td class="p-3"><code>/admin/support-tickets/{id}/resolve</code></td><td class="p-3" data-ar="حل التذكرة" data-en="Resolve">حل التذكرة</td></tr>
+                                <tr class="border-b"><td class="p-3"><span class="badge method-put text-white">PUT</span></td><td class="p-3"><code>/admin/support-tickets/{id}/close</code></td><td class="p-3" data-ar="إغلاق" data-en="Close">إغلاق</td></tr>
+                                <tr><td class="p-3"><span class="badge method-delete text-white">DEL</span></td><td class="p-3"><code>/admin/support-tickets/{id}</code></td><td class="p-3" data-ar="حذف" data-en="Delete">حذف</td></tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </section>
+
+                {{-- ADMIN RENTAL CONTRACTS & INVOICES --}}
+                <section id="admin-contracts" class="mb-20">
+                    <h2 class="text-3xl font-bold mb-6" data-ar="العقود والفواتير" data-en="Contracts & Invoices">العقود والفواتير</h2>
+                    <div class="overflow-x-auto bg-white rounded-xl border border-gray-200 mb-6">
+                        <table class="w-full text-sm">
+                            <thead><tr class="bg-gray-50 border-b"><th class="p-3 text-right">Method</th><th class="p-3 text-right">Endpoint</th><th class="p-3 text-right" data-ar="الوصف" data-en="Description">الوصف</th></tr></thead>
+                            <tbody>
+                                <tr class="border-b bg-gray-50/50"><td colspan="3" class="p-2 font-bold text-gray-600 text-xs uppercase" data-ar="عقود الإيجار" data-en="Rental Contracts">عقود الإيجار</td></tr>
+                                <tr class="border-b"><td class="p-3"><span class="badge method-get text-white">GET</span></td><td class="p-3"><code>/admin/rental-contracts</code></td><td class="p-3" data-ar="قائمة العقود" data-en="List contracts">قائمة العقود</td></tr>
+                                <tr class="border-b"><td class="p-3"><span class="badge method-post text-white">POST</span></td><td class="p-3"><code>/admin/rental-contracts</code></td><td class="p-3" data-ar="إنشاء عقد" data-en="Create contract">إنشاء عقد</td></tr>
+                                <tr class="border-b"><td class="p-3"><span class="badge method-get text-white">GET</span></td><td class="p-3"><code>/admin/rental-contracts/{id}</code></td><td class="p-3" data-ar="تفاصيل عقد" data-en="Show contract">تفاصيل عقد</td></tr>
+                                <tr class="border-b"><td class="p-3"><span class="badge method-put text-white">PUT</span></td><td class="p-3"><code>/admin/rental-contracts/{id}</code></td><td class="p-3" data-ar="تحديث عقد" data-en="Update contract">تحديث عقد</td></tr>
+                                <tr class="border-b"><td class="p-3"><span class="badge method-put text-white">PUT</span></td><td class="p-3"><code>/admin/rental-contracts/{id}/approve</code></td><td class="p-3" data-ar="قبول عقد" data-en="Approve">قبول عقد</td></tr>
+                                <tr class="border-b"><td class="p-3"><span class="badge method-put text-white">PUT</span></td><td class="p-3"><code>/admin/rental-contracts/{id}/reject</code></td><td class="p-3" data-ar="رفض عقد" data-en="Reject">رفض عقد</td></tr>
+                                <tr class="border-b"><td class="p-3"><span class="badge method-put text-white">PUT</span></td><td class="p-3"><code>/admin/rental-contracts/{id}/terminate</code></td><td class="p-3" data-ar="إنهاء عقد" data-en="Terminate">إنهاء عقد</td></tr>
+                                <tr class="border-b bg-gray-50/50"><td colspan="3" class="p-2 font-bold text-gray-600 text-xs uppercase" data-ar="الفواتير" data-en="Invoices">الفواتير</td></tr>
+                                <tr class="border-b"><td class="p-3"><span class="badge method-get text-white">GET</span></td><td class="p-3"><code>/admin/invoices</code></td><td class="p-3" data-ar="قائمة الفواتير" data-en="List invoices">قائمة الفواتير</td></tr>
+                                <tr class="border-b"><td class="p-3"><span class="badge method-post text-white">POST</span></td><td class="p-3"><code>/admin/invoices</code></td><td class="p-3" data-ar="إنشاء فاتورة" data-en="Create invoice">إنشاء فاتورة</td></tr>
+                                <tr class="border-b"><td class="p-3"><span class="badge method-get text-white">GET</span></td><td class="p-3"><code>/admin/invoices/{invoice}</code></td><td class="p-3" data-ar="تفاصيل فاتورة" data-en="Show invoice">تفاصيل فاتورة</td></tr>
+                                <tr class="border-b"><td class="p-3"><span class="badge method-put text-white">PUT</span></td><td class="p-3"><code>/admin/invoices/{invoice}</code></td><td class="p-3" data-ar="تحديث فاتورة" data-en="Update invoice">تحديث فاتورة</td></tr>
+                                <tr class="border-b"><td class="p-3"><span class="badge method-put text-white">PUT</span></td><td class="p-3"><code>/admin/invoices/{invoice}/issue</code></td><td class="p-3" data-ar="إصدار فاتورة" data-en="Issue invoice">إصدار فاتورة</td></tr>
+                                <tr class="border-b"><td class="p-3"><span class="badge method-put text-white">PUT</span></td><td class="p-3"><code>/admin/invoices/{invoice}/mark-paid</code></td><td class="p-3" data-ar="تأكيد الدفع" data-en="Mark paid">تأكيد الدفع</td></tr>
+                                <tr><td class="p-3"><span class="badge method-put text-white">PUT</span></td><td class="p-3"><code>/admin/invoices/{invoice}/cancel</code></td><td class="p-3" data-ar="إلغاء فاتورة" data-en="Cancel invoice">إلغاء فاتورة</td></tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </section>
+
+                {{-- ADMIN CMS --}}
+                <section id="admin-cms" class="mb-20">
+                    <h2 class="text-3xl font-bold mb-6" data-ar="إدارة المحتوى" data-en="Content Management">إدارة المحتوى</h2>
+                    <div class="overflow-x-auto bg-white rounded-xl border border-gray-200">
+                        <table class="w-full text-sm">
+                            <thead><tr class="bg-gray-50 border-b"><th class="p-3 text-right">Method</th><th class="p-3 text-right">Endpoint</th><th class="p-3 text-right" data-ar="الوصف" data-en="Description">الوصف</th></tr></thead>
+                            <tbody>
+                                <tr class="border-b bg-gray-50/50"><td colspan="3" class="p-2 font-bold text-gray-600 text-xs uppercase" data-ar="الصفحات" data-en="Pages">الصفحات</td></tr>
+                                <tr class="border-b"><td class="p-3"><span class="badge method-get text-white">GET</span></td><td class="p-3"><code>/admin/pages</code></td><td class="p-3" data-ar="القائمة" data-en="List">القائمة</td></tr>
+                                <tr class="border-b"><td class="p-3"><span class="badge method-post text-white">POST</span></td><td class="p-3"><code>/admin/pages</code></td><td class="p-3" data-ar="إنشاء" data-en="Create">إنشاء</td></tr>
+                                <tr class="border-b"><td class="p-3"><span class="badge method-get text-white">GET</span></td><td class="p-3"><code>/admin/pages/{page}</code></td><td class="p-3" data-ar="تفاصيل" data-en="Show">تفاصيل</td></tr>
+                                <tr class="border-b"><td class="p-3"><span class="badge method-put text-white">PUT</span></td><td class="p-3"><code>/admin/pages/{page}</code></td><td class="p-3" data-ar="تحديث" data-en="Update">تحديث</td></tr>
+                                <tr class="border-b"><td class="p-3"><span class="badge method-delete text-white">DEL</span></td><td class="p-3"><code>/admin/pages/{page}</code></td><td class="p-3" data-ar="حذف" data-en="Delete">حذف</td></tr>
+                                <tr class="border-b bg-gray-50/50"><td colspan="3" class="p-2 font-bold text-gray-600 text-xs uppercase" data-ar="الأسئلة الشائعة" data-en="FAQs">الأسئلة الشائعة</td></tr>
+                                <tr class="border-b"><td class="p-3"><span class="badge method-get text-white">GET</span></td><td class="p-3"><code>/admin/faqs</code></td><td class="p-3" data-ar="القائمة" data-en="List">القائمة</td></tr>
+                                <tr class="border-b"><td class="p-3"><span class="badge method-post text-white">POST</span></td><td class="p-3"><code>/admin/faqs</code></td><td class="p-3" data-ar="إنشاء" data-en="Create">إنشاء</td></tr>
+                                <tr class="border-b"><td class="p-3"><span class="badge method-get text-white">GET</span></td><td class="p-3"><code>/admin/faqs/{faq}</code></td><td class="p-3" data-ar="تفاصيل" data-en="Show">تفاصيل</td></tr>
+                                <tr class="border-b"><td class="p-3"><span class="badge method-put text-white">PUT</span></td><td class="p-3"><code>/admin/faqs/{faq}</code></td><td class="p-3" data-ar="تحديث" data-en="Update">تحديث</td></tr>
+                                <tr class="border-b"><td class="p-3"><span class="badge method-delete text-white">DEL</span></td><td class="p-3"><code>/admin/faqs/{faq}</code></td><td class="p-3" data-ar="حذف" data-en="Delete">حذف</td></tr>
+                                <tr class="border-b bg-gray-50/50"><td colspan="3" class="p-2 font-bold text-gray-600 text-xs uppercase" data-ar="البانرات" data-en="Banners">البانرات</td></tr>
+                                <tr class="border-b"><td class="p-3"><span class="badge method-get text-white">GET</span></td><td class="p-3"><code>/admin/banners</code></td><td class="p-3" data-ar="القائمة" data-en="List">القائمة</td></tr>
+                                <tr class="border-b"><td class="p-3"><span class="badge method-post text-white">POST</span></td><td class="p-3"><code>/admin/banners</code></td><td class="p-3" data-ar="إنشاء" data-en="Create">إنشاء</td></tr>
+                                <tr class="border-b"><td class="p-3"><span class="badge method-get text-white">GET</span></td><td class="p-3"><code>/admin/banners/{banner}</code></td><td class="p-3" data-ar="تفاصيل" data-en="Show">تفاصيل</td></tr>
+                                <tr class="border-b"><td class="p-3"><span class="badge method-put text-white">PUT</span></td><td class="p-3"><code>/admin/banners/{banner}</code></td><td class="p-3" data-ar="تحديث" data-en="Update">تحديث</td></tr>
+                                <tr><td class="p-3"><span class="badge method-delete text-white">DEL</span></td><td class="p-3"><code>/admin/banners/{banner}</code></td><td class="p-3" data-ar="حذف" data-en="Delete">حذف</td></tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </section>
+
+                {{-- ==================== ROLE-BASED ENDPOINTS ==================== --}}
+
+                {{-- SUPERVISOR --}}
+                <section id="supervisor-api" class="mb-20">
+                    <h2 class="text-3xl font-bold mb-4" data-ar="واجهة المشرف" data-en="Supervisor API">واجهة المشرف</h2>
+                    <div class="bg-orange-50 border border-orange-200 rounded-xl p-5 mb-6">
+                        <p class="text-sm text-orange-800" data-ar="يتطلب دور supervisor - صلاحيات استعراض + إدارة الطلبات" data-en="Requires supervisor role - read access + request management">يتطلب دور <code class="bg-orange-100 px-1 rounded">supervisor</code> — صلاحيات استعراض + إدارة الطلبات</p>
+                    </div>
+                    <div class="overflow-x-auto bg-white rounded-xl border border-gray-200">
+                        <table class="w-full text-sm">
+                            <thead><tr class="bg-gray-50 border-b"><th class="p-3 text-right">Method</th><th class="p-3 text-right">Endpoint</th><th class="p-3 text-right" data-ar="الوصف" data-en="Description">الوصف</th></tr></thead>
+                            <tbody>
+                                <tr class="border-b bg-orange-50/50"><td colspan="3" class="p-2 font-bold text-orange-800 text-xs uppercase">Dashboard & Statistics</td></tr>
+                                <tr class="border-b"><td class="p-3"><span class="badge method-get text-white">GET</span></td><td class="p-3"><code>/supervisor/dashboard</code></td><td class="p-3" data-ar="لوحة التحكم" data-en="Dashboard">لوحة التحكم</td></tr>
+                                <tr class="border-b"><td class="p-3"><span class="badge method-get text-white">GET</span></td><td class="p-3"><code>/supervisor/statistics</code></td><td class="p-3" data-ar="الإحصائيات" data-en="Statistics">الإحصائيات</td></tr>
+                                <tr class="border-b bg-orange-50/50"><td colspan="3" class="p-2 font-bold text-orange-800 text-xs uppercase" data-ar="الفعاليات والمساحات (قراءة فقط)" data-en="Events & Spaces (Read-Only)">الفعاليات والمساحات (قراءة فقط)</td></tr>
+                                <tr class="border-b"><td class="p-3"><span class="badge method-get text-white">GET</span></td><td class="p-3"><code>/supervisor/events</code></td><td class="p-3" data-ar="قائمة الفعاليات" data-en="List events">قائمة الفعاليات</td></tr>
+                                <tr class="border-b"><td class="p-3"><span class="badge method-get text-white">GET</span></td><td class="p-3"><code>/supervisor/events/{event}</code></td><td class="p-3" data-ar="تفاصيل فعالية" data-en="Show event">تفاصيل فعالية</td></tr>
+                                <tr class="border-b"><td class="p-3"><span class="badge method-get text-white">GET</span></td><td class="p-3"><code>/supervisor/events/{event}/sections</code></td><td class="p-3" data-ar="أقسام الفعالية" data-en="Event sections">أقسام الفعالية</td></tr>
+                                <tr class="border-b"><td class="p-3"><span class="badge method-get text-white">GET</span></td><td class="p-3"><code>/supervisor/events/{event}/spaces</code></td><td class="p-3" data-ar="مساحات الفعالية" data-en="Event spaces">مساحات الفعالية</td></tr>
+                                <tr class="border-b"><td class="p-3"><span class="badge method-get text-white">GET</span></td><td class="p-3"><code>/supervisor/sections/{section}</code></td><td class="p-3" data-ar="تفاصيل قسم" data-en="Show section">تفاصيل قسم</td></tr>
+                                <tr class="border-b"><td class="p-3"><span class="badge method-get text-white">GET</span></td><td class="p-3"><code>/supervisor/spaces/{space}</code></td><td class="p-3" data-ar="تفاصيل مساحة" data-en="Show space">تفاصيل مساحة</td></tr>
+                                <tr class="border-b bg-orange-50/50"><td colspan="3" class="p-2 font-bold text-orange-800 text-xs uppercase" data-ar="الخدمات (قراءة فقط)" data-en="Services (Read-Only)">الخدمات (قراءة فقط)</td></tr>
+                                <tr class="border-b"><td class="p-3"><span class="badge method-get text-white">GET</span></td><td class="p-3"><code>/supervisor/services</code></td><td class="p-3" data-ar="قائمة الخدمات" data-en="List services">قائمة الخدمات</td></tr>
+                                <tr class="border-b"><td class="p-3"><span class="badge method-get text-white">GET</span></td><td class="p-3"><code>/supervisor/services/{service}</code></td><td class="p-3" data-ar="تفاصيل خدمة" data-en="Show service">تفاصيل خدمة</td></tr>
+                                <tr class="border-b bg-orange-50/50"><td colspan="3" class="p-2 font-bold text-orange-800 text-xs uppercase" data-ar="إدارة الطلبات" data-en="Request Management">إدارة الطلبات (Approve/Reject)</td></tr>
+                                <tr class="border-b"><td class="p-3"><span class="badge method-get text-white">GET</span></td><td class="p-3"><code>/supervisor/visit-requests</code></td><td class="p-3" data-ar="طلبات الزيارة" data-en="Visit requests">طلبات الزيارة</td></tr>
+                                <tr class="border-b"><td class="p-3"><span class="badge method-get text-white">GET</span></td><td class="p-3"><code>/supervisor/visit-requests/{id}</code></td><td class="p-3" data-ar="تفاصيل طلب زيارة" data-en="Show visit request">تفاصيل طلب زيارة</td></tr>
+                                <tr class="border-b"><td class="p-3"><span class="badge method-put text-white">PUT</span></td><td class="p-3"><code>/supervisor/visit-requests/{id}/approve</code></td><td class="p-3" data-ar="قبول" data-en="Approve">قبول</td></tr>
+                                <tr class="border-b"><td class="p-3"><span class="badge method-put text-white">PUT</span></td><td class="p-3"><code>/supervisor/visit-requests/{id}/reject</code></td><td class="p-3" data-ar="رفض" data-en="Reject">رفض</td></tr>
+                                <tr class="border-b"><td class="p-3"><span class="badge method-get text-white">GET</span></td><td class="p-3"><code>/supervisor/rental-requests</code></td><td class="p-3" data-ar="طلبات الإيجار" data-en="Rental requests">طلبات الإيجار</td></tr>
+                                <tr class="border-b"><td class="p-3"><span class="badge method-get text-white">GET</span></td><td class="p-3"><code>/supervisor/rental-requests/{id}</code></td><td class="p-3" data-ar="تفاصيل طلب إيجار" data-en="Show rental request">تفاصيل طلب إيجار</td></tr>
+                                <tr class="border-b"><td class="p-3"><span class="badge method-put text-white">PUT</span></td><td class="p-3"><code>/supervisor/rental-requests/{id}/approve</code></td><td class="p-3" data-ar="قبول" data-en="Approve">قبول</td></tr>
+                                <tr class="border-b"><td class="p-3"><span class="badge method-put text-white">PUT</span></td><td class="p-3"><code>/supervisor/rental-requests/{id}/reject</code></td><td class="p-3" data-ar="رفض" data-en="Reject">رفض</td></tr>
+                                <tr class="border-b"><td class="p-3"><span class="badge method-post text-white">POST</span></td><td class="p-3"><code>/supervisor/rental-requests/{id}/payment</code></td><td class="p-3" data-ar="تسجيل دفعة" data-en="Record payment">تسجيل دفعة</td></tr>
+                                <tr class="border-b bg-orange-50/50"><td colspan="3" class="p-2 font-bold text-orange-800 text-xs uppercase" data-ar="الملفات التجارية" data-en="Business Profiles">الملفات التجارية</td></tr>
+                                <tr class="border-b"><td class="p-3"><span class="badge method-get text-white">GET</span></td><td class="p-3"><code>/supervisor/profiles</code></td><td class="p-3" data-ar="قائمة الملفات التجارية" data-en="List profiles">قائمة الملفات التجارية</td></tr>
+                                <tr class="border-b"><td class="p-3"><span class="badge method-get text-white">GET</span></td><td class="p-3"><code>/supervisor/profiles/{id}</code></td><td class="p-3" data-ar="تفاصيل ملف تجاري" data-en="Show profile">تفاصيل ملف تجاري</td></tr>
+                                <tr class="border-b"><td class="p-3"><span class="badge method-put text-white">PUT</span></td><td class="p-3"><code>/supervisor/profiles/{id}/approve</code></td><td class="p-3" data-ar="قبول" data-en="Approve">قبول</td></tr>
+                                <tr class="border-b"><td class="p-3"><span class="badge method-put text-white">PUT</span></td><td class="p-3"><code>/supervisor/profiles/{id}/reject</code></td><td class="p-3" data-ar="رفض" data-en="Reject">رفض</td></tr>
+                                <tr class="border-b bg-orange-50/50"><td colspan="3" class="p-2 font-bold text-orange-800 text-xs uppercase" data-ar="الرعاة" data-en="Sponsors">الرعاة (قراءة فقط)</td></tr>
+                                <tr class="border-b"><td class="p-3"><span class="badge method-get text-white">GET</span></td><td class="p-3"><code>/supervisor/sponsors</code></td><td class="p-3" data-ar="قائمة الرعاة" data-en="List sponsors">قائمة الرعاة</td></tr>
+                                <tr class="border-b"><td class="p-3"><span class="badge method-get text-white">GET</span></td><td class="p-3"><code>/supervisor/sponsors/{id}</code></td><td class="p-3" data-ar="تفاصيل راعي" data-en="Show sponsor">تفاصيل راعي</td></tr>
+                                <tr class="border-b bg-orange-50/50"><td colspan="3" class="p-2 font-bold text-orange-800 text-xs uppercase" data-ar="عقود الرعاة" data-en="Sponsor Contracts">عقود الرعاة</td></tr>
+                                <tr class="border-b"><td class="p-3"><span class="badge method-get text-white">GET</span></td><td class="p-3"><code>/supervisor/sponsor-contracts</code></td><td class="p-3" data-ar="قائمة العقود" data-en="List contracts">قائمة العقود</td></tr>
+                                <tr class="border-b"><td class="p-3"><span class="badge method-get text-white">GET</span></td><td class="p-3"><code>/supervisor/sponsor-contracts/{id}</code></td><td class="p-3" data-ar="تفاصيل عقد" data-en="Show contract">تفاصيل عقد</td></tr>
+                                <tr class="border-b"><td class="p-3"><span class="badge method-put text-white">PUT</span></td><td class="p-3"><code>/supervisor/sponsor-contracts/{id}/approve</code></td><td class="p-3" data-ar="قبول" data-en="Approve">قبول</td></tr>
+                                <tr class="border-b"><td class="p-3"><span class="badge method-put text-white">PUT</span></td><td class="p-3"><code>/supervisor/sponsor-contracts/{id}/reject</code></td><td class="p-3" data-ar="رفض" data-en="Reject">رفض</td></tr>
+                                <tr class="border-b bg-orange-50/50"><td colspan="3" class="p-2 font-bold text-orange-800 text-xs uppercase" data-ar="تذاكر الدعم" data-en="Support Tickets">تذاكر الدعم</td></tr>
+                                <tr class="border-b"><td class="p-3"><span class="badge method-get text-white">GET</span></td><td class="p-3"><code>/supervisor/support-tickets</code></td><td class="p-3" data-ar="قائمة التذاكر" data-en="List tickets">قائمة التذاكر</td></tr>
+                                <tr class="border-b"><td class="p-3"><span class="badge method-get text-white">GET</span></td><td class="p-3"><code>/supervisor/support-tickets/{id}</code></td><td class="p-3" data-ar="تفاصيل تذكرة" data-en="Show ticket">تفاصيل تذكرة</td></tr>
+                                <tr class="border-b"><td class="p-3"><span class="badge method-post text-white">POST</span></td><td class="p-3"><code>/supervisor/support-tickets/{id}/reply</code></td><td class="p-3" data-ar="الرد" data-en="Reply">الرد</td></tr>
+                                <tr class="border-b"><td class="p-3"><span class="badge method-put text-white">PUT</span></td><td class="p-3"><code>/supervisor/support-tickets/{id}/resolve</code></td><td class="p-3" data-ar="حل التذكرة" data-en="Resolve">حل التذكرة</td></tr>
+                                <tr class="border-b bg-orange-50/50"><td colspan="3" class="p-2 font-bold text-orange-800 text-xs uppercase" data-ar="عقود الإيجار" data-en="Rental Contracts">عقود الإيجار</td></tr>
+                                <tr class="border-b"><td class="p-3"><span class="badge method-get text-white">GET</span></td><td class="p-3"><code>/supervisor/rental-contracts</code></td><td class="p-3" data-ar="قائمة العقود" data-en="List contracts">قائمة العقود</td></tr>
+                                <tr class="border-b"><td class="p-3"><span class="badge method-get text-white">GET</span></td><td class="p-3"><code>/supervisor/rental-contracts/{id}</code></td><td class="p-3" data-ar="تفاصيل عقد" data-en="Show contract">تفاصيل عقد</td></tr>
+                                <tr class="border-b"><td class="p-3"><span class="badge method-put text-white">PUT</span></td><td class="p-3"><code>/supervisor/rental-contracts/{id}/approve</code></td><td class="p-3" data-ar="قبول" data-en="Approve">قبول</td></tr>
+                                <tr><td class="p-3"><span class="badge method-put text-white">PUT</span></td><td class="p-3"><code>/supervisor/rental-contracts/{id}/reject</code></td><td class="p-3" data-ar="رفض" data-en="Reject">رفض</td></tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </section>
+
+                {{-- SUPER ADMIN --}}
+                <section id="superadmin-api" class="mb-20">
+                    <h2 class="text-3xl font-bold mb-4" data-ar="واجهة المدير العام" data-en="Super Admin API">واجهة المدير العام</h2>
+                    <div class="bg-red-50 border border-red-200 rounded-xl p-5 mb-6">
+                        <p class="text-sm text-red-800" data-ar="يتطلب دور super-admin — أعلى مستوى صلاحيات" data-en="Requires super-admin role — highest privilege level">يتطلب دور <code class="bg-red-100 px-1 rounded">super-admin</code> — أعلى مستوى صلاحيات</p>
+                    </div>
+                    <div class="overflow-x-auto bg-white rounded-xl border border-gray-200">
+                        <table class="w-full text-sm">
+                            <thead><tr class="bg-gray-50 border-b"><th class="p-3 text-right">Method</th><th class="p-3 text-right">Endpoint</th><th class="p-3 text-right" data-ar="الوصف" data-en="Description">الوصف</th></tr></thead>
+                            <tbody>
+                                <tr class="border-b"><td class="p-3"><span class="badge method-get text-white">GET</span></td><td class="p-3"><code>/super-admin/dashboard</code></td><td class="p-3" data-ar="لوحة التحكم" data-en="Dashboard">لوحة التحكم</td></tr>
+                                <tr class="border-b"><td class="p-3"><span class="badge method-get text-white">GET</span></td><td class="p-3"><code>/super-admin/statistics</code></td><td class="p-3" data-ar="الإحصائيات" data-en="Statistics">الإحصائيات</td></tr>
+                                <tr class="border-b bg-gray-50/50"><td colspan="3" class="p-2 font-bold text-gray-600 text-xs uppercase" data-ar="التصنيفات والمدن" data-en="Categories & Cities">التصنيفات والمدن (CRUD)</td></tr>
+                                <tr class="border-b"><td class="p-3"><span class="badge method-get text-white">GET</span></td><td class="p-3"><code>/super-admin/categories</code></td><td class="p-3" data-ar="قائمة التصنيفات" data-en="List categories">التصنيفات</td></tr>
+                                <tr class="border-b"><td class="p-3"><span class="badge method-post text-white">POST</span></td><td class="p-3"><code>/super-admin/categories</code></td><td class="p-3" data-ar="إنشاء تصنيف" data-en="Create category">إنشاء تصنيف</td></tr>
+                                <tr class="border-b"><td class="p-3"><span class="badge method-get text-white">GET</span></td><td class="p-3"><code>/super-admin/categories/{id}</code></td><td class="p-3" data-ar="تفاصيل تصنيف" data-en="Show category">تفاصيل تصنيف</td></tr>
+                                <tr class="border-b"><td class="p-3"><span class="badge method-put text-white">PUT</span></td><td class="p-3"><code>/super-admin/categories/{id}</code></td><td class="p-3" data-ar="تحديث" data-en="Update">تحديث</td></tr>
+                                <tr class="border-b"><td class="p-3"><span class="badge method-delete text-white">DEL</span></td><td class="p-3"><code>/super-admin/categories/{id}</code></td><td class="p-3" data-ar="حذف" data-en="Delete">حذف</td></tr>
+                                <tr class="border-b"><td class="p-3"><span class="badge method-get text-white">GET</span></td><td class="p-3"><code>/super-admin/cities</code></td><td class="p-3" data-ar="المدن" data-en="Cities">المدن</td></tr>
+                                <tr class="border-b"><td class="p-3"><span class="badge method-post text-white">POST</span></td><td class="p-3"><code>/super-admin/cities</code></td><td class="p-3" data-ar="إنشاء مدينة" data-en="Create city">إنشاء مدينة</td></tr>
+                                <tr class="border-b"><td class="p-3"><span class="badge method-get text-white">GET</span></td><td class="p-3"><code>/super-admin/cities/{id}</code></td><td class="p-3" data-ar="تفاصيل مدينة" data-en="Show city">تفاصيل مدينة</td></tr>
+                                <tr class="border-b"><td class="p-3"><span class="badge method-put text-white">PUT</span></td><td class="p-3"><code>/super-admin/cities/{id}</code></td><td class="p-3" data-ar="تحديث" data-en="Update">تحديث</td></tr>
+                                <tr class="border-b"><td class="p-3"><span class="badge method-delete text-white">DEL</span></td><td class="p-3"><code>/super-admin/cities/{id}</code></td><td class="p-3" data-ar="حذف" data-en="Delete">حذف</td></tr>
+                                <tr class="border-b bg-gray-50/50"><td colspan="3" class="p-2 font-bold text-gray-600 text-xs uppercase" data-ar="المستخدمون" data-en="Users">المستخدمون</td></tr>
+                                <tr class="border-b"><td class="p-3"><span class="badge method-get text-white">GET</span></td><td class="p-3"><code>/super-admin/users</code></td><td class="p-3" data-ar="قائمة المستخدمين" data-en="List users">المستخدمون</td></tr>
+                                <tr class="border-b"><td class="p-3"><span class="badge method-get text-white">GET</span></td><td class="p-3"><code>/super-admin/users/{id}</code></td><td class="p-3" data-ar="تفاصيل مستخدم" data-en="Show user">تفاصيل مستخدم</td></tr>
+                                <tr class="border-b"><td class="p-3"><span class="badge method-put text-white">PUT</span></td><td class="p-3"><code>/super-admin/users/{id}/approve</code></td><td class="p-3" data-ar="قبول" data-en="Approve">قبول</td></tr>
+                                <tr class="border-b"><td class="p-3"><span class="badge method-put text-white">PUT</span></td><td class="p-3"><code>/super-admin/users/{id}/reject</code></td><td class="p-3" data-ar="رفض" data-en="Reject">رفض</td></tr>
+                                <tr class="border-b"><td class="p-3"><span class="badge method-put text-white">PUT</span></td><td class="p-3"><code>/super-admin/users/{id}/suspend</code></td><td class="p-3" data-ar="تعليق" data-en="Suspend">تعليق</td></tr>
+                                <tr class="border-b bg-gray-50/50"><td colspan="3" class="p-2 font-bold text-gray-600 text-xs uppercase" data-ar="الإعدادات" data-en="Settings">الإعدادات</td></tr>
+                                <tr class="border-b"><td class="p-3"><span class="badge method-get text-white">GET</span></td><td class="p-3"><code>/super-admin/settings</code></td><td class="p-3" data-ar="قائمة الإعدادات" data-en="List settings">قائمة الإعدادات</td></tr>
+                                <tr class="border-b"><td class="p-3"><span class="badge method-get text-white">GET</span></td><td class="p-3"><code>/super-admin/settings/{key}</code></td><td class="p-3" data-ar="قيمة إعداد" data-en="Get setting value">قيمة إعداد</td></tr>
+                                <tr><td class="p-3"><span class="badge method-put text-white">PUT</span></td><td class="p-3"><code>/super-admin/settings</code></td><td class="p-3" data-ar="تحديث الإعدادات" data-en="Update settings">تحديث الإعدادات</td></tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </section>
+
+                {{-- INVESTOR --}}
+                <section id="investor-api" class="mb-20">
+                    <h2 class="text-3xl font-bold mb-4" data-ar="واجهة المستثمر" data-en="Investor API">واجهة المستثمر</h2>
+                    <div class="bg-indigo-50 border border-indigo-200 rounded-xl p-5 mb-6">
+                        <p class="text-sm text-indigo-800" data-ar="يتطلب دور investor — إدارة المساحات والطلبات والمدفوعات" data-en="Requires investor role — manage spaces, requests & payments">يتطلب دور <code class="bg-indigo-100 px-1 rounded">investor</code> — إدارة المساحات والطلبات والمدفوعات</p>
+                    </div>
+                    <div class="overflow-x-auto bg-white rounded-xl border border-gray-200">
+                        <table class="w-full text-sm">
+                            <thead><tr class="bg-gray-50 border-b"><th class="p-3 text-right">Method</th><th class="p-3 text-right">Endpoint</th><th class="p-3 text-right" data-ar="الوصف" data-en="Description">الوصف</th></tr></thead>
+                            <tbody>
+                                <tr class="border-b"><td class="p-3"><span class="badge method-get text-white">GET</span></td><td class="p-3"><code>/investor/dashboard</code></td><td class="p-3" data-ar="لوحة التحكم" data-en="Dashboard">لوحة التحكم</td></tr>
+                                <tr class="border-b"><td class="p-3"><span class="badge method-get text-white">GET</span></td><td class="p-3"><code>/investor/statistics</code></td><td class="p-3" data-ar="الإحصائيات" data-en="Statistics">الإحصائيات</td></tr>
+                                <tr class="border-b bg-gray-50/50"><td colspan="3" class="p-2 font-bold text-gray-600 text-xs uppercase" data-ar="المساحات" data-en="Spaces">المساحات (CRUD)</td></tr>
+                                <tr class="border-b"><td class="p-3"><span class="badge method-get text-white">GET</span></td><td class="p-3"><code>/investor/spaces</code></td><td class="p-3" data-ar="مساحاتي" data-en="My spaces">مساحاتي</td></tr>
+                                <tr class="border-b"><td class="p-3"><span class="badge method-post text-white">POST</span></td><td class="p-3"><code>/investor/spaces</code></td><td class="p-3" data-ar="إنشاء مساحة" data-en="Create space">إنشاء مساحة</td></tr>
+                                <tr class="border-b"><td class="p-3"><span class="badge method-get text-white">GET</span></td><td class="p-3"><code>/investor/spaces/{id}</code></td><td class="p-3" data-ar="تفاصيل مساحة" data-en="Show space">تفاصيل مساحة</td></tr>
+                                <tr class="border-b"><td class="p-3"><span class="badge method-put text-white">PUT</span></td><td class="p-3"><code>/investor/spaces/{id}</code></td><td class="p-3" data-ar="تحديث" data-en="Update">تحديث</td></tr>
+                                <tr class="border-b"><td class="p-3"><span class="badge method-delete text-white">DEL</span></td><td class="p-3"><code>/investor/spaces/{id}</code></td><td class="p-3" data-ar="حذف" data-en="Delete">حذف</td></tr>
+                                <tr class="border-b"><td class="p-3"><span class="badge method-post text-white">POST</span></td><td class="p-3"><code>/investor/spaces/{id}/services</code></td><td class="p-3" data-ar="إضافة خدمات" data-en="Add services">إضافة خدمات</td></tr>
+                                <tr class="border-b"><td class="p-3"><span class="badge method-delete text-white">DEL</span></td><td class="p-3"><code>/investor/spaces/{id}/services</code></td><td class="p-3" data-ar="إزالة خدمات" data-en="Remove services">إزالة خدمات</td></tr>
+                                <tr class="border-b bg-gray-50/50"><td colspan="3" class="p-2 font-bold text-gray-600 text-xs uppercase" data-ar="طلبات الإيجار" data-en="Rental Requests">طلبات الإيجار</td></tr>
+                                <tr class="border-b"><td class="p-3"><span class="badge method-get text-white">GET</span></td><td class="p-3"><code>/investor/rental-requests</code></td><td class="p-3" data-ar="طلبات الإيجار" data-en="Rental requests">طلبات الإيجار</td></tr>
+                                <tr class="border-b"><td class="p-3"><span class="badge method-get text-white">GET</span></td><td class="p-3"><code>/investor/rental-requests/pending-count</code></td><td class="p-3" data-ar="عدد الطلبات المعلقة" data-en="Pending count">عدد الطلبات المعلقة</td></tr>
+                                <tr class="border-b"><td class="p-3"><span class="badge method-get text-white">GET</span></td><td class="p-3"><code>/investor/rental-requests/{id}</code></td><td class="p-3" data-ar="تفاصيل طلب" data-en="Show request">تفاصيل طلب</td></tr>
+                                <tr class="border-b"><td class="p-3"><span class="badge method-put text-white">PUT</span></td><td class="p-3"><code>/investor/rental-requests/{id}/approve</code></td><td class="p-3" data-ar="قبول" data-en="Approve">قبول</td></tr>
+                                <tr class="border-b"><td class="p-3"><span class="badge method-put text-white">PUT</span></td><td class="p-3"><code>/investor/rental-requests/{id}/reject</code></td><td class="p-3" data-ar="رفض" data-en="Reject">رفض</td></tr>
+                                <tr class="border-b bg-gray-50/50"><td colspan="3" class="p-2 font-bold text-gray-600 text-xs uppercase" data-ar="طلبات الزيارة" data-en="Visit Requests">طلبات الزيارة</td></tr>
+                                <tr class="border-b"><td class="p-3"><span class="badge method-get text-white">GET</span></td><td class="p-3"><code>/investor/visit-requests</code></td><td class="p-3" data-ar="طلبات الزيارة" data-en="Visit requests">طلبات الزيارة</td></tr>
+                                <tr class="border-b"><td class="p-3"><span class="badge method-get text-white">GET</span></td><td class="p-3"><code>/investor/visit-requests/pending-count</code></td><td class="p-3" data-ar="عدد الطلبات المعلقة" data-en="Pending count">عدد الطلبات المعلقة</td></tr>
+                                <tr class="border-b"><td class="p-3"><span class="badge method-get text-white">GET</span></td><td class="p-3"><code>/investor/visit-requests/{id}</code></td><td class="p-3" data-ar="تفاصيل طلب" data-en="Show request">تفاصيل طلب</td></tr>
+                                <tr class="border-b"><td class="p-3"><span class="badge method-put text-white">PUT</span></td><td class="p-3"><code>/investor/visit-requests/{id}/approve</code></td><td class="p-3" data-ar="قبول" data-en="Approve">قبول</td></tr>
+                                <tr class="border-b"><td class="p-3"><span class="badge method-put text-white">PUT</span></td><td class="p-3"><code>/investor/visit-requests/{id}/reject</code></td><td class="p-3" data-ar="رفض" data-en="Reject">رفض</td></tr>
+                                <tr class="border-b bg-gray-50/50"><td colspan="3" class="p-2 font-bold text-gray-600 text-xs uppercase" data-ar="المدفوعات" data-en="Payments">المدفوعات</td></tr>
+                                <tr class="border-b"><td class="p-3"><span class="badge method-get text-white">GET</span></td><td class="p-3"><code>/investor/payments</code></td><td class="p-3" data-ar="سجل المدفوعات" data-en="Payments">سجل المدفوعات</td></tr>
+                                <tr class="border-b"><td class="p-3"><span class="badge method-get text-white">GET</span></td><td class="p-3"><code>/investor/payments/summary</code></td><td class="p-3" data-ar="ملخص الإيرادات" data-en="Revenue summary">ملخص الإيرادات</td></tr>
+                                <tr class="border-b"><td class="p-3"><span class="badge method-get text-white">GET</span></td><td class="p-3"><code>/investor/payments/{rentalRequest}</code></td><td class="p-3" data-ar="تفاصيل مدفوعات طلب" data-en="Payment details for request">تفاصيل مدفوعات طلب</td></tr>
+                                <tr class="border-b bg-gray-50/50"><td colspan="3" class="p-2 font-bold text-gray-600 text-xs uppercase" data-ar="عقود الإيجار" data-en="Rental Contracts">عقود الإيجار</td></tr>
+                                <tr class="border-b"><td class="p-3"><span class="badge method-get text-white">GET</span></td><td class="p-3"><code>/investor/rental-contracts</code></td><td class="p-3" data-ar="قائمة العقود" data-en="Contracts">العقود</td></tr>
+                                <tr class="border-b"><td class="p-3"><span class="badge method-get text-white">GET</span></td><td class="p-3"><code>/investor/rental-contracts/{id}</code></td><td class="p-3" data-ar="تفاصيل عقد" data-en="Show contract">تفاصيل عقد</td></tr>
+                                <tr><td class="p-3"><span class="badge method-put text-white">PUT</span></td><td class="p-3"><code>/investor/rental-contracts/{id}/sign</code></td><td class="p-3" data-ar="توقيع العقد" data-en="Sign contract">توقيع العقد</td></tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </section>
+
+                {{-- SPONSOR SELF-SERVICE --}}
+                <section id="sponsor-api" class="mb-20">
+                    <h2 class="text-3xl font-bold mb-4" data-ar="واجهة الراعي" data-en="Sponsor API">واجهة الراعي</h2>
+                    <div class="bg-yellow-50 border border-yellow-200 rounded-xl p-5 mb-6">
+                        <p class="text-sm text-yellow-800" data-ar="يتطلب دور sponsor — خدمة ذاتية للرعاة" data-en="Requires sponsor role — self-service for sponsors">يتطلب دور <code class="bg-yellow-100 px-1 rounded">sponsor</code> — خدمة ذاتية للرعاة</p>
+                    </div>
+                    <div class="overflow-x-auto bg-white rounded-xl border border-gray-200">
+                        <table class="w-full text-sm">
+                            <thead><tr class="bg-gray-50 border-b"><th class="p-3 text-right">Method</th><th class="p-3 text-right">Endpoint</th><th class="p-3 text-right" data-ar="الوصف" data-en="Description">الوصف</th></tr></thead>
+                            <tbody>
+                                <tr class="border-b"><td class="p-3"><span class="badge method-get text-white">GET</span></td><td class="p-3"><code>/sponsor/dashboard</code></td><td class="p-3" data-ar="لوحة التحكم" data-en="Dashboard">لوحة التحكم</td></tr>
+                                <tr class="border-b"><td class="p-3"><span class="badge method-get text-white">GET</span></td><td class="p-3"><code>/sponsor/statistics</code></td><td class="p-3" data-ar="الإحصائيات" data-en="Statistics">الإحصائيات</td></tr>
+                                <tr class="border-b bg-gray-50/50"><td colspan="3" class="p-2 font-bold text-gray-600 text-xs uppercase" data-ar="العقود" data-en="Contracts">العقود</td></tr>
+                                <tr class="border-b"><td class="p-3"><span class="badge method-get text-white">GET</span></td><td class="p-3"><code>/sponsor/contracts</code></td><td class="p-3" data-ar="قائمة العقود" data-en="List contracts">العقود</td></tr>
+                                <tr class="border-b"><td class="p-3"><span class="badge method-get text-white">GET</span></td><td class="p-3"><code>/sponsor/contracts/{id}</code></td><td class="p-3" data-ar="تفاصيل عقد" data-en="Show contract">تفاصيل عقد</td></tr>
+                                <tr class="border-b bg-gray-50/50"><td colspan="3" class="p-2 font-bold text-gray-600 text-xs uppercase" data-ar="المدفوعات" data-en="Payments">المدفوعات</td></tr>
+                                <tr class="border-b"><td class="p-3"><span class="badge method-get text-white">GET</span></td><td class="p-3"><code>/sponsor/payments</code></td><td class="p-3" data-ar="قائمة المدفوعات" data-en="List payments">المدفوعات</td></tr>
+                                <tr class="border-b"><td class="p-3"><span class="badge method-get text-white">GET</span></td><td class="p-3"><code>/sponsor/payments/{id}</code></td><td class="p-3" data-ar="تفاصيل دفعة" data-en="Show payment">تفاصيل دفعة</td></tr>
+                                <tr class="border-b bg-gray-50/50"><td colspan="3" class="p-2 font-bold text-gray-600 text-xs uppercase" data-ar="الملفات" data-en="Assets">الملفات (CRUD)</td></tr>
+                                <tr class="border-b"><td class="p-3"><span class="badge method-get text-white">GET</span></td><td class="p-3"><code>/sponsor/assets</code></td><td class="p-3" data-ar="قائمة الملفات" data-en="List assets">الملفات</td></tr>
+                                <tr class="border-b"><td class="p-3"><span class="badge method-post text-white">POST</span></td><td class="p-3"><code>/sponsor/assets</code></td><td class="p-3" data-ar="رفع ملف" data-en="Upload asset">رفع ملف</td></tr>
+                                <tr class="border-b"><td class="p-3"><span class="badge method-get text-white">GET</span></td><td class="p-3"><code>/sponsor/assets/{id}</code></td><td class="p-3" data-ar="تفاصيل ملف" data-en="Show asset">تفاصيل ملف</td></tr>
+                                <tr class="border-b"><td class="p-3"><span class="badge method-put text-white">PUT</span></td><td class="p-3"><code>/sponsor/assets/{id}</code></td><td class="p-3" data-ar="تحديث ملف" data-en="Update asset">تحديث</td></tr>
+                                <tr class="border-b"><td class="p-3"><span class="badge method-delete text-white">DEL</span></td><td class="p-3"><code>/sponsor/assets/{id}</code></td><td class="p-3" data-ar="حذف ملف" data-en="Delete asset">حذف</td></tr>
+                                <tr class="border-b bg-gray-50/50"><td colspan="3" class="p-2 font-bold text-gray-600 text-xs uppercase" data-ar="التعرض والتقارير" data-en="Exposure & Reports">التعرض والتقارير</td></tr>
+                                <tr class="border-b"><td class="p-3"><span class="badge method-get text-white">GET</span></td><td class="p-3"><code>/sponsor/exposure</code></td><td class="p-3" data-ar="تقرير التعرض / ROI" data-en="Exposure / ROI report">تقرير التعرض / ROI</td></tr>
+                                <tr><td class="p-3"><span class="badge method-get text-white">GET</span></td><td class="p-3"><code>/sponsor/exposure/summary</code></td><td class="p-3" data-ar="ملخص التعرض" data-en="Exposure summary">ملخص التعرض</td></tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </section>
+
+                {{-- MERCHANT --}}
+                <section id="merchant-api" class="mb-20">
+                    <h2 class="text-3xl font-bold mb-4" data-ar="واجهة التاجر" data-en="Merchant API">واجهة التاجر</h2>
+                    <div class="bg-sky-50 border border-sky-200 rounded-xl p-5 mb-6">
+                        <p class="text-sm text-sky-800" data-ar="يتطلب دور merchant — تصفح وطلب إيجار مساحات" data-en="Requires merchant role — browse and request space rentals">يتطلب دور <code class="bg-sky-100 px-1 rounded">merchant</code> — تصفح وطلب إيجار مساحات (يتطلب ملف تجاري موثق)</p>
+                    </div>
+                    <div class="overflow-x-auto bg-white rounded-xl border border-gray-200">
+                        <table class="w-full text-sm">
+                            <thead><tr class="bg-gray-50 border-b"><th class="p-3 text-right">Method</th><th class="p-3 text-right">Endpoint</th><th class="p-3 text-right" data-ar="الوصف" data-en="Description">الوصف</th></tr></thead>
+                            <tbody>
+                                <tr class="border-b"><td class="p-3"><span class="badge method-get text-white">GET</span></td><td class="p-3"><code>/merchant/dashboard</code></td><td class="p-3" data-ar="لوحة التحكم" data-en="Dashboard">لوحة التحكم</td></tr>
+                                <tr class="border-b"><td class="p-3"><span class="badge method-get text-white">GET</span></td><td class="p-3"><code>/merchant/statistics</code></td><td class="p-3" data-ar="الإحصائيات" data-en="Statistics">الإحصائيات</td></tr>
+                                <tr class="border-b bg-gray-50/50"><td colspan="3" class="p-2 font-bold text-gray-600 text-xs uppercase" data-ar="تصفح الفعاليات والمساحات والخدمات" data-en="Browse Events, Spaces & Services">تصفح الفعاليات والمساحات والخدمات</td></tr>
+                                <tr class="border-b"><td class="p-3"><span class="badge method-get text-white">GET</span></td><td class="p-3"><code>/merchant/events</code></td><td class="p-3" data-ar="قائمة الفعاليات" data-en="List events">قائمة الفعاليات</td></tr>
+                                <tr class="border-b"><td class="p-3"><span class="badge method-get text-white">GET</span></td><td class="p-3"><code>/merchant/events/{event}</code></td><td class="p-3" data-ar="تفاصيل فعالية" data-en="Show event">تفاصيل فعالية</td></tr>
+                                <tr class="border-b"><td class="p-3"><span class="badge method-get text-white">GET</span></td><td class="p-3"><code>/merchant/events/{event}/sections</code></td><td class="p-3" data-ar="أقسام الفعالية" data-en="Event sections">أقسام الفعالية</td></tr>
+                                <tr class="border-b"><td class="p-3"><span class="badge method-get text-white">GET</span></td><td class="p-3"><code>/merchant/events/{event}/spaces</code></td><td class="p-3" data-ar="مساحات الفعالية" data-en="Event spaces">مساحات الفعالية</td></tr>
+                                <tr class="border-b"><td class="p-3"><span class="badge method-get text-white">GET</span></td><td class="p-3"><code>/merchant/spaces</code></td><td class="p-3" data-ar="تصفح المساحات" data-en="Browse spaces">تصفح المساحات</td></tr>
+                                <tr class="border-b"><td class="p-3"><span class="badge method-get text-white">GET</span></td><td class="p-3"><code>/merchant/spaces/{space}</code></td><td class="p-3" data-ar="تفاصيل مساحة" data-en="Show space">تفاصيل مساحة</td></tr>
+                                <tr class="border-b"><td class="p-3"><span class="badge method-get text-white">GET</span></td><td class="p-3"><code>/merchant/services</code></td><td class="p-3" data-ar="قائمة الخدمات" data-en="List services">قائمة الخدمات</td></tr>
+                                <tr class="border-b"><td class="p-3"><span class="badge method-get text-white">GET</span></td><td class="p-3"><code>/merchant/services/{service}</code></td><td class="p-3" data-ar="تفاصيل خدمة" data-en="Show service">تفاصيل خدمة</td></tr>
+                                <tr class="border-b bg-gray-50/50"><td colspan="3" class="p-2 font-bold text-gray-600 text-xs uppercase" data-ar="طلبات الزيارة" data-en="Visit Requests">طلبات الزيارة (CRUD)</td></tr>
+                                <tr class="border-b"><td class="p-3"><span class="badge method-get text-white">GET</span></td><td class="p-3"><code>/merchant/visit-requests</code></td><td class="p-3" data-ar="قائمة طلبات الزيارة" data-en="List visit requests">قائمة طلبات الزيارة</td></tr>
+                                <tr class="border-b"><td class="p-3"><span class="badge method-post text-white">POST</span></td><td class="p-3"><code>/merchant/visit-requests</code></td><td class="p-3" data-ar="طلب زيارة جديد" data-en="New visit request">طلب زيارة جديد</td></tr>
+                                <tr class="border-b"><td class="p-3"><span class="badge method-get text-white">GET</span></td><td class="p-3"><code>/merchant/visit-requests/{id}</code></td><td class="p-3" data-ar="تفاصيل طلب زيارة" data-en="Show visit request">تفاصيل طلب زيارة</td></tr>
+                                <tr class="border-b"><td class="p-3"><span class="badge method-put text-white">PUT</span></td><td class="p-3"><code>/merchant/visit-requests/{id}</code></td><td class="p-3" data-ar="تحديث طلب" data-en="Update request">تحديث طلب</td></tr>
+                                <tr class="border-b"><td class="p-3"><span class="badge method-delete text-white">DEL</span></td><td class="p-3"><code>/merchant/visit-requests/{id}</code></td><td class="p-3" data-ar="حذف طلب" data-en="Delete request">حذف طلب</td></tr>
+                                <tr class="border-b bg-gray-50/50"><td colspan="3" class="p-2 font-bold text-gray-600 text-xs uppercase" data-ar="طلبات الإيجار" data-en="Rental Requests">طلبات الإيجار (CRUD)</td></tr>
+                                <tr class="border-b"><td class="p-3"><span class="badge method-get text-white">GET</span></td><td class="p-3"><code>/merchant/rental-requests</code></td><td class="p-3" data-ar="قائمة طلبات الإيجار" data-en="List rental requests">قائمة طلبات الإيجار</td></tr>
+                                <tr class="border-b"><td class="p-3"><span class="badge method-post text-white">POST</span></td><td class="p-3"><code>/merchant/rental-requests</code></td><td class="p-3" data-ar="طلب إيجار جديد" data-en="New rental request">طلب إيجار جديد</td></tr>
+                                <tr class="border-b"><td class="p-3"><span class="badge method-get text-white">GET</span></td><td class="p-3"><code>/merchant/rental-requests/{id}</code></td><td class="p-3" data-ar="تفاصيل طلب إيجار" data-en="Show rental request">تفاصيل طلب إيجار</td></tr>
+                                <tr class="border-b"><td class="p-3"><span class="badge method-put text-white">PUT</span></td><td class="p-3"><code>/merchant/rental-requests/{id}</code></td><td class="p-3" data-ar="تحديث" data-en="Update">تحديث</td></tr>
+                                <tr class="border-b"><td class="p-3"><span class="badge method-delete text-white">DEL</span></td><td class="p-3"><code>/merchant/rental-requests/{id}</code></td><td class="p-3" data-ar="إلغاء" data-en="Cancel">إلغاء</td></tr>
+                                <tr class="border-b bg-gray-50/50"><td colspan="3" class="p-2 font-bold text-gray-600 text-xs uppercase" data-ar="عقود الإيجار" data-en="Rental Contracts">عقود الإيجار</td></tr>
+                                <tr class="border-b"><td class="p-3"><span class="badge method-get text-white">GET</span></td><td class="p-3"><code>/merchant/rental-contracts</code></td><td class="p-3" data-ar="قائمة العقود" data-en="List contracts">العقود</td></tr>
+                                <tr class="border-b"><td class="p-3"><span class="badge method-get text-white">GET</span></td><td class="p-3"><code>/merchant/rental-contracts/{id}</code></td><td class="p-3" data-ar="تفاصيل عقد" data-en="Show contract">تفاصيل عقد</td></tr>
+                                <tr><td class="p-3"><span class="badge method-put text-white">PUT</span></td><td class="p-3"><code>/merchant/rental-contracts/{id}/sign</code></td><td class="p-3" data-ar="توقيع العقد" data-en="Sign contract">توقيع العقد</td></tr>
                             </tbody>
                         </table>
                     </div>

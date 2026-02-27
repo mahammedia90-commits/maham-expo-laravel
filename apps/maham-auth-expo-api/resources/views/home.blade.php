@@ -75,6 +75,7 @@
                 <a href="#roles-api" class="nav-link text-gray-400 hover:text-white transition">الأدوار</a>
                 <a href="#services-api" class="nav-link text-gray-400 hover:text-white transition">الخدمات</a>
                 <a href="#quickstart" class="nav-link text-gray-400 hover:text-white transition">البدء السريع</a>
+                <a href="#env-vars" class="nav-link text-gray-400 hover:text-white transition">المتغيرات</a>
             </div>
             <div class="flex items-center gap-2">
                 <span class="text-[10px] bg-indigo-500/20 text-indigo-400 px-2.5 py-1 rounded-full font-semibold border border-indigo-500/20">v{{ config('auth-service.service_version', '1.0.0') }}</span>
@@ -188,11 +189,11 @@
         </div>
         <p class="text-gray-500 text-sm mb-8 mr-4">تسجيل الدخول، التسجيل، إدارة الجلسات والتوكنات</p>
 
-        <!-- POST /api/auth/register -->
+        <!-- POST /api/v1/auth/register -->
         <div class="mb-8 glass border border-white/5 rounded-2xl overflow-hidden">
             <div class="px-6 py-4 border-b border-white/5 flex items-center gap-3">
                 <span class="method-badge font-bold px-2.5 py-1 rounded-md bg-blue-500/20 text-blue-400 font-mono">POST</span>
-                <code class="text-sm text-gray-300 font-mono" dir="ltr">/api/auth/register</code>
+                <code class="text-sm text-gray-300 font-mono" dir="ltr">/api/v1/auth/register</code>
                 <span class="text-xs text-gray-600 mr-auto">تسجيل مستخدم جديد</span>
                 <span class="text-[10px] px-2 py-0.5 rounded-full bg-green-500/10 text-green-400 font-semibold">public</span>
             </div>
@@ -253,11 +254,11 @@
             </div>
         </div>
 
-        <!-- POST /api/auth/login -->
+        <!-- POST /api/v1/auth/login -->
         <div class="mb-8 glass border border-white/5 rounded-2xl overflow-hidden">
             <div class="px-6 py-4 border-b border-white/5 flex items-center gap-3">
                 <span class="method-badge font-bold px-2.5 py-1 rounded-md bg-blue-500/20 text-blue-400 font-mono">POST</span>
-                <code class="text-sm text-gray-300 font-mono" dir="ltr">/api/auth/login</code>
+                <code class="text-sm text-gray-300 font-mono" dir="ltr">/api/v1/auth/login</code>
                 <span class="text-xs text-gray-600 mr-auto">تسجيل الدخول</span>
                 <span class="text-[10px] px-2 py-0.5 rounded-full bg-green-500/10 text-green-400 font-semibold">public</span>
             </div>
@@ -312,12 +313,12 @@
             </div>
         </div>
 
-        <!-- GET /api/auth/me + POST /api/auth/refresh + POST /api/auth/logout -->
+        <!-- GET /api/v1/auth/me + POST /api/v1/auth/refresh + POST /api/v1/auth/logout -->
         <div class="grid md:grid-cols-3 gap-4 mb-8">
             <div class="glass border border-white/5 rounded-2xl p-5">
                 <div class="flex items-center gap-2 mb-3">
                     <span class="method-badge font-bold px-2 py-0.5 rounded bg-emerald-500/20 text-emerald-400 font-mono">GET</span>
-                    <code class="text-xs text-gray-400 font-mono" dir="ltr">/api/auth/me</code>
+                    <code class="text-xs text-gray-400 font-mono" dir="ltr">/api/v1/auth/me</code>
                 </div>
                 <span class="text-[10px] px-2 py-0.5 rounded-full bg-blue-500/10 text-blue-400 font-semibold">auth</span>
                 <p class="text-xs text-gray-500 mt-3">جلب بيانات المستخدم الحالي مع الأدوار والصلاحيات الكاملة</p>
@@ -328,7 +329,7 @@
             <div class="glass border border-white/5 rounded-2xl p-5">
                 <div class="flex items-center gap-2 mb-3">
                     <span class="method-badge font-bold px-2 py-0.5 rounded bg-blue-500/20 text-blue-400 font-mono">POST</span>
-                    <code class="text-xs text-gray-400 font-mono" dir="ltr">/api/auth/refresh</code>
+                    <code class="text-xs text-gray-400 font-mono" dir="ltr">/api/v1/auth/refresh</code>
                 </div>
                 <span class="text-[10px] px-2 py-0.5 rounded-full bg-blue-500/10 text-blue-400 font-semibold">auth</span>
                 <p class="text-xs text-gray-500 mt-3">تجديد التوكن المنتهي. يرجع توكن جديد مع مدة الصلاحية</p>
@@ -339,7 +340,7 @@
             <div class="glass border border-white/5 rounded-2xl p-5">
                 <div class="flex items-center gap-2 mb-3">
                     <span class="method-badge font-bold px-2 py-0.5 rounded bg-blue-500/20 text-blue-400 font-mono">POST</span>
-                    <code class="text-xs text-gray-400 font-mono" dir="ltr">/api/auth/logout</code>
+                    <code class="text-xs text-gray-400 font-mono" dir="ltr">/api/v1/auth/logout</code>
                 </div>
                 <span class="text-[10px] px-2 py-0.5 rounded-full bg-blue-500/10 text-blue-400 font-semibold">auth</span>
                 <p class="text-xs text-gray-500 mt-3">تسجيل خروج المستخدم وإلغاء التوكن الحالي نهائياً</p>
@@ -354,7 +355,7 @@
             <div class="glass border border-white/5 rounded-2xl p-5">
                 <div class="flex items-center gap-2 mb-3">
                     <span class="method-badge font-bold px-2 py-0.5 rounded bg-blue-500/20 text-blue-400 font-mono">POST</span>
-                    <code class="text-xs text-gray-400 font-mono" dir="ltr">/api/auth/change-password</code>
+                    <code class="text-xs text-gray-400 font-mono" dir="ltr">/api/v1/auth/change-password</code>
                     <span class="text-[10px] px-2 py-0.5 rounded-full bg-blue-500/10 text-blue-400 font-semibold mr-auto">auth</span>
                 </div>
                 <p class="text-xs text-gray-500 mb-3">تغيير كلمة المرور</p>
@@ -367,7 +368,7 @@
             <div class="glass border border-white/5 rounded-2xl p-5">
                 <div class="flex items-center gap-2 mb-3">
                     <span class="method-badge font-bold px-2 py-0.5 rounded bg-amber-500/20 text-amber-400 font-mono">PUT</span>
-                    <code class="text-xs text-gray-400 font-mono" dir="ltr">/api/auth/profile</code>
+                    <code class="text-xs text-gray-400 font-mono" dir="ltr">/api/v1/auth/profile</code>
                     <span class="text-[10px] px-2 py-0.5 rounded-full bg-blue-500/10 text-blue-400 font-semibold mr-auto">auth</span>
                 </div>
                 <p class="text-xs text-gray-500 mb-3">تحديث الملف الشخصي</p>
@@ -383,7 +384,7 @@
             <div class="glass border border-white/5 rounded-2xl p-5">
                 <div class="flex items-center gap-2 mb-3">
                     <span class="method-badge font-bold px-2 py-0.5 rounded bg-blue-500/20 text-blue-400 font-mono">POST</span>
-                    <code class="text-xs text-gray-400 font-mono" dir="ltr">/api/auth/forgot-password</code>
+                    <code class="text-xs text-gray-400 font-mono" dir="ltr">/api/v1/auth/forgot-password</code>
                     <span class="text-[10px] px-2 py-0.5 rounded-full bg-green-500/10 text-green-400 font-semibold mr-auto">public</span>
                 </div>
                 <p class="text-xs text-gray-500 mb-2">إرسال رابط استعادة كلمة المرور</p>
@@ -392,13 +393,50 @@
             <div class="glass border border-white/5 rounded-2xl p-5">
                 <div class="flex items-center gap-2 mb-3">
                     <span class="method-badge font-bold px-2 py-0.5 rounded bg-blue-500/20 text-blue-400 font-mono">POST</span>
-                    <code class="text-xs text-gray-400 font-mono" dir="ltr">/api/auth/reset-password</code>
+                    <code class="text-xs text-gray-400 font-mono" dir="ltr">/api/v1/auth/reset-password</code>
                     <span class="text-[10px] px-2 py-0.5 rounded-full bg-green-500/10 text-green-400 font-semibold mr-auto">public</span>
                 </div>
                 <p class="text-xs text-gray-500 mb-2">إعادة تعيين كلمة المرور</p>
                 <div class="space-y-1 text-xs text-gray-600">
                     <div><code class="text-indigo-300/70">token</code> + <code class="text-indigo-300/70">email</code> + <code class="text-indigo-300/70">password</code></div>
                 </div>
+            </div>
+        </div>
+
+        <!-- Email Verification -->
+        <div class="grid md:grid-cols-2 gap-4 mt-4">
+            <div class="glass border border-white/5 rounded-2xl p-5">
+                <div class="flex items-center gap-2 mb-3">
+                    <span class="method-badge font-bold px-2 py-0.5 rounded bg-blue-500/20 text-blue-400 font-mono">POST</span>
+                    <code class="text-xs text-gray-400 font-mono" dir="ltr">/api/v1/auth/email/send-verification</code>
+                    <span class="text-[10px] px-2 py-0.5 rounded-full bg-blue-500/10 text-blue-400 font-semibold mr-auto">auth</span>
+                </div>
+                <p class="text-xs text-gray-500 mb-2">إرسال رمز التحقق من البريد الإلكتروني</p>
+                <div class="text-xs text-gray-600">بدون حقول إدخال - يرسل رمز التحقق للبريد المسجل</div>
+            </div>
+            <div class="glass border border-white/5 rounded-2xl p-5">
+                <div class="flex items-center gap-2 mb-3">
+                    <span class="method-badge font-bold px-2 py-0.5 rounded bg-blue-500/20 text-blue-400 font-mono">POST</span>
+                    <code class="text-xs text-gray-400 font-mono" dir="ltr">/api/v1/auth/email/verify</code>
+                    <span class="text-[10px] px-2 py-0.5 rounded-full bg-blue-500/10 text-blue-400 font-semibold mr-auto">auth</span>
+                </div>
+                <p class="text-xs text-gray-500 mb-2">التحقق من البريد الإلكتروني</p>
+                <div class="space-y-1 text-xs text-gray-600">
+                    <div><code class="text-indigo-300/70">code</code> <span class="text-rose-400 text-[10px] font-bold">required</span> - رمز التحقق المرسل للبريد</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Admin Stats -->
+        <div class="mt-4">
+            <div class="glass border border-white/5 rounded-2xl p-5">
+                <div class="flex items-center gap-2 mb-3">
+                    <span class="method-badge font-bold px-2 py-0.5 rounded bg-emerald-500/20 text-emerald-400 font-mono">GET</span>
+                    <code class="text-xs text-gray-400 font-mono" dir="ltr">/api/v1/admin/stats/users</code>
+                    <span class="text-[10px] px-2 py-0.5 rounded-full bg-blue-500/10 text-blue-400 font-semibold">auth</span>
+                    <span class="text-[9px] px-2 py-0.5 rounded-full bg-amber-500/10 text-amber-400/70 font-mono mr-auto">users.view</span>
+                </div>
+                <p class="text-xs text-gray-500">إحصائيات المستخدمين للوحة تحكم الأدمن</p>
             </div>
         </div>
     </section>
@@ -418,14 +456,14 @@
             <div class="divide-y divide-white/5">
                 @php
                     $userEndpoints = [
-                        ['GET', '/api/users', 'قائمة المستخدمين', 'users.view', 'يدعم الفلترة والترتيب والبحث مع pagination'],
-                        ['POST', '/api/users', 'إنشاء مستخدم', 'users.create', 'name, email, password, phone, roles'],
-                        ['GET', '/api/users/{id}', 'تفاصيل مستخدم', 'users.view', 'بيانات المستخدم الكاملة مع الأدوار والصلاحيات'],
-                        ['PUT', '/api/users/{id}', 'تحديث مستخدم', 'users.update', 'name, email, phone, status'],
-                        ['DELETE', '/api/users/{id}', 'حذف مستخدم', 'users.delete', 'حذف نهائي للمستخدم'],
-                        ['POST', '/api/users/{id}/roles', 'تعيين أدوار', 'roles.update', 'roles: ["admin", "editor"]'],
-                        ['POST', '/api/users/{id}/permissions', 'تعيين صلاحيات', 'permissions.update', 'permissions: ["users.view", "events.create"]'],
-                        ['GET', '/api/users/{id}/permissions', 'عرض صلاحيات', 'permissions.view', 'جميع الصلاحيات المباشرة والموروثة'],
+                        ['GET', '/api/v1/users', 'قائمة المستخدمين', 'users.view', 'يدعم الفلترة والترتيب والبحث مع pagination'],
+                        ['POST', '/api/v1/users', 'إنشاء مستخدم', 'users.create', 'name, email, password, phone, roles'],
+                        ['GET', '/api/v1/users/{id}', 'تفاصيل مستخدم', 'users.view', 'بيانات المستخدم الكاملة مع الأدوار والصلاحيات'],
+                        ['PUT', '/api/v1/users/{id}', 'تحديث مستخدم', 'users.update', 'name, email, phone, status'],
+                        ['DELETE', '/api/v1/users/{id}', 'حذف مستخدم', 'users.delete', 'حذف نهائي للمستخدم'],
+                        ['POST', '/api/v1/users/{id}/roles', 'تعيين أدوار', 'roles.update', 'roles: ["admin", "editor"]'],
+                        ['POST', '/api/v1/users/{id}/permissions', 'تعيين صلاحيات', 'permissions.update', 'permissions: ["users.view", "events.create"]'],
+                        ['GET', '/api/v1/users/{id}/permissions', 'عرض صلاحيات', 'permissions.view', 'جميع الصلاحيات المباشرة والموروثة'],
                     ];
                 @endphp
                 @foreach($userEndpoints as $ep)
@@ -464,14 +502,14 @@
                 <div class="divide-y divide-white/5">
                     @php
                         $roleEps = [
-                            ['GET', '/api/roles', 'القائمة'],
-                            ['POST', '/api/roles', 'إنشاء دور'],
-                            ['GET', '/api/roles/{id}', 'التفاصيل'],
-                            ['PUT', '/api/roles/{id}', 'تحديث'],
-                            ['DELETE', '/api/roles/{id}', 'حذف'],
-                            ['POST', '/api/roles/{id}/permissions', 'مزامنة الصلاحيات'],
-                            ['POST', '/api/roles/{id}/permissions/add', 'إضافة صلاحيات'],
-                            ['POST', '/api/roles/{id}/permissions/remove', 'إزالة صلاحيات'],
+                            ['GET', '/api/v1/roles', 'القائمة'],
+                            ['POST', '/api/v1/roles', 'إنشاء دور'],
+                            ['GET', '/api/v1/roles/{id}', 'التفاصيل'],
+                            ['PUT', '/api/v1/roles/{id}', 'تحديث'],
+                            ['DELETE', '/api/v1/roles/{id}', 'حذف'],
+                            ['POST', '/api/v1/roles/{id}/permissions', 'مزامنة الصلاحيات'],
+                            ['POST', '/api/v1/roles/{id}/permissions/add', 'إضافة صلاحيات'],
+                            ['POST', '/api/v1/roles/{id}/permissions/remove', 'إزالة صلاحيات'],
                         ];
                     @endphp
                     @foreach($roleEps as $ep)
@@ -495,12 +533,12 @@
                 <div class="divide-y divide-white/5">
                     @php
                         $permEps = [
-                            ['GET', '/api/permissions', 'القائمة'],
-                            ['POST', '/api/permissions', 'إنشاء صلاحية'],
-                            ['POST', '/api/permissions/resource', 'إنشاء CRUD لمورد'],
-                            ['GET', '/api/permissions/{id}', 'التفاصيل'],
-                            ['PUT', '/api/permissions/{id}', 'تحديث'],
-                            ['DELETE', '/api/permissions/{id}', 'حذف'],
+                            ['GET', '/api/v1/permissions', 'القائمة'],
+                            ['POST', '/api/v1/permissions', 'إنشاء صلاحية'],
+                            ['POST', '/api/v1/permissions/resource', 'إنشاء CRUD لمورد'],
+                            ['GET', '/api/v1/permissions/{id}', 'التفاصيل'],
+                            ['PUT', '/api/v1/permissions/{id}', 'تحديث'],
+                            ['DELETE', '/api/v1/permissions/{id}', 'حذف'],
                         ];
                     @endphp
                     @foreach($permEps as $ep)
@@ -533,7 +571,7 @@
         <div class="mb-8 glass border border-white/5 rounded-2xl overflow-hidden">
             <div class="px-6 py-4 border-b border-white/5 flex items-center gap-3">
                 <span class="method-badge font-bold px-2.5 py-1 rounded-md bg-blue-500/20 text-blue-400 font-mono">POST</span>
-                <code class="text-sm text-gray-300 font-mono" dir="ltr">/api/services</code>
+                <code class="text-sm text-gray-300 font-mono" dir="ltr">/api/v1/services</code>
                 <span class="text-xs text-gray-600 mr-auto">تسجيل خدمة جديدة</span>
                 <span class="text-[10px] px-2 py-0.5 rounded-full bg-amber-500/10 text-amber-400 font-semibold">services.create</span>
             </div>
@@ -606,15 +644,15 @@
             <div class="divide-y divide-white/5">
                 @php
                     $svcEps = [
-                        ['GET', '/api/services', 'قائمة الخدمات', 'services.view'],
-                        ['GET', '/api/services/{id}', 'تفاصيل خدمة', 'services.view'],
-                        ['PUT', '/api/services/{id}', 'تحديث خدمة (+ roles sync)', 'services.update'],
-                        ['DELETE', '/api/services/{id}', 'حذف خدمة', 'services.delete'],
-                        ['POST', '/api/services/{id}/regenerate-token', 'تجديد التوكن', 'services.update'],
-                        ['GET', '/api/services/{id}/roles', 'عرض أدوار الخدمة', 'services.view'],
-                        ['POST', '/api/services/{id}/roles', 'إضافة أدوار للخدمة', 'services.update'],
-                        ['PUT', '/api/services/{id}/roles', 'مزامنة الأدوار', 'services.update'],
-                        ['DELETE', '/api/services/{id}/roles', 'إزالة أدوار', 'services.update'],
+                        ['GET', '/api/v1/services', 'قائمة الخدمات', 'services.view'],
+                        ['GET', '/api/v1/services/{id}', 'تفاصيل خدمة', 'services.view'],
+                        ['PUT', '/api/v1/services/{id}', 'تحديث خدمة (+ roles sync)', 'services.update'],
+                        ['DELETE', '/api/v1/services/{id}', 'حذف خدمة', 'services.delete'],
+                        ['POST', '/api/v1/services/{id}/regenerate-token', 'تجديد التوكن', 'services.update'],
+                        ['GET', '/api/v1/services/{id}/roles', 'عرض أدوار الخدمة', 'services.view'],
+                        ['POST', '/api/v1/services/{id}/roles', 'إضافة أدوار للخدمة', 'services.update'],
+                        ['PUT', '/api/v1/services/{id}/roles', 'مزامنة الأدوار', 'services.update'],
+                        ['DELETE', '/api/v1/services/{id}/roles', 'إزالة أدوار', 'services.update'],
                     ];
                 @endphp
                 @foreach($svcEps as $ep)
@@ -640,7 +678,7 @@
                 <div class="p-5">
                     <div class="flex items-center gap-2 mb-3">
                         <span class="method-badge font-bold px-2 py-0.5 rounded bg-blue-500/20 text-blue-400 font-mono">POST</span>
-                        <code class="text-[11px] text-gray-400 font-mono" dir="ltr">/api/service/verify-token</code>
+                        <code class="text-[11px] text-gray-400 font-mono" dir="ltr">/api/v1/service/verify-token</code>
                     </div>
                     <p class="text-xs text-gray-500 mb-2">التحقق من توكن المستخدم</p>
                     <div class="text-[10px] text-gray-600 space-y-1">
@@ -651,7 +689,7 @@
                 <div class="p-5">
                     <div class="flex items-center gap-2 mb-3">
                         <span class="method-badge font-bold px-2 py-0.5 rounded bg-blue-500/20 text-blue-400 font-mono">POST</span>
-                        <code class="text-[11px] text-gray-400 font-mono" dir="ltr">/api/service/check-permission</code>
+                        <code class="text-[11px] text-gray-400 font-mono" dir="ltr">/api/v1/service/check-permission</code>
                     </div>
                     <p class="text-xs text-gray-500 mb-2">التحقق من صلاحية المستخدم</p>
                     <div class="text-[10px] text-gray-600 space-y-1">
@@ -662,7 +700,7 @@
                 <div class="p-5">
                     <div class="flex items-center gap-2 mb-3">
                         <span class="method-badge font-bold px-2 py-0.5 rounded bg-blue-500/20 text-blue-400 font-mono">POST</span>
-                        <code class="text-[11px] text-gray-400 font-mono" dir="ltr">/api/service/user-info</code>
+                        <code class="text-[11px] text-gray-400 font-mono" dir="ltr">/api/v1/service/user-info</code>
                     </div>
                     <p class="text-xs text-gray-500 mb-2">جلب معلومات المستخدم</p>
                     <div class="text-[10px] text-gray-600 space-y-1">
@@ -703,7 +741,7 @@
                         Copy
                     </button>
                 </div>
-                <pre class="p-5 text-sm overflow-x-auto" dir="ltr"><code class="text-gray-300" id="code-login"><span class="cmd">curl</span> <span class="flag">-X</span> POST <span class="url">http://localhost:8001/api/auth/login</span> \
+                <pre class="p-5 text-sm overflow-x-auto" dir="ltr"><code class="text-gray-300" id="code-login"><span class="cmd">curl</span> <span class="flag">-X</span> POST <span class="url">http://localhost:8001/api/v1/auth/login</span> \
   <span class="flag">-H</span> <span class="str">"Content-Type: application/json"</span> \
   <span class="flag">-d</span> <span class="str">'{
     "identifier": "admin@auth-service.local",
@@ -723,7 +761,7 @@
                         Copy
                     </button>
                 </div>
-                <pre class="p-5 text-sm overflow-x-auto" dir="ltr"><code class="text-gray-300" id="code-register"><span class="cmd">curl</span> <span class="flag">-X</span> POST <span class="url">http://localhost:8001/api/auth/register</span> \
+                <pre class="p-5 text-sm overflow-x-auto" dir="ltr"><code class="text-gray-300" id="code-register"><span class="cmd">curl</span> <span class="flag">-X</span> POST <span class="url">http://localhost:8001/api/v1/auth/register</span> \
   <span class="flag">-H</span> <span class="str">"Content-Type: application/json"</span> \
   <span class="flag">-d</span> <span class="str">'{
     "name": "Ahmed Ali",
@@ -745,7 +783,7 @@
                         Copy
                     </button>
                 </div>
-                <pre class="p-5 text-sm overflow-x-auto" dir="ltr"><code class="text-gray-300" id="code-s2s"><span class="cmd">curl</span> <span class="flag">-X</span> POST <span class="url">http://localhost:8001/api/service/verify-token</span> \
+                <pre class="p-5 text-sm overflow-x-auto" dir="ltr"><code class="text-gray-300" id="code-s2s"><span class="cmd">curl</span> <span class="flag">-X</span> POST <span class="url">http://localhost:8001/api/v1/service/verify-token</span> \
   <span class="flag">-H</span> <span class="str">"Content-Type: application/json"</span> \
   <span class="flag">-H</span> <span class="str">"X-Service-Token: your-service-token"</span> \
   <span class="flag">-d</span> <span class="str">'{
@@ -869,8 +907,8 @@
 
     <div class="glow-line max-w-4xl mx-auto"></div>
 
-    <!-- Docker Services -->
-    <section class="max-w-7xl mx-auto px-6 py-16">
+    <!-- Docker Services --> 
+    {{-- <section class="max-w-7xl mx-auto px-6 py-16">
         <div class="flex items-center gap-3 mb-8">
             <div class="w-1 h-8 bg-sky-500 rounded-full"></div>
             <h3 class="text-2xl font-bold">Docker Services</h3>
@@ -922,6 +960,177 @@
                     <div class="flex justify-between text-gray-500"><span>Interface</span><a href="http://localhost:8080" class="font-mono text-orange-400 hover:underline">localhost:8080</a></div>
                     <div class="flex justify-between text-gray-500"><span>Auth DB</span><span class="font-mono text-gray-400">auth-mysql:3306</span></div>
                     <div class="flex justify-between text-gray-500"><span>Expo DB</span><span class="font-mono text-gray-400">expo-mysql:3306</span></div>
+                </div>
+            </div>
+        </div>
+    </section> --}}
+
+    <div class="glow-line max-w-4xl mx-auto"></div>
+
+    <!-- Environment Variables -->
+    <section id="env-vars" class="section-anchor max-w-7xl mx-auto px-6 py-16">
+        <div class="flex items-center gap-3 mb-2">
+            <div class="w-1 h-8 bg-teal-500 rounded-full"></div>
+            <h3 class="text-2xl font-bold">متغيرات البيئة</h3>
+            <span class="text-xs bg-teal-500/10 text-teal-400 px-2.5 py-1 rounded-full">Environment Variables</span>
+        </div>
+        <p class="text-gray-500 text-sm mb-8 mr-4">جميع المتغيرات المطلوبة والاختيارية لتشغيل خدمة المصادقة</p>
+
+        <!-- Required Variables -->
+        <div class="mb-8">
+            <div class="flex items-center gap-2 mb-4">
+                <span class="w-2 h-2 bg-rose-400 rounded-full"></span>
+                <h4 class="font-bold text-rose-400">Required - مطلوبة</h4>
+                <span class="text-[10px] text-rose-400/60 bg-rose-500/10 px-2 py-0.5 rounded-full">يجب تعيينها</span>
+            </div>
+            <div class="glass border border-rose-500/10 rounded-2xl overflow-hidden">
+                <div class="divide-y divide-white/5">
+                    @php
+                        $requiredVars = [
+                            ['APP_KEY', 'base64:xxxxx', 'مفتاح التشفير الرئيسي للتطبيق', 'php artisan key:generate --show'],
+                            ['DB_PASSWORD', '-', 'كلمة سر قاعدة البيانات MySQL', ''],
+                            ['JWT_SECRET', '-', 'المفتاح السري لتوقيع JWT tokens', 'openssl rand -hex 32'],
+                            ['SERVICE_TOKEN', '-', 'توكن التواصل بين الخدمات (S2S)', 'openssl rand -hex 32'],
+                        ];
+                    @endphp
+                    @foreach($requiredVars as $v)
+                    <div class="endpoint-row flex items-center px-6 py-3.5 gap-3">
+                        <code class="text-xs bg-rose-500/10 px-2.5 py-1 rounded text-rose-300 font-mono min-w-[160px]">{{ $v[0] }}</code>
+                        <span class="text-xs text-gray-500 flex-1">{{ $v[2] }}</span>
+                        @if($v[3])
+                        <code class="text-[10px] text-gray-600 font-mono bg-white/5 px-2 py-0.5 rounded hidden md:inline" dir="ltr">{{ $v[3] }}</code>
+                        @endif
+                        <span class="text-[10px] px-2 py-0.5 rounded-full bg-rose-500/20 text-rose-400 font-bold">required</span>
+                    </div>
+                    @endforeach
+                </div>
+            </div>
+        </div>
+
+        <!-- Optional Variables -->
+        <div class="mb-8">
+            <div class="flex items-center gap-2 mb-4">
+                <span class="w-2 h-2 bg-gray-400 rounded-full"></span>
+                <h4 class="font-bold text-gray-400">Optional - اختيارية</h4>
+                <span class="text-[10px] text-gray-500 bg-white/5 px-2 py-0.5 rounded-full">لها قيم افتراضية</span>
+            </div>
+
+            <!-- App & DB -->
+            <div class="glass border border-white/5 rounded-2xl overflow-hidden mb-4">
+                <div class="px-6 py-3 border-b border-white/5 bg-white/[0.02]">
+                    <h5 class="text-xs font-bold text-gray-400">Application & Database</h5>
+                </div>
+                <div class="divide-y divide-white/5">
+                    @php
+                        $appVars = [
+                            ['APP_NAME', 'Maham Auth Service', 'اسم التطبيق'],
+                            ['APP_ENV', 'production', 'بيئة التشغيل'],
+                            ['APP_DEBUG', 'false', 'وضع التصحيح'],
+                            ['APP_URL', 'https://auth-service-api.mahamexpo.sa', 'رابط التطبيق الرئيسي'],
+                            ['APP_LOCALE', 'ar', 'اللغة الافتراضية'],
+                            ['DB_CONNECTION', 'mysql', 'نوع قاعدة البيانات'],
+                            ['DB_HOST', 'auth-mysql', 'مضيف قاعدة البيانات'],
+                            ['DB_PORT', '3306', 'منفذ قاعدة البيانات'],
+                            ['DB_DATABASE', 'auth_service', 'اسم قاعدة البيانات'],
+                            ['DB_USERNAME', 'auth_user', 'مستخدم قاعدة البيانات'],
+                        ];
+                    @endphp
+                    @foreach($appVars as $v)
+                    <div class="endpoint-row flex items-center px-6 py-2.5 gap-3">
+                        <code class="text-xs bg-white/5 px-2.5 py-0.5 rounded text-indigo-300/70 font-mono min-w-[160px]">{{ $v[0] }}</code>
+                        <code class="text-[10px] text-gray-600 font-mono">{{ $v[1] }}</code>
+                        <span class="text-xs text-gray-600 flex-1 text-left" dir="rtl">{{ $v[2] }}</span>
+                        <span class="text-[10px] px-2 py-0.5 rounded-full bg-white/5 text-gray-500">optional</span>
+                    </div>
+                    @endforeach
+                </div>
+            </div>
+
+            <!-- Redis & Cache & Queue -->
+            <div class="glass border border-white/5 rounded-2xl overflow-hidden mb-4">
+                <div class="px-6 py-3 border-b border-white/5 bg-white/[0.02]">
+                    <h5 class="text-xs font-bold text-gray-400">Redis & Cache & Queue</h5>
+                </div>
+                <div class="divide-y divide-white/5">
+                    @php
+                        $redisVars = [
+                            ['REDIS_HOST', 'auth-redis', 'مضيف Redis'],
+                            ['REDIS_PORT', '6379', 'منفذ Redis'],
+                            ['REDIS_PASSWORD', '(empty)', 'كلمة سر Redis'],
+                            ['CACHE_STORE', 'redis', 'محرك التخزين المؤقت'],
+                            ['CACHE_PREFIX', 'auth_', 'بادئة مفاتيح الكاش'],
+                            ['QUEUE_CONNECTION', 'redis', 'محرك قائمة المهام'],
+                            ['SESSION_DRIVER', 'redis', 'محرك الجلسات'],
+                            ['SESSION_LIFETIME', '120', 'عمر الجلسة (دقائق)'],
+                        ];
+                    @endphp
+                    @foreach($redisVars as $v)
+                    <div class="endpoint-row flex items-center px-6 py-2.5 gap-3">
+                        <code class="text-xs bg-white/5 px-2.5 py-0.5 rounded text-indigo-300/70 font-mono min-w-[160px]">{{ $v[0] }}</code>
+                        <code class="text-[10px] text-gray-600 font-mono">{{ $v[1] }}</code>
+                        <span class="text-xs text-gray-600 flex-1 text-left" dir="rtl">{{ $v[2] }}</span>
+                        <span class="text-[10px] px-2 py-0.5 rounded-full bg-white/5 text-gray-500">optional</span>
+                    </div>
+                    @endforeach
+                </div>
+            </div>
+
+            <!-- JWT & Security -->
+            <div class="glass border border-white/5 rounded-2xl overflow-hidden mb-4">
+                <div class="px-6 py-3 border-b border-white/5 bg-white/[0.02]">
+                    <h5 class="text-xs font-bold text-gray-400">JWT & Security</h5>
+                </div>
+                <div class="divide-y divide-white/5">
+                    @php
+                        $jwtVars = [
+                            ['JWT_TTL', '60', 'عمر التوكن (دقائق)'],
+                            ['JWT_REFRESH_TTL', '20160', 'عمر تجديد التوكن (دقائق = 14 يوم)'],
+                            ['JWT_ALGO', 'HS256', 'خوارزمية التشفير'],
+                            ['JWT_BLACKLIST_ENABLED', 'true', 'تفعيل القائمة السوداء للتوكنات'],
+                            ['TRUSTED_SERVICE_IPS', '172.0.0.0/8', 'عناوين IP الموثوقة للخدمات'],
+                            ['RATE_LIMIT_PER_MINUTE', '60', 'حد الطلبات في الدقيقة'],
+                            ['BCRYPT_ROUNDS', '12', 'جولات تشفير كلمات المرور'],
+                        ];
+                    @endphp
+                    @foreach($jwtVars as $v)
+                    <div class="endpoint-row flex items-center px-6 py-2.5 gap-3">
+                        <code class="text-xs bg-white/5 px-2.5 py-0.5 rounded text-indigo-300/70 font-mono min-w-[160px]">{{ $v[0] }}</code>
+                        <code class="text-[10px] text-gray-600 font-mono">{{ $v[1] }}</code>
+                        <span class="text-xs text-gray-600 flex-1 text-left" dir="rtl">{{ $v[2] }}</span>
+                        <span class="text-[10px] px-2 py-0.5 rounded-full bg-white/5 text-gray-500">optional</span>
+                    </div>
+                    @endforeach
+                </div>
+            </div>
+
+            <!-- Logging & Mail -->
+            <div class="glass border border-white/5 rounded-2xl overflow-hidden">
+                <div class="px-6 py-3 border-b border-white/5 bg-white/[0.02]">
+                    <h5 class="text-xs font-bold text-gray-400">Logging & Mail</h5>
+                </div>
+                <div class="divide-y divide-white/5">
+                    @php
+                        $logVars = [
+                            ['LOG_CHANNEL', 'stack', 'قناة التسجيل'],
+                            ['LOG_LEVEL', 'warning', 'مستوى التسجيل'],
+                            ['MAIL_MAILER', 'log', 'محرك البريد (log, smtp, mailgun)'],
+                            ['MAIL_HOST', '(empty)', 'مضيف SMTP'],
+                            ['MAIL_PORT', '587', 'منفذ SMTP'],
+                            ['MAIL_USERNAME', '(empty)', 'مستخدم SMTP'],
+                            ['MAIL_PASSWORD', '(empty)', 'كلمة سر SMTP'],
+                            ['MAIL_ENCRYPTION', 'tls', 'تشفير البريد'],
+                            ['MAIL_FROM_ADDRESS', 'noreply@mahamexpo.sa', 'عنوان المرسل'],
+                            ['FILESYSTEM_DISK', 'local', 'نظام تخزين الملفات'],
+                        ];
+                    @endphp
+                    @foreach($logVars as $v)
+                    <div class="endpoint-row flex items-center px-6 py-2.5 gap-3">
+                        <code class="text-xs bg-white/5 px-2.5 py-0.5 rounded text-indigo-300/70 font-mono min-w-[160px]">{{ $v[0] }}</code>
+                        <code class="text-[10px] text-gray-600 font-mono">{{ $v[1] }}</code>
+                        <span class="text-xs text-gray-600 flex-1 text-left" dir="rtl">{{ $v[2] }}</span>
+                        <span class="text-[10px] px-2 py-0.5 rounded-full bg-white/5 text-gray-500">optional</span>
+                    </div>
+                    @endforeach
                 </div>
             </div>
         </div>

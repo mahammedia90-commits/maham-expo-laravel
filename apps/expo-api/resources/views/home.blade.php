@@ -73,12 +73,14 @@
                 <a href="#public-api" class="nav-link text-gray-400 hover:text-white transition">العامة</a>
                 <a href="#statistics-api" class="nav-link text-gray-400 hover:text-white transition">الإحصائيات</a>
                 <a href="#user-api" class="nav-link text-gray-400 hover:text-white transition">المستخدم</a>
+                <a href="#sponsor-api" class="nav-link text-gray-400 hover:text-white transition">الراعي</a>
                 <a href="#merchant-api" class="nav-link text-gray-400 hover:text-white transition">التاجر</a>
                 <a href="#investor-api" class="nav-link text-gray-400 hover:text-white transition">المستثمر</a>
                 <a href="#admin-api" class="nav-link text-gray-400 hover:text-white transition">الإدارة</a>
                 <a href="#supervisor-api" class="nav-link text-gray-400 hover:text-white transition">المشرف</a>
                 <a href="#superadmin-api" class="nav-link text-gray-400 hover:text-white transition">المدير العام</a>
                 <a href="#quickstart" class="nav-link text-gray-400 hover:text-white transition">البدء السريع</a>
+                <a href="#env-vars" class="nav-link text-gray-400 hover:text-white transition">المتغيرات</a>
             </div>
             <div class="flex items-center gap-2">
                 <span class="text-[10px] bg-emerald-500/20 text-emerald-400 px-2.5 py-1 rounded-full font-semibold border border-emerald-500/20">v{{ config('app.version', '1.0.0') }}</span>
@@ -203,8 +205,8 @@
             <div class="divide-y divide-white/5">
                 @php
                     $categoryEps = [
-                        ['GET', '/api/categories', 'قائمة التصنيفات', 'يدعم الفلترة والبحث'],
-                        ['GET', '/api/categories/{category}', 'تفاصيل تصنيف', 'بيانات التصنيف الكاملة'],
+                        ['GET', '/api/v1/categories', 'قائمة التصنيفات', 'يدعم الفلترة والبحث'],
+                        ['GET', '/api/v1/categories/{category}', 'تفاصيل تصنيف', 'بيانات التصنيف الكاملة'],
                     ];
                 @endphp
                 @foreach($categoryEps as $ep)
@@ -230,8 +232,8 @@
             <div class="divide-y divide-white/5">
                 @php
                     $cityEps = [
-                        ['GET', '/api/cities', 'قائمة المدن', 'جميع المدن المتاحة'],
-                        ['GET', '/api/cities/{city}', 'تفاصيل مدينة', 'بيانات المدينة والفعاليات المرتبطة'],
+                        ['GET', '/api/v1/cities', 'قائمة المدن', 'جميع المدن المتاحة'],
+                        ['GET', '/api/v1/cities/{city}', 'تفاصيل مدينة', 'بيانات المدينة والفعاليات المرتبطة'],
                     ];
                 @endphp
                 @foreach($cityEps as $ep)
@@ -257,11 +259,11 @@
             <div class="divide-y divide-white/5">
                 @php
                     $eventEps = [
-                        ['GET', '/api/events', 'قائمة الفعاليات', 'يدعم الفلترة والبحث والترتيب مع pagination'],
-                        ['GET', '/api/events/featured', 'الفعاليات المميزة', 'الفعاليات المميزة والنشطة حالياً'],
-                        ['GET', '/api/events/{event}', 'تفاصيل فعالية', 'بيانات الفعالية الكاملة مع الإحصائيات'],
-                        ['GET', '/api/events/{event}/spaces', 'مساحات الفعالية', 'جميع المساحات المتاحة في الفعالية'],
-                        ['GET', '/api/events/{event}/sections', 'أقسام الفعالية', 'الأقسام والمساحات المرتبطة بها'],
+                        ['GET', '/api/v1/events', 'قائمة الفعاليات', 'يدعم الفلترة والبحث والترتيب مع pagination'],
+                        ['GET', '/api/v1/events/featured', 'الفعاليات المميزة', 'الفعاليات المميزة والنشطة حالياً'],
+                        ['GET', '/api/v1/events/{event}', 'تفاصيل فعالية', 'بيانات الفعالية الكاملة مع الإحصائيات'],
+                        ['GET', '/api/v1/events/{event}/spaces', 'مساحات الفعالية', 'جميع المساحات المتاحة في الفعالية'],
+                        ['GET', '/api/v1/events/{event}/sections', 'أقسام الفعالية', 'الأقسام والمساحات المرتبطة بها'],
                     ];
                 @endphp
                 @foreach($eventEps as $ep)
@@ -287,7 +289,7 @@
                 </div>
                 <div class="endpoint-row flex items-center px-6 py-3.5 gap-3">
                     <span class="method-badge font-bold px-2 py-0.5 rounded font-mono min-w-[56px] text-center bg-emerald-500/20 text-emerald-400">GET</span>
-                    <code class="text-xs text-gray-300 font-mono" dir="ltr">/api/spaces/{space}</code>
+                    <code class="text-xs text-gray-300 font-mono" dir="ltr">/api/v1/spaces/{space}</code>
                     <span class="text-xs text-gray-600">تفاصيل مساحة</span>
                     <span class="mr-auto"></span>
                     <span class="text-[10px] px-2 py-0.5 rounded-full bg-green-500/10 text-green-400 font-semibold">public</span>
@@ -302,7 +304,7 @@
                 </div>
                 <div class="endpoint-row flex items-center px-6 py-3.5 gap-3">
                     <span class="method-badge font-bold px-2 py-0.5 rounded font-mono min-w-[56px] text-center bg-emerald-500/20 text-emerald-400">GET</span>
-                    <code class="text-xs text-gray-300 font-mono" dir="ltr">/api/services</code>
+                    <code class="text-xs text-gray-300 font-mono" dir="ltr">/api/v1/services</code>
                     <span class="text-xs text-gray-600">قائمة الخدمات</span>
                     <span class="mr-auto"></span>
                     <span class="text-[10px] px-2 py-0.5 rounded-full bg-green-500/10 text-green-400 font-semibold">public</span>
@@ -328,6 +330,78 @@
             @foreach($statsEps as $ep)
             <div class="endpoint-row flex items-center px-6 py-3.5 gap-3 {{ !$loop->last ? 'border-b border-white/5' : '' }}">
                 <span class="method-badge font-bold px-2 py-0.5 rounded font-mono min-w-[56px] text-center bg-emerald-500/20 text-emerald-400">{{ $ep[0] }}</span>
+                <code class="text-xs text-gray-300 font-mono" dir="ltr">{{ $ep[1] }}</code>
+                <span class="text-xs text-gray-600">{{ $ep[2] }}</span>
+                <span class="mr-auto"></span>
+                <span class="text-[10px] px-2 py-0.5 rounded-full bg-green-500/10 text-green-400 font-semibold">public</span>
+            </div>
+            @endforeach
+        </div>
+
+        <!-- Sponsors (Public) -->
+        <div class="glass border border-white/5 rounded-2xl overflow-hidden mt-4">
+            <div class="px-6 py-3 border-b border-white/5 bg-white/[0.02]">
+                <h5 class="text-xs font-bold text-gray-400">الرعاة - Sponsors (Public)</h5>
+            </div>
+            @php
+                $sponsorPublicEps = [
+                    ['GET', '/api/v1/events/{event}/sponsors', 'رعاة الفعالية', 'قائمة رعاة فعالية معينة'],
+                    ['GET', '/api/v1/events/{event}/sponsor-packages', 'باقات الرعاية', 'الباقات المتاحة للرعاية'],
+                ];
+            @endphp
+            @foreach($sponsorPublicEps as $ep)
+            <div class="endpoint-row flex items-center px-6 py-3.5 gap-3 {{ !$loop->last ? 'border-b border-white/5' : '' }}">
+                <span class="method-badge font-bold px-2 py-0.5 rounded font-mono min-w-[56px] text-center bg-emerald-500/20 text-emerald-400">{{ $ep[0] }}</span>
+                <code class="text-xs text-gray-300 font-mono" dir="ltr">{{ $ep[1] }}</code>
+                <span class="text-xs text-gray-600">{{ $ep[2] }}</span>
+                <span class="mr-auto"></span>
+                <span class="text-[10px] px-2 py-0.5 rounded-full bg-green-500/10 text-green-400 font-semibold">public</span>
+            </div>
+            @endforeach
+        </div>
+
+        <!-- Ratings (Public) -->
+        <div class="glass border border-white/5 rounded-2xl overflow-hidden mt-4">
+            <div class="px-6 py-3 border-b border-white/5 bg-white/[0.02]">
+                <h5 class="text-xs font-bold text-gray-400">التقييمات - Ratings (Public)</h5>
+            </div>
+            @php
+                $ratingPublicEps = [
+                    ['GET', '/api/v1/ratings', 'قائمة التقييمات', 'التقييمات المعتمدة مع pagination'],
+                    ['GET', '/api/v1/ratings/summary', 'ملخص التقييمات', 'المتوسط والتوزيع حسب النجوم'],
+                ];
+            @endphp
+            @foreach($ratingPublicEps as $ep)
+            <div class="endpoint-row flex items-center px-6 py-3.5 gap-3 {{ !$loop->last ? 'border-b border-white/5' : '' }}">
+                <span class="method-badge font-bold px-2 py-0.5 rounded font-mono min-w-[56px] text-center bg-emerald-500/20 text-emerald-400">{{ $ep[0] }}</span>
+                <code class="text-xs text-gray-300 font-mono" dir="ltr">{{ $ep[1] }}</code>
+                <span class="text-xs text-gray-600">{{ $ep[2] }}</span>
+                <span class="mr-auto"></span>
+                <span class="text-[10px] px-2 py-0.5 rounded-full bg-green-500/10 text-green-400 font-semibold">public</span>
+            </div>
+            @endforeach
+        </div>
+
+        <!-- Pages, FAQs, Banners (Public CMS) -->
+        <div class="glass border border-white/5 rounded-2xl overflow-hidden mt-4">
+            <div class="px-6 py-3 border-b border-white/5 bg-white/[0.02]">
+                <h5 class="text-xs font-bold text-gray-400">المحتوى - Pages, FAQs & Banners (Public)</h5>
+            </div>
+            @php
+                $cmsPublicEps = [
+                    ['GET', '/api/v1/pages', 'قائمة الصفحات', 'الصفحات المنشورة'],
+                    ['GET', '/api/v1/pages/{slug}', 'عرض صفحة', 'محتوى الصفحة بالـ slug'],
+                    ['GET', '/api/v1/faqs', 'قائمة الأسئلة الشائعة', 'مع الفلترة والبحث'],
+                    ['GET', '/api/v1/faqs/categories', 'تصنيفات الأسئلة', 'التصنيفات المتاحة'],
+                    ['GET', '/api/v1/faqs/{faq}', 'تفاصيل سؤال', 'السؤال والإجابة الكاملة'],
+                    ['POST', '/api/v1/faqs/{faq}/helpful', 'تقييم الإجابة', 'هل كانت الإجابة مفيدة؟'],
+                    ['GET', '/api/v1/banners', 'قائمة البانرات', 'البانرات النشطة حالياً'],
+                    ['POST', '/api/v1/banners/{banner}/click', 'تسجيل نقرة', 'تتبع نقرات البانر'],
+                ];
+            @endphp
+            @foreach($cmsPublicEps as $ep)
+            <div class="endpoint-row flex items-center px-6 py-3.5 gap-3 {{ !$loop->last ? 'border-b border-white/5' : '' }}">
+                <span class="method-badge font-bold px-2 py-0.5 rounded font-mono min-w-[56px] text-center {{ $ep[0] === 'GET' ? 'bg-emerald-500/20 text-emerald-400' : 'bg-blue-500/20 text-blue-400' }}">{{ $ep[0] }}</span>
                 <code class="text-xs text-gray-300 font-mono" dir="ltr">{{ $ep[1] }}</code>
                 <span class="text-xs text-gray-600">{{ $ep[2] }}</span>
                 <span class="mr-auto"></span>
@@ -361,9 +435,9 @@
             <div class="divide-y divide-white/5">
                 @php
                     $profileEps = [
-                        ['GET', '/api/profile', 'عرض الملف التجاري', 'بيانات الملف التجاري الحالي مع حالة التحقق'],
-                        ['POST', '/api/profile', 'إنشاء ملف تجاري', 'formdata: company_name, phone, type, avatar, logo, CR image, ID image'],
-                        ['PUT', '/api/profile', 'تحديث الملف التجاري', 'formdata: تحديث بيانات الملف مع رفع ملفات جديدة'],
+                        ['GET', '/api/v1/profile', 'عرض الملف التجاري', 'بيانات الملف التجاري الحالي مع حالة التحقق'],
+                        ['POST', '/api/v1/profile', 'إنشاء ملف تجاري', 'formdata: company_name, phone, type, avatar, logo, CR image, ID image'],
+                        ['PUT', '/api/v1/profile', 'تحديث الملف التجاري', 'formdata: تحديث بيانات الملف مع رفع ملفات جديدة'],
                     ];
                 @endphp
                 @foreach($profileEps as $ep)
@@ -387,9 +461,9 @@
             <div class="divide-y divide-white/5">
                 @php
                     $favEps = [
-                        ['GET', '/api/favorites', 'قائمة المفضلة', 'عرض جميع العناصر المفضلة'],
-                        ['POST', '/api/favorites', 'إضافة للمفضلة', 'favoritable_type, favoritable_id'],
-                        ['DELETE', '/api/favorites/{favorite}', 'إزالة من المفضلة', 'حذف عنصر من المفضلة'],
+                        ['GET', '/api/v1/favorites', 'قائمة المفضلة', 'عرض جميع العناصر المفضلة'],
+                        ['POST', '/api/v1/favorites', 'إضافة للمفضلة', 'favoritable_type, favoritable_id'],
+                        ['DELETE', '/api/v1/favorites/{favorite}', 'إزالة من المفضلة', 'حذف عنصر من المفضلة'],
                     ];
                 @endphp
                 @foreach($favEps as $ep)
@@ -413,10 +487,10 @@
             <div class="divide-y divide-white/5">
                 @php
                     $notifEps = [
-                        ['GET', '/api/notifications', 'قائمة الإشعارات', 'جميع الإشعارات مع pagination'],
-                        ['GET', '/api/notifications/unread-count', 'عدد غير المقروءة', 'عدد الإشعارات غير المقروءة'],
-                        ['PUT', '/api/notifications/{notification}/read', 'تحديد كمقروء', 'تحديد إشعار واحد كمقروء'],
-                        ['PUT', '/api/notifications/read-all', 'قراءة الكل', 'تحديد جميع الإشعارات كمقروءة'],
+                        ['GET', '/api/v1/notifications', 'قائمة الإشعارات', 'جميع الإشعارات مع pagination'],
+                        ['GET', '/api/v1/notifications/unread-count', 'عدد غير المقروءة', 'عدد الإشعارات غير المقروءة'],
+                        ['PUT', '/api/v1/notifications/{notification}/read', 'تحديد كمقروء', 'تحديد إشعار واحد كمقروء'],
+                        ['PUT', '/api/v1/notifications/read-all', 'قراءة الكل', 'تحديد جميع الإشعارات كمقروءة'],
                     ];
                 @endphp
                 @foreach($notifEps as $ep)
@@ -431,6 +505,107 @@
             </div>
         </div>
 
+        <!-- Notification Preferences -->
+        <div class="mb-6 glass border border-white/5 rounded-2xl overflow-hidden">
+            <div class="px-6 py-3 border-b border-white/5 bg-white/[0.02]">
+                <h5 class="text-xs font-bold text-gray-400">تفضيلات الإشعارات - Notification Preferences</h5>
+            </div>
+            <div class="divide-y divide-white/5">
+                @php
+                    $notifPrefEps = [
+                        ['GET', '/api/v1/notifications/preferences', 'عرض التفضيلات', 'notification-preferences.view', 'تفضيلات الإشعارات الحالية'],
+                        ['PUT', '/api/v1/notifications/preferences', 'تحديث التفضيلات', 'notification-preferences.update', 'تعديل تفضيلات الإشعارات'],
+                    ];
+                @endphp
+                @foreach($notifPrefEps as $ep)
+                <div class="endpoint-row flex items-center px-6 py-3.5 gap-3">
+                    <span class="method-badge font-bold px-2 py-0.5 rounded font-mono min-w-[56px] text-center {{ $ep[0] === 'GET' ? 'bg-emerald-500/20 text-emerald-400' : 'bg-amber-500/20 text-amber-400' }}">{{ $ep[0] }}</span>
+                    <code class="text-xs text-gray-300 font-mono whitespace-nowrap" dir="ltr">{{ $ep[1] }}</code>
+                    <span class="text-xs text-gray-600">{{ $ep[2] }}</span>
+                    <span class="mr-auto"></span>
+                    <span class="text-[9px] px-2 py-0.5 rounded-full bg-amber-500/10 text-amber-400/70 font-mono">{{ $ep[3] }}</span>
+                </div>
+                @endforeach
+            </div>
+        </div>
+
+        <!-- Ratings (Authenticated CRUD) -->
+        <div class="mb-6 glass border border-white/5 rounded-2xl overflow-hidden">
+            <div class="px-6 py-3 border-b border-white/5 bg-white/[0.02]">
+                <h5 class="text-xs font-bold text-gray-400">التقييمات - Ratings (Authenticated)</h5>
+            </div>
+            <div class="divide-y divide-white/5">
+                @php
+                    $ratingAuthEps = [
+                        ['POST', '/api/v1/ratings', 'إنشاء تقييم', 'ratings.create'],
+                        ['PUT', '/api/v1/ratings/{rating}', 'تعديل تقييم', 'ratings.update'],
+                        ['DELETE', '/api/v1/ratings/{rating}', 'حذف تقييم', 'ratings.delete'],
+                    ];
+                @endphp
+                @foreach($ratingAuthEps as $ep)
+                <div class="endpoint-row flex items-center px-6 py-3.5 gap-3">
+                    <span class="method-badge font-bold px-2 py-0.5 rounded font-mono min-w-[56px] text-center {{ $ep[0] === 'POST' ? 'bg-blue-500/20 text-blue-400' : ($ep[0] === 'PUT' ? 'bg-amber-500/20 text-amber-400' : 'bg-rose-500/20 text-rose-400') }}">{{ $ep[0] }}</span>
+                    <code class="text-xs text-gray-300 font-mono whitespace-nowrap" dir="ltr">{{ $ep[1] }}</code>
+                    <span class="text-xs text-gray-600">{{ $ep[2] }}</span>
+                    <span class="mr-auto"></span>
+                    <span class="text-[9px] px-2 py-0.5 rounded-full bg-amber-500/10 text-amber-400/70 font-mono">{{ $ep[3] }}</span>
+                </div>
+                @endforeach
+            </div>
+        </div>
+
+        <!-- Support Tickets -->
+        <div class="mb-6 glass border border-white/5 rounded-2xl overflow-hidden">
+            <div class="px-6 py-3 border-b border-white/5 bg-white/[0.02]">
+                <h5 class="text-xs font-bold text-gray-400">تذاكر الدعم - Support Tickets</h5>
+            </div>
+            <div class="divide-y divide-white/5">
+                @php
+                    $ticketEps = [
+                        ['GET', '/api/v1/support-tickets', 'قائمة التذاكر', 'support-tickets.view'],
+                        ['POST', '/api/v1/support-tickets', 'إنشاء تذكرة', 'support-tickets.create'],
+                        ['GET', '/api/v1/support-tickets/{id}', 'تفاصيل تذكرة', 'support-tickets.view'],
+                        ['POST', '/api/v1/support-tickets/{id}/reply', 'الرد على تذكرة', 'support-tickets.reply'],
+                        ['PUT', '/api/v1/support-tickets/{id}/close', 'إغلاق تذكرة', 'support-tickets.close'],
+                        ['PUT', '/api/v1/support-tickets/{id}/reopen', 'إعادة فتح تذكرة', 'support-tickets.create'],
+                    ];
+                @endphp
+                @foreach($ticketEps as $ep)
+                <div class="endpoint-row flex items-center px-6 py-3.5 gap-3">
+                    <span class="method-badge font-bold px-2 py-0.5 rounded font-mono min-w-[56px] text-center {{ $ep[0] === 'GET' ? 'bg-emerald-500/20 text-emerald-400' : ($ep[0] === 'POST' ? 'bg-blue-500/20 text-blue-400' : 'bg-amber-500/20 text-amber-400') }}">{{ $ep[0] }}</span>
+                    <code class="text-xs text-gray-300 font-mono whitespace-nowrap" dir="ltr">{{ $ep[1] }}</code>
+                    <span class="text-xs text-gray-600">{{ $ep[2] }}</span>
+                    <span class="mr-auto"></span>
+                    <span class="text-[9px] px-2 py-0.5 rounded-full bg-amber-500/10 text-amber-400/70 font-mono">{{ $ep[3] }}</span>
+                </div>
+                @endforeach
+            </div>
+        </div>
+
+        <!-- Invoices (User - own) -->
+        <div class="mb-6 glass border border-white/5 rounded-2xl overflow-hidden">
+            <div class="px-6 py-3 border-b border-white/5 bg-white/[0.02]">
+                <h5 class="text-xs font-bold text-gray-400">الفواتير - Invoices (Own)</h5>
+            </div>
+            <div class="divide-y divide-white/5">
+                @php
+                    $invoiceUserEps = [
+                        ['GET', '/api/v1/invoices', 'قائمة الفواتير', 'invoices.view'],
+                        ['GET', '/api/v1/invoices/{invoice}', 'تفاصيل فاتورة', 'invoices.view'],
+                    ];
+                @endphp
+                @foreach($invoiceUserEps as $ep)
+                <div class="endpoint-row flex items-center px-6 py-3.5 gap-3">
+                    <span class="method-badge font-bold px-2 py-0.5 rounded font-mono min-w-[56px] text-center bg-emerald-500/20 text-emerald-400">{{ $ep[0] }}</span>
+                    <code class="text-xs text-gray-300 font-mono whitespace-nowrap" dir="ltr">{{ $ep[1] }}</code>
+                    <span class="text-xs text-gray-600">{{ $ep[2] }}</span>
+                    <span class="mr-auto"></span>
+                    <span class="text-[9px] px-2 py-0.5 rounded-full bg-amber-500/10 text-amber-400/70 font-mono">{{ $ep[3] }}</span>
+                </div>
+                @endforeach
+            </div>
+        </div>
+
         <!-- Visit Requests -->
         <div class="mb-6 glass border border-white/5 rounded-2xl overflow-hidden">
             <div class="px-6 py-4 border-b border-white/5 flex items-center gap-3">
@@ -440,11 +615,11 @@
             <div class="divide-y divide-white/5">
                 @php
                     $visitEps = [
-                        ['GET', '/api/visit-requests', 'قائمة طلبات الزيارة', 'طلبات المستخدم الحالي'],
-                        ['POST', '/api/visit-requests', 'إنشاء طلب زيارة', 'event_id, visit_date, visitors_count, notes'],
-                        ['GET', '/api/visit-requests/{visitRequest}', 'تفاصيل طلب زيارة', 'بيانات الطلب الكاملة'],
-                        ['PUT', '/api/visit-requests/{visitRequest}', 'تحديث طلب زيارة', 'تعديل بيانات الطلب'],
-                        ['DELETE', '/api/visit-requests/{visitRequest}', 'حذف طلب زيارة', 'إلغاء الطلب'],
+                        ['GET', '/api/v1/visit-requests', 'قائمة طلبات الزيارة', 'طلبات المستخدم الحالي'],
+                        ['POST', '/api/v1/visit-requests', 'إنشاء طلب زيارة', 'event_id, visit_date, visitors_count, notes'],
+                        ['GET', '/api/v1/visit-requests/{visitRequest}', 'تفاصيل طلب زيارة', 'بيانات الطلب الكاملة'],
+                        ['PUT', '/api/v1/visit-requests/{visitRequest}', 'تحديث طلب زيارة', 'تعديل بيانات الطلب'],
+                        ['DELETE', '/api/v1/visit-requests/{visitRequest}', 'حذف طلب زيارة', 'إلغاء الطلب'],
                     ];
                 @endphp
                 @foreach($visitEps as $ep)
@@ -469,11 +644,11 @@
             <div class="divide-y divide-white/5">
                 @php
                     $rentalEps = [
-                        ['GET', '/api/rental-requests', 'قائمة طلبات الإيجار', 'طلبات المستخدم الحالي'],
-                        ['POST', '/api/rental-requests', 'إنشاء طلب إيجار', 'space_id, start_date, end_date, notes'],
-                        ['GET', '/api/rental-requests/{rentalRequest}', 'تفاصيل طلب إيجار', 'بيانات الطلب مع المدفوعات'],
-                        ['PUT', '/api/rental-requests/{rentalRequest}', 'تحديث طلب إيجار', 'تعديل بيانات الطلب'],
-                        ['DELETE', '/api/rental-requests/{rentalRequest}', 'حذف طلب إيجار', 'إلغاء الطلب'],
+                        ['GET', '/api/v1/rental-requests', 'قائمة طلبات الإيجار', 'طلبات المستخدم الحالي'],
+                        ['POST', '/api/v1/rental-requests', 'إنشاء طلب إيجار', 'space_id, start_date, end_date, notes'],
+                        ['GET', '/api/v1/rental-requests/{rentalRequest}', 'تفاصيل طلب إيجار', 'بيانات الطلب مع المدفوعات'],
+                        ['PUT', '/api/v1/rental-requests/{rentalRequest}', 'تحديث طلب إيجار', 'تعديل بيانات الطلب'],
+                        ['DELETE', '/api/v1/rental-requests/{rentalRequest}', 'حذف طلب إيجار', 'إلغاء الطلب'],
                     ];
                 @endphp
                 @foreach($rentalEps as $ep)
@@ -511,7 +686,7 @@
         <div class="mb-6 glass border border-white/5 rounded-2xl overflow-hidden">
             <div class="px-6 py-4 border-b border-white/5 flex items-center gap-3">
                 <span class="method-badge font-bold px-2.5 py-1 rounded-md bg-emerald-500/20 text-emerald-400 font-mono">GET</span>
-                <code class="text-sm text-gray-300 font-mono" dir="ltr">/api/admin/dashboard</code>
+                <code class="text-sm text-gray-300 font-mono" dir="ltr">/api/v1/admin/dashboard</code>
                 <span class="text-xs text-gray-600 mr-auto">إحصائيات لوحة التحكم</span>
                 <span class="text-[10px] px-2 py-0.5 rounded-full bg-rose-500/10 text-rose-400 font-semibold">admin</span>
             </div>
@@ -579,15 +754,15 @@
             <div class="divide-y divide-white/5">
                 @php
                     $adminEventEps = [
-                        ['GET', '/api/admin/events', 'قائمة الفعاليات', 'يدعم الفلترة والبحث والترتيب'],
-                        ['POST', '/api/admin/events', 'إنشاء فعالية', 'name, description, start_date, end_date, city_id, category_id'],
-                        ['GET', '/api/admin/events/{event}', 'تفاصيل فعالية', 'البيانات الكاملة مع الأقسام والمساحات'],
-                        ['PUT', '/api/admin/events/{event}', 'تحديث فعالية', 'تعديل بيانات الفعالية'],
-                        ['DELETE', '/api/admin/events/{event}', 'حذف فعالية', 'حذف الفعالية وجميع المرتبطات'],
-                        ['GET', '/api/admin/events/{event}/sections', 'أقسام الفعالية', 'عرض جميع الأقسام'],
-                        ['POST', '/api/admin/events/{event}/sections', 'إنشاء قسم', 'إضافة قسم جديد للفعالية'],
-                        ['GET', '/api/admin/events/{event}/spaces', 'مساحات الفعالية', 'عرض جميع المساحات'],
-                        ['POST', '/api/admin/events/{event}/spaces', 'إنشاء مساحة', 'إضافة مساحة جديدة للفعالية'],
+                        ['GET', '/api/v1/admin/events', 'قائمة الفعاليات', 'يدعم الفلترة والبحث والترتيب'],
+                        ['POST', '/api/v1/admin/events', 'إنشاء فعالية', 'name, description, start_date, end_date, city_id, category_id'],
+                        ['GET', '/api/v1/admin/events/{event}', 'تفاصيل فعالية', 'البيانات الكاملة مع الأقسام والمساحات'],
+                        ['PUT', '/api/v1/admin/events/{event}', 'تحديث فعالية', 'تعديل بيانات الفعالية'],
+                        ['DELETE', '/api/v1/admin/events/{event}', 'حذف فعالية', 'حذف الفعالية وجميع المرتبطات'],
+                        ['GET', '/api/v1/admin/events/{event}/sections', 'أقسام الفعالية', 'عرض جميع الأقسام'],
+                        ['POST', '/api/v1/admin/events/{event}/sections', 'إنشاء قسم', 'إضافة قسم جديد للفعالية'],
+                        ['GET', '/api/v1/admin/events/{event}/spaces', 'مساحات الفعالية', 'عرض جميع المساحات'],
+                        ['POST', '/api/v1/admin/events/{event}/spaces', 'إنشاء مساحة', 'إضافة مساحة جديدة للفعالية'],
                     ];
                 @endphp
                 @foreach($adminEventEps as $ep)
@@ -615,9 +790,9 @@
                 <div class="divide-y divide-white/5">
                     @php
                         $sectionEps = [
-                            ['GET', '/api/admin/sections/{section}', 'التفاصيل'],
-                            ['PUT', '/api/admin/sections/{section}', 'تحديث'],
-                            ['DELETE', '/api/admin/sections/{section}', 'حذف'],
+                            ['GET', '/api/v1/admin/sections/{section}', 'التفاصيل'],
+                            ['PUT', '/api/v1/admin/sections/{section}', 'تحديث'],
+                            ['DELETE', '/api/v1/admin/sections/{section}', 'حذف'],
                         ];
                     @endphp
                     @foreach($sectionEps as $ep)
@@ -641,9 +816,9 @@
                 <div class="divide-y divide-white/5">
                     @php
                         $spaceEps = [
-                            ['GET', '/api/admin/spaces/{space}', 'التفاصيل'],
-                            ['PUT', '/api/admin/spaces/{space}', 'تحديث'],
-                            ['DELETE', '/api/admin/spaces/{space}', 'حذف'],
+                            ['GET', '/api/v1/admin/spaces/{space}', 'التفاصيل'],
+                            ['PUT', '/api/v1/admin/spaces/{space}', 'تحديث'],
+                            ['DELETE', '/api/v1/admin/spaces/{space}', 'حذف'],
                         ];
                     @endphp
                     @foreach($spaceEps as $ep)
@@ -668,11 +843,11 @@
             <div class="divide-y divide-white/5">
                 @php
                     $adminSvcEps = [
-                        ['GET', '/api/admin/services', 'قائمة الخدمات'],
-                        ['POST', '/api/admin/services', 'إنشاء خدمة'],
-                        ['GET', '/api/admin/services/{service}', 'تفاصيل خدمة'],
-                        ['PUT', '/api/admin/services/{service}', 'تحديث خدمة'],
-                        ['DELETE', '/api/admin/services/{service}', 'حذف خدمة'],
+                        ['GET', '/api/v1/admin/services', 'قائمة الخدمات'],
+                        ['POST', '/api/v1/admin/services', 'إنشاء خدمة'],
+                        ['GET', '/api/v1/admin/services/{service}', 'تفاصيل خدمة'],
+                        ['PUT', '/api/v1/admin/services/{service}', 'تحديث خدمة'],
+                        ['DELETE', '/api/v1/admin/services/{service}', 'حذف خدمة'],
                     ];
                 @endphp
                 @foreach($adminSvcEps as $ep)
@@ -698,10 +873,10 @@
             <div class="divide-y divide-white/5">
                 @php
                     $adminVisitEps = [
-                        ['GET', '/api/admin/visit-requests', 'قائمة جميع الطلبات', 'فلترة حسب الحالة والفعالية'],
-                        ['GET', '/api/admin/visit-requests/{visitRequest}', 'تفاصيل طلب', 'بيانات الطلب مع بيانات المستخدم'],
-                        ['PUT', '/api/admin/visit-requests/{visitRequest}/approve', 'قبول الطلب', 'الموافقة على طلب الزيارة'],
-                        ['PUT', '/api/admin/visit-requests/{visitRequest}/reject', 'رفض الطلب', 'رفض طلب الزيارة مع سبب'],
+                        ['GET', '/api/v1/admin/visit-requests', 'قائمة جميع الطلبات', 'فلترة حسب الحالة والفعالية'],
+                        ['GET', '/api/v1/admin/visit-requests/{visitRequest}', 'تفاصيل طلب', 'بيانات الطلب مع بيانات المستخدم'],
+                        ['PUT', '/api/v1/admin/visit-requests/{visitRequest}/approve', 'قبول الطلب', 'الموافقة على طلب الزيارة'],
+                        ['PUT', '/api/v1/admin/visit-requests/{visitRequest}/reject', 'رفض الطلب', 'رفض طلب الزيارة مع سبب'],
                     ];
                 @endphp
                 @foreach($adminVisitEps as $ep)
@@ -727,11 +902,11 @@
             <div class="divide-y divide-white/5">
                 @php
                     $adminRentalEps = [
-                        ['GET', '/api/admin/rental-requests', 'قائمة جميع الطلبات', 'فلترة حسب الحالة والمدفوعات'],
-                        ['GET', '/api/admin/rental-requests/{rentalRequest}', 'تفاصيل طلب', 'بيانات الطلب مع سجل المدفوعات'],
-                        ['PUT', '/api/admin/rental-requests/{rentalRequest}/approve', 'قبول الطلب', 'الموافقة مع تحديد المبلغ'],
-                        ['PUT', '/api/admin/rental-requests/{rentalRequest}/reject', 'رفض الطلب', 'رفض الطلب مع سبب'],
-                        ['POST', '/api/admin/rental-requests/{rentalRequest}/payment', 'تسجيل دفعة', 'تسجيل دفعة جديدة للطلب'],
+                        ['GET', '/api/v1/admin/rental-requests', 'قائمة جميع الطلبات', 'فلترة حسب الحالة والمدفوعات'],
+                        ['GET', '/api/v1/admin/rental-requests/{rentalRequest}', 'تفاصيل طلب', 'بيانات الطلب مع سجل المدفوعات'],
+                        ['PUT', '/api/v1/admin/rental-requests/{rentalRequest}/approve', 'قبول الطلب', 'الموافقة مع تحديد المبلغ'],
+                        ['PUT', '/api/v1/admin/rental-requests/{rentalRequest}/reject', 'رفض الطلب', 'رفض الطلب مع سبب'],
+                        ['POST', '/api/v1/admin/rental-requests/{rentalRequest}/payment', 'تسجيل دفعة', 'تسجيل دفعة جديدة للطلب'],
                     ];
                 @endphp
                 @foreach($adminRentalEps as $ep)
@@ -757,10 +932,10 @@
             <div class="divide-y divide-white/5">
                 @php
                     $adminProfileEps = [
-                        ['GET', '/api/admin/profiles', 'قائمة الملفات التجارية', 'فلترة حسب حالة التحقق'],
-                        ['GET', '/api/admin/profiles/{profile}', 'تفاصيل ملف تجاري', 'بيانات الملف مع المستندات'],
-                        ['PUT', '/api/admin/profiles/{profile}/approve', 'قبول الملف', 'الموافقة على الملف التجاري'],
-                        ['PUT', '/api/admin/profiles/{profile}/reject', 'رفض الملف', 'رفض الملف مع سبب'],
+                        ['GET', '/api/v1/admin/profiles', 'قائمة الملفات التجارية', 'فلترة حسب حالة التحقق'],
+                        ['GET', '/api/v1/admin/profiles/{profile}', 'تفاصيل ملف تجاري', 'بيانات الملف مع المستندات'],
+                        ['PUT', '/api/v1/admin/profiles/{profile}/approve', 'قبول الملف', 'الموافقة على الملف التجاري'],
+                        ['PUT', '/api/v1/admin/profiles/{profile}/reject', 'رفض الملف', 'رفض الملف مع سبب'],
                     ];
                 @endphp
                 @foreach($adminProfileEps as $ep)
@@ -770,6 +945,165 @@
                     <span class="text-xs text-gray-600">{{ $ep[2] }}</span>
                     <span class="mr-auto"></span>
                     <span class="text-[10px] px-2 py-0.5 rounded-full bg-rose-500/10 text-rose-400 font-semibold">admin</span>
+                </div>
+                @endforeach
+            </div>
+        </div>
+
+        <!-- Admin Sponsors Management -->
+        <div class="glass border border-white/5 rounded-2xl overflow-hidden mb-4">
+            <div class="px-6 py-3 border-b border-white/5 bg-white/[0.02]">
+                <h5 class="text-xs font-bold text-gray-400">إدارة الرعاة - Sponsors Management</h5>
+            </div>
+            <div class="divide-y divide-white/5">
+                @php
+                    $adminSponsorEps = [
+                        ['GET', '/api/v1/admin/sponsors', 'قائمة الرعاة'],
+                        ['POST', '/api/v1/admin/sponsors', 'إنشاء راعي'],
+                        ['GET', '/api/v1/admin/sponsors/{sponsor}', 'تفاصيل راعي'],
+                        ['PUT', '/api/v1/admin/sponsors/{sponsor}', 'تحديث راعي'],
+                        ['DELETE', '/api/v1/admin/sponsors/{sponsor}', 'حذف راعي'],
+                        ['PUT', '/api/v1/admin/sponsors/{sponsor}/approve', 'قبول راعي'],
+                        ['PUT', '/api/v1/admin/sponsors/{sponsor}/activate', 'تفعيل راعي'],
+                        ['PUT', '/api/v1/admin/sponsors/{sponsor}/suspend', 'تعليق راعي'],
+                    ];
+                @endphp
+                @foreach($adminSponsorEps as $ep)
+                <div class="endpoint-row flex items-center px-5 py-2.5 gap-2">
+                    <span class="method-badge font-bold px-1.5 py-0.5 rounded font-mono min-w-[44px] text-center {{ $ep[0] === 'GET' ? 'bg-emerald-500/15 text-emerald-400' : ($ep[0] === 'POST' ? 'bg-blue-500/15 text-blue-400' : ($ep[0] === 'PUT' ? 'bg-amber-500/15 text-amber-400' : 'bg-rose-500/15 text-rose-400')) }}">{{ $ep[0] }}</span>
+                    <code class="text-[11px] text-gray-400 font-mono" dir="ltr">{{ $ep[1] }}</code>
+                    <span class="text-[11px] text-gray-600 mr-auto">{{ $ep[2] }}</span>
+                </div>
+                @endforeach
+            </div>
+        </div>
+
+        <!-- Admin Sponsor Packages, Contracts, Payments, Benefits, Assets -->
+        <div class="glass border border-white/5 rounded-2xl overflow-hidden mb-4">
+            <div class="px-6 py-3 border-b border-white/5 bg-white/[0.02]">
+                <h5 class="text-xs font-bold text-gray-400">باقات الرعاية والعقود والمدفوعات - Sponsor Packages, Contracts, Payments, Benefits & Assets</h5>
+            </div>
+            <div class="divide-y divide-white/5">
+                @php
+                    $adminSponsorSubEps = [
+                        ['GET', '/api/v1/admin/events/{event}/sponsor-packages', 'باقات الفعالية'],
+                        ['POST', '/api/v1/admin/events/{event}/sponsor-packages', 'إنشاء باقة'],
+                        ['GET', '/api/v1/admin/sponsor-packages/{id}', 'تفاصيل باقة'],
+                        ['PUT', '/api/v1/admin/sponsor-packages/{id}', 'تحديث باقة'],
+                        ['DELETE', '/api/v1/admin/sponsor-packages/{id}', 'حذف باقة'],
+                        ['GET', '/api/v1/admin/sponsor-contracts', 'قائمة العقود'],
+                        ['POST', '/api/v1/admin/sponsor-contracts', 'إنشاء عقد'],
+                        ['GET', '/api/v1/admin/sponsor-contracts/{id}', 'تفاصيل عقد'],
+                        ['PUT', '/api/v1/admin/sponsor-contracts/{id}', 'تحديث عقد'],
+                        ['PUT', '/api/v1/admin/sponsor-contracts/{id}/approve', 'قبول عقد'],
+                        ['PUT', '/api/v1/admin/sponsor-contracts/{id}/reject', 'رفض عقد'],
+                        ['PUT', '/api/v1/admin/sponsor-contracts/{id}/complete', 'إتمام عقد'],
+                        ['GET', '/api/v1/admin/sponsor-payments', 'قائمة المدفوعات'],
+                        ['POST', '/api/v1/admin/sponsor-payments', 'إنشاء دفعة'],
+                        ['GET', '/api/v1/admin/sponsor-payments/{id}', 'تفاصيل دفعة'],
+                        ['PUT', '/api/v1/admin/sponsor-payments/{id}', 'تحديث دفعة'],
+                        ['PUT', '/api/v1/admin/sponsor-payments/{id}/mark-paid', 'تأكيد الدفع'],
+                        ['GET', '/api/v1/admin/sponsor-benefits', 'قائمة المزايا'],
+                        ['POST', '/api/v1/admin/sponsor-benefits', 'إنشاء ميزة'],
+                        ['GET', '/api/v1/admin/sponsor-benefits/{id}', 'تفاصيل ميزة'],
+                        ['PUT', '/api/v1/admin/sponsor-benefits/{id}', 'تحديث ميزة'],
+                        ['PUT', '/api/v1/admin/sponsor-benefits/{id}/deliver', 'تأكيد تسليم ميزة'],
+                        ['GET', '/api/v1/admin/sponsor-assets', 'قائمة ملفات الرعاة'],
+                        ['GET', '/api/v1/admin/sponsor-assets/{id}', 'تفاصيل ملف'],
+                        ['PUT', '/api/v1/admin/sponsor-assets/{id}/approve', 'قبول ملف'],
+                        ['PUT', '/api/v1/admin/sponsor-assets/{id}/reject', 'رفض ملف'],
+                    ];
+                @endphp
+                @foreach($adminSponsorSubEps as $ep)
+                <div class="endpoint-row flex items-center px-5 py-2.5 gap-2">
+                    <span class="method-badge font-bold px-1.5 py-0.5 rounded font-mono min-w-[44px] text-center {{ $ep[0] === 'GET' ? 'bg-emerald-500/15 text-emerald-400' : ($ep[0] === 'POST' ? 'bg-blue-500/15 text-blue-400' : ($ep[0] === 'PUT' ? 'bg-amber-500/15 text-amber-400' : 'bg-rose-500/15 text-rose-400')) }}">{{ $ep[0] }}</span>
+                    <code class="text-[11px] text-gray-400 font-mono" dir="ltr">{{ $ep[1] }}</code>
+                    <span class="text-[11px] text-gray-600 mr-auto">{{ $ep[2] }}</span>
+                </div>
+                @endforeach
+            </div>
+        </div>
+
+        <!-- Admin Ratings, Support Tickets, Rental Contracts, Invoices -->
+        <div class="glass border border-white/5 rounded-2xl overflow-hidden mb-4">
+            <div class="px-6 py-3 border-b border-white/5 bg-white/[0.02]">
+                <h5 class="text-xs font-bold text-gray-400">التقييمات والتذاكر والعقود والفواتير - Ratings, Tickets, Contracts & Invoices</h5>
+            </div>
+            <div class="divide-y divide-white/5">
+                @php
+                    $adminMiscEps = [
+                        ['GET', '/api/v1/admin/ratings', 'قائمة التقييمات', 'ratings.view-all'],
+                        ['GET', '/api/v1/admin/ratings/{rating}', 'تفاصيل تقييم', 'ratings.view-all'],
+                        ['PUT', '/api/v1/admin/ratings/{rating}/approve', 'قبول تقييم', 'ratings.approve'],
+                        ['PUT', '/api/v1/admin/ratings/{rating}/reject', 'رفض تقييم', 'ratings.reject'],
+                        ['DELETE', '/api/v1/admin/ratings/{rating}', 'حذف تقييم', 'ratings.delete'],
+                        ['GET', '/api/v1/admin/support-tickets', 'قائمة التذاكر', 'support-tickets.view-all'],
+                        ['GET', '/api/v1/admin/support-tickets/{id}', 'تفاصيل تذكرة', 'support-tickets.view-all'],
+                        ['PUT', '/api/v1/admin/support-tickets/{id}/assign', 'تعيين موظف', 'support-tickets.assign'],
+                        ['POST', '/api/v1/admin/support-tickets/{id}/reply', 'الرد', 'support-tickets.reply'],
+                        ['PUT', '/api/v1/admin/support-tickets/{id}/resolve', 'حل التذكرة', 'support-tickets.close'],
+                        ['PUT', '/api/v1/admin/support-tickets/{id}/close', 'إغلاق التذكرة', 'support-tickets.close'],
+                        ['DELETE', '/api/v1/admin/support-tickets/{id}', 'حذف تذكرة', 'support-tickets.delete'],
+                        ['GET', '/api/v1/admin/rental-contracts', 'قائمة العقود', 'rental-contracts.view-all'],
+                        ['POST', '/api/v1/admin/rental-contracts', 'إنشاء عقد', 'rental-contracts.create'],
+                        ['GET', '/api/v1/admin/rental-contracts/{id}', 'تفاصيل عقد', 'rental-contracts.view-all'],
+                        ['PUT', '/api/v1/admin/rental-contracts/{id}', 'تحديث عقد', 'rental-contracts.update'],
+                        ['PUT', '/api/v1/admin/rental-contracts/{id}/approve', 'قبول عقد', 'rental-contracts.approve'],
+                        ['PUT', '/api/v1/admin/rental-contracts/{id}/reject', 'رفض عقد', 'rental-contracts.reject'],
+                        ['PUT', '/api/v1/admin/rental-contracts/{id}/terminate', 'إنهاء عقد', 'rental-contracts.terminate'],
+                        ['GET', '/api/v1/admin/invoices', 'قائمة الفواتير', 'invoices.view-all'],
+                        ['POST', '/api/v1/admin/invoices', 'إنشاء فاتورة', 'invoices.create'],
+                        ['GET', '/api/v1/admin/invoices/{invoice}', 'تفاصيل فاتورة', 'invoices.view-all'],
+                        ['PUT', '/api/v1/admin/invoices/{invoice}', 'تحديث فاتورة', 'invoices.update'],
+                        ['PUT', '/api/v1/admin/invoices/{invoice}/issue', 'إصدار فاتورة', 'invoices.issue'],
+                        ['PUT', '/api/v1/admin/invoices/{invoice}/mark-paid', 'تأكيد الدفع', 'invoices.mark-paid'],
+                        ['PUT', '/api/v1/admin/invoices/{invoice}/cancel', 'إلغاء فاتورة', 'invoices.cancel'],
+                    ];
+                @endphp
+                @foreach($adminMiscEps as $ep)
+                <div class="endpoint-row flex items-center px-5 py-2.5 gap-2">
+                    <span class="method-badge font-bold px-1.5 py-0.5 rounded font-mono min-w-[44px] text-center {{ $ep[0] === 'GET' ? 'bg-emerald-500/15 text-emerald-400' : ($ep[0] === 'POST' ? 'bg-blue-500/15 text-blue-400' : ($ep[0] === 'PUT' ? 'bg-amber-500/15 text-amber-400' : 'bg-rose-500/15 text-rose-400')) }}">{{ $ep[0] }}</span>
+                    <code class="text-[11px] text-gray-400 font-mono" dir="ltr">{{ $ep[1] }}</code>
+                    <span class="text-[11px] text-gray-600">{{ $ep[2] }}</span>
+                    <span class="mr-auto"></span>
+                    <span class="text-[9px] px-2 py-0.5 rounded-full bg-amber-500/10 text-amber-400/70 font-mono">{{ $ep[3] }}</span>
+                </div>
+                @endforeach
+            </div>
+        </div>
+
+        <!-- Admin Pages, FAQs, Banners -->
+        <div class="glass border border-white/5 rounded-2xl overflow-hidden mb-4">
+            <div class="px-6 py-3 border-b border-white/5 bg-white/[0.02]">
+                <h5 class="text-xs font-bold text-gray-400">إدارة المحتوى - Pages, FAQs & Banners Management</h5>
+            </div>
+            <div class="divide-y divide-white/5">
+                @php
+                    $adminCmsEps = [
+                        ['GET', '/api/v1/admin/pages', 'قائمة الصفحات', 'pages.view'],
+                        ['POST', '/api/v1/admin/pages', 'إنشاء صفحة', 'pages.create'],
+                        ['GET', '/api/v1/admin/pages/{page}', 'تفاصيل صفحة', 'pages.view'],
+                        ['PUT', '/api/v1/admin/pages/{page}', 'تحديث صفحة', 'pages.update'],
+                        ['DELETE', '/api/v1/admin/pages/{page}', 'حذف صفحة', 'pages.delete'],
+                        ['GET', '/api/v1/admin/faqs', 'قائمة الأسئلة', 'faqs.view'],
+                        ['POST', '/api/v1/admin/faqs', 'إنشاء سؤال', 'faqs.create'],
+                        ['GET', '/api/v1/admin/faqs/{faq}', 'تفاصيل سؤال', 'faqs.view'],
+                        ['PUT', '/api/v1/admin/faqs/{faq}', 'تحديث سؤال', 'faqs.update'],
+                        ['DELETE', '/api/v1/admin/faqs/{faq}', 'حذف سؤال', 'faqs.delete'],
+                        ['GET', '/api/v1/admin/banners', 'قائمة البانرات', 'banners.view'],
+                        ['POST', '/api/v1/admin/banners', 'إنشاء بانر', 'banners.create'],
+                        ['GET', '/api/v1/admin/banners/{banner}', 'تفاصيل بانر', 'banners.view'],
+                        ['PUT', '/api/v1/admin/banners/{banner}', 'تحديث بانر', 'banners.update'],
+                        ['DELETE', '/api/v1/admin/banners/{banner}', 'حذف بانر', 'banners.delete'],
+                    ];
+                @endphp
+                @foreach($adminCmsEps as $ep)
+                <div class="endpoint-row flex items-center px-5 py-2.5 gap-2">
+                    <span class="method-badge font-bold px-1.5 py-0.5 rounded font-mono min-w-[44px] text-center {{ $ep[0] === 'GET' ? 'bg-emerald-500/15 text-emerald-400' : ($ep[0] === 'POST' ? 'bg-blue-500/15 text-blue-400' : ($ep[0] === 'PUT' ? 'bg-amber-500/15 text-amber-400' : 'bg-rose-500/15 text-rose-400')) }}">{{ $ep[0] }}</span>
+                    <code class="text-[11px] text-gray-400 font-mono" dir="ltr">{{ $ep[1] }}</code>
+                    <span class="text-[11px] text-gray-600">{{ $ep[2] }}</span>
+                    <span class="mr-auto"></span>
+                    <span class="text-[9px] px-2 py-0.5 rounded-full bg-amber-500/10 text-amber-400/70 font-mono">{{ $ep[3] }}</span>
                 </div>
                 @endforeach
             </div>
@@ -884,6 +1218,57 @@
                     <span class="text-xs text-gray-600">{{ $ep[2] }}</span>
                     <span class="mr-auto"></span>
                     <span class="text-[10px] px-2 py-0.5 rounded-full bg-orange-500/10 text-orange-400 font-semibold">supervisor</span>
+                </div>
+                @endforeach
+            </div>
+        </div>
+
+        <!-- Supervisor Sponsors & Contracts -->
+        <div class="glass border border-white/5 rounded-2xl overflow-hidden mb-4">
+            <div class="px-6 py-3 border-b border-white/5 bg-white/[0.02]">
+                <h5 class="text-xs font-bold text-gray-400">الرعاة والعقود - Sponsors & Contracts (Supervisor)</h5>
+            </div>
+            <div class="divide-y divide-white/5">
+                @php
+                    $supSponsorEps = [
+                        ['GET', '/api/v1/supervisor/sponsors', 'قائمة الرعاة'],
+                        ['GET', '/api/v1/supervisor/sponsors/{sponsor}', 'تفاصيل راعي'],
+                        ['GET', '/api/v1/supervisor/sponsor-contracts', 'قائمة العقود'],
+                        ['GET', '/api/v1/supervisor/sponsor-contracts/{id}', 'تفاصيل عقد'],
+                        ['PUT', '/api/v1/supervisor/sponsor-contracts/{id}/approve', 'قبول عقد'],
+                        ['PUT', '/api/v1/supervisor/sponsor-contracts/{id}/reject', 'رفض عقد'],
+                    ];
+                @endphp
+                @foreach($supSponsorEps as $ep)
+                <div class="endpoint-row flex items-center px-5 py-2.5 gap-2">
+                    <span class="method-badge font-bold px-1.5 py-0.5 rounded font-mono min-w-[44px] text-center {{ $ep[0] === 'GET' ? 'bg-emerald-500/15 text-emerald-400' : 'bg-amber-500/15 text-amber-400' }}">{{ $ep[0] }}</span>
+                    <code class="text-[11px] text-gray-400 font-mono" dir="ltr">{{ $ep[1] }}</code>
+                    <span class="text-[11px] text-gray-600 mr-auto">{{ $ep[2] }}</span>
+                </div>
+                @endforeach
+            </div>
+        </div>
+
+        <!-- Supervisor Support Tickets & Rental Contracts -->
+        <div class="glass border border-white/5 rounded-2xl overflow-hidden mb-4">
+            <div class="px-6 py-3 border-b border-white/5 bg-white/[0.02]">
+                <h5 class="text-xs font-bold text-gray-400">التذاكر وعقود الإيجار - Tickets & Rental Contracts (Supervisor)</h5>
+            </div>
+            <div class="divide-y divide-white/5">
+                @php
+                    $supMiscEps = [
+                        ['GET', '/api/v1/supervisor/support-tickets', 'قائمة التذاكر'],
+                        ['GET', '/api/v1/supervisor/support-tickets/{id}', 'تفاصيل تذكرة'],
+                        ['POST', '/api/v1/supervisor/support-tickets/{id}/reply', 'الرد على تذكرة'],
+                        ['GET', '/api/v1/supervisor/rental-contracts', 'قائمة العقود'],
+                        ['GET', '/api/v1/supervisor/rental-contracts/{id}', 'تفاصيل عقد'],
+                    ];
+                @endphp
+                @foreach($supMiscEps as $ep)
+                <div class="endpoint-row flex items-center px-5 py-2.5 gap-2">
+                    <span class="method-badge font-bold px-1.5 py-0.5 rounded font-mono min-w-[44px] text-center {{ $ep[0] === 'GET' ? 'bg-emerald-500/15 text-emerald-400' : ($ep[0] === 'POST' ? 'bg-blue-500/15 text-blue-400' : 'bg-amber-500/15 text-amber-400') }}">{{ $ep[0] }}</span>
+                    <code class="text-[11px] text-gray-400 font-mono" dir="ltr">{{ $ep[1] }}</code>
+                    <span class="text-[11px] text-gray-600 mr-auto">{{ $ep[2] }}</span>
                 </div>
                 @endforeach
             </div>
@@ -1132,6 +1517,78 @@
                 <p class="text-[10px] text-gray-600"><span class="text-indigo-400/60 font-bold">ملاحظة:</span> موافقة المستثمر هي الخطوة الأولى - بعدها يحتاج الطلب موافقة المشرف/الأدمن</p>
             </div>
         </div>
+
+        <!-- Investor Rental Contracts -->
+        <div class="glass border border-white/5 rounded-2xl overflow-hidden mb-4">
+            <div class="px-6 py-3 border-b border-white/5 bg-white/[0.02]">
+                <h5 class="text-xs font-bold text-gray-400">عقود الإيجار - Rental Contracts (Investor)</h5>
+            </div>
+            <div class="divide-y divide-white/5">
+                @php
+                    $invContractEps = [
+                        ['GET', '/api/v1/investor/rental-contracts', 'قائمة العقود', 'عقود مساحات المستثمر'],
+                        ['GET', '/api/v1/investor/rental-contracts/{id}', 'تفاصيل عقد', 'البيانات الكاملة'],
+                        ['PUT', '/api/v1/investor/rental-contracts/{id}/sign', 'توقيع العقد', 'توقيع عقد الإيجار'],
+                    ];
+                @endphp
+                @foreach($invContractEps as $ep)
+                <div class="endpoint-row flex items-center px-6 py-3 gap-3">
+                    <span class="method-badge font-bold px-2 py-0.5 rounded font-mono min-w-[56px] text-center {{ $ep[0] === 'GET' ? 'bg-emerald-500/20 text-emerald-400' : 'bg-amber-500/20 text-amber-400' }}">{{ $ep[0] }}</span>
+                    <code class="text-xs text-gray-300 font-mono whitespace-nowrap" dir="ltr">{{ $ep[1] }}</code>
+                    <span class="text-xs text-gray-600">{{ $ep[2] }}</span>
+                    <span class="mr-auto"></span>
+                    <span class="text-[10px] px-2 py-0.5 rounded-full bg-indigo-500/10 text-indigo-400 font-semibold">investor</span>
+                </div>
+                @endforeach
+            </div>
+        </div>
+    </section>
+
+    <div class="glow-line max-w-4xl mx-auto"></div>
+
+    <!-- Sponsor Self-Service API -->
+    <section id="sponsor-api" class="section-anchor max-w-7xl mx-auto px-6 py-16">
+        <div class="flex items-center gap-3 mb-2">
+            <div class="w-1 h-8 bg-yellow-500 rounded-full"></div>
+            <h3 class="text-2xl font-bold">واجهة الراعي</h3>
+            <span class="text-xs bg-yellow-500/10 text-yellow-400 px-2.5 py-1 rounded-full">Sponsor API</span>
+        </div>
+        <p class="text-gray-500 text-sm mb-8 mr-4">خدمة ذاتية للرعاة - إدارة العقود والمدفوعات والملفات والتعرض</p>
+
+        <div class="mb-4 p-3 bg-yellow-500/5 border border-yellow-500/10 rounded-xl">
+            <p class="text-xs text-yellow-400/80"><span class="font-bold">الصلاحيات:</span> تتطلب دور <code class="text-yellow-300/60">sponsor</code></p>
+        </div>
+
+        <div class="glass border border-white/5 rounded-2xl overflow-hidden mb-4">
+            <div class="divide-y divide-white/5">
+                @php
+                    $sponsorSelfEps = [
+                        ['GET', '/api/v1/sponsor/dashboard', 'لوحة التحكم', 'إحصائيات الراعي'],
+                        ['GET', '/api/v1/sponsor/contracts', 'قائمة العقود', 'عقود الراعي الحالية'],
+                        ['GET', '/api/v1/sponsor/contracts/{id}', 'تفاصيل عقد', 'البيانات الكاملة'],
+                        ['PUT', '/api/v1/sponsor/contracts/{id}/sign', 'توقيع العقد', 'قبول وتوقيع العقد'],
+                        ['GET', '/api/v1/sponsor/payments', 'قائمة المدفوعات', 'سجل المدفوعات'],
+                        ['GET', '/api/v1/sponsor/payments/{id}', 'تفاصيل دفعة', 'البيانات الكاملة'],
+                        ['POST', '/api/v1/sponsor/payments/{id}/proof', 'رفع إثبات دفع', 'إرفاق صورة الدفع'],
+                        ['GET', '/api/v1/sponsor/assets', 'قائمة الملفات', 'ملفات الراعي المرفوعة'],
+                        ['POST', '/api/v1/sponsor/assets', 'رفع ملف', 'لوغو، بانر، فيديو'],
+                        ['GET', '/api/v1/sponsor/assets/{id}', 'تفاصيل ملف', 'البيانات والحالة'],
+                        ['PUT', '/api/v1/sponsor/assets/{id}', 'تحديث ملف', 'تعديل البيانات'],
+                        ['DELETE', '/api/v1/sponsor/assets/{id}', 'حذف ملف', 'إزالة الملف'],
+                        ['GET', '/api/v1/sponsor/exposure', 'تقرير التعرض', 'إحصائيات الظهور والنقرات'],
+                    ];
+                @endphp
+                @foreach($sponsorSelfEps as $ep)
+                <div class="endpoint-row flex items-center px-6 py-3 gap-3">
+                    <span class="method-badge font-bold px-2 py-0.5 rounded font-mono min-w-[56px] text-center {{ $ep[0] === 'GET' ? 'bg-emerald-500/20 text-emerald-400' : ($ep[0] === 'POST' ? 'bg-blue-500/20 text-blue-400' : ($ep[0] === 'PUT' ? 'bg-amber-500/20 text-amber-400' : 'bg-rose-500/20 text-rose-400')) }}">{{ $ep[0] }}</span>
+                    <code class="text-xs text-gray-300 font-mono whitespace-nowrap" dir="ltr">{{ $ep[1] }}</code>
+                    <span class="text-xs text-gray-600">{{ $ep[2] }}</span>
+                    <span class="mr-auto"></span>
+                    <span class="text-[10px] px-2 py-0.5 rounded-full bg-yellow-500/10 text-yellow-400 font-semibold">sponsor</span>
+                </div>
+                @endforeach
+            </div>
+        </div>
     </section>
 
     <div class="glow-line max-w-4xl mx-auto"></div>
@@ -1219,6 +1676,31 @@
             </div>
             <div class="p-4 bg-white/[0.02]">
                 <p class="text-[10px] text-gray-600"><span class="text-purple-400/60 font-bold">ملاحظة:</span> طلبات الإيجار تتطلب ملف تجاري موثق وتمر بموافقة المستثمر ثم المشرف/الأدمن</p>
+            </div>
+        </div>
+
+        <!-- Merchant Rental Contracts -->
+        <div class="glass border border-white/5 rounded-2xl overflow-hidden mb-4">
+            <div class="px-6 py-3 border-b border-white/5 bg-white/[0.02]">
+                <h5 class="text-xs font-bold text-gray-400">عقود الإيجار - Rental Contracts (Merchant)</h5>
+            </div>
+            <div class="divide-y divide-white/5">
+                @php
+                    $mContractEps = [
+                        ['GET', '/api/v1/merchant/rental-contracts', 'قائمة العقود', 'عقود التاجر'],
+                        ['GET', '/api/v1/merchant/rental-contracts/{id}', 'تفاصيل عقد', 'البيانات الكاملة'],
+                        ['PUT', '/api/v1/merchant/rental-contracts/{id}/sign', 'توقيع العقد', 'توقيع عقد الإيجار'],
+                    ];
+                @endphp
+                @foreach($mContractEps as $ep)
+                <div class="endpoint-row flex items-center px-6 py-3 gap-3">
+                    <span class="method-badge font-bold px-2 py-0.5 rounded font-mono min-w-[56px] text-center {{ $ep[0] === 'GET' ? 'bg-emerald-500/20 text-emerald-400' : 'bg-amber-500/20 text-amber-400' }}">{{ $ep[0] }}</span>
+                    <code class="text-xs text-gray-300 font-mono whitespace-nowrap" dir="ltr">{{ $ep[1] }}</code>
+                    <span class="text-xs text-gray-600">{{ $ep[2] }}</span>
+                    <span class="mr-auto"></span>
+                    <span class="text-[10px] px-2 py-0.5 rounded-full bg-sky-500/10 text-sky-400 font-semibold">merchant</span>
+                </div>
+                @endforeach
             </div>
         </div>
     </section>
@@ -1431,9 +1913,9 @@
     </section>
 
     <div class="glow-line max-w-4xl mx-auto"></div>
-
-    <!-- Docker Services -->
-    <section class="max-w-7xl mx-auto px-6 py-16">
+ 
+    <!-- Docker Services --> 
+    {{-- <section class="max-w-7xl mx-auto px-6 py-16">
         <div class="flex items-center gap-3 mb-8">
             <div class="w-1 h-8 bg-sky-500 rounded-full"></div>
             <h3 class="text-2xl font-bold">Docker Services</h3>
@@ -1485,6 +1967,197 @@
                     <div class="flex justify-between text-gray-500"><span>Interface</span><a href="http://localhost:8080" class="font-mono text-orange-400 hover:underline">localhost:8080</a></div>
                     <div class="flex justify-between text-gray-500"><span>Auth DB</span><span class="font-mono text-gray-400">auth-mysql:3306</span></div>
                     <div class="flex justify-between text-gray-500"><span>Expo DB</span><span class="font-mono text-gray-400">expo-mysql:3306</span></div>
+                </div>
+            </div>
+        </div>
+    </section> --}}
+
+    <div class="glow-line max-w-4xl mx-auto"></div>
+
+    <!-- Environment Variables -->
+    <section id="env-vars" class="section-anchor max-w-7xl mx-auto px-6 py-16">
+        <div class="flex items-center gap-3 mb-2">
+            <div class="w-1 h-8 bg-emerald-500 rounded-full"></div>
+            <h3 class="text-2xl font-bold">متغيرات البيئة</h3>
+            <span class="text-xs bg-emerald-500/10 text-emerald-400 px-2.5 py-1 rounded-full">Environment Variables</span>
+        </div>
+        <p class="text-gray-500 text-sm mb-8 mr-4">جميع المتغيرات المطلوبة والاختيارية لتشغيل خدمة المعرض Expo API</p>
+
+        <!-- Required Variables -->
+        <div class="mb-8">
+            <div class="flex items-center gap-2 mb-4">
+                <span class="w-2 h-2 bg-rose-400 rounded-full"></span>
+                <h4 class="font-bold text-rose-400">Required - مطلوبة</h4>
+                <span class="text-[10px] text-rose-400/60 bg-rose-500/10 px-2 py-0.5 rounded-full">يجب تعيينها</span>
+            </div>
+            <div class="glass border border-rose-500/10 rounded-2xl overflow-hidden">
+                <div class="divide-y divide-white/5">
+                    @php
+                        $requiredVars = [
+                            ['APP_KEY', 'base64:xxxxx', 'مفتاح التشفير الرئيسي للتطبيق', 'php artisan key:generate --show'],
+                            ['DB_PASSWORD', '-', 'كلمة سر قاعدة البيانات MySQL', ''],
+                            ['AUTH_SERVICE_TOKEN', '-', 'توكن الاتصال بخدمة المصادقة (S2S)', 'openssl rand -hex 32'],
+                        ];
+                    @endphp
+                    @foreach($requiredVars as $v)
+                    <div class="endpoint-row flex items-center px-6 py-3.5 gap-3">
+                        <code class="text-xs bg-rose-500/10 px-2.5 py-1 rounded text-rose-300 font-mono min-w-[180px]">{{ $v[0] }}</code>
+                        <span class="text-xs text-gray-500 flex-1">{{ $v[2] }}</span>
+                        @if($v[3])
+                        <code class="text-[10px] text-gray-600 font-mono bg-white/5 px-2 py-0.5 rounded hidden md:inline" dir="ltr">{{ $v[3] }}</code>
+                        @endif
+                        <span class="text-[10px] px-2 py-0.5 rounded-full bg-rose-500/20 text-rose-400 font-bold">required</span>
+                    </div>
+                    @endforeach
+                </div>
+            </div>
+        </div>
+
+        <!-- Optional Variables -->
+        <div class="mb-8">
+            <div class="flex items-center gap-2 mb-4">
+                <span class="w-2 h-2 bg-gray-400 rounded-full"></span>
+                <h4 class="font-bold text-gray-400">Optional - اختيارية</h4>
+                <span class="text-[10px] text-gray-500 bg-white/5 px-2 py-0.5 rounded-full">لها قيم افتراضية</span>
+            </div>
+
+            <!-- App & DB -->
+            <div class="glass border border-white/5 rounded-2xl overflow-hidden mb-4">
+                <div class="px-6 py-3 border-b border-white/5 bg-white/[0.02]">
+                    <h5 class="text-xs font-bold text-gray-400">Application & Database</h5>
+                </div>
+                <div class="divide-y divide-white/5">
+                    @php
+                        $appVars = [
+                            ['APP_NAME', 'Maham Expo API', 'اسم التطبيق'],
+                            ['APP_ENV', 'production', 'بيئة التشغيل'],
+                            ['APP_DEBUG', 'false', 'وضع التصحيح'],
+                            ['APP_URL', 'https://expo-service-api.mahamexpo.sa', 'رابط التطبيق الرئيسي'],
+                            ['APP_LOCALE', 'ar', 'اللغة الافتراضية'],
+                            ['DB_CONNECTION', 'mysql', 'نوع قاعدة البيانات'],
+                            ['DB_HOST', 'expo-mysql', 'مضيف قاعدة البيانات'],
+                            ['DB_PORT', '3306', 'منفذ قاعدة البيانات'],
+                            ['DB_DATABASE', 'maham_expo_api', 'اسم قاعدة البيانات'],
+                            ['DB_USERNAME', 'expo_user', 'مستخدم قاعدة البيانات'],
+                        ];
+                    @endphp
+                    @foreach($appVars as $v)
+                    <div class="endpoint-row flex items-center px-6 py-2.5 gap-3">
+                        <code class="text-xs bg-white/5 px-2.5 py-0.5 rounded text-indigo-300/70 font-mono min-w-[180px]">{{ $v[0] }}</code>
+                        <code class="text-[10px] text-gray-600 font-mono">{{ $v[1] }}</code>
+                        <span class="text-xs text-gray-600 flex-1 text-left" dir="rtl">{{ $v[2] }}</span>
+                        <span class="text-[10px] px-2 py-0.5 rounded-full bg-white/5 text-gray-500">optional</span>
+                    </div>
+                    @endforeach
+                </div>
+            </div>
+
+            <!-- Redis & Cache & Queue -->
+            <div class="glass border border-white/5 rounded-2xl overflow-hidden mb-4">
+                <div class="px-6 py-3 border-b border-white/5 bg-white/[0.02]">
+                    <h5 class="text-xs font-bold text-gray-400">Redis & Cache & Queue</h5>
+                </div>
+                <div class="divide-y divide-white/5">
+                    @php
+                        $redisVars = [
+                            ['REDIS_HOST', 'expo-redis', 'مضيف Redis'],
+                            ['REDIS_PORT', '6379', 'منفذ Redis'],
+                            ['REDIS_PASSWORD', '(empty)', 'كلمة سر Redis'],
+                            ['CACHE_STORE', 'redis', 'محرك التخزين المؤقت'],
+                            ['CACHE_PREFIX', 'expo_', 'بادئة مفاتيح الكاش'],
+                            ['QUEUE_CONNECTION', 'redis', 'محرك قائمة المهام'],
+                            ['SESSION_DRIVER', 'redis', 'محرك الجلسات'],
+                            ['SESSION_LIFETIME', '120', 'عمر الجلسة (دقائق)'],
+                        ];
+                    @endphp
+                    @foreach($redisVars as $v)
+                    <div class="endpoint-row flex items-center px-6 py-2.5 gap-3">
+                        <code class="text-xs bg-white/5 px-2.5 py-0.5 rounded text-indigo-300/70 font-mono min-w-[180px]">{{ $v[0] }}</code>
+                        <code class="text-[10px] text-gray-600 font-mono">{{ $v[1] }}</code>
+                        <span class="text-xs text-gray-600 flex-1 text-left" dir="rtl">{{ $v[2] }}</span>
+                        <span class="text-[10px] px-2 py-0.5 rounded-full bg-white/5 text-gray-500">optional</span>
+                    </div>
+                    @endforeach
+                </div>
+            </div>
+
+            <!-- Auth Service Connection -->
+            <div class="glass border border-white/5 rounded-2xl overflow-hidden mb-4">
+                <div class="px-6 py-3 border-b border-white/5 bg-white/[0.02]">
+                    <h5 class="text-xs font-bold text-gray-400">Auth Service Connection - اتصال خدمة المصادقة</h5>
+                </div>
+                <div class="divide-y divide-white/5">
+                    @php
+                        $authServiceVars = [
+                            ['AUTH_SERVICE_URL', 'http://auth-service', 'رابط خدمة المصادقة الداخلي'],
+                            ['AUTH_SERVICE_TIMEOUT', '10', 'مهلة الاتصال بخدمة المصادقة (ثواني)'],
+                            ['AUTH_SERVICE_CACHE_TTL', '300', 'مدة تخزين بيانات المصادقة مؤقتاً (ثواني)'],
+                        ];
+                    @endphp
+                    @foreach($authServiceVars as $v)
+                    <div class="endpoint-row flex items-center px-6 py-2.5 gap-3">
+                        <code class="text-xs bg-white/5 px-2.5 py-0.5 rounded text-indigo-300/70 font-mono min-w-[180px]">{{ $v[0] }}</code>
+                        <code class="text-[10px] text-gray-600 font-mono">{{ $v[1] }}</code>
+                        <span class="text-xs text-gray-600 flex-1 text-left" dir="rtl">{{ $v[2] }}</span>
+                        <span class="text-[10px] px-2 py-0.5 rounded-full bg-white/5 text-gray-500">optional</span>
+                    </div>
+                    @endforeach
+                </div>
+            </div>
+
+            <!-- Service & Security -->
+            <div class="glass border border-white/5 rounded-2xl overflow-hidden mb-4">
+                <div class="px-6 py-3 border-b border-white/5 bg-white/[0.02]">
+                    <h5 class="text-xs font-bold text-gray-400">Service & Security</h5>
+                </div>
+                <div class="divide-y divide-white/5">
+                    @php
+                        $securityVars = [
+                            ['SERVICE_NAME', 'expo-api', 'اسم الخدمة'],
+                            ['SERVICE_VERSION', '1.0.0', 'إصدار الخدمة'],
+                            ['RATE_LIMIT_PER_MINUTE', '60', 'حد الطلبات في الدقيقة'],
+                            ['BCRYPT_ROUNDS', '12', 'جولات تشفير كلمات المرور'],
+                        ];
+                    @endphp
+                    @foreach($securityVars as $v)
+                    <div class="endpoint-row flex items-center px-6 py-2.5 gap-3">
+                        <code class="text-xs bg-white/5 px-2.5 py-0.5 rounded text-indigo-300/70 font-mono min-w-[180px]">{{ $v[0] }}</code>
+                        <code class="text-[10px] text-gray-600 font-mono">{{ $v[1] }}</code>
+                        <span class="text-xs text-gray-600 flex-1 text-left" dir="rtl">{{ $v[2] }}</span>
+                        <span class="text-[10px] px-2 py-0.5 rounded-full bg-white/5 text-gray-500">optional</span>
+                    </div>
+                    @endforeach
+                </div>
+            </div>
+
+            <!-- Logging & Mail -->
+            <div class="glass border border-white/5 rounded-2xl overflow-hidden">
+                <div class="px-6 py-3 border-b border-white/5 bg-white/[0.02]">
+                    <h5 class="text-xs font-bold text-gray-400">Logging & Mail</h5>
+                </div>
+                <div class="divide-y divide-white/5">
+                    @php
+                        $logVars = [
+                            ['LOG_CHANNEL', 'stack', 'قناة التسجيل'],
+                            ['LOG_LEVEL', 'warning', 'مستوى التسجيل'],
+                            ['MAIL_MAILER', 'log', 'محرك البريد (log, smtp, mailgun)'],
+                            ['MAIL_HOST', '(empty)', 'مضيف SMTP'],
+                            ['MAIL_PORT', '587', 'منفذ SMTP'],
+                            ['MAIL_USERNAME', '(empty)', 'مستخدم SMTP'],
+                            ['MAIL_PASSWORD', '(empty)', 'كلمة سر SMTP'],
+                            ['MAIL_ENCRYPTION', 'tls', 'تشفير البريد'],
+                            ['MAIL_FROM_ADDRESS', 'noreply@mahamexpo.sa', 'عنوان المرسل'],
+                            ['FILESYSTEM_DISK', 'local', 'نظام تخزين الملفات'],
+                        ];
+                    @endphp
+                    @foreach($logVars as $v)
+                    <div class="endpoint-row flex items-center px-6 py-2.5 gap-3">
+                        <code class="text-xs bg-white/5 px-2.5 py-0.5 rounded text-indigo-300/70 font-mono min-w-[180px]">{{ $v[0] }}</code>
+                        <code class="text-[10px] text-gray-600 font-mono">{{ $v[1] }}</code>
+                        <span class="text-xs text-gray-600 flex-1 text-left" dir="rtl">{{ $v[2] }}</span>
+                        <span class="text-[10px] px-2 py-0.5 rounded-full bg-white/5 text-gray-500">optional</span>
+                    </div>
+                    @endforeach
                 </div>
             </div>
         </div>
