@@ -297,6 +297,20 @@ class RolesAndPermissionsSeeder extends Seeder
                 'view'   => 'عرض تفضيلات الإشعارات',
                 'update' => 'تعديل تفضيلات الإشعارات',
             ],
+
+            // ==================== إعدادات النظام ====================
+            'settings' => [
+                'view'   => 'عرض الإعدادات',
+                'update' => 'تعديل الإعدادات',
+            ],
+
+            // ==================== مزايا الرعاية ====================
+            'sponsor-benefits' => [
+                'view'    => 'عرض مزايا الرعاية',
+                'create'  => 'إنشاء ميزة رعاية',
+                'update'  => 'تعديل ميزة رعاية',
+                'deliver' => 'تسليم ميزة رعاية',
+            ],
         ];
 
         $permissions = [];
@@ -418,15 +432,21 @@ class RolesAndPermissionsSeeder extends Seeder
 
             // تفضيلات الإشعارات
             'notification-preferences.view', 'notification-preferences.update',
+
+            // إعدادات النظام
+            'settings.view', 'settings.update',
+
+            // مزايا الرعاية
+            'sponsor-benefits.view', 'sponsor-benefits.create', 'sponsor-benefits.update', 'sponsor-benefits.deliver',
         ];
         $admin->syncPermissions($adminPermissions);
         $this->command->info("   ✅ Admin: " . count($adminPermissions) . " صلاحية");
 
         // ============================================================
-        // Moderator - مشرف
+        // Supervisor - مشرف
         // ============================================================
-        $moderator = Role::firstOrCreate(
-            ['name' => 'moderator'],
+        $supervisor = Role::firstOrCreate(
+            ['name' => 'supervisor'],
             [
                 'display_name' => 'مشرف',
                 'description' => 'صلاحيات إشرافية - مراجعة الطلبات والملفات',
@@ -434,7 +454,7 @@ class RolesAndPermissionsSeeder extends Seeder
                 'level' => 50,
             ]
         );
-        $moderatorPermissions = [
+        $supervisorPermissions = [
             'users.view',
             'roles.view',
             'permissions.view',
@@ -483,9 +503,18 @@ class RolesAndPermissionsSeeder extends Seeder
             'pages.view',
             'faqs.view',
             'banners.view',
+
+            // إعدادات النظام - عرض
+            'settings.view',
+
+            // مزايا الرعاية - عرض
+            'sponsor-benefits.view',
+
+            // تسجيل دفعة استئجار
+            'rental-requests.record-payment',
         ];
-        $moderator->syncPermissions($moderatorPermissions);
-        $this->command->info("   ✅ Moderator: " . count($moderatorPermissions) . " صلاحية");
+        $supervisor->syncPermissions($supervisorPermissions);
+        $this->command->info("   ✅ Supervisor (مشرف): " . count($supervisorPermissions) . " صلاحية");
 
         // ============================================================
         // Merchant - تاجر (يستأجر مساحات في المعارض)
@@ -582,8 +611,11 @@ class RolesAndPermissionsSeeder extends Seeder
             'categories.view',
             'cities.view',
 
-            // طلبات الاستئجار - عرض (الطلبات على مساحاته)
-            'rental-requests.view',
+            // طلبات الاستئجار - عرض والموافقة/الرفض (الطلبات على مساحاته)
+            'rental-requests.view', 'rental-requests.approve', 'rental-requests.reject',
+
+            // طلبات الزيارة - الموافقة/الرفض (لمساحاته)
+            'visit-requests.approve', 'visit-requests.reject',
 
             // المدفوعات
             'payments.view',

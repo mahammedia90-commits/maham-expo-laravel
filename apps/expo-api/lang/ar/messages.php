@@ -274,4 +274,12 @@ return [
     'unauthorized' => 'غير مصرح',
     'validation_failed' => 'فشل التحقق من البيانات',
     'server_error' => 'خطأ في الخادم',
+
+    // ================== TRACKING ==================
+    'tracking' => [
+        'view_recorded' => 'تم تسجيل المشاهدة بنجاح',
+        'action_recorded' => 'تم تسجيل الحدث بنجاح',
+        'invalid_resource_type' => 'نوع المورد غير صالح للتتبع',
+        'invalid_action' => 'إجراء تتبع غير صالح',
+    ],
 ];

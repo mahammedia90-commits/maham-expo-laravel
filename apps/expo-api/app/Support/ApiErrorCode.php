@@ -133,6 +133,10 @@ class ApiErrorCode
     public const INTERNAL_SERVER_ERROR = 'internal_server_error';
     public const SERVICE_UNAVAILABLE = 'service_unavailable';
 
+    // ================== TRACKING ERRORS ==================
+    public const INVALID_TRACKING_ACTION = 'invalid_tracking_action';
+    public const INVALID_TRACKING_RESOURCE = 'invalid_tracking_resource';
+
     // ================== RATE LIMIT ERRORS ==================
     public const RATE_LIMIT_EXCEEDED = 'rate_limit_exceeded';
 

@@ -81,13 +81,13 @@
 					"request": {
 						"method": "GET",
 						"url": {
-							"raw": "{{expo_url}}/v1/sponsor/dashboard",
+							"raw": "{{expo_url}}/v1/my/dashboard",
 							"host": [
 								"{{expo_url}}"
 							],
 							"path": [
 								"v1",
-								"sponsor",
+								"my",
 								"dashboard"
 							]
 						}
@@ -98,14 +98,14 @@
 					"request": {
 						"method": "GET",
 						"url": {
-							"raw": "{{expo_url}}/v1/sponsor/statistics",
+							"raw": "{{expo_url}}/v1/my/dashboard",
 							"host": [
 								"{{expo_url}}"
 							],
 							"path": [
 								"v1",
-								"sponsor",
-								"statistics"
+								"my",
+								"dashboard"
 							]
 						}
 					}
@@ -120,14 +120,14 @@
 					"request": {
 						"method": "GET",
 						"url": {
-							"raw": "{{expo_url}}/v1/sponsor/contracts",
+							"raw": "{{expo_url}}/v1/my/sponsor-contracts",
 							"host": [
 								"{{expo_url}}"
 							],
 							"path": [
 								"v1",
-								"sponsor",
-								"contracts"
+								"my",
+								"sponsor-contracts"
 							]
 						}
 					}
@@ -137,14 +137,14 @@
 					"request": {
 						"method": "GET",
 						"url": {
-							"raw": "{{expo_url}}/v1/sponsor/contracts/{sponsor_contract_id}",
+							"raw": "{{expo_url}}/v1/my/sponsor-contracts/{sponsor_contract_id}",
 							"host": [
 								"{{expo_url}}"
 							],
 							"path": [
 								"v1",
-								"sponsor",
-								"contracts",
+								"my",
+								"sponsor-contracts",
 								"{sponsor_contract_id}"
 							]
 						}
@@ -160,14 +160,14 @@
 					"request": {
 						"method": "GET",
 						"url": {
-							"raw": "{{expo_url}}/v1/sponsor/assets",
+							"raw": "{{expo_url}}/v1/my/sponsor-assets",
 							"host": [
 								"{{expo_url}}"
 							],
 							"path": [
 								"v1",
-								"sponsor",
-								"assets"
+								"my",
+								"sponsor-assets"
 							]
 						}
 					}
@@ -177,14 +177,14 @@
 					"request": {
 						"method": "POST",
 						"url": {
-							"raw": "{{expo_url}}/v1/sponsor/assets",
+							"raw": "{{expo_url}}/v1/my/sponsor-assets",
 							"host": [
 								"{{expo_url}}"
 							],
 							"path": [
 								"v1",
-								"sponsor",
-								"assets"
+								"my",
+								"sponsor-assets"
 							]
 						},
 						"header": [
@@ -204,14 +204,14 @@
 					"request": {
 						"method": "GET",
 						"url": {
-							"raw": "{{expo_url}}/v1/sponsor/assets/{sponsor_asset_id}",
+							"raw": "{{expo_url}}/v1/my/sponsor-assets/{sponsor_asset_id}",
 							"host": [
 								"{{expo_url}}"
 							],
 							"path": [
 								"v1",
-								"sponsor",
-								"assets",
+								"my",
+								"sponsor-assets",
 								"{sponsor_asset_id}"
 							]
 						}
@@ -222,14 +222,14 @@
 					"request": {
 						"method": "PUT",
 						"url": {
-							"raw": "{{expo_url}}/v1/sponsor/assets/{sponsor_asset_id}",
+							"raw": "{{expo_url}}/v1/my/sponsor-assets/{sponsor_asset_id}",
 							"host": [
 								"{{expo_url}}"
 							],
 							"path": [
 								"v1",
-								"sponsor",
-								"assets",
+								"my",
+								"sponsor-assets",
 								"{sponsor_asset_id}"
 							]
 						},
@@ -250,14 +250,14 @@
 					"request": {
 						"method": "DELETE",
 						"url": {
-							"raw": "{{expo_url}}/v1/sponsor/assets/{sponsor_asset_id}",
+							"raw": "{{expo_url}}/v1/my/sponsor-assets/{sponsor_asset_id}",
 							"host": [
 								"{{expo_url}}"
 							],
 							"path": [
 								"v1",
-								"sponsor",
-								"assets",
+								"my",
+								"sponsor-assets",
 								"{sponsor_asset_id}"
 							]
 						}
@@ -273,14 +273,14 @@
 					"request": {
 						"method": "GET",
 						"url": {
-							"raw": "{{expo_url}}/v1/sponsor/payments",
+							"raw": "{{expo_url}}/v1/my/sponsor-payments",
 							"host": [
 								"{{expo_url}}"
 							],
 							"path": [
 								"v1",
-								"sponsor",
-								"payments"
+								"my",
+								"sponsor-payments"
 							]
 						}
 					}
@@ -290,14 +290,14 @@
 					"request": {
 						"method": "GET",
 						"url": {
-							"raw": "{{expo_url}}/v1/sponsor/payments/{sponsor_payment_id}",
+							"raw": "{{expo_url}}/v1/my/sponsor-payments/{sponsor_payment_id}",
 							"host": [
 								"{{expo_url}}"
 							],
 							"path": [
 								"v1",
-								"sponsor",
-								"payments",
+								"my",
+								"sponsor-payments",
 								"{sponsor_payment_id}"
 							]
 						}
@@ -313,14 +313,14 @@
 					"request": {
 						"method": "GET",
 						"url": {
-							"raw": "{{expo_url}}/v1/sponsor/exposure",
+							"raw": "{{expo_url}}/v1/my/sponsor-exposure",
 							"host": [
 								"{{expo_url}}"
 							],
 							"path": [
 								"v1",
-								"sponsor",
-								"exposure"
+								"my",
+								"sponsor-exposure"
 							]
 						}
 					}
@@ -330,14 +330,14 @@
 					"request": {
 						"method": "GET",
 						"url": {
-							"raw": "{{expo_url}}/v1/sponsor/exposure/summary",
+							"raw": "{{expo_url}}/v1/my/sponsor-exposure/summary",
 							"host": [
 								"{{expo_url}}"
 							],
 							"path": [
 								"v1",
-								"sponsor",
-								"exposure",
+								"my",
+								"sponsor-exposure",
 								"summary"
 							]
 						}
@@ -836,6 +836,122 @@
 								"{invoice_id}"
 							]
 						}
+					}
+				}
+			]
+		},
+		{
+			"name": "My Activity",
+			"description": "User's own activity tracking history and summary.",
+			"item": [
+				{
+					"name": "My Activity Log",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "application/json"
+							},
+							{
+								"key": "Accept-Language",
+								"value": "{{language}}"
+							},
+							{
+								"key": "X-Platform",
+								"value": "web"
+							},
+							{
+								"key": "Authorization",
+								"value": "Bearer {{sponsor_token}}"
+							}
+						],
+						"url": {
+							"raw": "{{expo_url}}/v1/my/activity?per_page=20",
+							"host": [
+								"{{expo_url}}"
+							],
+							"path": [
+								"v1",
+								"my",
+								"activity"
+							],
+							"query": [
+								{
+									"key": "per_page",
+									"value": "20"
+								},
+								{
+									"key": "action",
+									"value": "view",
+									"disabled": true
+								},
+								{
+									"key": "platform",
+									"value": "web",
+									"disabled": true
+								},
+								{
+									"key": "resource_type",
+									"value": "event",
+									"disabled": true
+								},
+								{
+									"key": "from",
+									"value": "2024-01-01",
+									"disabled": true
+								},
+								{
+									"key": "to",
+									"value": "2024-12-31",
+									"disabled": true
+								}
+							]
+						},
+						"description": "Get authenticated user's activity history with optional filters."
+					}
+				},
+				{
+					"name": "My Activity Summary",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "application/json"
+							},
+							{
+								"key": "Accept-Language",
+								"value": "{{language}}"
+							},
+							{
+								"key": "X-Platform",
+								"value": "web"
+							},
+							{
+								"key": "Authorization",
+								"value": "Bearer {{sponsor_token}}"
+							}
+						],
+						"url": {
+							"raw": "{{expo_url}}/v1/my/activity/summary?period=30d",
+							"host": [
+								"{{expo_url}}"
+							],
+							"path": [
+								"v1",
+								"my",
+								"activity",
+								"summary"
+							],
+							"query": [
+								{
+									"key": "period",
+									"value": "30d"
+								}
+							]
+						},
+						"description": "Get activity summary with stats breakdown (actions, platforms, top viewed, recent searches)."
 					}
 				}
 			]

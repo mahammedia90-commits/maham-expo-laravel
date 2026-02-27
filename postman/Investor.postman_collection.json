@@ -81,13 +81,13 @@
 					"request": {
 						"method": "GET",
 						"url": {
-							"raw": "{{expo_url}}/v1/investor/dashboard",
+							"raw": "{{expo_url}}/v1/my/dashboard",
 							"host": [
 								"{{expo_url}}"
 							],
 							"path": [
 								"v1",
-								"investor",
+								"my",
 								"dashboard"
 							]
 						}
@@ -98,13 +98,13 @@
 					"request": {
 						"method": "GET",
 						"url": {
-							"raw": "{{expo_url}}/v1/investor/statistics",
+							"raw": "{{expo_url}}/v1/my/statistics",
 							"host": [
 								"{{expo_url}}"
 							],
 							"path": [
 								"v1",
-								"investor",
+								"my",
 								"statistics"
 							]
 						}
@@ -120,13 +120,13 @@
 					"request": {
 						"method": "GET",
 						"url": {
-							"raw": "{{expo_url}}/v1/investor/spaces",
+							"raw": "{{expo_url}}/v1/my/spaces",
 							"host": [
 								"{{expo_url}}"
 							],
 							"path": [
 								"v1",
-								"investor",
+								"my",
 								"spaces"
 							]
 						}
@@ -147,13 +147,13 @@
 							"raw": "{\n    \"event_id\": \"{{event_id}}\",\n    \"section_id\": \"{{section_id}}\",\n    \"name\": \"Premium Booth A1\",\n    \"name_ar\": \"\\u0645\\u0633\\u0627\\u062d\\u0629 \\u0645\\u0645\\u064a\\u0632\\u0629 A1\",\n    \"description\": \"Corner booth with excellent visibility\",\n    \"description_ar\": \"\\u0645\\u0633\\u0627\\u062d\\u0629 \\u0631\\u0643\\u0646\\u064a\\u0629 \\u0628\\u0631\\u0624\\u064a\\u0629 \\u0645\\u0645\\u062a\\u0627\\u0632\\u0629\",\n    \"location_code\": \"A-01\",\n    \"area_sqm\": 50,\n    \"price_per_day\": 500,\n    \"price_total\": 5000,\n    \"floor_number\": 1,\n    \"space_type\": \"booth\",\n    \"payment_system\": \"full\",\n    \"rental_duration\": \"event\",\n    \"amenities\": [\n        \"wifi\",\n        \"electricity\",\n        \"water\"\n    ],\n    \"services\": []\n}"
 						},
 						"url": {
-							"raw": "{{expo_url}}/v1/investor/spaces",
+							"raw": "{{expo_url}}/v1/my/spaces",
 							"host": [
 								"{{expo_url}}"
 							],
 							"path": [
 								"v1",
-								"investor",
+								"my",
 								"spaces"
 							]
 						}
@@ -164,13 +164,13 @@
 					"request": {
 						"method": "GET",
 						"url": {
-							"raw": "{{expo_url}}/v1/investor/spaces/{{space_id}}",
+							"raw": "{{expo_url}}/v1/my/spaces/{{space_id}}",
 							"host": [
 								"{{expo_url}}"
 							],
 							"path": [
 								"v1",
-								"investor",
+								"my",
 								"spaces",
 								"{{space_id}}"
 							]
@@ -192,13 +192,13 @@
 							"raw": "{\n    \"name\": \"Updated Booth A1\",\n    \"price_total\": 6000,\n    \"amenities\": [\n        \"wifi\",\n        \"electricity\",\n        \"water\",\n        \"ac\"\n    ]\n}"
 						},
 						"url": {
-							"raw": "{{expo_url}}/v1/investor/spaces/{{space_id}}",
+							"raw": "{{expo_url}}/v1/my/spaces/{{space_id}}",
 							"host": [
 								"{{expo_url}}"
 							],
 							"path": [
 								"v1",
-								"investor",
+								"my",
 								"spaces",
 								"{{space_id}}"
 							]
@@ -210,13 +210,13 @@
 					"request": {
 						"method": "DELETE",
 						"url": {
-							"raw": "{{expo_url}}/v1/investor/spaces/{{space_id}}",
+							"raw": "{{expo_url}}/v1/my/spaces/{{space_id}}",
 							"host": [
 								"{{expo_url}}"
 							],
 							"path": [
 								"v1",
-								"investor",
+								"my",
 								"spaces",
 								"{{space_id}}"
 							]
@@ -238,13 +238,13 @@
 							"raw": "{\n    \"services\": [\n        \"{{service_id}}\"\n    ]\n}"
 						},
 						"url": {
-							"raw": "{{expo_url}}/v1/investor/spaces/{{space_id}}/services",
+							"raw": "{{expo_url}}/v1/my/spaces/{{space_id}}/services",
 							"host": [
 								"{{expo_url}}"
 							],
 							"path": [
 								"v1",
-								"investor",
+								"my",
 								"spaces",
 								"{{space_id}}",
 								"services"
@@ -267,13 +267,13 @@
 							"raw": "{\n    \"services\": [\n        \"{{service_id}}\"\n    ]\n}"
 						},
 						"url": {
-							"raw": "{{expo_url}}/v1/investor/spaces/{{space_id}}/services",
+							"raw": "{{expo_url}}/v1/my/spaces/{{space_id}}/services",
 							"host": [
 								"{{expo_url}}"
 							],
 							"path": [
 								"v1",
-								"investor",
+								"my",
 								"spaces",
 								"{{space_id}}",
 								"services"
@@ -291,14 +291,14 @@
 					"request": {
 						"method": "GET",
 						"url": {
-							"raw": "{{expo_url}}/v1/investor/rental-requests",
+							"raw": "{{expo_url}}/v1/my/received-rental-requests",
 							"host": [
 								"{{expo_url}}"
 							],
 							"path": [
 								"v1",
-								"investor",
-								"rental-requests"
+								"my",
+								"received-rental-requests"
 							]
 						}
 					}
@@ -308,14 +308,14 @@
 					"request": {
 						"method": "GET",
 						"url": {
-							"raw": "{{expo_url}}/v1/investor/rental-requests/pending-count",
+							"raw": "{{expo_url}}/v1/my/received-rental-requests/pending-count",
 							"host": [
 								"{{expo_url}}"
 							],
 							"path": [
 								"v1",
-								"investor",
-								"rental-requests",
+								"my",
+								"received-rental-requests",
 								"pending-count"
 							]
 						}
@@ -326,14 +326,14 @@
 					"request": {
 						"method": "GET",
 						"url": {
-							"raw": "{{expo_url}}/v1/investor/rental-requests/{{rental_request_id}}",
+							"raw": "{{expo_url}}/v1/my/received-rental-requests/{{rental_request_id}}",
 							"host": [
 								"{{expo_url}}"
 							],
 							"path": [
 								"v1",
-								"investor",
-								"rental-requests",
+								"my",
+								"received-rental-requests",
 								"{{rental_request_id}}"
 							]
 						}
@@ -344,14 +344,14 @@
 					"request": {
 						"method": "PUT",
 						"url": {
-							"raw": "{{expo_url}}/v1/investor/rental-requests/{{rental_request_id}}/approve",
+							"raw": "{{expo_url}}/v1/my/received-rental-requests/{{rental_request_id}}/approve",
 							"host": [
 								"{{expo_url}}"
 							],
 							"path": [
 								"v1",
-								"investor",
-								"rental-requests",
+								"my",
+								"received-rental-requests",
 								"{{rental_request_id}}",
 								"approve"
 							]
@@ -373,14 +373,14 @@
 							"raw": "{\n    \"reason\": \"Space not available for these dates\"\n}"
 						},
 						"url": {
-							"raw": "{{expo_url}}/v1/investor/rental-requests/{{rental_request_id}}/reject",
+							"raw": "{{expo_url}}/v1/my/received-rental-requests/{{rental_request_id}}/reject",
 							"host": [
 								"{{expo_url}}"
 							],
 							"path": [
 								"v1",
-								"investor",
-								"rental-requests",
+								"my",
+								"received-rental-requests",
 								"{{rental_request_id}}",
 								"reject"
 							]
@@ -397,13 +397,13 @@
 					"request": {
 						"method": "GET",
 						"url": {
-							"raw": "{{expo_url}}/v1/investor/rental-contracts",
+							"raw": "{{expo_url}}/v1/my/rental-contracts",
 							"host": [
 								"{{expo_url}}"
 							],
 							"path": [
 								"v1",
-								"investor",
+								"my",
 								"rental-contracts"
 							]
 						}
@@ -414,13 +414,13 @@
 					"request": {
 						"method": "GET",
 						"url": {
-							"raw": "{{expo_url}}/v1/investor/rental-contracts/{{rental_contract_id}}",
+							"raw": "{{expo_url}}/v1/my/rental-contracts/{{rental_contract_id}}",
 							"host": [
 								"{{expo_url}}"
 							],
 							"path": [
 								"v1",
-								"investor",
+								"my",
 								"rental-contracts",
 								"{{rental_contract_id}}"
 							]
@@ -432,13 +432,13 @@
 					"request": {
 						"method": "PUT",
 						"url": {
-							"raw": "{{expo_url}}/v1/investor/rental-contracts/{{rental_contract_id}}/sign",
+							"raw": "{{expo_url}}/v1/my/rental-contracts/{{rental_contract_id}}/sign",
 							"host": [
 								"{{expo_url}}"
 							],
 							"path": [
 								"v1",
-								"investor",
+								"my",
 								"rental-contracts",
 								"{{rental_contract_id}}",
 								"sign"
@@ -456,14 +456,14 @@
 					"request": {
 						"method": "GET",
 						"url": {
-							"raw": "{{expo_url}}/v1/investor/visit-requests",
+							"raw": "{{expo_url}}/v1/my/received-visit-requests",
 							"host": [
 								"{{expo_url}}"
 							],
 							"path": [
 								"v1",
-								"investor",
-								"visit-requests"
+								"my",
+								"received-visit-requests"
 							]
 						}
 					}
@@ -473,14 +473,14 @@
 					"request": {
 						"method": "GET",
 						"url": {
-							"raw": "{{expo_url}}/v1/investor/visit-requests/pending-count",
+							"raw": "{{expo_url}}/v1/my/received-visit-requests/pending-count",
 							"host": [
 								"{{expo_url}}"
 							],
 							"path": [
 								"v1",
-								"investor",
-								"visit-requests",
+								"my",
+								"received-visit-requests",
 								"pending-count"
 							]
 						}
@@ -491,14 +491,14 @@
 					"request": {
 						"method": "GET",
 						"url": {
-							"raw": "{{expo_url}}/v1/investor/visit-requests/{{visit_request_id}}",
+							"raw": "{{expo_url}}/v1/my/received-visit-requests/{{visit_request_id}}",
 							"host": [
 								"{{expo_url}}"
 							],
 							"path": [
 								"v1",
-								"investor",
-								"visit-requests",
+								"my",
+								"received-visit-requests",
 								"{{visit_request_id}}"
 							]
 						}
@@ -509,14 +509,14 @@
 					"request": {
 						"method": "PUT",
 						"url": {
-							"raw": "{{expo_url}}/v1/investor/visit-requests/{{visit_request_id}}/approve",
+							"raw": "{{expo_url}}/v1/my/received-visit-requests/{{visit_request_id}}/approve",
 							"host": [
 								"{{expo_url}}"
 							],
 							"path": [
 								"v1",
-								"investor",
-								"visit-requests",
+								"my",
+								"received-visit-requests",
 								"{{visit_request_id}}",
 								"approve"
 							]
@@ -538,14 +538,14 @@
 							"raw": "{\n    \"reason\": \"No available time slots\"\n}"
 						},
 						"url": {
-							"raw": "{{expo_url}}/v1/investor/visit-requests/{{visit_request_id}}/reject",
+							"raw": "{{expo_url}}/v1/my/received-visit-requests/{{visit_request_id}}/reject",
 							"host": [
 								"{{expo_url}}"
 							],
 							"path": [
 								"v1",
-								"investor",
-								"visit-requests",
+								"my",
+								"received-visit-requests",
 								"{{visit_request_id}}",
 								"reject"
 							]
@@ -562,13 +562,13 @@
 					"request": {
 						"method": "GET",
 						"url": {
-							"raw": "{{expo_url}}/v1/investor/payments",
+							"raw": "{{expo_url}}/v1/my/payments",
 							"host": [
 								"{{expo_url}}"
 							],
 							"path": [
 								"v1",
-								"investor",
+								"my",
 								"payments"
 							]
 						}
@@ -579,13 +579,13 @@
 					"request": {
 						"method": "GET",
 						"url": {
-							"raw": "{{expo_url}}/v1/investor/payments/summary",
+							"raw": "{{expo_url}}/v1/my/payments/summary",
 							"host": [
 								"{{expo_url}}"
 							],
 							"path": [
 								"v1",
-								"investor",
+								"my",
 								"payments",
 								"summary"
 							]
@@ -597,13 +597,13 @@
 					"request": {
 						"method": "GET",
 						"url": {
-							"raw": "{{expo_url}}/v1/investor/payments/{{rental_request_id}}",
+							"raw": "{{expo_url}}/v1/my/payments/{{rental_request_id}}",
 							"host": [
 								"{{expo_url}}"
 							],
 							"path": [
 								"v1",
-								"investor",
+								"my",
 								"payments",
 								"{{rental_request_id}}"
 							]
@@ -1028,6 +1028,122 @@
 								"{{invoice_id}}"
 							]
 						}
+					}
+				}
+			]
+		},
+		{
+			"name": "My Activity",
+			"description": "User's own activity tracking history and summary.",
+			"item": [
+				{
+					"name": "My Activity Log",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "application/json"
+							},
+							{
+								"key": "Accept-Language",
+								"value": "{{language}}"
+							},
+							{
+								"key": "X-Platform",
+								"value": "web"
+							},
+							{
+								"key": "Authorization",
+								"value": "Bearer {{investor_token}}"
+							}
+						],
+						"url": {
+							"raw": "{{expo_url}}/v1/my/activity?per_page=20",
+							"host": [
+								"{{expo_url}}"
+							],
+							"path": [
+								"v1",
+								"my",
+								"activity"
+							],
+							"query": [
+								{
+									"key": "per_page",
+									"value": "20"
+								},
+								{
+									"key": "action",
+									"value": "view",
+									"disabled": true
+								},
+								{
+									"key": "platform",
+									"value": "web",
+									"disabled": true
+								},
+								{
+									"key": "resource_type",
+									"value": "event",
+									"disabled": true
+								},
+								{
+									"key": "from",
+									"value": "2024-01-01",
+									"disabled": true
+								},
+								{
+									"key": "to",
+									"value": "2024-12-31",
+									"disabled": true
+								}
+							]
+						},
+						"description": "Get authenticated user's activity history with optional filters."
+					}
+				},
+				{
+					"name": "My Activity Summary",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "application/json"
+							},
+							{
+								"key": "Accept-Language",
+								"value": "{{language}}"
+							},
+							{
+								"key": "X-Platform",
+								"value": "web"
+							},
+							{
+								"key": "Authorization",
+								"value": "Bearer {{investor_token}}"
+							}
+						],
+						"url": {
+							"raw": "{{expo_url}}/v1/my/activity/summary?period=30d",
+							"host": [
+								"{{expo_url}}"
+							],
+							"path": [
+								"v1",
+								"my",
+								"activity",
+								"summary"
+							],
+							"query": [
+								{
+									"key": "period",
+									"value": "30d"
+								}
+							]
+						},
+						"description": "Get activity summary with stats breakdown (actions, platforms, top viewed, recent searches)."
 					}
 				}
 			]

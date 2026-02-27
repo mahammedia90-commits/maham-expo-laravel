@@ -108,6 +108,14 @@
                 </div>
 
                 <div>
+                    <h3 class="text-xs font-semibold text-cyan-600 uppercase tracking-wider mb-2 px-3" data-ar="التتبع" data-en="Tracking">📊 التتبع</h3>
+                    <ul class="space-y-0.5">
+                        <li><a href="#track-view" class="sidebar-link block py-2 px-3 text-sm text-gray-600 rounded-lg" data-ar="تسجيل مشاهدة" data-en="Track View">تسجيل مشاهدة</a></li>
+                        <li><a href="#track-action" class="sidebar-link block py-2 px-3 text-sm text-gray-600 rounded-lg" data-ar="تسجيل حدث" data-en="Track Action">تسجيل حدث</a></li>
+                    </ul>
+                </div>
+
+                <div>
                     <h3 class="text-xs font-semibold text-gray-400 uppercase tracking-wider mb-2 px-3" data-ar="خدمة ذاتية" data-en="Self-Service">خدمة ذاتية</h3>
                     <ul class="space-y-0.5">
                         <li><a href="#self-profile" class="sidebar-link block py-2 px-3 text-sm text-gray-600 rounded-lg" data-ar="الملف التجاري" data-en="Business Profile">الملف التجاري</a></li>
@@ -131,6 +139,7 @@
                         <li><a href="#my-payments" class="sidebar-link block py-2 px-3 text-sm text-gray-600 rounded-lg" data-ar="مدفوعاتي" data-en="My Payments">مدفوعاتي</a></li>
                         <li><a href="#my-rental-contracts" class="sidebar-link block py-2 px-3 text-sm text-gray-600 rounded-lg" data-ar="عقود الإيجار" data-en="Rental Contracts">عقود الإيجار</a></li>
                         <li><a href="#my-sponsor" class="sidebar-link block py-2 px-3 text-sm text-gray-600 rounded-lg" data-ar="الرعاية" data-en="Sponsor Data">الرعاية</a></li>
+                        <li><a href="#my-activity" class="sidebar-link block py-2 px-3 text-sm text-gray-600 rounded-lg" data-ar="نشاطاتي" data-en="My Activity">نشاطاتي</a></li>
                     </ul>
                 </div>
 
@@ -149,6 +158,7 @@
                         <li><a href="#manage-ratings-tickets" class="sidebar-link block py-2 px-3 text-sm text-gray-600 rounded-lg" data-ar="تقييمات / تذاكر" data-en="Ratings & Tickets">تقييمات / تذاكر</a></li>
                         <li><a href="#manage-invoices" class="sidebar-link block py-2 px-3 text-sm text-gray-600 rounded-lg" data-ar="الفواتير" data-en="Invoices">الفواتير</a></li>
                         <li><a href="#manage-content" class="sidebar-link block py-2 px-3 text-sm text-gray-600 rounded-lg" data-ar="المحتوى CMS" data-en="CMS Content">المحتوى</a></li>
+                        <li><a href="#manage-analytics" class="sidebar-link block py-2 px-3 text-sm text-gray-600 rounded-lg" data-ar="التحليلات" data-en="Analytics">التحليلات</a></li>
                     </ul>
                 </div>
 
@@ -228,7 +238,8 @@
                                 <tr class="border-b"><td class="p-4"><code class="bg-gray-100 px-2 py-1 rounded text-sm">Content-Type</code></td><td class="p-4"><code class="text-sm">application/json</code></td><td class="p-4"><span class="text-red-500 font-bold">✓</span></td><td class="p-4 text-sm text-gray-600" data-ar="نوع المحتوى المرسل" data-en="Content type of request body">نوع المحتوى</td></tr>
                                 <tr class="border-b"><td class="p-4"><code class="bg-gray-100 px-2 py-1 rounded text-sm">Accept</code></td><td class="p-4"><code class="text-sm">application/json</code></td><td class="p-4"><span class="text-red-500 font-bold">✓</span></td><td class="p-4 text-sm text-gray-600" data-ar="نوع الرد المطلوب" data-en="Expected response format">نوع الرد</td></tr>
                                 <tr class="border-b"><td class="p-4"><code class="bg-gray-100 px-2 py-1 rounded text-sm">Authorization</code></td><td class="p-4"><code class="text-sm">Bearer {token}</code></td><td class="p-4"><span class="text-yellow-600 text-sm" data-ar="للمحمية" data-en="Protected">للمحمية</span></td><td class="p-4 text-sm text-gray-600" data-ar="توكن JWT من Auth Service" data-en="JWT token from Auth Service">توكن JWT من Auth Service</td></tr>
-                                <tr><td class="p-4"><code class="bg-gray-100 px-2 py-1 rounded text-sm">Accept-Language</code></td><td class="p-4"><code class="text-sm">ar</code> | <code class="text-sm">en</code></td><td class="p-4"><span class="text-gray-400 text-sm" data-ar="اختياري" data-en="Optional">اختياري</span></td><td class="p-4 text-sm text-gray-600" data-ar="لغة الردود (الافتراضي: en)" data-en="Response language (default: en)">لغة الردود</td></tr>
+                                <tr class="border-b"><td class="p-4"><code class="bg-gray-100 px-2 py-1 rounded text-sm">Accept-Language</code></td><td class="p-4"><code class="text-sm">ar</code> | <code class="text-sm">en</code></td><td class="p-4"><span class="text-gray-400 text-sm" data-ar="اختياري" data-en="Optional">اختياري</span></td><td class="p-4 text-sm text-gray-600" data-ar="لغة الردود (الافتراضي: en)" data-en="Response language (default: en)">لغة الردود</td></tr>
+                                <tr><td class="p-4"><code class="bg-purple-100 px-2 py-1 rounded text-sm">X-Platform</code></td><td class="p-4"><code class="text-sm">web</code> | <code class="text-sm">mobile</code> | <code class="text-sm">api</code></td><td class="p-4"><span class="text-gray-400 text-sm" data-ar="اختياري" data-en="Optional">اختياري</span></td><td class="p-4 text-sm text-gray-600" data-ar="مصدر الطلب للتتبع والتحليل (الافتراضي: web)" data-en="Request source for tracking & analytics (default: web)">مصدر الطلب — web / mobile / api</td></tr>
                             </tbody>
                         </table>
                     </div>
@@ -566,6 +577,87 @@
                         <span class="text-[10px] text-gray-400 font-bold">⚠️</span>
                         <code class="bg-blue-50 text-blue-600 px-1.5 py-0.5 rounded text-[10px]">404 NOT_FOUND</code>
                         <code class="bg-purple-50 text-purple-600 px-1.5 py-0.5 rounded text-[10px]">429 RATE_LIMITED</code>
+                    </div>
+                </section>
+
+
+                {{-- ============================================================ --}}
+                {{--           TRACKING (web & mobile analytics)                  --}}
+                {{-- ============================================================ --}}
+                <div class="section-divider">
+                    <h2 class="text-2xl font-extrabold text-cyan-700 mb-2" data-ar="📊 التتبع والتحليل" data-en="📊 Tracking & Analytics">📊 التتبع والتحليل</h2>
+                    <p class="text-gray-500 mb-2" data-ar="تسجيل المشاهدات والأحداث من الويب والموبايل — يعمل بدون أو مع تسجيل دخول" data-en="Record views & actions from web and mobile — works with or without authentication">تسجيل المشاهدات والأحداث — يعمل بدون أو مع تسجيل دخول</p>
+                    <div class="bg-cyan-50 border border-cyan-200 rounded-xl p-4 mb-8">
+                        <h4 class="font-bold text-cyan-800 mb-2" data-ar="هيدر المنصة X-Platform" data-en="X-Platform Header">هيدر المنصة X-Platform</h4>
+                        <p class="text-sm text-cyan-700 mb-2" data-ar="أرسل هيدر X-Platform مع كل طلب لتحديد مصدر الطلب:" data-en="Send X-Platform header with every request to identify the source:">أرسل هيدر X-Platform مع كل طلب لتحديد مصدر الطلب:</p>
+                        <div class="flex gap-3">
+                            <code class="bg-cyan-100 text-cyan-800 px-3 py-1 rounded text-sm font-mono">X-Platform: web</code>
+                            <code class="bg-cyan-100 text-cyan-800 px-3 py-1 rounded text-sm font-mono">X-Platform: mobile</code>
+                            <code class="bg-cyan-100 text-cyan-800 px-3 py-1 rounded text-sm font-mono">X-Platform: api</code>
+                        </div>
+                    </div>
+                </div>
+
+                {{-- Track: Record View --}}
+                <section id="track-view" class="mb-16">
+                    <h3 class="text-2xl font-bold mb-4" data-ar="تسجيل مشاهدة" data-en="Record View">تسجيل مشاهدة</h3>
+                    <div class="overflow-x-auto bg-white rounded-xl border border-gray-200">
+                        <table class="w-full text-sm">
+                            <thead><tr class="bg-gray-50 border-b"><th class="p-3 text-right">Method</th><th class="p-3 text-right">Endpoint</th><th class="p-3 text-right" data-ar="الوصف" data-en="Description">الوصف</th><th class="p-3 text-right" data-ar="مصادقة" data-en="Auth">Auth</th></tr></thead>
+                            <tbody>
+                                <tr><td class="p-3"><span class="badge method-post text-white">POST</span></td><td class="p-3"><code>/v1/track/view</code></td><td class="p-3" data-ar="تسجيل مشاهدة لعنصر (معرض، مساحة، صفحة...)" data-en="Record a view for an entity (event, space, page...)">تسجيل مشاهدة لعنصر</td><td class="p-3"><span class="text-gray-400 text-xs" data-ar="اختياري" data-en="Optional">اختياري</span></td></tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <div class="code-block mt-4">
+                        <div class="code-header"><span data-ar="مثال: تسجيل مشاهدة معرض" data-en="Example: Track Event View">مثال: POST /v1/track/view</span></div>
+                        <pre><code>{
+  <span class="json-key">"resource_type"</span>: <span class="json-string">"event"</span>,       <span class="text-gray-500">// event | space | section | sponsor | page | banner | faq | service</span>
+  <span class="json-key">"resource_id"</span>: <span class="json-string">"uuid-here"</span>,
+  <span class="json-key">"session_id"</span>: <span class="json-string">"sess_abc123"</span>,   <span class="text-gray-500">// optional — لربط الأحداث بجلسة</span>
+  <span class="json-key">"metadata"</span>: {                      <span class="text-gray-500">// optional</span>
+    <span class="json-key">"source_page"</span>: <span class="json-string">"home"</span>
+  }
+}</code></pre>
+                    </div>
+                    <div class="mt-3 flex flex-wrap items-center gap-1.5 px-1">
+                        <span class="text-[10px] text-gray-400 font-bold">⚠️</span>
+                        <code class="bg-orange-50 text-orange-600 px-1.5 py-0.5 rounded text-[10px]">422 VALIDATION_ERROR</code>
+                        <code class="bg-blue-50 text-blue-600 px-1.5 py-0.5 rounded text-[10px]">400 INVALID_INPUT</code>
+                        <code class="bg-purple-50 text-purple-600 px-1.5 py-0.5 rounded text-[10px]">429 RATE_LIMIT</code>
+                    </div>
+                </section>
+
+                {{-- Track: Record Action --}}
+                <section id="track-action" class="mb-16">
+                    <h3 class="text-2xl font-bold mb-4" data-ar="تسجيل حدث / إجراء" data-en="Record Action">تسجيل حدث / إجراء</h3>
+                    <div class="overflow-x-auto bg-white rounded-xl border border-gray-200">
+                        <table class="w-full text-sm">
+                            <thead><tr class="bg-gray-50 border-b"><th class="p-3 text-right">Method</th><th class="p-3 text-right">Endpoint</th><th class="p-3 text-right" data-ar="الوصف" data-en="Description">الوصف</th><th class="p-3 text-right" data-ar="مصادقة" data-en="Auth">Auth</th></tr></thead>
+                            <tbody>
+                                <tr><td class="p-3"><span class="badge method-post text-white">POST</span></td><td class="p-3"><code>/v1/track/action</code></td><td class="p-3" data-ar="تسجيل إجراء (بحث، فلترة، مشاركة، نقرة...)" data-en="Record an action (search, filter, share, click...)">تسجيل إجراء</td><td class="p-3"><span class="text-gray-400 text-xs" data-ar="اختياري" data-en="Optional">اختياري</span></td></tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <div class="code-block mt-4">
+                        <div class="code-header"><span data-ar="مثال: تسجيل بحث" data-en="Example: Track Search Action">مثال: POST /v1/track/action</span></div>
+                        <pre><code>{
+  <span class="json-key">"action"</span>: <span class="json-string">"search"</span>,              <span class="text-gray-500">// view | search | click | share | filter | download | favorite | unfavorite | apply | submit | page_enter | page_exit</span>
+  <span class="json-key">"resource_type"</span>: <span class="json-string">"event"</span>,       <span class="text-gray-500">// optional</span>
+  <span class="json-key">"resource_id"</span>: <span class="json-string">"uuid-here"</span>,     <span class="text-gray-500">// required if resource_type sent</span>
+  <span class="json-key">"session_id"</span>: <span class="json-string">"sess_abc123"</span>,
+  <span class="json-key">"metadata"</span>: {
+    <span class="json-key">"search_query"</span>: <span class="json-string">"معرض الرياض"</span>,
+    <span class="json-key">"filter_params"</span>: { <span class="json-key">"city_id"</span>: <span class="json-string">"uuid"</span>, <span class="json-key">"category_id"</span>: <span class="json-string">"uuid"</span> },
+    <span class="json-key">"source_page"</span>: <span class="json-string">"events_list"</span>
+  }
+}</code></pre>
+                    </div>
+                    <div class="mt-3 flex flex-wrap items-center gap-1.5 px-1">
+                        <span class="text-[10px] text-gray-400 font-bold">⚠️</span>
+                        <code class="bg-orange-50 text-orange-600 px-1.5 py-0.5 rounded text-[10px]">422 VALIDATION_ERROR</code>
+                        <code class="bg-blue-50 text-blue-600 px-1.5 py-0.5 rounded text-[10px]">400 INVALID_INPUT</code>
+                        <code class="bg-purple-50 text-purple-600 px-1.5 py-0.5 rounded text-[10px]">429 RATE_LIMIT</code>
                     </div>
                 </section>
 
@@ -941,6 +1033,64 @@
                         <code class="bg-red-50 text-red-600 px-1.5 py-0.5 rounded text-[10px]">403 PERMISSION_DENIED</code>
                         <code class="bg-blue-50 text-blue-600 px-1.5 py-0.5 rounded text-[10px]">404 NOT_FOUND</code>
                         <code class="bg-orange-50 text-orange-600 px-1.5 py-0.5 rounded text-[10px]">422 VALIDATION_ERROR</code>
+                    </div>
+                </section>
+
+                {{-- My: Activity History --}}
+                <section id="my-activity" class="mb-16">
+                    <h3 class="text-2xl font-bold mb-4" data-ar="نشاطاتي" data-en="My Activity">نشاطاتي</h3>
+                    <div class="overflow-x-auto bg-white rounded-xl border border-gray-200">
+                        <table class="w-full text-sm">
+                            <thead><tr class="bg-gray-50 border-b"><th class="p-3 text-right">Method</th><th class="p-3 text-right">Endpoint</th><th class="p-3 text-right" data-ar="الوصف" data-en="Description">الوصف</th><th class="p-3 text-right">Permission</th></tr></thead>
+                            <tbody>
+                                <tr class="border-b"><td class="p-3"><span class="badge method-get text-white">GET</span></td><td class="p-3"><code>/v1/my/activity</code></td><td class="p-3" data-ar="سجل نشاطاتي (مع فلترة)" data-en="My activity log (filterable)">سجل نشاطاتي</td><td class="p-3"><span class="text-gray-400 text-xs">Auth</span></td></tr>
+                                <tr><td class="p-3"><span class="badge method-get text-white">GET</span></td><td class="p-3"><code>/v1/my/activity/summary</code></td><td class="p-3" data-ar="ملخص النشاط (إحصائيات)" data-en="Activity summary (stats)">ملخص النشاط</td><td class="p-3"><span class="text-gray-400 text-xs">Auth</span></td></tr>
+                            </tbody>
+                        </table>
+                    </div>
+
+                    {{-- Activity Query Parameters --}}
+                    <div class="mt-4 bg-gray-50 border border-gray-200 rounded-xl p-4">
+                        <p class="text-sm font-bold text-gray-600 mb-2" data-ar="فلاتر الاستعلام — <code>GET /v1/my/activity</code>" data-en="Query Filters — GET /v1/my/activity">فلاتر الاستعلام — <code>GET /v1/my/activity</code></p>
+                        <div class="grid grid-cols-2 md:grid-cols-4 gap-2 text-xs">
+                            <code class="bg-white border rounded px-2 py-1">?action=view</code>
+                            <code class="bg-white border rounded px-2 py-1">?platform=web</code>
+                            <code class="bg-white border rounded px-2 py-1">?resource_type=event</code>
+                            <code class="bg-white border rounded px-2 py-1">?from=2024-01-01</code>
+                            <code class="bg-white border rounded px-2 py-1">?to=2024-12-31</code>
+                            <code class="bg-white border rounded px-2 py-1">?per_page=20</code>
+                        </div>
+                    </div>
+
+                    {{-- Summary Query --}}
+                    <div class="mt-3 bg-gray-50 border border-gray-200 rounded-xl p-4">
+                        <p class="text-sm font-bold text-gray-600 mb-2" data-ar="فلتر الفترة — <code>GET /v1/my/activity/summary</code>" data-en="Period Filter — GET /v1/my/activity/summary">فلتر الفترة — <code>GET /v1/my/activity/summary</code></p>
+                        <div class="flex gap-2 text-xs">
+                            <code class="bg-white border rounded px-2 py-1">?period=7d</code>
+                            <code class="bg-white border rounded px-2 py-1">?period=30d</code>
+                            <code class="bg-white border rounded px-2 py-1">?period=90d</code>
+                            <code class="bg-white border rounded px-2 py-1">?period=all</code>
+                        </div>
+                    </div>
+
+                    {{-- Summary Response Sample --}}
+                    <div class="mt-4 code-block">
+                        <div class="code-header"><span data-ar="مثال استجابة — الملخص" data-en="Response — Summary">Response — Summary</span></div>
+                        <pre><code>{
+  <span class="json-key">"success"</span>: <span class="json-bool">true</span>,
+  <span class="json-key">"data"</span>: {
+    <span class="json-key">"period"</span>: <span class="json-string">"30d"</span>,
+    <span class="json-key">"total_activities"</span>: <span class="json-number">142</span>,
+    <span class="json-key">"actions"</span>: { <span class="json-key">"view"</span>: <span class="json-number">85</span>, <span class="json-key">"search"</span>: <span class="json-number">32</span>, <span class="json-key">"click"</span>: <span class="json-number">25</span> },
+    <span class="json-key">"platforms"</span>: { <span class="json-key">"web"</span>: <span class="json-number">90</span>, <span class="json-key">"mobile"</span>: <span class="json-number">52</span> },
+    <span class="json-key">"top_viewed"</span>: [{ <span class="json-key">"resource_type"</span>: <span class="json-string">"event"</span>, <span class="json-key">"count"</span>: <span class="json-number">15</span> }],
+    <span class="json-key">"recent_searches"</span>: [<span class="json-string">"معرض الرياض"</span>, <span class="json-string">"أثاث"</span>]
+  }
+}</code></pre>
+                    </div>
+                    <div class="mt-3 flex flex-wrap items-center gap-1.5 px-1">
+                        <span class="text-[10px] text-gray-400 font-bold">⚠️</span>
+                        <code class="bg-red-50 text-red-600 px-1.5 py-0.5 rounded text-[10px]">401 UNAUTHENTICATED</code>
                     </div>
                 </section>
 
@@ -1340,6 +1490,57 @@
                         <code class="bg-blue-50 text-blue-600 px-1.5 py-0.5 rounded text-[10px]">404 NOT_FOUND</code>
                         <code class="bg-orange-50 text-orange-600 px-1.5 py-0.5 rounded text-[10px]">422 VALIDATION_ERROR</code>
                         <code class="bg-blue-50 text-blue-600 px-1.5 py-0.5 rounded text-[10px]">422 SLUG_ALREADY_EXISTS</code>
+                    </div>
+                </section>
+
+                {{-- Manage: Analytics --}}
+                <section id="manage-analytics" class="mb-16">
+                    <h3 class="text-2xl font-bold mb-4" data-ar="التحليلات والتقارير" data-en="Analytics & Reports">📊 التحليلات</h3>
+                    <div class="overflow-x-auto bg-white rounded-xl border border-gray-200">
+                        <table class="w-full text-sm">
+                            <thead><tr class="bg-gray-50 border-b"><th class="p-3 text-right">Method</th><th class="p-3 text-right">Endpoint</th><th class="p-3 text-right" data-ar="الوصف" data-en="Description">الوصف</th><th class="p-3 text-right">Permission</th></tr></thead>
+                            <tbody>
+                                <tr class="border-b"><td class="p-3"><span class="badge method-get text-white">GET</span></td><td class="p-3"><code>/v1/manage/analytics</code></td><td class="p-3" data-ar="نظرة عامة (إجمالي نشاطات، مستخدمين، منصات)" data-en="Overview (total activities, users, platforms)">نظرة عامة</td><td class="p-3"><span class="perm-badge">reports.view</span></td></tr>
+                                <tr class="border-b"><td class="p-3"><span class="badge method-get text-white">GET</span></td><td class="p-3"><code>/v1/manage/analytics/views</code></td><td class="p-3" data-ar="تحليل المشاهدات (أكثر مشاهدة، حسب النوع)" data-en="Views analysis (top viewed, by type)">تحليل المشاهدات</td><td class="p-3"><span class="perm-badge">reports.view</span></td></tr>
+                                <tr class="border-b"><td class="p-3"><span class="badge method-get text-white">GET</span></td><td class="p-3"><code>/v1/manage/analytics/actions</code></td><td class="p-3" data-ar="سجل النشاطات (مع فلترة وصفحات)" data-en="Activity log (filtered, paginated)">سجل النشاطات</td><td class="p-3"><span class="perm-badge">reports.view</span></td></tr>
+                                <tr><td class="p-3"><span class="badge method-get text-white">GET</span></td><td class="p-3"><code>/v1/manage/analytics/users</code></td><td class="p-3" data-ar="تحليل المستخدمين (أكثر نشاطاً، حسب المنصة)" data-en="User analytics (most active, by platform)">تحليل المستخدمين</td><td class="p-3"><span class="perm-badge">reports.view</span></td></tr>
+                            </tbody>
+                        </table>
+                    </div>
+
+                    {{-- Analytics Query Parameters --}}
+                    <div class="mt-4 bg-gray-50 border border-gray-200 rounded-xl p-4">
+                        <p class="text-sm font-bold text-gray-600 mb-2" data-ar="فلاتر مشتركة لجميع النقاط" data-en="Common query filters for all endpoints">فلاتر مشتركة</p>
+                        <div class="grid grid-cols-2 md:grid-cols-4 gap-2 text-xs">
+                            <code class="bg-white border rounded px-2 py-1">?days=30</code>
+                            <code class="bg-white border rounded px-2 py-1">?platform=web</code>
+                            <code class="bg-white border rounded px-2 py-1">?action=view</code>
+                            <code class="bg-white border rounded px-2 py-1">?resource_type=event</code>
+                            <code class="bg-white border rounded px-2 py-1">?user_id={uuid}</code>
+                            <code class="bg-white border rounded px-2 py-1">?per_page=20</code>
+                        </div>
+                    </div>
+
+                    {{-- Overview Response Sample --}}
+                    <div class="mt-4 code-block">
+                        <div class="code-header"><span data-ar="مثال — نظرة عامة" data-en="Response — Overview">Response — GET /v1/manage/analytics</span></div>
+                        <pre><code>{
+  <span class="json-key">"success"</span>: <span class="json-bool">true</span>,
+  <span class="json-key">"data"</span>: {
+    <span class="json-key">"total_activities"</span>: <span class="json-number">12450</span>,
+    <span class="json-key">"total_views"</span>: <span class="json-number">8200</span>,
+    <span class="json-key">"unique_users"</span>: <span class="json-number">340</span>,
+    <span class="json-key">"unique_ips"</span>: <span class="json-number">520</span>,
+    <span class="json-key">"actions"</span>: { <span class="json-key">"view"</span>: <span class="json-number">8200</span>, <span class="json-key">"search"</span>: <span class="json-number">2100</span>, <span class="json-key">"click"</span>: <span class="json-number">1800</span> },
+    <span class="json-key">"platforms"</span>: { <span class="json-key">"web"</span>: <span class="json-number">7000</span>, <span class="json-key">"mobile"</span>: <span class="json-number">5000</span>, <span class="json-key">"api"</span>: <span class="json-number">450</span> },
+    <span class="json-key">"daily_trend"</span>: [{ <span class="json-key">"date"</span>: <span class="json-string">"2024-03-15"</span>, <span class="json-key">"count"</span>: <span class="json-number">420</span> }]
+  }
+}</code></pre>
+                    </div>
+                    <div class="mt-3 flex flex-wrap items-center gap-1.5 px-1">
+                        <span class="text-[10px] text-gray-400 font-bold">⚠️</span>
+                        <code class="bg-red-50 text-red-600 px-1.5 py-0.5 rounded text-[10px]">401 UNAUTHENTICATED</code>
+                        <code class="bg-red-50 text-red-600 px-1.5 py-0.5 rounded text-[10px]">403 PERMISSION_DENIED</code>
                     </div>
                 </section>
 

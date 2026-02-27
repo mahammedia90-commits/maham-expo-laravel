@@ -143,6 +143,29 @@ class RentalContractController extends Controller
     }
 
     /**
+     * توقيع العقد - يحدد تلقائياً إذا كان الموقّع هو التاجر أو المستثمر
+     * Unified sign — automatically detects whether the signer is merchant or investor
+     */
+    public function sign(Request $request, RentalContract $rentalContract): JsonResponse
+    {
+        $userId = $request->input('auth_user_id');
+
+        if ($rentalContract->investor_id === $userId) {
+            return $this->signByInvestor($request, $rentalContract);
+        }
+
+        if ($rentalContract->merchant_id === $userId) {
+            return $this->signByMerchant($request, $rentalContract);
+        }
+
+        return ApiResponse::error(
+            __('messages.auth.permission_denied'),
+            ApiErrorCode::PERMISSION_DENIED,
+            403
+        );
+    }
+
+    /**
      * توقيع العقد من قبل المستثمر
      */
     public function signByInvestor(Request $request, RentalContract $rentalContract): JsonResponse

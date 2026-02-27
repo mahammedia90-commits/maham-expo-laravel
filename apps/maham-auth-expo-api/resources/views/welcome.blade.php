@@ -2,8 +2,6 @@
 <html lang="ar" dir="rtl">
 <head>
     <meta charset="UTF-8">
-
-    
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Maham Auth Service - API Documentation</title>
     <script src="https://cdn.tailwindcss.com"></script>
@@ -45,8 +43,7 @@
         .sidebar-link.active, .sidebar-link:hover { border-color: #3B82F6; background: #eff6ff; color: #1d4ed8; }
         .param-table th { font-size: 12px; text-transform: uppercase; letter-spacing: 0.05em; }
         .badge { font-size: 10px; padding: 2px 8px; border-radius: 9999px; font-weight: 600; letter-spacing: 0.05em; }
-        .copy-btn { cursor: pointer; opacity: 0.6; transition: opacity 0.15s; }
-        .copy-btn:hover { opacity: 1; }
+        .perm-badge { font-size: 11px; background: #f3e8ff; color: #7c3aed; padding: 2px 10px; border-radius: 6px; font-family: 'JetBrains Mono', monospace; }
         @media (max-width: 768px) {
             .sidebar { display: none; }
             main { margin-right: 0 !important; margin-left: 0 !important; }
@@ -60,9 +57,7 @@
         <div class="container mx-auto px-6 h-full flex items-center justify-between">
             <div class="flex items-center gap-3">
                 <div class="w-9 h-9 bg-blue-500 rounded-lg flex items-center justify-center">
-                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z"/>
-                    </svg>
+                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z"/></svg>
                 </div>
                 <div>
                     <h1 class="text-lg font-bold leading-tight">Maham Auth Service</h1>
@@ -87,7 +82,6 @@
         <!-- Sidebar -->
         <aside id="sidebar" class="w-72 bg-white border-l border-gray-200 fixed right-0 top-16 sidebar overflow-y-auto shadow-sm">
             <nav class="p-4 space-y-6">
-
                 <div>
                     <h3 class="text-xs font-semibold text-gray-400 uppercase tracking-wider mb-2 px-3" data-ar="البداية" data-en="Getting Started">البداية</h3>
                     <ul class="space-y-0.5">
@@ -96,13 +90,11 @@
                         <li><a href="#headers" class="sidebar-link block py-2 px-3 text-sm text-gray-600 rounded-lg" data-ar="الهيدرات" data-en="Headers">الهيدرات</a></li>
                         <li><a href="#authentication" class="sidebar-link block py-2 px-3 text-sm text-gray-600 rounded-lg" data-ar="المصادقة" data-en="Authentication">المصادقة</a></li>
                         <li><a href="#response-format" class="sidebar-link block py-2 px-3 text-sm text-gray-600 rounded-lg" data-ar="صيغة الردود" data-en="Response Format">صيغة الردود</a></li>
-                        <li><a href="#errors" class="sidebar-link block py-2 px-3 text-sm text-gray-600 rounded-lg" data-ar="الأخطاء" data-en="Errors">الأخطاء</a></li>
-                        <li><a href="#rate-limiting" class="sidebar-link block py-2 px-3 text-sm text-gray-600 rounded-lg" data-ar="حد الطلبات" data-en="Rate Limiting">حد الطلبات</a></li>
                     </ul>
                 </div>
 
                 <div>
-                    <h3 class="text-xs font-semibold text-gray-400 uppercase tracking-wider mb-2 px-3" data-ar="المصادقة" data-en="Auth">المصادقة</h3>
+                    <h3 class="text-xs font-semibold text-gray-400 uppercase tracking-wider mb-2 px-3" data-ar="المصادقة" data-en="Auth Endpoints">المصادقة</h3>
                     <ul class="space-y-0.5">
                         <li><a href="#register" class="sidebar-link block py-2 px-3 text-sm text-gray-600 rounded-lg"><span class="badge method-post text-white ml-1">POST</span> <span data-ar="التسجيل" data-en="Register">التسجيل</span></a></li>
                         <li><a href="#login" class="sidebar-link block py-2 px-3 text-sm text-gray-600 rounded-lg"><span class="badge method-post text-white ml-1">POST</span> <span data-ar="تسجيل الدخول" data-en="Login">تسجيل الدخول</span></a></li>
@@ -122,16 +114,16 @@
                 </div>
 
                 <div>
-                    <h3 class="text-xs font-semibold text-gray-400 uppercase tracking-wider mb-2 px-3" data-ar="الملف الشخصي" data-en="Profile">الملف الشخصي</h3>
+                    <h3 class="text-xs font-semibold text-gray-400 uppercase tracking-wider mb-2 px-3" data-ar="الملف الشخصي" data-en="Profile & Email">الملف الشخصي</h3>
                     <ul class="space-y-0.5">
-                        <li><a href="#update-profile" class="sidebar-link block py-2 px-3 text-sm text-gray-600 rounded-lg"><span class="badge method-put text-white ml-1">PUT</span> <span data-ar="تحديث الملف الشخصي" data-en="Update Profile">تحديث الملف الشخصي</span></a></li>
+                        <li><a href="#update-profile" class="sidebar-link block py-2 px-3 text-sm text-gray-600 rounded-lg"><span class="badge method-put text-white ml-1">PUT</span> <span data-ar="تحديث الملف" data-en="Update Profile">تحديث الملف</span></a></li>
                         <li><a href="#send-verification" class="sidebar-link block py-2 px-3 text-sm text-gray-600 rounded-lg"><span class="badge method-post text-white ml-1">POST</span> <span data-ar="إرسال كود التحقق" data-en="Send Verification">إرسال كود التحقق</span></a></li>
                         <li><a href="#verify-email" class="sidebar-link block py-2 px-3 text-sm text-gray-600 rounded-lg"><span class="badge method-post text-white ml-1">POST</span> <span data-ar="تحقق من البريد" data-en="Verify Email">تحقق من البريد</span></a></li>
                     </ul>
                 </div>
 
                 <div>
-                    <h3 class="text-xs font-semibold text-gray-400 uppercase tracking-wider mb-2 px-3" data-ar="التحقق" data-en="Verification">التحقق</h3>
+                    <h3 class="text-xs font-semibold text-gray-400 uppercase tracking-wider mb-2 px-3" data-ar="التحقق (S2S)" data-en="Verification (S2S)">التحقق (S2S)</h3>
                     <ul class="space-y-0.5">
                         <li><a href="#verify-token" class="sidebar-link block py-2 px-3 text-sm text-gray-600 rounded-lg"><span class="badge method-post text-white ml-1">POST</span> <span data-ar="التحقق من التوكن" data-en="Verify Token">التحقق من التوكن</span></a></li>
                         <li><a href="#check-permission" class="sidebar-link block py-2 px-3 text-sm text-gray-600 rounded-lg"><span class="badge method-post text-white ml-1">POST</span> <span data-ar="فحص صلاحية" data-en="Check Permission">فحص صلاحية</span></a></li>
@@ -140,40 +132,25 @@
                 </div>
 
                 <div>
-                    <h3 class="text-xs font-semibold text-gray-400 uppercase tracking-wider mb-2 px-3" data-ar="إدارة المستخدمين" data-en="Users">إدارة المستخدمين</h3>
+                    <h3 class="text-xs font-semibold text-gray-400 uppercase tracking-wider mb-2 px-3" data-ar="الإدارة" data-en="Management">الإدارة</h3>
                     <ul class="space-y-0.5">
-                        <li><a href="#users-list" class="sidebar-link block py-2 px-3 text-sm text-gray-600 rounded-lg"><span class="badge method-get text-white ml-1">GET</span> <span data-ar="قائمة المستخدمين" data-en="List Users">قائمة المستخدمين</span></a></li>
-                        <li><a href="#users-create" class="sidebar-link block py-2 px-3 text-sm text-gray-600 rounded-lg"><span class="badge method-post text-white ml-1">POST</span> <span data-ar="إنشاء مستخدم" data-en="Create User">إنشاء مستخدم</span></a></li>
-                        <li><a href="#users-show" class="sidebar-link block py-2 px-3 text-sm text-gray-600 rounded-lg"><span class="badge method-get text-white ml-1">GET</span> <span data-ar="عرض مستخدم" data-en="Show User">عرض مستخدم</span></a></li>
-                        <li><a href="#users-update" class="sidebar-link block py-2 px-3 text-sm text-gray-600 rounded-lg"><span class="badge method-put text-white ml-1">PUT</span> <span data-ar="تحديث مستخدم" data-en="Update User">تحديث مستخدم</span></a></li>
-                        <li><a href="#users-delete" class="sidebar-link block py-2 px-3 text-sm text-gray-600 rounded-lg"><span class="badge method-delete text-white ml-1">DEL</span> <span data-ar="حذف مستخدم" data-en="Delete User">حذف مستخدم</span></a></li>
-                    </ul>
-                </div>
-
-                <div>
-                    <h3 class="text-xs font-semibold text-gray-400 uppercase tracking-wider mb-2 px-3" data-ar="الأدوار والصلاحيات" data-en="Roles & Permissions">الأدوار والصلاحيات</h3>
-                    <ul class="space-y-0.5">
-                        <li><a href="#roles" class="sidebar-link block py-2 px-3 text-sm text-gray-600 rounded-lg" data-ar="إدارة الأدوار" data-en="Roles Management">إدارة الأدوار</a></li>
-                        <li><a href="#permissions" class="sidebar-link block py-2 px-3 text-sm text-gray-600 rounded-lg" data-ar="إدارة الصلاحيات" data-en="Permissions Management">إدارة الصلاحيات</a></li>
-                    </ul>
-                </div>
-
-                <div>
-                    <h3 class="text-xs font-semibold text-gray-400 uppercase tracking-wider mb-2 px-3" data-ar="الخدمات" data-en="Services">الخدمات</h3>
-                    <ul class="space-y-0.5">
-                        <li><a href="#services" class="sidebar-link block py-2 px-3 text-sm text-gray-600 rounded-lg" data-ar="إدارة الخدمات" data-en="Services Management">إدارة الخدمات</a></li>
-                        <li><a href="#s2s" class="sidebar-link block py-2 px-3 text-sm text-gray-600 rounded-lg" data-ar="تواصل بين الخدمات" data-en="Service-to-Service">تواصل بين الخدمات</a></li>
+                        <li><a href="#users" class="sidebar-link block py-2 px-3 text-sm text-gray-600 rounded-lg" data-ar="المستخدمين" data-en="Users">المستخدمين</a></li>
+                        <li><a href="#roles" class="sidebar-link block py-2 px-3 text-sm text-gray-600 rounded-lg" data-ar="الأدوار" data-en="Roles">الأدوار</a></li>
+                        <li><a href="#permissions" class="sidebar-link block py-2 px-3 text-sm text-gray-600 rounded-lg" data-ar="الصلاحيات" data-en="Permissions">الصلاحيات</a></li>
+                        <li><a href="#services" class="sidebar-link block py-2 px-3 text-sm text-gray-600 rounded-lg" data-ar="الخدمات" data-en="Services">الخدمات</a></li>
+                        <li><a href="#s2s" class="sidebar-link block py-2 px-3 text-sm text-gray-600 rounded-lg" data-ar="تواصل S2S" data-en="Service-to-Service">تواصل S2S</a></li>
                     </ul>
                 </div>
 
                 <div>
                     <h3 class="text-xs font-semibold text-gray-400 uppercase tracking-wider mb-2 px-3" data-ar="المرجع" data-en="Reference">المرجع</h3>
                     <ul class="space-y-0.5">
-                        <li><a href="#error-codes" class="sidebar-link block py-2 px-3 text-sm text-gray-600 rounded-lg" data-ar="جدول رموز الأخطاء" data-en="Error Codes Table">جدول رموز الأخطاء</a></li>
+                        <li><a href="#errors" class="sidebar-link block py-2 px-3 text-sm text-gray-600 rounded-lg" data-ar="رموز الحالة" data-en="Status Codes">رموز الحالة</a></li>
+                        <li><a href="#error-codes" class="sidebar-link block py-2 px-3 text-sm text-gray-600 rounded-lg" data-ar="رموز الأخطاء" data-en="Error Codes">رموز الأخطاء</a></li>
+                        <li><a href="#rate-limiting" class="sidebar-link block py-2 px-3 text-sm text-gray-600 rounded-lg" data-ar="حد الطلبات" data-en="Rate Limiting">حد الطلبات</a></li>
                         <li><a href="#default-roles" class="sidebar-link block py-2 px-3 text-sm text-gray-600 rounded-lg" data-ar="الأدوار الافتراضية" data-en="Default Roles">الأدوار الافتراضية</a></li>
                     </ul>
                 </div>
-
             </nav>
         </aside>
 
@@ -220,10 +197,7 @@
                     </div>
 
                     <div class="code-block">
-                        <div class="code-header">
-                            <span>Health Check</span>
-                            <span class="badge method-get text-white">GET /health</span>
-                        </div>
+                        <div class="code-header"><span>Health Check</span><span class="badge method-get text-white">GET /health</span></div>
                         <pre><code>{
   <span class="json-key">"status"</span>: <span class="json-string">"ok"</span>,
   <span class="json-key">"service"</span>: <span class="json-string">"{{ config('auth-service.service_name', 'auth-service') }}"</span>,
@@ -280,59 +254,22 @@
                 {{-- ============================================================ --}}
                 <section id="headers" class="mb-20">
                     <h2 class="text-3xl font-bold mb-4" data-ar="الهيدرات المطلوبة" data-en="Required Headers">الهيدرات المطلوبة</h2>
-                    <p class="text-gray-600 mb-6" data-ar="يجب إرسال هذه الهيدرات مع كل طلب" data-en="These headers must be sent with every request">يجب إرسال هذه الهيدرات مع كل طلب</p>
-
-                    <div class="overflow-x-auto bg-white rounded-xl border border-gray-200 mb-6">
+                    <div class="overflow-x-auto bg-white rounded-xl border border-gray-200">
                         <table class="w-full">
-                            <thead>
-                                <tr class="bg-gray-50 border-b">
-                                    <th class="p-4 text-right text-sm font-semibold text-gray-500" data-ar="الهيدر" data-en="Header">الهيدر</th>
-                                    <th class="p-4 text-right text-sm font-semibold text-gray-500" data-ar="القيمة" data-en="Value">القيمة</th>
-                                    <th class="p-4 text-right text-sm font-semibold text-gray-500" data-ar="مطلوب" data-en="Required">مطلوب</th>
-                                    <th class="p-4 text-right text-sm font-semibold text-gray-500" data-ar="الوصف" data-en="Description">الوصف</th>
-                                </tr>
-                            </thead>
+                            <thead><tr class="bg-gray-50 border-b">
+                                <th class="p-4 text-right text-sm font-semibold text-gray-500" data-ar="الهيدر" data-en="Header">الهيدر</th>
+                                <th class="p-4 text-right text-sm font-semibold text-gray-500" data-ar="القيمة" data-en="Value">القيمة</th>
+                                <th class="p-4 text-right text-sm font-semibold text-gray-500" data-ar="مطلوب" data-en="Required">مطلوب</th>
+                                <th class="p-4 text-right text-sm font-semibold text-gray-500" data-ar="الوصف" data-en="Description">الوصف</th>
+                            </tr></thead>
                             <tbody>
-                                <tr class="border-b">
-                                    <td class="p-4"><code class="bg-gray-100 px-2 py-1 rounded text-sm">Content-Type</code></td>
-                                    <td class="p-4"><code class="text-sm">application/json</code></td>
-                                    <td class="p-4"><span class="text-red-500 font-bold">*</span></td>
-                                    <td class="p-4 text-sm text-gray-600" data-ar="نوع المحتوى المرسل" data-en="Content type of request body">نوع المحتوى المرسل</td>
-                                </tr>
-                                <tr class="border-b">
-                                    <td class="p-4"><code class="bg-gray-100 px-2 py-1 rounded text-sm">Accept</code></td>
-                                    <td class="p-4"><code class="text-sm">application/json</code></td>
-                                    <td class="p-4"><span class="text-red-500 font-bold">*</span></td>
-                                    <td class="p-4 text-sm text-gray-600" data-ar="نوع المحتوى المطلوب" data-en="Expected response format">نوع المحتوى المطلوب</td>
-                                </tr>
-                                <tr class="border-b">
-                                    <td class="p-4"><code class="bg-gray-100 px-2 py-1 rounded text-sm">Authorization</code></td>
-                                    <td class="p-4"><code class="text-sm">Bearer {token}</code></td>
-                                    <td class="p-4 text-yellow-600" data-ar="للمحمية" data-en="Protected">للمحمية</td>
-                                    <td class="p-4 text-sm text-gray-600" data-ar="توكن JWT للطلبات المحمية" data-en="JWT token for protected routes">توكن JWT للطلبات المحمية</td>
-                                </tr>
-                                <tr class="border-b">
-                                    <td class="p-4"><code class="bg-gray-100 px-2 py-1 rounded text-sm">Accept-Language</code></td>
-                                    <td class="p-4"><code class="text-sm">ar</code> | <code class="text-sm">en</code></td>
-                                    <td class="p-4 text-gray-400" data-ar="اختياري" data-en="Optional">اختياري</td>
-                                    <td class="p-4 text-sm text-gray-600" data-ar="لغة الردود (الافتراضي: en)" data-en="Response language (default: en)">لغة الردود (الافتراضي: en)</td>
-                                </tr>
-                                <tr>
-                                    <td class="p-4"><code class="bg-gray-100 px-2 py-1 rounded text-sm">X-Service-Token</code></td>
-                                    <td class="p-4"><code class="text-sm">{service_token}</code></td>
-                                    <td class="p-4 text-purple-600" data-ar="للخدمات" data-en="Services">للخدمات</td>
-                                    <td class="p-4 text-sm text-gray-600" data-ar="توكن الخدمة (S2S فقط)" data-en="Service token (S2S only)">توكن الخدمة (S2S فقط)</td>
-                                </tr>
+                                <tr class="border-b"><td class="p-4"><code class="bg-gray-100 px-2 py-1 rounded text-sm">Content-Type</code></td><td class="p-4"><code class="text-sm">application/json</code></td><td class="p-4"><span class="text-red-500 font-bold">✓</span></td><td class="p-4 text-sm text-gray-600" data-ar="نوع المحتوى المرسل" data-en="Content type of request body">نوع المحتوى المرسل</td></tr>
+                                <tr class="border-b"><td class="p-4"><code class="bg-gray-100 px-2 py-1 rounded text-sm">Accept</code></td><td class="p-4"><code class="text-sm">application/json</code></td><td class="p-4"><span class="text-red-500 font-bold">✓</span></td><td class="p-4 text-sm text-gray-600" data-ar="نوع المحتوى المطلوب" data-en="Expected response format">نوع المحتوى المطلوب</td></tr>
+                                <tr class="border-b"><td class="p-4"><code class="bg-gray-100 px-2 py-1 rounded text-sm">Authorization</code></td><td class="p-4"><code class="text-sm">Bearer {token}</code></td><td class="p-4"><span class="text-yellow-600 text-sm" data-ar="للمحمية" data-en="Protected">للمحمية</span></td><td class="p-4 text-sm text-gray-600" data-ar="توكن JWT للطلبات المحمية" data-en="JWT token for protected routes">توكن JWT للمحمية</td></tr>
+                                <tr class="border-b"><td class="p-4"><code class="bg-gray-100 px-2 py-1 rounded text-sm">Accept-Language</code></td><td class="p-4"><code class="text-sm">ar</code> | <code class="text-sm">en</code></td><td class="p-4"><span class="text-gray-400 text-sm" data-ar="اختياري" data-en="Optional">اختياري</span></td><td class="p-4 text-sm text-gray-600" data-ar="لغة الردود (الافتراضي: en)" data-en="Response language (default: en)">لغة الردود</td></tr>
+                                <tr><td class="p-4"><code class="bg-gray-100 px-2 py-1 rounded text-sm">X-Service-Token</code></td><td class="p-4"><code class="text-sm">{service_token}</code></td><td class="p-4"><span class="text-purple-600 text-sm" data-ar="للخدمات" data-en="S2S only">للخدمات</span></td><td class="p-4 text-sm text-gray-600" data-ar="توكن الخدمة (S2S فقط)" data-en="Service token (S2S only)">توكن S2S</td></tr>
                             </tbody>
                         </table>
-                    </div>
-
-                    <div class="code-block">
-                        <div class="code-header"><span data-ar="مثال كامل للهيدرات" data-en="Complete Headers Example">مثال كامل للهيدرات</span></div>
-                        <pre><code>Content-Type: application/json
-Accept: application/json
-Authorization: Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9...
-Accept-Language: ar</code></pre>
                     </div>
                 </section>
 
@@ -341,7 +278,7 @@ Accept-Language: ar</code></pre>
                 {{-- ============================================================ --}}
                 <section id="authentication" class="mb-20">
                     <h2 class="text-3xl font-bold mb-4" data-ar="المصادقة" data-en="Authentication">المصادقة</h2>
-                    <p class="text-gray-600 mb-6" data-ar="تستخدم الـ API مصادقة JWT. أرسل التوكن في Header لكل الطلبات المحمية." data-en="The API uses JWT authentication. Send the token in the Authorization header for all protected routes.">تستخدم الـ API مصادقة JWT. أرسل التوكن في Header لكل الطلبات المحمية.</p>
+                    <p class="text-gray-600 mb-6" data-ar="تستخدم الـ API مصادقة JWT. أرسل التوكن في Header لكل الطلبات المحمية." data-en="The API uses JWT authentication. Send the token in the Authorization header for all protected routes.">تستخدم الـ API مصادقة JWT.</p>
 
                     <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-6">
                         <div class="bg-white border border-gray-200 rounded-xl p-5">
@@ -357,26 +294,17 @@ Accept-Language: ar</code></pre>
                     <div class="bg-blue-50 border border-blue-200 rounded-xl p-5 mb-6">
                         <h4 class="font-bold text-blue-800 mb-3" data-ar="معلومات التوكن" data-en="Token Information">معلومات التوكن</h4>
                         <div class="grid grid-cols-1 md:grid-cols-3 gap-4 text-sm">
-                            <div>
-                                <span class="text-blue-600 font-semibold" data-ar="مدة الصلاحية:" data-en="Expiry Time:">مدة الصلاحية:</span>
-                                <span class="text-blue-800">{{ config('jwt.ttl', 60) }} <span data-ar="دقيقة" data-en="minutes">دقيقة</span></span>
-                            </div>
-                            <div>
-                                <span class="text-blue-600 font-semibold" data-ar="فترة التجديد:" data-en="Refresh Window:">فترة التجديد:</span>
-                                <span class="text-blue-800">{{ config('jwt.refresh_ttl', 20160) }} <span data-ar="دقيقة" data-en="minutes">دقيقة</span></span>
-                            </div>
-                            <div>
-                                <span class="text-blue-600 font-semibold" data-ar="الخوارزمية:" data-en="Algorithm:">الخوارزمية:</span>
-                                <span class="text-blue-800">{{ config('jwt.algo', 'HS256') }}</span>
-                            </div>
+                            <div><span class="text-blue-600 font-semibold" data-ar="مدة الصلاحية:" data-en="Expiry:">مدة الصلاحية:</span> <span class="text-blue-800">{{ config('jwt.ttl', 60) }} <span data-ar="دقيقة" data-en="min">دقيقة</span></span></div>
+                            <div><span class="text-blue-600 font-semibold" data-ar="فترة التجديد:" data-en="Refresh:">فترة التجديد:</span> <span class="text-blue-800">{{ config('jwt.refresh_ttl', 20160) }} <span data-ar="دقيقة" data-en="min">دقيقة</span></span></div>
+                            <div><span class="text-blue-600 font-semibold" data-ar="الخوارزمية:" data-en="Algorithm:">الخوارزمية:</span> <span class="text-blue-800">{{ config('jwt.algo', 'HS256') }}</span></div>
                         </div>
                     </div>
 
                     <div class="bg-yellow-50 border border-yellow-200 rounded-xl p-5">
                         <h4 class="font-bold text-yellow-800 mb-2" data-ar="تنبيهات مهمة" data-en="Important Notes">تنبيهات مهمة</h4>
                         <ul class="text-sm text-yellow-700 space-y-1">
-                            <li data-ar="• عند تسجيل الخروج يتم حظر التوكن ولا يمكن استخدامه مجدداً" data-en="• Token is blacklisted on logout and cannot be reused">• عند تسجيل الخروج يتم حظر التوكن ولا يمكن استخدامه مجدداً</li>
-                            <li data-ar="• استخدم /auth/refresh لتجديد التوكن قبل انتهاء صلاحيته" data-en="• Use /auth/refresh to renew token before expiry">• استخدم /auth/refresh لتجديد التوكن قبل انتهاء صلاحيته</li>
+                            <li data-ar="• عند تسجيل الخروج يتم حظر التوكن ولا يمكن استخدامه مجدداً" data-en="• Token is blacklisted on logout and cannot be reused">• عند تسجيل الخروج يتم حظر التوكن</li>
+                            <li data-ar="• استخدم /auth/refresh لتجديد التوكن قبل انتهاء صلاحيته" data-en="• Use /auth/refresh to renew token before expiry">• استخدم /auth/refresh لتجديد التوكن</li>
                             <li data-ar="• التوكن القديم يصبح غير صالح بعد التجديد" data-en="• Old token becomes invalid after refresh">• التوكن القديم يصبح غير صالح بعد التجديد</li>
                         </ul>
                     </div>
@@ -387,17 +315,13 @@ Accept-Language: ar</code></pre>
                 {{-- ============================================================ --}}
                 <section id="response-format" class="mb-20">
                     <h2 class="text-3xl font-bold mb-4" data-ar="صيغة الردود" data-en="Response Format">صيغة الردود</h2>
-                    <p class="text-gray-600 mb-6" data-ar="جميع الردود تأتي بصيغة JSON موحدة" data-en="All responses follow a consistent JSON format">جميع الردود تأتي بصيغة JSON موحدة</p>
-
                     <div class="grid grid-cols-1 lg:grid-cols-2 gap-4 mb-6">
                         <div class="code-block">
                             <div class="code-header"><span data-ar="رد ناجح" data-en="Success Response">رد ناجح</span><span class="badge bg-green-500/30 text-green-300">2xx</span></div>
                             <pre><code>{
   <span class="json-key">"success"</span>: <span class="json-bool">true</span>,
   <span class="json-key">"message"</span>: <span class="json-string">"Operation successful"</span>,
-  <span class="json-key">"data"</span>: {
-    <span class="json-key">"..."</span>: <span class="json-string">"..."</span>
-  }
+  <span class="json-key">"data"</span>: { ... }
 }</code></pre>
                         </div>
                         <div class="code-block">
@@ -410,42 +334,19 @@ Accept-Language: ar</code></pre>
 }</code></pre>
                         </div>
                     </div>
-
                     <div class="overflow-x-auto bg-white rounded-xl border border-gray-200">
                         <table class="w-full text-sm">
-                            <thead>
-                                <tr class="bg-gray-50 border-b">
-                                    <th class="p-4 text-right font-semibold text-gray-500" data-ar="الحقل" data-en="Field">الحقل</th>
-                                    <th class="p-4 text-right font-semibold text-gray-500" data-ar="النوع" data-en="Type">النوع</th>
-                                    <th class="p-4 text-right font-semibold text-gray-500" data-ar="الوصف" data-en="Description">الوصف</th>
-                                </tr>
-                            </thead>
+                            <thead><tr class="bg-gray-50 border-b">
+                                <th class="p-4 text-right font-semibold text-gray-500" data-ar="الحقل" data-en="Field">الحقل</th>
+                                <th class="p-4 text-right font-semibold text-gray-500" data-ar="النوع" data-en="Type">النوع</th>
+                                <th class="p-4 text-right font-semibold text-gray-500" data-ar="الوصف" data-en="Description">الوصف</th>
+                            </tr></thead>
                             <tbody>
-                                <tr class="border-b">
-                                    <td class="p-4"><code>success</code></td>
-                                    <td class="p-4">boolean</td>
-                                    <td class="p-4 text-gray-600" data-ar="حالة العملية (true/false)" data-en="Operation status (true/false)">حالة العملية (true/false)</td>
-                                </tr>
-                                <tr class="border-b">
-                                    <td class="p-4"><code>message</code></td>
-                                    <td class="p-4">string</td>
-                                    <td class="p-4 text-gray-600" data-ar="رسالة توضيحية (حسب اللغة)" data-en="Descriptive message (based on language)">رسالة توضيحية (حسب اللغة)</td>
-                                </tr>
-                                <tr class="border-b">
-                                    <td class="p-4"><code>data</code></td>
-                                    <td class="p-4">object|array</td>
-                                    <td class="p-4 text-gray-600" data-ar="البيانات المطلوبة (للردود الناجحة)" data-en="Requested data (for success responses)">البيانات المطلوبة (للردود الناجحة)</td>
-                                </tr>
-                                <tr class="border-b">
-                                    <td class="p-4"><code>code</code></td>
-                                    <td class="p-4">string</td>
-                                    <td class="p-4 text-gray-600" data-ar="رمز الخطأ للمعالجة البرمجية" data-en="Error code for programmatic handling">رمز الخطأ للمعالجة البرمجية</td>
-                                </tr>
-                                <tr>
-                                    <td class="p-4"><code>errors</code></td>
-                                    <td class="p-4">object</td>
-                                    <td class="p-4 text-gray-600" data-ar="تفاصيل أخطاء التحقق (للحقول)" data-en="Validation errors details (for fields)">تفاصيل أخطاء التحقق (للحقول)</td>
-                                </tr>
+                                <tr class="border-b"><td class="p-4"><code>success</code></td><td class="p-4">boolean</td><td class="p-4 text-gray-600" data-ar="حالة العملية (true/false)" data-en="Operation status">حالة العملية</td></tr>
+                                <tr class="border-b"><td class="p-4"><code>message</code></td><td class="p-4">string</td><td class="p-4 text-gray-600" data-ar="رسالة توضيحية (حسب اللغة)" data-en="Descriptive message (localized)">رسالة توضيحية</td></tr>
+                                <tr class="border-b"><td class="p-4"><code>data</code></td><td class="p-4">object|array</td><td class="p-4 text-gray-600" data-ar="البيانات (للردود الناجحة)" data-en="Data payload (success only)">البيانات</td></tr>
+                                <tr class="border-b"><td class="p-4"><code>code</code></td><td class="p-4">string</td><td class="p-4 text-gray-600" data-ar="رمز الخطأ للمعالجة البرمجية" data-en="Error code for programmatic use">رمز الخطأ</td></tr>
+                                <tr><td class="p-4"><code>errors</code></td><td class="p-4">object</td><td class="p-4 text-gray-600" data-ar="تفاصيل أخطاء التحقق" data-en="Validation error details">أخطاء التحقق</td></tr>
                             </tbody>
                         </table>
                     </div>
@@ -454,7 +355,7 @@ Accept-Language: ar</code></pre>
                 {{-- ============================================================ --}}
                 {{-- REGISTER --}}
                 {{-- ============================================================ --}}
-                <section id="register" class="mb-20">
+                <section id="register" class="mb-16">
                     <div class="endpoint-card">
                         <div class="bg-blue-50 border-b border-blue-100 p-5 flex items-center gap-3">
                             <span class="badge method-post text-white text-xs">POST</span>
@@ -463,20 +364,17 @@ Accept-Language: ar</code></pre>
                             <span class="badge bg-green-100 text-green-700" data-ar="عام" data-en="Public">عام</span>
                         </div>
                         <div class="p-5 space-y-6">
-                            <div>
-                                <h4 class="font-semibold mb-3 text-sm text-gray-500 uppercase tracking-wider" data-ar="الحقول" data-en="Parameters">الحقول</h4>
-                                <div class="overflow-x-auto">
-                                    <table class="param-table w-full text-sm">
-                                        <thead><tr class="border-b bg-gray-50"><th class="p-3 text-right" data-ar="الحقل" data-en="Field">الحقل</th><th class="p-3 text-right" data-ar="النوع" data-en="Type">النوع</th><th class="p-3 text-right" data-ar="مطلوب" data-en="Required">مطلوب</th><th class="p-3 text-right" data-ar="القواعد" data-en="Rules">القواعد</th></tr></thead>
-                                        <tbody>
-                                            <tr class="border-b"><td class="p-3"><code>name</code></td><td class="p-3">string</td><td class="p-3"><span class="text-red-500">*</span></td><td class="p-3">max:255</td></tr>
-                                            <tr class="border-b"><td class="p-3"><code>email</code></td><td class="p-3">string</td><td class="p-3"><span class="text-red-500">*</span></td><td class="p-3" data-ar="بريد صالح، فريد" data-en="valid email, unique">بريد صالح، فريد</td></tr>
-                                            <tr class="border-b"><td class="p-3"><code>password</code></td><td class="p-3">string</td><td class="p-3"><span class="text-red-500">*</span></td><td class="p-3" data-ar="8 أحرف+، كبير وصغير وأرقام" data-en="min:8, mixed case, numbers">8 أحرف+، كبير وصغير وأرقام</td></tr>
-                                            <tr class="border-b"><td class="p-3"><code>password_confirmation</code></td><td class="p-3">string</td><td class="p-3"><span class="text-red-500">*</span></td><td class="p-3" data-ar="يطابق كلمة المرور" data-en="must match password">يطابق كلمة المرور</td></tr>
-                                            <tr><td class="p-3"><code>phone</code></td><td class="p-3">string</td><td class="p-3 text-gray-400">-</td><td class="p-3">max:20</td></tr>
-                                        </tbody>
-                                    </table>
-                                </div>
+                            <div class="overflow-x-auto">
+                                <table class="param-table w-full text-sm">
+                                    <thead><tr class="border-b bg-gray-50"><th class="p-3 text-right" data-ar="الحقل" data-en="Field">الحقل</th><th class="p-3 text-right" data-ar="النوع" data-en="Type">النوع</th><th class="p-3 text-right" data-ar="مطلوب" data-en="Required">مطلوب</th><th class="p-3 text-right" data-ar="القواعد" data-en="Rules">القواعد</th></tr></thead>
+                                    <tbody>
+                                        <tr class="border-b"><td class="p-3"><code>name</code></td><td class="p-3">string</td><td class="p-3"><span class="text-red-500 font-bold">✓</span></td><td class="p-3">max:255</td></tr>
+                                        <tr class="border-b"><td class="p-3"><code>email</code></td><td class="p-3">string</td><td class="p-3"><span class="text-red-500 font-bold">✓</span></td><td class="p-3" data-ar="بريد صالح، فريد" data-en="valid email, unique">بريد صالح، فريد</td></tr>
+                                        <tr class="border-b"><td class="p-3"><code>password</code></td><td class="p-3">string</td><td class="p-3"><span class="text-red-500 font-bold">✓</span></td><td class="p-3" data-ar="8 أحرف+، كبير وصغير وأرقام" data-en="min:8, mixed case, numbers">8 أحرف+، كبير وصغير وأرقام</td></tr>
+                                        <tr class="border-b"><td class="p-3"><code>password_confirmation</code></td><td class="p-3">string</td><td class="p-3"><span class="text-red-500 font-bold">✓</span></td><td class="p-3" data-ar="يطابق كلمة المرور" data-en="must match password">يطابق كلمة المرور</td></tr>
+                                        <tr><td class="p-3"><code>phone</code></td><td class="p-3">string</td><td class="p-3"><span class="text-gray-400">—</span></td><td class="p-3">max:20</td></tr>
+                                    </tbody>
+                                </table>
                             </div>
                             <div class="grid grid-cols-1 lg:grid-cols-2 gap-4">
                                 <div class="code-block">
@@ -505,10 +403,8 @@ Accept-Language: ar</code></pre>
                     </div>
                 </section>
 
-                {{-- ============================================================ --}}
                 {{-- LOGIN --}}
-                {{-- ============================================================ --}}
-                <section id="login" class="mb-20">
+                <section id="login" class="mb-16">
                     <div class="endpoint-card">
                         <div class="bg-blue-50 border-b border-blue-100 p-5 flex items-center gap-3">
                             <span class="badge method-post text-white text-xs">POST</span>
@@ -517,37 +413,26 @@ Accept-Language: ar</code></pre>
                             <span class="badge bg-green-100 text-green-700" data-ar="عام" data-en="Public">عام</span>
                         </div>
                         <div class="p-5 space-y-6">
-                            <div>
-                                <h4 class="font-semibold mb-3 text-sm text-gray-500 uppercase tracking-wider" data-ar="الحقول" data-en="Parameters">الحقول</h4>
-                                <div class="overflow-x-auto">
-                                    <table class="param-table w-full text-sm">
-                                        <thead><tr class="border-b bg-gray-50"><th class="p-3 text-right" data-ar="الحقل" data-en="Field">الحقل</th><th class="p-3 text-right" data-ar="النوع" data-en="Type">النوع</th><th class="p-3 text-right" data-ar="مطلوب" data-en="Required">مطلوب</th><th class="p-3 text-right" data-ar="القواعد" data-en="Rules">القواعد</th></tr></thead>
-                                        <tbody>
-                                            <tr class="border-b"><td class="p-3"><code>identifier</code></td><td class="p-3">string</td><td class="p-3"><span class="text-red-500">*</span></td><td class="p-3" data-ar="البريد الإلكتروني أو رقم الجوال" data-en="Email or phone number">البريد الإلكتروني أو رقم الجوال</td></tr>
-                                            <tr class="border-b"><td class="p-3"><code>password</code></td><td class="p-3">string</td><td class="p-3"><span class="text-red-500">*</span></td><td class="p-3" data-ar="كلمة المرور" data-en="Password">كلمة المرور</td></tr>
-                                        </tbody>
-                                    </table>
-                                </div>
+                            <div class="overflow-x-auto">
+                                <table class="param-table w-full text-sm">
+                                    <thead><tr class="border-b bg-gray-50"><th class="p-3 text-right" data-ar="الحقل" data-en="Field">الحقل</th><th class="p-3 text-right" data-ar="النوع" data-en="Type">النوع</th><th class="p-3 text-right" data-ar="مطلوب" data-en="Required">مطلوب</th><th class="p-3 text-right" data-ar="القواعد" data-en="Rules">القواعد</th></tr></thead>
+                                    <tbody>
+                                        <tr class="border-b"><td class="p-3"><code>identifier</code></td><td class="p-3">string</td><td class="p-3"><span class="text-red-500 font-bold">✓</span></td><td class="p-3" data-ar="البريد أو رقم الجوال" data-en="Email or phone number">البريد أو رقم الجوال</td></tr>
+                                        <tr><td class="p-3"><code>password</code></td><td class="p-3">string</td><td class="p-3"><span class="text-red-500 font-bold">✓</span></td><td class="p-3" data-ar="كلمة المرور" data-en="Password">كلمة المرور</td></tr>
+                                    </tbody>
+                                </table>
                             </div>
                             <div class="grid grid-cols-1 lg:grid-cols-2 gap-4">
                                 <div class="code-block">
-                                    <div class="code-header"><span data-ar="طلب بالإيميل" data-en="Request with Email">طلب بالإيميل</span></div>
+                                    <div class="code-header"><span>Request</span></div>
                                     <pre><code>{
   <span class="json-key">"identifier"</span>: <span class="json-string">"ahmed@example.com"</span>,
   <span class="json-key">"password"</span>: <span class="json-string">"Password123"</span>
 }</code></pre>
                                 </div>
                                 <div class="code-block">
-                                    <div class="code-header"><span data-ar="طلب برقم الجوال" data-en="Request with Phone">طلب برقم الجوال</span></div>
+                                    <div class="code-header"><span>Response</span><span class="badge bg-green-500/30 text-green-300">200</span></div>
                                     <pre><code>{
-  <span class="json-key">"identifier"</span>: <span class="json-string">"0501234567"</span>,
-  <span class="json-key">"password"</span>: <span class="json-string">"Password123"</span>
-}</code></pre>
-                                </div>
-                            </div>
-                            <div class="code-block">
-                                <div class="code-header"><span>Response</span><span class="badge bg-green-500/30 text-green-300">200</span></div>
-                                <pre><code>{
   <span class="json-key">"success"</span>: <span class="json-bool">true</span>,
   <span class="json-key">"message"</span>: <span class="json-string">"Login successful"</span>,
   <span class="json-key">"data"</span>: {
@@ -557,23 +442,14 @@ Accept-Language: ar</code></pre>
     <span class="json-key">"expires_in"</span>: <span class="json-number">3600</span>
   }
 }</code></pre>
-                            </div>
-                            <div class="code-block">
-                                <div class="code-header"><span data-ar="رد الخطأ" data-en="Error Response">رد الخطأ</span><span class="badge bg-red-500/30 text-red-300">401</span></div>
-                                <pre><code>{
-  <span class="json-key">"success"</span>: <span class="json-bool">false</span>,
-  <span class="json-key">"code"</span>: <span class="json-string">"invalid_login_credentials"</span>,
-  <span class="json-key">"message"</span>: <span class="json-string">"Invalid credentials"</span>
-}</code></pre>
+                                </div>
                             </div>
                         </div>
                     </div>
                 </section>
 
-                {{-- ============================================================ --}}
                 {{-- LOGOUT --}}
-                {{-- ============================================================ --}}
-                <section id="logout" class="mb-20">
+                <section id="logout" class="mb-16">
                     <div class="endpoint-card">
                         <div class="bg-blue-50 border-b border-blue-100 p-5 flex items-center gap-3">
                             <span class="badge method-post text-white text-xs">POST</span>
@@ -582,6 +458,7 @@ Accept-Language: ar</code></pre>
                             <span class="badge bg-yellow-100 text-yellow-700">Auth</span>
                         </div>
                         <div class="p-5">
+                            <p class="text-sm text-gray-600 mb-4" data-ar="لا يحتاج حقول. يتم حظر التوكن الحالي." data-en="No body required. Current token will be blacklisted.">لا يحتاج حقول. يتم حظر التوكن الحالي.</p>
                             <div class="code-block">
                                 <div class="code-header"><span>Response</span><span class="badge bg-green-500/30 text-green-300">200</span></div>
                                 <pre><code>{
@@ -593,10 +470,8 @@ Accept-Language: ar</code></pre>
                     </div>
                 </section>
 
-                {{-- ============================================================ --}}
                 {{-- ME --}}
-                {{-- ============================================================ --}}
-                <section id="me" class="mb-20">
+                <section id="me" class="mb-16">
                     <div class="endpoint-card">
                         <div class="bg-green-50 border-b border-green-100 p-5 flex items-center gap-3">
                             <span class="badge method-get text-white text-xs">GET</span>
@@ -605,6 +480,7 @@ Accept-Language: ar</code></pre>
                             <span class="badge bg-yellow-100 text-yellow-700">Auth</span>
                         </div>
                         <div class="p-5">
+                            <p class="text-sm text-gray-600 mb-4" data-ar="لا يحتاج حقول. يرجع بيانات المستخدم مع الأدوار والصلاحيات." data-en="No params. Returns user data with roles & permissions.">لا يحتاج حقول.</p>
                             <div class="code-block">
                                 <div class="code-header"><span>Response</span><span class="badge bg-green-500/30 text-green-300">200</span></div>
                                 <pre><code>{
@@ -624,10 +500,8 @@ Accept-Language: ar</code></pre>
                     </div>
                 </section>
 
-                {{-- ============================================================ --}}
                 {{-- REFRESH --}}
-                {{-- ============================================================ --}}
-                <section id="refresh" class="mb-20">
+                <section id="refresh" class="mb-16">
                     <div class="endpoint-card">
                         <div class="bg-blue-50 border-b border-blue-100 p-5 flex items-center gap-3">
                             <span class="badge method-post text-white text-xs">POST</span>
@@ -636,6 +510,7 @@ Accept-Language: ar</code></pre>
                             <span class="badge bg-yellow-100 text-yellow-700">Auth</span>
                         </div>
                         <div class="p-5">
+                            <p class="text-sm text-gray-600 mb-4" data-ar="لا يحتاج حقول. التوكن القديم يصبح غير صالح." data-en="No body required. Old token becomes invalid.">لا يحتاج حقول.</p>
                             <div class="code-block">
                                 <div class="code-header"><span>Response</span><span class="badge bg-green-500/30 text-green-300">200</span></div>
                                 <pre><code>{
@@ -651,157 +526,83 @@ Accept-Language: ar</code></pre>
                     </div>
                 </section>
 
-                {{-- ============================================================ --}}
                 {{-- FORGOT PASSWORD --}}
-                {{-- ============================================================ --}}
-                <section id="forgot-password" class="mb-20">
+                <section id="forgot-password" class="mb-16">
                     <div class="endpoint-card">
                         <div class="bg-blue-50 border-b border-blue-100 p-5 flex items-center gap-3">
                             <span class="badge method-post text-white text-xs">POST</span>
                             <code class="text-gray-800 font-semibold">/auth/forgot-password</code>
-                            <span class="mr-auto text-sm text-gray-500" data-ar="طلب إعادة تعيين كلمة المرور" data-en="Request password reset">طلب إعادة تعيين كلمة المرور</span>
+                            <span class="mr-auto text-sm text-gray-500" data-ar="طلب إعادة تعيين كلمة المرور" data-en="Request password reset">طلب إعادة تعيين</span>
                             <span class="badge bg-green-100 text-green-700" data-ar="عام" data-en="Public">عام</span>
                         </div>
                         <div class="p-5 space-y-6">
-                            <div>
-                                <h4 class="font-semibold mb-3 text-sm text-gray-500 uppercase tracking-wider" data-ar="الحقول" data-en="Parameters">الحقول</h4>
-                                <div class="overflow-x-auto">
-                                    <table class="param-table w-full text-sm">
-                                        <thead><tr class="border-b bg-gray-50"><th class="p-3 text-right" data-ar="الحقل" data-en="Field">الحقل</th><th class="p-3 text-right" data-ar="النوع" data-en="Type">النوع</th><th class="p-3 text-right" data-ar="مطلوب" data-en="Required">مطلوب</th><th class="p-3 text-right" data-ar="القواعد" data-en="Rules">القواعد</th></tr></thead>
-                                        <tbody>
-                                            <tr><td class="p-3"><code>email</code></td><td class="p-3">string</td><td class="p-3"><span class="text-red-500">*</span></td><td class="p-3" data-ar="بريد صالح، مسجل" data-en="valid email, exists">بريد صالح، مسجل</td></tr>
-                                        </tbody>
-                                    </table>
-                                </div>
-                            </div>
-                            <div class="grid grid-cols-1 lg:grid-cols-2 gap-4">
-                                <div class="code-block">
-                                    <div class="code-header"><span>Request</span></div>
-                                    <pre><code>{
-  <span class="json-key">"email"</span>: <span class="json-string">"ahmed@example.com"</span>
-}</code></pre>
-                                </div>
-                                <div class="code-block">
-                                    <div class="code-header"><span>Response</span><span class="badge bg-green-500/30 text-green-300">200</span></div>
-                                    <pre><code>{
-  <span class="json-key">"success"</span>: <span class="json-bool">true</span>,
-  <span class="json-key">"message"</span>: <span class="json-string">"Password reset link sent"</span>,
-  <span class="json-key">"data"</span>: {
-    <span class="json-key">"token"</span>: <span class="json-string">"abc123..."</span>
-  }
-}</code></pre>
-                                </div>
+                            <div class="overflow-x-auto">
+                                <table class="param-table w-full text-sm">
+                                    <thead><tr class="border-b bg-gray-50"><th class="p-3 text-right" data-ar="الحقل" data-en="Field">الحقل</th><th class="p-3 text-right" data-ar="النوع" data-en="Type">النوع</th><th class="p-3 text-right" data-ar="مطلوب" data-en="Required">مطلوب</th><th class="p-3 text-right" data-ar="القواعد" data-en="Rules">القواعد</th></tr></thead>
+                                    <tbody>
+                                        <tr><td class="p-3"><code>email</code></td><td class="p-3">string</td><td class="p-3"><span class="text-red-500 font-bold">✓</span></td><td class="p-3" data-ar="بريد صالح، مسجل" data-en="valid email, exists in system">بريد صالح، مسجل</td></tr>
+                                    </tbody>
+                                </table>
                             </div>
                             <div class="bg-yellow-50 border border-yellow-200 rounded-lg p-4 text-sm">
                                 <span class="font-semibold text-yellow-800" data-ar="ملاحظة:" data-en="Note:">ملاحظة:</span>
-                                <span class="text-yellow-700" data-ar="التوكن يُرجع فقط في بيئة التطوير (APP_DEBUG=true)" data-en="Token is only returned in debug mode (APP_DEBUG=true)">التوكن يُرجع فقط في بيئة التطوير (APP_DEBUG=true)</span>
+                                <span class="text-yellow-700" data-ar="التوكن يُرجع فقط في بيئة التطوير (APP_DEBUG=true)" data-en="Token only returned when APP_DEBUG=true">التوكن يُرجع فقط في بيئة التطوير</span>
                             </div>
                         </div>
                     </div>
                 </section>
 
-                {{-- ============================================================ --}}
                 {{-- RESET PASSWORD --}}
-                {{-- ============================================================ --}}
-                <section id="reset-password" class="mb-20">
+                <section id="reset-password" class="mb-16">
                     <div class="endpoint-card">
                         <div class="bg-blue-50 border-b border-blue-100 p-5 flex items-center gap-3">
                             <span class="badge method-post text-white text-xs">POST</span>
                             <code class="text-gray-800 font-semibold">/auth/reset-password</code>
-                            <span class="mr-auto text-sm text-gray-500" data-ar="إعادة تعيين كلمة المرور" data-en="Reset password">إعادة تعيين كلمة المرور</span>
+                            <span class="mr-auto text-sm text-gray-500" data-ar="إعادة تعيين كلمة المرور" data-en="Reset password with token">إعادة تعيين كلمة المرور</span>
                             <span class="badge bg-green-100 text-green-700" data-ar="عام" data-en="Public">عام</span>
                         </div>
                         <div class="p-5 space-y-6">
-                            <div>
-                                <h4 class="font-semibold mb-3 text-sm text-gray-500 uppercase tracking-wider" data-ar="الحقول" data-en="Parameters">الحقول</h4>
-                                <div class="overflow-x-auto">
-                                    <table class="param-table w-full text-sm">
-                                        <thead><tr class="border-b bg-gray-50"><th class="p-3 text-right" data-ar="الحقل" data-en="Field">الحقل</th><th class="p-3 text-right" data-ar="النوع" data-en="Type">النوع</th><th class="p-3 text-right" data-ar="مطلوب" data-en="Required">مطلوب</th><th class="p-3 text-right" data-ar="القواعد" data-en="Rules">القواعد</th></tr></thead>
-                                        <tbody>
-                                            <tr class="border-b"><td class="p-3"><code>email</code></td><td class="p-3">string</td><td class="p-3"><span class="text-red-500">*</span></td><td class="p-3" data-ar="بريد صالح، مسجل" data-en="valid email, exists">بريد صالح، مسجل</td></tr>
-                                            <tr class="border-b"><td class="p-3"><code>token</code></td><td class="p-3">string</td><td class="p-3"><span class="text-red-500">*</span></td><td class="p-3" data-ar="رمز إعادة التعيين" data-en="reset token">رمز إعادة التعيين</td></tr>
-                                            <tr class="border-b"><td class="p-3"><code>password</code></td><td class="p-3">string</td><td class="p-3"><span class="text-red-500">*</span></td><td class="p-3" data-ar="8 أحرف+، كبير وصغير وأرقام" data-en="min:8, mixed case, numbers">8 أحرف+، كبير وصغير وأرقام</td></tr>
-                                            <tr><td class="p-3"><code>password_confirmation</code></td><td class="p-3">string</td><td class="p-3"><span class="text-red-500">*</span></td><td class="p-3" data-ar="يطابق كلمة المرور" data-en="must match password">يطابق كلمة المرور</td></tr>
-                                        </tbody>
-                                    </table>
-                                </div>
-                            </div>
-                            <div class="grid grid-cols-1 lg:grid-cols-2 gap-4">
-                                <div class="code-block">
-                                    <div class="code-header"><span>Request</span></div>
-                                    <pre><code>{
-  <span class="json-key">"email"</span>: <span class="json-string">"ahmed@example.com"</span>,
-  <span class="json-key">"token"</span>: <span class="json-string">"abc123..."</span>,
-  <span class="json-key">"password"</span>: <span class="json-string">"NewPassword123"</span>,
-  <span class="json-key">"password_confirmation"</span>: <span class="json-string">"NewPassword123"</span>
-}</code></pre>
-                                </div>
-                                <div class="code-block">
-                                    <div class="code-header"><span>Response</span><span class="badge bg-green-500/30 text-green-300">200</span></div>
-                                    <pre><code>{
-  <span class="json-key">"success"</span>: <span class="json-bool">true</span>,
-  <span class="json-key">"message"</span>: <span class="json-string">"Password reset successfully"</span>
-}</code></pre>
-                                </div>
-                            </div>
-                            <div class="bg-blue-50 border border-blue-200 rounded-lg p-4 text-sm">
-                                <span class="font-semibold text-blue-800" data-ar="التوكن صالح لمدة:" data-en="Token valid for:">التوكن صالح لمدة:</span>
-                                <span class="text-blue-700" data-ar="60 دقيقة (ساعة واحدة)" data-en="60 minutes (1 hour)">60 دقيقة (ساعة واحدة)</span>
+                            <div class="overflow-x-auto">
+                                <table class="param-table w-full text-sm">
+                                    <thead><tr class="border-b bg-gray-50"><th class="p-3 text-right" data-ar="الحقل" data-en="Field">الحقل</th><th class="p-3 text-right" data-ar="النوع" data-en="Type">النوع</th><th class="p-3 text-right" data-ar="مطلوب" data-en="Required">مطلوب</th><th class="p-3 text-right" data-ar="القواعد" data-en="Rules">القواعد</th></tr></thead>
+                                    <tbody>
+                                        <tr class="border-b"><td class="p-3"><code>email</code></td><td class="p-3">string</td><td class="p-3"><span class="text-red-500 font-bold">✓</span></td><td class="p-3" data-ar="بريد صالح" data-en="valid email">بريد صالح</td></tr>
+                                        <tr class="border-b"><td class="p-3"><code>token</code></td><td class="p-3">string</td><td class="p-3"><span class="text-red-500 font-bold">✓</span></td><td class="p-3" data-ar="رمز إعادة التعيين (صالح 60 دقيقة)" data-en="reset token (valid 60 min)">رمز إعادة التعيين</td></tr>
+                                        <tr class="border-b"><td class="p-3"><code>password</code></td><td class="p-3">string</td><td class="p-3"><span class="text-red-500 font-bold">✓</span></td><td class="p-3" data-ar="8 أحرف+" data-en="min:8, mixed case, numbers">8 أحرف+</td></tr>
+                                        <tr><td class="p-3"><code>password_confirmation</code></td><td class="p-3">string</td><td class="p-3"><span class="text-red-500 font-bold">✓</span></td><td class="p-3" data-ar="يطابق كلمة المرور" data-en="must match password">يطابق كلمة المرور</td></tr>
+                                    </tbody>
+                                </table>
                             </div>
                         </div>
                     </div>
                 </section>
 
-                {{-- ============================================================ --}}
                 {{-- CHANGE PASSWORD --}}
-                {{-- ============================================================ --}}
-                <section id="change-password" class="mb-20">
+                <section id="change-password" class="mb-16">
                     <div class="endpoint-card">
                         <div class="bg-blue-50 border-b border-blue-100 p-5 flex items-center gap-3">
                             <span class="badge method-post text-white text-xs">POST</span>
                             <code class="text-gray-800 font-semibold">/auth/change-password</code>
-                            <span class="mr-auto text-sm text-gray-500" data-ar="تغيير كلمة المرور" data-en="Change password">تغيير كلمة المرور</span>
+                            <span class="mr-auto text-sm text-gray-500" data-ar="تغيير كلمة المرور" data-en="Change password (logged-in)">تغيير كلمة المرور</span>
                             <span class="badge bg-yellow-100 text-yellow-700">Auth</span>
                         </div>
-                        <div class="p-5 space-y-6">
-                            <div>
-                                <h4 class="font-semibold mb-3 text-sm text-gray-500 uppercase tracking-wider" data-ar="الحقول" data-en="Parameters">الحقول</h4>
-                                <div class="overflow-x-auto">
-                                    <table class="param-table w-full text-sm">
-                                        <thead><tr class="border-b bg-gray-50"><th class="p-3 text-right" data-ar="الحقل" data-en="Field">الحقل</th><th class="p-3 text-right" data-ar="النوع" data-en="Type">النوع</th><th class="p-3 text-right" data-ar="مطلوب" data-en="Required">مطلوب</th><th class="p-3 text-right" data-ar="القواعد" data-en="Rules">القواعد</th></tr></thead>
-                                        <tbody>
-                                            <tr class="border-b"><td class="p-3"><code>current_password</code></td><td class="p-3">string</td><td class="p-3"><span class="text-red-500">*</span></td><td class="p-3" data-ar="كلمة المرور الحالية" data-en="current password">كلمة المرور الحالية</td></tr>
-                                            <tr class="border-b"><td class="p-3"><code>password</code></td><td class="p-3">string</td><td class="p-3"><span class="text-red-500">*</span></td><td class="p-3" data-ar="8 أحرف+، مختلفة عن الحالية" data-en="min:8, different from current">8 أحرف+، مختلفة عن الحالية</td></tr>
-                                            <tr><td class="p-3"><code>password_confirmation</code></td><td class="p-3">string</td><td class="p-3"><span class="text-red-500">*</span></td><td class="p-3" data-ar="يطابق كلمة المرور" data-en="must match password">يطابق كلمة المرور</td></tr>
-                                        </tbody>
-                                    </table>
-                                </div>
-                            </div>
-                            <div class="grid grid-cols-1 lg:grid-cols-2 gap-4">
-                                <div class="code-block">
-                                    <div class="code-header"><span>Request</span></div>
-                                    <pre><code>{
-  <span class="json-key">"current_password"</span>: <span class="json-string">"OldPassword123"</span>,
-  <span class="json-key">"password"</span>: <span class="json-string">"NewPassword123"</span>,
-  <span class="json-key">"password_confirmation"</span>: <span class="json-string">"NewPassword123"</span>
-}</code></pre>
-                                </div>
-                                <div class="code-block">
-                                    <div class="code-header"><span>Response</span><span class="badge bg-green-500/30 text-green-300">200</span></div>
-                                    <pre><code>{
-  <span class="json-key">"success"</span>: <span class="json-bool">true</span>,
-  <span class="json-key">"message"</span>: <span class="json-string">"Password changed successfully"</span>
-}</code></pre>
-                                </div>
+                        <div class="p-5">
+                            <div class="overflow-x-auto">
+                                <table class="param-table w-full text-sm">
+                                    <thead><tr class="border-b bg-gray-50"><th class="p-3 text-right" data-ar="الحقل" data-en="Field">الحقل</th><th class="p-3 text-right" data-ar="النوع" data-en="Type">النوع</th><th class="p-3 text-right" data-ar="مطلوب" data-en="Required">مطلوب</th><th class="p-3 text-right" data-ar="القواعد" data-en="Rules">القواعد</th></tr></thead>
+                                    <tbody>
+                                        <tr class="border-b"><td class="p-3"><code>current_password</code></td><td class="p-3">string</td><td class="p-3"><span class="text-red-500 font-bold">✓</span></td><td class="p-3" data-ar="كلمة المرور الحالية" data-en="current password">كلمة المرور الحالية</td></tr>
+                                        <tr class="border-b"><td class="p-3"><code>password</code></td><td class="p-3">string</td><td class="p-3"><span class="text-red-500 font-bold">✓</span></td><td class="p-3" data-ar="8 أحرف+، مختلفة عن الحالية" data-en="min:8, different from current">8+، مختلفة عن الحالية</td></tr>
+                                        <tr><td class="p-3"><code>password_confirmation</code></td><td class="p-3">string</td><td class="p-3"><span class="text-red-500 font-bold">✓</span></td><td class="p-3" data-ar="يطابق كلمة المرور" data-en="must match password">يطابق كلمة المرور</td></tr>
+                                    </tbody>
+                                </table>
                             </div>
                         </div>
                     </div>
                 </section>
 
-                {{-- ============================================================ --}}
                 {{-- UPDATE PROFILE --}}
-                {{-- ============================================================ --}}
-                <section id="update-profile" class="mb-20">
+                <section id="update-profile" class="mb-16">
                     <div class="endpoint-card">
                         <div class="bg-yellow-50 border-b border-yellow-100 p-5 flex items-center gap-3">
                             <span class="badge method-put text-white text-xs">PUT</span>
@@ -810,50 +611,26 @@ Accept-Language: ar</code></pre>
                             <span class="badge bg-yellow-100 text-yellow-700">Auth</span>
                         </div>
                         <div class="p-5 space-y-6">
-                            <div>
-                                <h4 class="font-semibold mb-3 text-sm text-gray-500 uppercase tracking-wider" data-ar="الحقول" data-en="Parameters">الحقول</h4>
-                                <div class="overflow-x-auto">
-                                    <table class="param-table w-full text-sm">
-                                        <thead><tr class="border-b bg-gray-50"><th class="p-3 text-right" data-ar="الحقل" data-en="Field">الحقل</th><th class="p-3 text-right" data-ar="النوع" data-en="Type">النوع</th><th class="p-3 text-right" data-ar="مطلوب" data-en="Required">مطلوب</th><th class="p-3 text-right" data-ar="القواعد" data-en="Rules">القواعد</th></tr></thead>
-                                        <tbody>
-                                            <tr class="border-b"><td class="p-3"><code>name</code></td><td class="p-3">string</td><td class="p-3 text-gray-400">-</td><td class="p-3">max:255</td></tr>
-                                            <tr class="border-b"><td class="p-3"><code>email</code></td><td class="p-3">string</td><td class="p-3 text-gray-400">-</td><td class="p-3" data-ar="بريد صالح، فريد" data-en="valid email, unique">بريد صالح، فريد</td></tr>
-                                            <tr><td class="p-3"><code>phone</code></td><td class="p-3">string</td><td class="p-3 text-gray-400">-</td><td class="p-3">max:20</td></tr>
-                                        </tbody>
-                                    </table>
-                                </div>
-                            </div>
-                            <div class="grid grid-cols-1 lg:grid-cols-2 gap-4">
-                                <div class="code-block">
-                                    <div class="code-header"><span>Request</span></div>
-                                    <pre><code>{
-  <span class="json-key">"name"</span>: <span class="json-string">"Ahmed Ali"</span>,
-  <span class="json-key">"phone"</span>: <span class="json-string">"0509876543"</span>
-}</code></pre>
-                                </div>
-                                <div class="code-block">
-                                    <div class="code-header"><span>Response</span><span class="badge bg-green-500/30 text-green-300">200</span></div>
-                                    <pre><code>{
-  <span class="json-key">"success"</span>: <span class="json-bool">true</span>,
-  <span class="json-key">"message"</span>: <span class="json-string">"Profile updated"</span>,
-  <span class="json-key">"data"</span>: {
-    <span class="json-key">"user"</span>: { ... }
-  }
-}</code></pre>
-                                </div>
+                            <div class="overflow-x-auto">
+                                <table class="param-table w-full text-sm">
+                                    <thead><tr class="border-b bg-gray-50"><th class="p-3 text-right" data-ar="الحقل" data-en="Field">الحقل</th><th class="p-3 text-right" data-ar="النوع" data-en="Type">النوع</th><th class="p-3 text-right" data-ar="مطلوب" data-en="Required">مطلوب</th><th class="p-3 text-right" data-ar="القواعد" data-en="Rules">القواعد</th></tr></thead>
+                                    <tbody>
+                                        <tr class="border-b"><td class="p-3"><code>name</code></td><td class="p-3">string</td><td class="p-3"><span class="text-gray-400">—</span></td><td class="p-3">max:255</td></tr>
+                                        <tr class="border-b"><td class="p-3"><code>email</code></td><td class="p-3">string</td><td class="p-3"><span class="text-gray-400">—</span></td><td class="p-3" data-ar="بريد صالح، فريد" data-en="valid email, unique">بريد صالح، فريد</td></tr>
+                                        <tr><td class="p-3"><code>phone</code></td><td class="p-3">string</td><td class="p-3"><span class="text-gray-400">—</span></td><td class="p-3">max:20</td></tr>
+                                    </tbody>
+                                </table>
                             </div>
                             <div class="bg-orange-50 border border-orange-200 rounded-lg p-4 text-sm">
                                 <span class="font-semibold text-orange-800" data-ar="تنبيه:" data-en="Warning:">تنبيه:</span>
-                                <span class="text-orange-700" data-ar="عند تغيير البريد الإلكتروني سيتم إلغاء التحقق ويجب إعادة التحقق" data-en="Changing email will reset verification status">عند تغيير البريد الإلكتروني سيتم إلغاء التحقق ويجب إعادة التحقق</span>
+                                <span class="text-orange-700" data-ar="عند تغيير البريد سيتم إلغاء التحقق ويجب إعادة التحقق" data-en="Changing email resets verification status">عند تغيير البريد سيتم إلغاء التحقق</span>
                             </div>
                         </div>
                     </div>
                 </section>
 
-                {{-- ============================================================ --}}
-                {{-- SEND EMAIL VERIFICATION --}}
-                {{-- ============================================================ --}}
-                <section id="send-verification" class="mb-20">
+                {{-- SEND VERIFICATION --}}
+                <section id="send-verification" class="mb-16">
                     <div class="endpoint-card">
                         <div class="bg-blue-50 border-b border-blue-100 p-5 flex items-center gap-3">
                             <span class="badge method-post text-white text-xs">POST</span>
@@ -861,63 +638,33 @@ Accept-Language: ar</code></pre>
                             <span class="mr-auto text-sm text-gray-500" data-ar="إرسال كود التحقق" data-en="Send verification code">إرسال كود التحقق</span>
                             <span class="badge bg-yellow-100 text-yellow-700">Auth</span>
                         </div>
-                        <div class="p-5 space-y-6">
-                            <p class="text-gray-600" data-ar="لا يحتاج إلى أي حقول - يرسل كود التحقق للبريد المسجل" data-en="No parameters needed - sends verification code to registered email">لا يحتاج إلى أي حقول - يرسل كود التحقق للبريد المسجل</p>
-                            <div class="code-block">
-                                <div class="code-header"><span>Response</span><span class="badge bg-green-500/30 text-green-300">200</span></div>
-                                <pre><code>{
-  <span class="json-key">"success"</span>: <span class="json-bool">true</span>,
-  <span class="json-key">"message"</span>: <span class="json-string">"Verification code sent"</span>,
-  <span class="json-key">"data"</span>: {
-    <span class="json-key">"code"</span>: <span class="json-string">"123456"</span>
-  }
-}</code></pre>
-                            </div>
+                        <div class="p-5">
+                            <p class="text-gray-600 text-sm mb-3" data-ar="لا يحتاج حقول. يرسل كود التحقق للبريد المسجل." data-en="No params. Sends verification code to registered email.">لا يحتاج حقول.</p>
                             <div class="bg-yellow-50 border border-yellow-200 rounded-lg p-4 text-sm">
                                 <span class="font-semibold text-yellow-800" data-ar="ملاحظة:" data-en="Note:">ملاحظة:</span>
-                                <span class="text-yellow-700" data-ar="الكود يُرجع فقط في بيئة التطوير. الكود صالح لمدة 15 دقيقة." data-en="Code is only returned in debug mode. Code valid for 15 minutes.">الكود يُرجع فقط في بيئة التطوير. الكود صالح لمدة 15 دقيقة.</span>
+                                <span class="text-yellow-700" data-ar="الكود يُرجع فقط في بيئة التطوير. صالح لمدة 15 دقيقة." data-en="Code only returned in debug mode. Valid for 15 minutes.">الكود يُرجع فقط في بيئة التطوير. صالح 15 دقيقة.</span>
                             </div>
                         </div>
                     </div>
                 </section>
 
-                {{-- ============================================================ --}}
                 {{-- VERIFY EMAIL --}}
-                {{-- ============================================================ --}}
-                <section id="verify-email" class="mb-20">
+                <section id="verify-email" class="mb-16">
                     <div class="endpoint-card">
                         <div class="bg-blue-50 border-b border-blue-100 p-5 flex items-center gap-3">
                             <span class="badge method-post text-white text-xs">POST</span>
                             <code class="text-gray-800 font-semibold">/auth/email/verify</code>
-                            <span class="mr-auto text-sm text-gray-500" data-ar="التحقق من البريد الإلكتروني" data-en="Verify email">التحقق من البريد الإلكتروني</span>
+                            <span class="mr-auto text-sm text-gray-500" data-ar="التحقق من البريد" data-en="Verify email address">التحقق من البريد</span>
                             <span class="badge bg-yellow-100 text-yellow-700">Auth</span>
                         </div>
-                        <div class="p-5 space-y-6">
-                            <div>
-                                <h4 class="font-semibold mb-3 text-sm text-gray-500 uppercase tracking-wider" data-ar="الحقول" data-en="Parameters">الحقول</h4>
-                                <div class="overflow-x-auto">
-                                    <table class="param-table w-full text-sm">
-                                        <thead><tr class="border-b bg-gray-50"><th class="p-3 text-right" data-ar="الحقل" data-en="Field">الحقل</th><th class="p-3 text-right" data-ar="النوع" data-en="Type">النوع</th><th class="p-3 text-right" data-ar="مطلوب" data-en="Required">مطلوب</th><th class="p-3 text-right" data-ar="القواعد" data-en="Rules">القواعد</th></tr></thead>
-                                        <tbody>
-                                            <tr><td class="p-3"><code>code</code></td><td class="p-3">string</td><td class="p-3"><span class="text-red-500">*</span></td><td class="p-3" data-ar="6 أرقام" data-en="6 digits">6 أرقام</td></tr>
-                                        </tbody>
-                                    </table>
-                                </div>
-                            </div>
-                            <div class="grid grid-cols-1 lg:grid-cols-2 gap-4">
-                                <div class="code-block">
-                                    <div class="code-header"><span>Request</span></div>
-                                    <pre><code>{
-  <span class="json-key">"code"</span>: <span class="json-string">"123456"</span>
-}</code></pre>
-                                </div>
-                                <div class="code-block">
-                                    <div class="code-header"><span>Response</span><span class="badge bg-green-500/30 text-green-300">200</span></div>
-                                    <pre><code>{
-  <span class="json-key">"success"</span>: <span class="json-bool">true</span>,
-  <span class="json-key">"message"</span>: <span class="json-string">"Email verified successfully"</span>
-}</code></pre>
-                                </div>
+                        <div class="p-5">
+                            <div class="overflow-x-auto">
+                                <table class="param-table w-full text-sm">
+                                    <thead><tr class="border-b bg-gray-50"><th class="p-3 text-right" data-ar="الحقل" data-en="Field">الحقل</th><th class="p-3 text-right" data-ar="النوع" data-en="Type">النوع</th><th class="p-3 text-right" data-ar="مطلوب" data-en="Required">مطلوب</th><th class="p-3 text-right" data-ar="القواعد" data-en="Rules">القواعد</th></tr></thead>
+                                    <tbody>
+                                        <tr><td class="p-3"><code>code</code></td><td class="p-3">string</td><td class="p-3"><span class="text-red-500 font-bold">✓</span></td><td class="p-3" data-ar="6 أرقام" data-en="6-digit code">6 أرقام</td></tr>
+                                    </tbody>
+                                </table>
                             </div>
                         </div>
                     </div>
@@ -926,7 +673,7 @@ Accept-Language: ar</code></pre>
                 {{-- ============================================================ --}}
                 {{-- VERIFY TOKEN --}}
                 {{-- ============================================================ --}}
-                <section id="verify-token" class="mb-20">
+                <section id="verify-token" class="mb-16">
                     <div class="endpoint-card">
                         <div class="bg-blue-50 border-b border-blue-100 p-5 flex items-center gap-3">
                             <span class="badge method-post text-white text-xs">POST</span>
@@ -934,70 +681,71 @@ Accept-Language: ar</code></pre>
                             <span class="mr-auto text-sm text-gray-500" data-ar="التحقق من صلاحية التوكن" data-en="Verify token validity">التحقق من صلاحية التوكن</span>
                             <span class="badge bg-yellow-100 text-yellow-700">Auth</span>
                         </div>
-                        <div class="p-5 space-y-4">
+                        <div class="p-5 space-y-6">
+                            <div class="overflow-x-auto">
+                                <table class="param-table w-full text-sm">
+                                    <thead><tr class="border-b bg-gray-50"><th class="p-3 text-right" data-ar="الحقل" data-en="Field">الحقل</th><th class="p-3 text-right" data-ar="النوع" data-en="Type">النوع</th><th class="p-3 text-right" data-ar="مطلوب" data-en="Required">مطلوب</th><th class="p-3 text-right" data-ar="القواعد" data-en="Rules">القواعد</th></tr></thead>
+                                    <tbody>
+                                        <tr><td class="p-3"><code>token</code></td><td class="p-3">string</td><td class="p-3"><span class="text-red-500 font-bold">✓</span></td><td class="p-3" data-ar="توكن JWT المراد فحصه" data-en="JWT token to validate">توكن JWT المراد فحصه</td></tr>
+                                    </tbody>
+                                </table>
+                            </div>
                             <div class="grid grid-cols-1 lg:grid-cols-2 gap-4">
-                                <div class="code-block">
-                                    <div class="code-header"><span>Request</span></div>
-                                    <pre><code>{
+                                <div class="code-block"><div class="code-header"><span>Request</span></div><pre><code>{
   <span class="json-key">"token"</span>: <span class="json-string">"eyJ0eXAi..."</span>
-}</code></pre>
-                                </div>
-                                <div class="code-block">
-                                    <div class="code-header"><span>Response</span><span class="badge bg-green-500/30 text-green-300">200</span></div>
-                                    <pre><code>{
+}</code></pre></div>
+                                <div class="code-block"><div class="code-header"><span>Response</span><span class="badge bg-green-500/30 text-green-300">200</span></div><pre><code>{
   <span class="json-key">"success"</span>: <span class="json-bool">true</span>,
   <span class="json-key">"data"</span>: {
     <span class="json-key">"valid"</span>: <span class="json-bool">true</span>,
     <span class="json-key">"user"</span>: { ... },
     <span class="json-key">"expires_at"</span>: <span class="json-string">"..."</span>
   }
-}</code></pre>
-                                </div>
+}</code></pre></div>
                             </div>
                         </div>
                     </div>
                 </section>
 
-                {{-- ============================================================ --}}
                 {{-- CHECK PERMISSION --}}
-                {{-- ============================================================ --}}
-                <section id="check-permission" class="mb-20">
+                <section id="check-permission" class="mb-16">
                     <div class="endpoint-card">
                         <div class="bg-blue-50 border-b border-blue-100 p-5 flex items-center gap-3">
                             <span class="badge method-post text-white text-xs">POST</span>
                             <code class="text-gray-800 font-semibold">/check-permission</code>
-                            <span class="mr-auto text-sm text-gray-500" data-ar="فحص صلاحية مستخدم" data-en="Check user permission">فحص صلاحية مستخدم</span>
+                            <span class="mr-auto text-sm text-gray-500" data-ar="فحص صلاحية واحدة" data-en="Check single permission">فحص صلاحية واحدة</span>
                             <span class="badge bg-yellow-100 text-yellow-700">Auth</span>
                         </div>
-                        <div class="p-5 space-y-4">
+                        <div class="p-5 space-y-6">
+                            <div class="overflow-x-auto">
+                                <table class="param-table w-full text-sm">
+                                    <thead><tr class="border-b bg-gray-50"><th class="p-3 text-right" data-ar="الحقل" data-en="Field">الحقل</th><th class="p-3 text-right" data-ar="النوع" data-en="Type">النوع</th><th class="p-3 text-right" data-ar="مطلوب" data-en="Required">مطلوب</th><th class="p-3 text-right" data-ar="القواعد" data-en="Rules">القواعد</th></tr></thead>
+                                    <tbody>
+                                        <tr class="border-b"><td class="p-3"><code>user_id</code></td><td class="p-3">string (UUID)</td><td class="p-3"><span class="text-red-500 font-bold">✓</span></td><td class="p-3" data-ar="UUID المستخدم" data-en="User UUID">UUID المستخدم</td></tr>
+                                        <tr><td class="p-3"><code>permission</code></td><td class="p-3">string</td><td class="p-3"><span class="text-red-500 font-bold">✓</span></td><td class="p-3" data-ar="اسم الصلاحية مثل users.view" data-en="Permission name e.g. users.view">مثل: users.view</td></tr>
+                                    </tbody>
+                                </table>
+                            </div>
                             <div class="grid grid-cols-1 lg:grid-cols-2 gap-4">
-                                <div class="code-block">
-                                    <div class="code-header"><span>Request</span></div>
-                                    <pre><code>{
+                                <div class="code-block"><div class="code-header"><span>Request</span></div><pre><code>{
   <span class="json-key">"user_id"</span>: <span class="json-string">"uuid-here"</span>,
   <span class="json-key">"permission"</span>: <span class="json-string">"users.view"</span>
-}</code></pre>
-                                </div>
-                                <div class="code-block">
-                                    <div class="code-header"><span>Response</span><span class="badge bg-green-500/30 text-green-300">200</span></div>
-                                    <pre><code>{
+}</code></pre></div>
+                                <div class="code-block"><div class="code-header"><span>Response</span><span class="badge bg-green-500/30 text-green-300">200</span></div><pre><code>{
   <span class="json-key">"success"</span>: <span class="json-bool">true</span>,
   <span class="json-key">"data"</span>: {
     <span class="json-key">"has_permission"</span>: <span class="json-bool">true</span>,
     <span class="json-key">"user_id"</span>: <span class="json-string">"uuid"</span>,
     <span class="json-key">"permission"</span>: <span class="json-string">"users.view"</span>
   }
-}</code></pre>
-                                </div>
+}</code></pre></div>
                             </div>
                         </div>
                     </div>
                 </section>
 
-                {{-- ============================================================ --}}
-                {{-- CHECK PERMISSIONS --}}
-                {{-- ============================================================ --}}
-                <section id="check-permissions" class="mb-20">
+                {{-- CHECK PERMISSIONS (multiple) --}}
+                <section id="check-permissions" class="mb-16">
                     <div class="endpoint-card">
                         <div class="bg-blue-50 border-b border-blue-100 p-5 flex items-center gap-3">
                             <span class="badge method-post text-white text-xs">POST</span>
@@ -1005,22 +753,27 @@ Accept-Language: ar</code></pre>
                             <span class="mr-auto text-sm text-gray-500" data-ar="فحص عدة صلاحيات" data-en="Check multiple permissions">فحص عدة صلاحيات</span>
                             <span class="badge bg-yellow-100 text-yellow-700">Auth</span>
                         </div>
-                        <div class="p-5 space-y-4">
+                        <div class="p-5 space-y-6">
+                            <div class="overflow-x-auto">
+                                <table class="param-table w-full text-sm">
+                                    <thead><tr class="border-b bg-gray-50"><th class="p-3 text-right" data-ar="الحقل" data-en="Field">الحقل</th><th class="p-3 text-right" data-ar="النوع" data-en="Type">النوع</th><th class="p-3 text-right" data-ar="مطلوب" data-en="Required">مطلوب</th><th class="p-3 text-right" data-ar="القواعد" data-en="Rules">القواعد</th></tr></thead>
+                                    <tbody>
+                                        <tr class="border-b"><td class="p-3"><code>user_id</code></td><td class="p-3">string (UUID)</td><td class="p-3"><span class="text-red-500 font-bold">✓</span></td><td class="p-3" data-ar="UUID المستخدم" data-en="User UUID">UUID المستخدم</td></tr>
+                                        <tr class="border-b"><td class="p-3"><code>permissions</code></td><td class="p-3">array</td><td class="p-3"><span class="text-red-500 font-bold">✓</span></td><td class="p-3" data-ar="مصفوفة أسماء الصلاحيات" data-en="Array of permission names">مصفوفة الصلاحيات</td></tr>
+                                        <tr><td class="p-3"><code>require_all</code></td><td class="p-3">boolean</td><td class="p-3"><span class="text-gray-400">—</span></td><td class="p-3" data-ar="يتطلب جميعها (الافتراضي: false)" data-en="Require all (default: false)">الافتراضي: false</td></tr>
+                                    </tbody>
+                                </table>
+                            </div>
                             <div class="grid grid-cols-1 lg:grid-cols-2 gap-4">
-                                <div class="code-block">
-                                    <div class="code-header"><span>Request</span></div>
-                                    <pre><code>{
+                                <div class="code-block"><div class="code-header"><span>Request</span></div><pre><code>{
   <span class="json-key">"user_id"</span>: <span class="json-string">"uuid-here"</span>,
   <span class="json-key">"permissions"</span>: [
     <span class="json-string">"users.view"</span>,
     <span class="json-string">"users.create"</span>
   ],
   <span class="json-key">"require_all"</span>: <span class="json-bool">false</span>
-}</code></pre>
-                                </div>
-                                <div class="code-block">
-                                    <div class="code-header"><span>Response</span><span class="badge bg-green-500/30 text-green-300">200</span></div>
-                                    <pre><code>{
+}</code></pre></div>
+                                <div class="code-block"><div class="code-header"><span>Response</span><span class="badge bg-green-500/30 text-green-300">200</span></div><pre><code>{
   <span class="json-key">"success"</span>: <span class="json-bool">true</span>,
   <span class="json-key">"data"</span>: {
     <span class="json-key">"has_access"</span>: <span class="json-bool">true</span>,
@@ -1030,60 +783,88 @@ Accept-Language: ar</code></pre>
     },
     <span class="json-key">"require_all"</span>: <span class="json-bool">false</span>
   }
-}</code></pre>
-                                </div>
+}</code></pre></div>
                             </div>
                         </div>
                     </div>
                 </section>
 
                 {{-- ============================================================ --}}
-                {{-- USERS CRUD --}}
+                {{-- USERS MANAGEMENT --}}
                 {{-- ============================================================ --}}
-                <section id="users-list" class="mb-10">
-                    <h2 class="text-3xl font-bold mb-6" data-ar="إدارة المستخدمين" data-en="Users Management">إدارة المستخدمين</h2>
-                </section>
+                <section id="users" class="mb-20">
+                    <h2 class="text-3xl font-bold mb-4" data-ar="إدارة المستخدمين" data-en="Users Management">إدارة المستخدمين</h2>
+                    <p class="text-gray-600 mb-6" data-ar="CRUD كامل لإدارة المستخدمين - تتطلب صلاحيات users.*" data-en="Full CRUD for user management — requires users.* permissions">CRUD كامل - تتطلب صلاحيات users.*</p>
 
-                @php
-                $userEndpoints = [
-                    ['id' => 'users-list', 'method' => 'GET', 'path' => '/users', 'ar' => 'قائمة المستخدمين', 'en' => 'List all users', 'perm' => 'users.view', 'color' => 'green'],
-                    ['id' => 'users-create', 'method' => 'POST', 'path' => '/users', 'ar' => 'إنشاء مستخدم', 'en' => 'Create user', 'perm' => 'users.create', 'color' => 'blue'],
-                    ['id' => 'users-show', 'method' => 'GET', 'path' => '/users/{id}', 'ar' => 'عرض مستخدم', 'en' => 'Show user', 'perm' => 'users.view', 'color' => 'green'],
-                    ['id' => 'users-update', 'method' => 'PUT', 'path' => '/users/{id}', 'ar' => 'تحديث مستخدم', 'en' => 'Update user', 'perm' => 'users.update', 'color' => 'yellow'],
-                    ['id' => 'users-delete', 'method' => 'DELETE', 'path' => '/users/{id}', 'ar' => 'حذف مستخدم', 'en' => 'Delete user', 'perm' => 'users.delete', 'color' => 'red'],
-                ];
-                @endphp
+                    <div class="overflow-x-auto bg-white rounded-xl border border-gray-200 mb-8">
+                        <table class="w-full text-sm">
+                            <thead><tr class="bg-gray-50 border-b"><th class="p-3 text-right" data-ar="الطريقة" data-en="Method">الطريقة</th><th class="p-3 text-right" data-ar="المسار" data-en="Endpoint">المسار</th><th class="p-3 text-right" data-ar="الوصف" data-en="Description">الوصف</th><th class="p-3 text-right" data-ar="الصلاحية" data-en="Permission">الصلاحية</th></tr></thead>
+                            <tbody>
+                                <tr class="border-b"><td class="p-3"><span class="badge method-get text-white">GET</span></td><td class="p-3"><code>/users</code></td><td class="p-3" data-ar="قائمة المستخدمين" data-en="List users (paginated)">قائمة المستخدمين</td><td class="p-3"><span class="perm-badge">users.view</span></td></tr>
+                                <tr class="border-b"><td class="p-3"><span class="badge method-post text-white">POST</span></td><td class="p-3"><code>/users</code></td><td class="p-3" data-ar="إنشاء مستخدم" data-en="Create user">إنشاء مستخدم</td><td class="p-3"><span class="perm-badge">users.create</span></td></tr>
+                                <tr class="border-b"><td class="p-3"><span class="badge method-get text-white">GET</span></td><td class="p-3"><code>/users/{id}</code></td><td class="p-3" data-ar="عرض مستخدم" data-en="Show user">عرض مستخدم</td><td class="p-3"><span class="perm-badge">users.view</span></td></tr>
+                                <tr class="border-b"><td class="p-3"><span class="badge method-put text-white">PUT</span></td><td class="p-3"><code>/users/{id}</code></td><td class="p-3" data-ar="تحديث مستخدم" data-en="Update user">تحديث مستخدم</td><td class="p-3"><span class="perm-badge">users.update</span></td></tr>
+                                <tr><td class="p-3"><span class="badge method-delete text-white">DEL</span></td><td class="p-3"><code>/users/{id}</code></td><td class="p-3" data-ar="حذف مستخدم" data-en="Delete user">حذف مستخدم</td><td class="p-3"><span class="perm-badge">users.delete</span></td></tr>
+                            </tbody>
+                        </table>
+                    </div>
 
-                @foreach($userEndpoints as $ep)
-                <section id="{{ $ep['id'] }}" class="mb-6">
-                    <div class="endpoint-card">
-                        <div class="bg-{{ $ep['color'] }}-50 border-b border-{{ $ep['color'] }}-100 p-4 flex items-center gap-3">
-                            <span class="badge method-{{ strtolower($ep['method'] === 'DELETE' ? 'delete' : strtolower($ep['method'])) }} text-white text-xs">{{ $ep['method'] }}</span>
-                            <code class="text-gray-800 font-semibold">{{ $ep['path'] }}</code>
-                            <span class="mr-auto text-sm text-gray-500" data-ar="{{ $ep['ar'] }}" data-en="{{ $ep['en'] }}">{{ $ep['ar'] }}</span>
-                            <span class="badge bg-purple-100 text-purple-700">{{ $ep['perm'] }}</span>
-                        </div>
+                    <h4 class="font-semibold mb-3 text-sm text-gray-500 uppercase tracking-wider" data-ar="حقول إنشاء / تحديث المستخدم" data-en="Create / Update User Parameters">حقول إنشاء / تحديث المستخدم</h4>
+                    <div class="overflow-x-auto bg-white rounded-xl border border-gray-200">
+                        <table class="param-table w-full text-sm">
+                            <thead><tr class="border-b bg-gray-50"><th class="p-3 text-right" data-ar="الحقل" data-en="Field">الحقل</th><th class="p-3 text-right" data-ar="النوع" data-en="Type">النوع</th><th class="p-3 text-right" data-ar="إنشاء" data-en="Create">إنشاء</th><th class="p-3 text-right" data-ar="تحديث" data-en="Update">تحديث</th><th class="p-3 text-right" data-ar="القواعد" data-en="Rules">القواعد</th></tr></thead>
+                            <tbody>
+                                <tr class="border-b"><td class="p-3"><code>name</code></td><td class="p-3">string</td><td class="p-3"><span class="text-red-500 font-bold">✓</span></td><td class="p-3"><span class="text-gray-400">—</span></td><td class="p-3">max:255</td></tr>
+                                <tr class="border-b"><td class="p-3"><code>email</code></td><td class="p-3">string</td><td class="p-3"><span class="text-red-500 font-bold">✓</span></td><td class="p-3"><span class="text-gray-400">—</span></td><td class="p-3" data-ar="بريد صالح، فريد" data-en="valid email, unique">بريد صالح، فريد</td></tr>
+                                <tr class="border-b"><td class="p-3"><code>password</code></td><td class="p-3">string</td><td class="p-3"><span class="text-red-500 font-bold">✓</span></td><td class="p-3"><span class="text-gray-400">—</span></td><td class="p-3" data-ar="8 أحرف+، كبير وصغير وأرقام" data-en="min:8, mixed case, numbers">8 أحرف+</td></tr>
+                                <tr class="border-b"><td class="p-3"><code>password_confirmation</code></td><td class="p-3">string</td><td class="p-3"><span class="text-red-500 font-bold">✓</span></td><td class="p-3"><span class="text-gray-400">—</span></td><td class="p-3" data-ar="يطابق كلمة المرور" data-en="must match password">يطابق كلمة المرور</td></tr>
+                                <tr class="border-b"><td class="p-3"><code>phone</code></td><td class="p-3">string</td><td class="p-3"><span class="text-gray-400">—</span></td><td class="p-3"><span class="text-gray-400">—</span></td><td class="p-3">max:20</td></tr>
+                                <tr class="border-b"><td class="p-3"><code>status</code></td><td class="p-3">string</td><td class="p-3"><span class="text-gray-400">—</span></td><td class="p-3"><span class="text-gray-400">—</span></td><td class="p-3">active | suspended | blocked</td></tr>
+                                <tr><td class="p-3"><code>roles</code></td><td class="p-3">array</td><td class="p-3"><span class="text-gray-400">—</span></td><td class="p-3"><span class="text-gray-400">—</span></td><td class="p-3" data-ar="مصفوفة أسماء الأدوار" data-en="Array of role names">مصفوفة أسماء الأدوار</td></tr>
+                            </tbody>
+                        </table>
                     </div>
                 </section>
-                @endforeach
 
                 {{-- ============================================================ --}}
                 {{-- ROLES --}}
                 {{-- ============================================================ --}}
                 <section id="roles" class="mb-20">
-                    <h2 class="text-3xl font-bold mb-6" data-ar="إدارة الأدوار" data-en="Roles Management">إدارة الأدوار</h2>
-                    <div class="overflow-x-auto bg-white rounded-xl border border-gray-200">
+                    <h2 class="text-3xl font-bold mb-4" data-ar="إدارة الأدوار" data-en="Roles Management">إدارة الأدوار</h2>
+                    <div class="overflow-x-auto bg-white rounded-xl border border-gray-200 mb-8">
                         <table class="w-full text-sm">
-                            <thead><tr class="bg-gray-50 border-b"><th class="p-3 text-right" data-ar="الطريقة" data-en="Method">الطريقة</th><th class="p-3 text-right" data-ar="المسار" data-en="Endpoint">المسار</th><th class="p-3 text-right" data-ar="الصلاحية" data-en="Permission">الصلاحية</th></tr></thead>
+                            <thead><tr class="bg-gray-50 border-b"><th class="p-3 text-right">Method</th><th class="p-3 text-right">Endpoint</th><th class="p-3 text-right" data-ar="الوصف" data-en="Description">الوصف</th><th class="p-3 text-right">Permission</th></tr></thead>
                             <tbody>
-                                <tr class="border-b"><td class="p-3"><span class="badge method-get text-white">GET</span></td><td class="p-3"><code>/roles</code></td><td class="p-3"><code>roles.view</code></td></tr>
-                                <tr class="border-b"><td class="p-3"><span class="badge method-post text-white">POST</span></td><td class="p-3"><code>/roles</code></td><td class="p-3"><code>roles.create</code></td></tr>
-                                <tr class="border-b"><td class="p-3"><span class="badge method-get text-white">GET</span></td><td class="p-3"><code>/roles/{id}</code></td><td class="p-3"><code>roles.view</code></td></tr>
-                                <tr class="border-b"><td class="p-3"><span class="badge method-put text-white">PUT</span></td><td class="p-3"><code>/roles/{id}</code></td><td class="p-3"><code>roles.update</code></td></tr>
-                                <tr class="border-b"><td class="p-3"><span class="badge method-delete text-white">DEL</span></td><td class="p-3"><code>/roles/{id}</code></td><td class="p-3"><code>roles.delete</code></td></tr>
-                                <tr class="border-b"><td class="p-3"><span class="badge method-post text-white">POST</span></td><td class="p-3"><code>/roles/{id}/permissions</code></td><td class="p-3"><code>roles.update</code></td></tr>
-                                <tr class="border-b"><td class="p-3"><span class="badge method-post text-white">POST</span></td><td class="p-3"><code>/roles/{id}/permissions/add</code></td><td class="p-3"><code>roles.update</code></td></tr>
-                                <tr><td class="p-3"><span class="badge method-post text-white">POST</span></td><td class="p-3"><code>/roles/{id}/permissions/remove</code></td><td class="p-3"><code>roles.update</code></td></tr>
+                                <tr class="border-b"><td class="p-3"><span class="badge method-get text-white">GET</span></td><td class="p-3"><code>/roles</code></td><td class="p-3" data-ar="قائمة الأدوار" data-en="List roles">قائمة الأدوار</td><td class="p-3"><span class="perm-badge">roles.view</span></td></tr>
+                                <tr class="border-b"><td class="p-3"><span class="badge method-post text-white">POST</span></td><td class="p-3"><code>/roles</code></td><td class="p-3" data-ar="إنشاء دور" data-en="Create role">إنشاء دور</td><td class="p-3"><span class="perm-badge">roles.create</span></td></tr>
+                                <tr class="border-b"><td class="p-3"><span class="badge method-get text-white">GET</span></td><td class="p-3"><code>/roles/{id}</code></td><td class="p-3" data-ar="عرض دور" data-en="Show role">عرض دور</td><td class="p-3"><span class="perm-badge">roles.view</span></td></tr>
+                                <tr class="border-b"><td class="p-3"><span class="badge method-put text-white">PUT</span></td><td class="p-3"><code>/roles/{id}</code></td><td class="p-3" data-ar="تحديث دور" data-en="Update role">تحديث دور</td><td class="p-3"><span class="perm-badge">roles.update</span></td></tr>
+                                <tr class="border-b"><td class="p-3"><span class="badge method-delete text-white">DEL</span></td><td class="p-3"><code>/roles/{id}</code></td><td class="p-3" data-ar="حذف دور" data-en="Delete role">حذف دور</td><td class="p-3"><span class="perm-badge">roles.delete</span></td></tr>
+                                <tr class="border-b"><td class="p-3"><span class="badge method-post text-white">POST</span></td><td class="p-3"><code>/roles/{id}/permissions</code></td><td class="p-3" data-ar="مزامنة الصلاحيات (استبدال)" data-en="Sync permissions (replace all)">مزامنة الصلاحيات</td><td class="p-3"><span class="perm-badge">roles.update</span></td></tr>
+                                <tr class="border-b"><td class="p-3"><span class="badge method-post text-white">POST</span></td><td class="p-3"><code>/roles/{id}/permissions/add</code></td><td class="p-3" data-ar="إضافة صلاحيات" data-en="Add permissions">إضافة صلاحيات</td><td class="p-3"><span class="perm-badge">roles.update</span></td></tr>
+                                <tr><td class="p-3"><span class="badge method-post text-white">POST</span></td><td class="p-3"><code>/roles/{id}/permissions/remove</code></td><td class="p-3" data-ar="إزالة صلاحيات" data-en="Remove permissions">إزالة صلاحيات</td><td class="p-3"><span class="perm-badge">roles.update</span></td></tr>
+                            </tbody>
+                        </table>
+                    </div>
+
+                    <h4 class="font-semibold mb-3 text-sm text-gray-500 uppercase tracking-wider" data-ar="حقول إنشاء/تحديث الدور" data-en="Create / Update Role">حقول إنشاء/تحديث الدور</h4>
+                    <div class="overflow-x-auto bg-white rounded-xl border border-gray-200 mb-6">
+                        <table class="param-table w-full text-sm">
+                            <thead><tr class="border-b bg-gray-50"><th class="p-3 text-right">Field</th><th class="p-3 text-right">Type</th><th class="p-3 text-right">Create</th><th class="p-3 text-right">Update</th><th class="p-3 text-right">Rules</th></tr></thead>
+                            <tbody>
+                                <tr class="border-b"><td class="p-3"><code>name</code></td><td class="p-3">string</td><td class="p-3"><span class="text-red-500 font-bold">✓</span></td><td class="p-3"><span class="text-gray-400">—</span></td><td class="p-3" data-ar="فريد، max:255" data-en="unique, max:255">فريد، max:255</td></tr>
+                                <tr class="border-b"><td class="p-3"><code>display_name</code></td><td class="p-3">string</td><td class="p-3"><span class="text-gray-400">—</span></td><td class="p-3"><span class="text-gray-400">—</span></td><td class="p-3">max:255</td></tr>
+                                <tr><td class="p-3"><code>description</code></td><td class="p-3">string</td><td class="p-3"><span class="text-gray-400">—</span></td><td class="p-3"><span class="text-gray-400">—</span></td><td class="p-3">max:500</td></tr>
+                            </tbody>
+                        </table>
+                    </div>
+
+                    <h4 class="font-semibold mb-3 text-sm text-gray-500 uppercase tracking-wider" data-ar="حقول مزامنة / إضافة / إزالة الصلاحيات" data-en="Sync / Add / Remove Permissions">حقول مزامنة / إضافة / إزالة الصلاحيات</h4>
+                    <div class="overflow-x-auto bg-white rounded-xl border border-gray-200">
+                        <table class="param-table w-full text-sm">
+                            <thead><tr class="border-b bg-gray-50"><th class="p-3 text-right">Field</th><th class="p-3 text-right">Type</th><th class="p-3 text-right">Required</th><th class="p-3 text-right">Rules</th></tr></thead>
+                            <tbody>
+                                <tr><td class="p-3"><code>permissions</code></td><td class="p-3">array</td><td class="p-3"><span class="text-red-500 font-bold">✓</span></td><td class="p-3" data-ar="مثل: [\"users.view\", \"users.create\"]" data-en="e.g. [\"users.view\", \"users.create\"]">["users.view", "users.create"]</td></tr>
                             </tbody>
                         </table>
                     </div>
@@ -1093,17 +874,40 @@ Accept-Language: ar</code></pre>
                 {{-- PERMISSIONS --}}
                 {{-- ============================================================ --}}
                 <section id="permissions" class="mb-20">
-                    <h2 class="text-3xl font-bold mb-6" data-ar="إدارة الصلاحيات" data-en="Permissions Management">إدارة الصلاحيات</h2>
-                    <div class="overflow-x-auto bg-white rounded-xl border border-gray-200">
+                    <h2 class="text-3xl font-bold mb-4" data-ar="إدارة الصلاحيات" data-en="Permissions Management">إدارة الصلاحيات</h2>
+                    <div class="overflow-x-auto bg-white rounded-xl border border-gray-200 mb-8">
                         <table class="w-full text-sm">
-                            <thead><tr class="bg-gray-50 border-b"><th class="p-3 text-right" data-ar="الطريقة" data-en="Method">الطريقة</th><th class="p-3 text-right" data-ar="المسار" data-en="Endpoint">المسار</th><th class="p-3 text-right" data-ar="الصلاحية" data-en="Permission">الصلاحية</th></tr></thead>
+                            <thead><tr class="bg-gray-50 border-b"><th class="p-3 text-right">Method</th><th class="p-3 text-right">Endpoint</th><th class="p-3 text-right" data-ar="الوصف" data-en="Description">الوصف</th><th class="p-3 text-right">Permission</th></tr></thead>
                             <tbody>
-                                <tr class="border-b"><td class="p-3"><span class="badge method-get text-white">GET</span></td><td class="p-3"><code>/permissions</code></td><td class="p-3"><code>permissions.view</code></td></tr>
-                                <tr class="border-b"><td class="p-3"><span class="badge method-post text-white">POST</span></td><td class="p-3"><code>/permissions</code></td><td class="p-3"><code>permissions.create</code></td></tr>
-                                <tr class="border-b"><td class="p-3"><span class="badge method-post text-white">POST</span></td><td class="p-3"><code>/permissions/resource</code></td><td class="p-3"><code>permissions.create</code></td></tr>
-                                <tr class="border-b"><td class="p-3"><span class="badge method-get text-white">GET</span></td><td class="p-3"><code>/permissions/{id}</code></td><td class="p-3"><code>permissions.view</code></td></tr>
-                                <tr class="border-b"><td class="p-3"><span class="badge method-put text-white">PUT</span></td><td class="p-3"><code>/permissions/{id}</code></td><td class="p-3"><code>permissions.update</code></td></tr>
-                                <tr><td class="p-3"><span class="badge method-delete text-white">DEL</span></td><td class="p-3"><code>/permissions/{id}</code></td><td class="p-3"><code>permissions.delete</code></td></tr>
+                                <tr class="border-b"><td class="p-3"><span class="badge method-get text-white">GET</span></td><td class="p-3"><code>/permissions</code></td><td class="p-3" data-ar="قائمة الصلاحيات" data-en="List permissions">قائمة الصلاحيات</td><td class="p-3"><span class="perm-badge">permissions.view</span></td></tr>
+                                <tr class="border-b"><td class="p-3"><span class="badge method-post text-white">POST</span></td><td class="p-3"><code>/permissions</code></td><td class="p-3" data-ar="إنشاء صلاحية" data-en="Create permission">إنشاء صلاحية</td><td class="p-3"><span class="perm-badge">permissions.create</span></td></tr>
+                                <tr class="border-b"><td class="p-3"><span class="badge method-post text-white">POST</span></td><td class="p-3"><code>/permissions/resource</code></td><td class="p-3" data-ar="إنشاء مجموعة لمورد (CRUD)" data-en="Create resource permissions (CRUD)">إنشاء مجموعة لمورد</td><td class="p-3"><span class="perm-badge">permissions.create</span></td></tr>
+                                <tr class="border-b"><td class="p-3"><span class="badge method-get text-white">GET</span></td><td class="p-3"><code>/permissions/{id}</code></td><td class="p-3" data-ar="عرض صلاحية" data-en="Show permission">عرض صلاحية</td><td class="p-3"><span class="perm-badge">permissions.view</span></td></tr>
+                                <tr class="border-b"><td class="p-3"><span class="badge method-put text-white">PUT</span></td><td class="p-3"><code>/permissions/{id}</code></td><td class="p-3" data-ar="تحديث صلاحية" data-en="Update permission">تحديث صلاحية</td><td class="p-3"><span class="perm-badge">permissions.update</span></td></tr>
+                                <tr><td class="p-3"><span class="badge method-delete text-white">DEL</span></td><td class="p-3"><code>/permissions/{id}</code></td><td class="p-3" data-ar="حذف صلاحية" data-en="Delete permission">حذف صلاحية</td><td class="p-3"><span class="perm-badge">permissions.delete</span></td></tr>
+                            </tbody>
+                        </table>
+                    </div>
+
+                    <h4 class="font-semibold mb-3 text-sm text-gray-500 uppercase tracking-wider">POST /permissions</h4>
+                    <div class="overflow-x-auto bg-white rounded-xl border border-gray-200 mb-6">
+                        <table class="param-table w-full text-sm">
+                            <thead><tr class="border-b bg-gray-50"><th class="p-3 text-right">Field</th><th class="p-3 text-right">Type</th><th class="p-3 text-right">Required</th><th class="p-3 text-right">Rules</th></tr></thead>
+                            <tbody>
+                                <tr class="border-b"><td class="p-3"><code>name</code></td><td class="p-3">string</td><td class="p-3"><span class="text-red-500 font-bold">✓</span></td><td class="p-3" data-ar="فريد مثل: reports.export" data-en="unique e.g. reports.export">فريد، مثل: reports.export</td></tr>
+                                <tr class="border-b"><td class="p-3"><code>display_name</code></td><td class="p-3">string</td><td class="p-3"><span class="text-gray-400">—</span></td><td class="p-3">max:255</td></tr>
+                                <tr><td class="p-3"><code>description</code></td><td class="p-3">string</td><td class="p-3"><span class="text-gray-400">—</span></td><td class="p-3">max:500</td></tr>
+                            </tbody>
+                        </table>
+                    </div>
+
+                    <h4 class="font-semibold mb-3 text-sm text-gray-500 uppercase tracking-wider">POST /permissions/resource</h4>
+                    <div class="overflow-x-auto bg-white rounded-xl border border-gray-200">
+                        <table class="param-table w-full text-sm">
+                            <thead><tr class="border-b bg-gray-50"><th class="p-3 text-right">Field</th><th class="p-3 text-right">Type</th><th class="p-3 text-right">Required</th><th class="p-3 text-right">Rules</th></tr></thead>
+                            <tbody>
+                                <tr class="border-b"><td class="p-3"><code>resource</code></td><td class="p-3">string</td><td class="p-3"><span class="text-red-500 font-bold">✓</span></td><td class="p-3" data-ar="اسم المورد → ينشئ .view .create .update .delete" data-en="Resource name → creates .view .create .update .delete">اسم المورد</td></tr>
+                                <tr><td class="p-3"><code>actions</code></td><td class="p-3">array</td><td class="p-3"><span class="text-gray-400">—</span></td><td class="p-3" data-ar="الافتراضي: [view, create, update, delete]" data-en="default: [view, create, update, delete]">الافتراضي: [view,create,update,delete]</td></tr>
                             </tbody>
                         </table>
                     </div>
@@ -1113,17 +917,30 @@ Accept-Language: ar</code></pre>
                 {{-- SERVICES --}}
                 {{-- ============================================================ --}}
                 <section id="services" class="mb-20">
-                    <h2 class="text-3xl font-bold mb-6" data-ar="إدارة الخدمات" data-en="Services Management">إدارة الخدمات</h2>
-                    <div class="overflow-x-auto bg-white rounded-xl border border-gray-200">
+                    <h2 class="text-3xl font-bold mb-4" data-ar="إدارة الخدمات" data-en="Services Management">إدارة الخدمات</h2>
+                    <div class="overflow-x-auto bg-white rounded-xl border border-gray-200 mb-8">
                         <table class="w-full text-sm">
-                            <thead><tr class="bg-gray-50 border-b"><th class="p-3 text-right" data-ar="الطريقة" data-en="Method">الطريقة</th><th class="p-3 text-right" data-ar="المسار" data-en="Endpoint">المسار</th><th class="p-3 text-right" data-ar="الصلاحية" data-en="Permission">الصلاحية</th></tr></thead>
+                            <thead><tr class="bg-gray-50 border-b"><th class="p-3 text-right">Method</th><th class="p-3 text-right">Endpoint</th><th class="p-3 text-right" data-ar="الوصف" data-en="Description">الوصف</th><th class="p-3 text-right">Permission</th></tr></thead>
                             <tbody>
-                                <tr class="border-b"><td class="p-3"><span class="badge method-get text-white">GET</span></td><td class="p-3"><code>/services</code></td><td class="p-3"><code>services.view</code></td></tr>
-                                <tr class="border-b"><td class="p-3"><span class="badge method-post text-white">POST</span></td><td class="p-3"><code>/services</code></td><td class="p-3"><code>services.create</code></td></tr>
-                                <tr class="border-b"><td class="p-3"><span class="badge method-get text-white">GET</span></td><td class="p-3"><code>/services/{id}</code></td><td class="p-3"><code>services.view</code></td></tr>
-                                <tr class="border-b"><td class="p-3"><span class="badge method-put text-white">PUT</span></td><td class="p-3"><code>/services/{id}</code></td><td class="p-3"><code>services.update</code></td></tr>
-                                <tr class="border-b"><td class="p-3"><span class="badge method-delete text-white">DEL</span></td><td class="p-3"><code>/services/{id}</code></td><td class="p-3"><code>services.delete</code></td></tr>
-                                <tr><td class="p-3"><span class="badge method-post text-white">POST</span></td><td class="p-3"><code>/services/{id}/regenerate-token</code></td><td class="p-3"><code>services.update</code></td></tr>
+                                <tr class="border-b"><td class="p-3"><span class="badge method-get text-white">GET</span></td><td class="p-3"><code>/services</code></td><td class="p-3" data-ar="قائمة الخدمات" data-en="List services">قائمة الخدمات</td><td class="p-3"><span class="perm-badge">services.view</span></td></tr>
+                                <tr class="border-b"><td class="p-3"><span class="badge method-post text-white">POST</span></td><td class="p-3"><code>/services</code></td><td class="p-3" data-ar="إنشاء خدمة" data-en="Create service">إنشاء خدمة</td><td class="p-3"><span class="perm-badge">services.create</span></td></tr>
+                                <tr class="border-b"><td class="p-3"><span class="badge method-get text-white">GET</span></td><td class="p-3"><code>/services/{id}</code></td><td class="p-3" data-ar="عرض خدمة" data-en="Show service">عرض خدمة</td><td class="p-3"><span class="perm-badge">services.view</span></td></tr>
+                                <tr class="border-b"><td class="p-3"><span class="badge method-put text-white">PUT</span></td><td class="p-3"><code>/services/{id}</code></td><td class="p-3" data-ar="تحديث خدمة" data-en="Update service">تحديث خدمة</td><td class="p-3"><span class="perm-badge">services.update</span></td></tr>
+                                <tr class="border-b"><td class="p-3"><span class="badge method-delete text-white">DEL</span></td><td class="p-3"><code>/services/{id}</code></td><td class="p-3" data-ar="حذف خدمة" data-en="Delete service">حذف خدمة</td><td class="p-3"><span class="perm-badge">services.delete</span></td></tr>
+                                <tr><td class="p-3"><span class="badge method-post text-white">POST</span></td><td class="p-3"><code>/services/{id}/regenerate-token</code></td><td class="p-3" data-ar="إعادة توليد التوكن" data-en="Regenerate token">إعادة توليد التوكن</td><td class="p-3"><span class="perm-badge">services.update</span></td></tr>
+                            </tbody>
+                        </table>
+                    </div>
+
+                    <h4 class="font-semibold mb-3 text-sm text-gray-500 uppercase tracking-wider" data-ar="حقول إنشاء/تحديث الخدمة" data-en="Create / Update Service">حقول إنشاء/تحديث الخدمة</h4>
+                    <div class="overflow-x-auto bg-white rounded-xl border border-gray-200">
+                        <table class="param-table w-full text-sm">
+                            <thead><tr class="border-b bg-gray-50"><th class="p-3 text-right">Field</th><th class="p-3 text-right">Type</th><th class="p-3 text-right">Create</th><th class="p-3 text-right">Update</th><th class="p-3 text-right">Rules</th></tr></thead>
+                            <tbody>
+                                <tr class="border-b"><td class="p-3"><code>name</code></td><td class="p-3">string</td><td class="p-3"><span class="text-red-500 font-bold">✓</span></td><td class="p-3"><span class="text-gray-400">—</span></td><td class="p-3" data-ar="فريد، max:255" data-en="unique, max:255">فريد، max:255</td></tr>
+                                <tr class="border-b"><td class="p-3"><code>base_url</code></td><td class="p-3">string</td><td class="p-3"><span class="text-red-500 font-bold">✓</span></td><td class="p-3"><span class="text-gray-400">—</span></td><td class="p-3" data-ar="URL صالح" data-en="valid URL">URL صالح</td></tr>
+                                <tr class="border-b"><td class="p-3"><code>description</code></td><td class="p-3">string</td><td class="p-3"><span class="text-gray-400">—</span></td><td class="p-3"><span class="text-gray-400">—</span></td><td class="p-3">max:500</td></tr>
+                                <tr><td class="p-3"><code>is_active</code></td><td class="p-3">boolean</td><td class="p-3"><span class="text-gray-400">—</span></td><td class="p-3"><span class="text-gray-400">—</span></td><td class="p-3" data-ar="الافتراضي: true" data-en="default: true">الافتراضي: true</td></tr>
                             </tbody>
                         </table>
                     </div>
@@ -1133,18 +950,32 @@ Accept-Language: ar</code></pre>
                 {{-- S2S --}}
                 {{-- ============================================================ --}}
                 <section id="s2s" class="mb-20">
-                    <h2 class="text-3xl font-bold mb-4" data-ar="تواصل بين الخدمات" data-en="Service-to-Service">تواصل بين الخدمات</h2>
+                    <h2 class="text-3xl font-bold mb-4" data-ar="تواصل بين الخدمات (S2S)" data-en="Service-to-Service (S2S)">تواصل بين الخدمات (S2S)</h2>
                     <div class="bg-purple-50 border border-purple-200 rounded-xl p-5 mb-6">
-                        <h4 class="font-bold text-purple-800 mb-2" data-ar="يتطلب هيدر X-Service-Token بدلاً من JWT" data-en="Requires X-Service-Token header instead of JWT">يتطلب هيدر X-Service-Token بدلاً من JWT</h4>
+                        <h4 class="font-bold text-purple-800 mb-2" data-ar="يتطلب هيدر X-Service-Token بدلاً من JWT" data-en="Requires X-Service-Token header instead of JWT">يتطلب X-Service-Token بدلاً من JWT</h4>
                         <code class="text-purple-600">X-Service-Token: your-service-token</code>
                     </div>
-                    <div class="overflow-x-auto bg-white rounded-xl border border-gray-200">
+
+                    <div class="overflow-x-auto bg-white rounded-xl border border-gray-200 mb-8">
                         <table class="w-full text-sm">
-                            <thead><tr class="bg-gray-50 border-b"><th class="p-3 text-right" data-ar="الطريقة" data-en="Method">الطريقة</th><th class="p-3 text-right" data-ar="المسار" data-en="Endpoint">المسار</th><th class="p-3 text-right" data-ar="الوصف" data-en="Description">الوصف</th></tr></thead>
+                            <thead><tr class="bg-gray-50 border-b"><th class="p-3 text-right">Method</th><th class="p-3 text-right">Endpoint</th><th class="p-3 text-right" data-ar="الوصف" data-en="Description">الوصف</th></tr></thead>
                             <tbody>
-                                <tr class="border-b"><td class="p-3"><span class="badge method-post text-white">POST</span></td><td class="p-3"><code>/service/verify-token</code></td><td class="p-3" data-ar="التحقق من توكن مستخدم" data-en="Verify user token">التحقق من توكن مستخدم</td></tr>
+                                <tr class="border-b"><td class="p-3"><span class="badge method-post text-white">POST</span></td><td class="p-3"><code>/service/verify-token</code></td><td class="p-3" data-ar="التحقق من توكن مستخدم" data-en="Verify user JWT token">التحقق من توكن مستخدم</td></tr>
                                 <tr class="border-b"><td class="p-3"><span class="badge method-post text-white">POST</span></td><td class="p-3"><code>/service/check-permission</code></td><td class="p-3" data-ar="فحص صلاحية مستخدم" data-en="Check user permission">فحص صلاحية مستخدم</td></tr>
-                                <tr><td class="p-3"><span class="badge method-post text-white">POST</span></td><td class="p-3"><code>/service/user-info</code></td><td class="p-3" data-ar="جلب بيانات مستخدم" data-en="Get user info">جلب بيانات مستخدم</td></tr>
+                                <tr><td class="p-3"><span class="badge method-post text-white">POST</span></td><td class="p-3"><code>/service/user-info</code></td><td class="p-3" data-ar="جلب بيانات مستخدم" data-en="Get user info by ID">جلب بيانات مستخدم</td></tr>
+                            </tbody>
+                        </table>
+                    </div>
+
+                    <h4 class="font-semibold mb-3 text-sm text-gray-500 uppercase tracking-wider" data-ar="حقول S2S" data-en="S2S Parameters">حقول S2S</h4>
+                    <div class="overflow-x-auto bg-white rounded-xl border border-gray-200">
+                        <table class="param-table w-full text-sm">
+                            <thead><tr class="border-b bg-gray-50"><th class="p-3 text-right">Endpoint</th><th class="p-3 text-right">Field</th><th class="p-3 text-right">Type</th><th class="p-3 text-right">Required</th><th class="p-3 text-right" data-ar="الوصف" data-en="Description">الوصف</th></tr></thead>
+                            <tbody>
+                                <tr class="border-b"><td class="p-3"><code>/service/verify-token</code></td><td class="p-3"><code>token</code></td><td class="p-3">string</td><td class="p-3"><span class="text-red-500 font-bold">✓</span></td><td class="p-3" data-ar="توكن JWT" data-en="JWT token to verify">توكن JWT</td></tr>
+                                <tr class="border-b"><td class="p-3" rowspan="2"><code>/service/check-permission</code></td><td class="p-3"><code>user_id</code></td><td class="p-3">string</td><td class="p-3"><span class="text-red-500 font-bold">✓</span></td><td class="p-3">UUID</td></tr>
+                                <tr class="border-b"><td class="p-3"><code>permission</code></td><td class="p-3">string</td><td class="p-3"><span class="text-red-500 font-bold">✓</span></td><td class="p-3" data-ar="اسم الصلاحية" data-en="Permission name">اسم الصلاحية</td></tr>
+                                <tr><td class="p-3"><code>/service/user-info</code></td><td class="p-3"><code>user_id</code></td><td class="p-3">string</td><td class="p-3"><span class="text-red-500 font-bold">✓</span></td><td class="p-3">UUID</td></tr>
                             </tbody>
                         </table>
                     </div>
@@ -1155,174 +986,101 @@ Accept-Language: ar</code></pre>
                 {{-- ============================================================ --}}
                 <section id="errors" class="mb-20">
                     <h2 class="text-3xl font-bold mb-4" data-ar="رموز الحالة HTTP" data-en="HTTP Status Codes">رموز الحالة HTTP</h2>
-                    <p class="text-gray-600 mb-6" data-ar="رموز HTTP المستخدمة في الردود" data-en="HTTP status codes used in responses">رموز HTTP المستخدمة في الردود</p>
-
-                    <div class="overflow-x-auto bg-white rounded-xl border border-gray-200 mb-8">
+                    <div class="overflow-x-auto bg-white rounded-xl border border-gray-200">
                         <table class="w-full text-sm">
-                            <thead>
-                                <tr class="bg-gray-50 border-b">
-                                    <th class="p-4 text-right font-semibold text-gray-500" data-ar="الرمز" data-en="Code">الرمز</th>
-                                    <th class="p-4 text-right font-semibold text-gray-500" data-ar="الاسم" data-en="Name">الاسم</th>
-                                    <th class="p-4 text-right font-semibold text-gray-500" data-ar="الوصف" data-en="Description">الوصف</th>
-                                </tr>
-                            </thead>
+                            <thead><tr class="bg-gray-50 border-b"><th class="p-4 text-right" data-ar="الرمز" data-en="Code">الرمز</th><th class="p-4 text-right">Name</th><th class="p-4 text-right" data-ar="الوصف" data-en="Description">الوصف</th></tr></thead>
                             <tbody>
                                 <tr class="border-b bg-green-50/50"><td colspan="3" class="p-2 font-bold text-green-800 text-xs uppercase tracking-wider" data-ar="نجاح" data-en="Success">نجاح</td></tr>
-                                <tr class="border-b">
-                                    <td class="p-4"><span class="bg-green-100 text-green-700 px-2 py-1 rounded font-mono">200</span></td>
-                                    <td class="p-4 font-medium">OK</td>
-                                    <td class="p-4 text-gray-600" data-ar="تمت العملية بنجاح" data-en="Request succeeded">تمت العملية بنجاح</td>
-                                </tr>
-                                <tr class="border-b">
-                                    <td class="p-4"><span class="bg-green-100 text-green-700 px-2 py-1 rounded font-mono">201</span></td>
-                                    <td class="p-4 font-medium">Created</td>
-                                    <td class="p-4 text-gray-600" data-ar="تم إنشاء المورد بنجاح" data-en="Resource created successfully">تم إنشاء المورد بنجاح</td>
-                                </tr>
+                                <tr class="border-b"><td class="p-4"><span class="bg-green-100 text-green-700 px-2 py-1 rounded font-mono">200</span></td><td class="p-4">OK</td><td class="p-4 text-gray-600" data-ar="تمت العملية بنجاح" data-en="Request succeeded">تمت العملية بنجاح</td></tr>
+                                <tr class="border-b"><td class="p-4"><span class="bg-green-100 text-green-700 px-2 py-1 rounded font-mono">201</span></td><td class="p-4">Created</td><td class="p-4 text-gray-600" data-ar="تم إنشاء المورد" data-en="Resource created">تم إنشاء المورد</td></tr>
                                 <tr class="border-b bg-yellow-50/50"><td colspan="3" class="p-2 font-bold text-yellow-800 text-xs uppercase tracking-wider" data-ar="أخطاء العميل" data-en="Client Errors">أخطاء العميل</td></tr>
-                                <tr class="border-b">
-                                    <td class="p-4"><span class="bg-yellow-100 text-yellow-700 px-2 py-1 rounded font-mono">400</span></td>
-                                    <td class="p-4 font-medium">Bad Request</td>
-                                    <td class="p-4 text-gray-600" data-ar="خطأ في التحقق من البيانات" data-en="Validation error">خطأ في التحقق من البيانات</td>
-                                </tr>
-                                <tr class="border-b">
-                                    <td class="p-4"><span class="bg-red-100 text-red-700 px-2 py-1 rounded font-mono">401</span></td>
-                                    <td class="p-4 font-medium">Unauthorized</td>
-                                    <td class="p-4 text-gray-600" data-ar="غير مصرح - التوكن مفقود أو منتهي" data-en="Not authenticated - token missing or expired">غير مصرح - التوكن مفقود أو منتهي</td>
-                                </tr>
-                                <tr class="border-b">
-                                    <td class="p-4"><span class="bg-red-100 text-red-700 px-2 py-1 rounded font-mono">403</span></td>
-                                    <td class="p-4 font-medium">Forbidden</td>
-                                    <td class="p-4 text-gray-600" data-ar="ليس لديك صلاحية لهذا الإجراء" data-en="No permission for this action">ليس لديك صلاحية لهذا الإجراء</td>
-                                </tr>
-                                <tr class="border-b">
-                                    <td class="p-4"><span class="bg-orange-100 text-orange-700 px-2 py-1 rounded font-mono">404</span></td>
-                                    <td class="p-4 font-medium">Not Found</td>
-                                    <td class="p-4 text-gray-600" data-ar="المورد غير موجود" data-en="Resource not found">المورد غير موجود</td>
-                                </tr>
-                                <tr class="border-b">
-                                    <td class="p-4"><span class="bg-orange-100 text-orange-700 px-2 py-1 rounded font-mono">422</span></td>
-                                    <td class="p-4 font-medium">Unprocessable Entity</td>
-                                    <td class="p-4 text-gray-600" data-ar="البيانات صحيحة لكن لا يمكن معالجتها" data-en="Valid data but cannot be processed">البيانات صحيحة لكن لا يمكن معالجتها</td>
-                                </tr>
-                                <tr class="border-b">
-                                    <td class="p-4"><span class="bg-purple-100 text-purple-700 px-2 py-1 rounded font-mono">429</span></td>
-                                    <td class="p-4 font-medium">Too Many Requests</td>
-                                    <td class="p-4 text-gray-600" data-ar="تم تجاوز حد الطلبات" data-en="Rate limit exceeded">تم تجاوز حد الطلبات</td>
-                                </tr>
+                                <tr class="border-b"><td class="p-4"><span class="bg-yellow-100 text-yellow-700 px-2 py-1 rounded font-mono">400</span></td><td class="p-4">Bad Request</td><td class="p-4 text-gray-600" data-ar="خطأ في التحقق" data-en="Validation error">خطأ في التحقق</td></tr>
+                                <tr class="border-b"><td class="p-4"><span class="bg-red-100 text-red-700 px-2 py-1 rounded font-mono">401</span></td><td class="p-4">Unauthorized</td><td class="p-4 text-gray-600" data-ar="غير مصرح" data-en="Not authenticated">غير مصرح</td></tr>
+                                <tr class="border-b"><td class="p-4"><span class="bg-red-100 text-red-700 px-2 py-1 rounded font-mono">403</span></td><td class="p-4">Forbidden</td><td class="p-4 text-gray-600" data-ar="ليس لديك صلاحية" data-en="No permission">ليس لديك صلاحية</td></tr>
+                                <tr class="border-b"><td class="p-4"><span class="bg-orange-100 text-orange-700 px-2 py-1 rounded font-mono">404</span></td><td class="p-4">Not Found</td><td class="p-4 text-gray-600" data-ar="غير موجود" data-en="Not found">غير موجود</td></tr>
+                                <tr class="border-b"><td class="p-4"><span class="bg-orange-100 text-orange-700 px-2 py-1 rounded font-mono">422</span></td><td class="p-4">Unprocessable</td><td class="p-4 text-gray-600" data-ar="لا يمكن معالجتها" data-en="Cannot be processed">لا يمكن معالجتها</td></tr>
+                                <tr class="border-b"><td class="p-4"><span class="bg-purple-100 text-purple-700 px-2 py-1 rounded font-mono">429</span></td><td class="p-4">Too Many</td><td class="p-4 text-gray-600" data-ar="تجاوز حد الطلبات" data-en="Rate limit exceeded">تجاوز حد الطلبات</td></tr>
                                 <tr class="border-b bg-red-50/50"><td colspan="3" class="p-2 font-bold text-red-800 text-xs uppercase tracking-wider" data-ar="أخطاء الخادم" data-en="Server Errors">أخطاء الخادم</td></tr>
-                                <tr>
-                                    <td class="p-4"><span class="bg-red-100 text-red-700 px-2 py-1 rounded font-mono">500</span></td>
-                                    <td class="p-4 font-medium">Internal Server Error</td>
-                                    <td class="p-4 text-gray-600" data-ar="خطأ في الخادم" data-en="Server error">خطأ في الخادم</td>
-                                </tr>
+                                <tr><td class="p-4"><span class="bg-red-100 text-red-700 px-2 py-1 rounded font-mono">500</span></td><td class="p-4">Server Error</td><td class="p-4 text-gray-600" data-ar="خطأ في الخادم" data-en="Internal server error">خطأ في الخادم</td></tr>
                             </tbody>
                         </table>
                     </div>
-
-                    <h3 class="text-xl font-bold mb-4" data-ar="صيغة رد الخطأ" data-en="Error Response Format">صيغة رد الخطأ</h3>
-                    <div class="grid grid-cols-1 lg:grid-cols-2 gap-4">
-                        <div class="code-block">
-                            <div class="code-header"><span data-ar="خطأ مصادقة" data-en="Authentication Error">خطأ مصادقة</span><span class="badge bg-red-500/30 text-red-300">401</span></div>
-                            <pre><code>{
-  <span class="json-key">"success"</span>: <span class="json-bool">false</span>,
-  <span class="json-key">"code"</span>: <span class="json-string">"token_expired"</span>,
-  <span class="json-key">"message"</span>: <span class="json-string">"انتهت صلاحية التوكن"</span>
-}</code></pre>
-                        </div>
-                        <div class="code-block">
-                            <div class="code-header"><span data-ar="خطأ تحقق" data-en="Validation Error">خطأ تحقق</span><span class="badge bg-yellow-500/30 text-yellow-300">400</span></div>
-                            <pre><code>{
-  <span class="json-key">"success"</span>: <span class="json-bool">false</span>,
-  <span class="json-key">"message"</span>: <span class="json-string">"فشل التحقق من البيانات"</span>,
-  <span class="json-key">"errors"</span>: {
-    <span class="json-key">"email"</span>: [<span class="json-string">"البريد مطلوب"</span>],
-    <span class="json-key">"password"</span>: [<span class="json-string">"كلمة المرور قصيرة"</span>]
-  }
-}</code></pre>
-                        </div>
-                    </div>
                 </section>
 
+                {{-- ERROR CODES --}}
                 <section id="error-codes" class="mb-20">
                     <h2 class="text-3xl font-bold mb-6" data-ar="جدول رموز الأخطاء" data-en="Error Codes Reference">جدول رموز الأخطاء</h2>
                     <div class="overflow-x-auto bg-white rounded-xl border border-gray-200">
                         <table class="w-full text-sm">
-                            <thead><tr class="bg-gray-50 border-b"><th class="p-3 text-right">Error Code</th><th class="p-3 text-right">HTTP</th><th class="p-3 text-right" data-ar="الوصف (عربي)" data-en="Description (AR)">الوصف (عربي)</th><th class="p-3 text-right" data-ar="الوصف (إنجليزي)" data-en="Description (EN)">الوصف (إنجليزي)</th></tr></thead>
+                            <thead><tr class="bg-gray-50 border-b"><th class="p-3 text-right">Error Code</th><th class="p-3 text-right">HTTP</th><th class="p-3 text-right" data-ar="الوصف" data-en="Description">الوصف</th></tr></thead>
                             <tbody>
-                                <tr class="border-b bg-red-50/50"><td colspan="4" class="p-2 font-bold text-red-800 text-xs uppercase tracking-wider">Authentication</td></tr>
-                                <tr class="border-b"><td class="p-3"><code>authentication_required</code></td><td class="p-3">401</td><td class="p-3">غير مصرح لك بالوصول</td><td class="p-3">Unauthenticated</td></tr>
-                                <tr class="border-b"><td class="p-3"><code>token_expired</code></td><td class="p-3">401</td><td class="p-3">انتهت صلاحية التوكن</td><td class="p-3">Token has expired</td></tr>
-                                <tr class="border-b"><td class="p-3"><code>token_invalid</code></td><td class="p-3">401</td><td class="p-3">التوكن غير صالح</td><td class="p-3">Token is invalid</td></tr>
-                                <tr class="border-b"><td class="p-3"><code>token_blacklisted</code></td><td class="p-3">401</td><td class="p-3">التوكن محظور</td><td class="p-3">Token has been blacklisted</td></tr>
-                                <tr class="border-b"><td class="p-3"><code>invalid_login_credentials</code></td><td class="p-3">401</td><td class="p-3">بيانات الدخول غير صحيحة</td><td class="p-3">Invalid credentials</td></tr>
-                                <tr class="border-b bg-orange-50/50"><td colspan="4" class="p-2 font-bold text-orange-800 text-xs uppercase tracking-wider">Authorization</td></tr>
-                                <tr class="border-b"><td class="p-3"><code>permission_denied</code></td><td class="p-3">403</td><td class="p-3">ليس لديك صلاحية</td><td class="p-3">Permission denied</td></tr>
-                                <tr class="border-b"><td class="p-3"><code>user_blocked</code></td><td class="p-3">403</td><td class="p-3">الحساب محظور</td><td class="p-3">Account is blocked</td></tr>
-                                <tr class="border-b"><td class="p-3"><code>user_suspended</code></td><td class="p-3">403</td><td class="p-3">الحساب موقوف</td><td class="p-3">Account is suspended</td></tr>
-                                <tr class="border-b"><td class="p-3"><code>user_disabled</code></td><td class="p-3">403</td><td class="p-3">الحساب غير مفعل</td><td class="p-3">Account is disabled</td></tr>
-                                <tr class="border-b bg-yellow-50/50"><td colspan="4" class="p-2 font-bold text-yellow-800 text-xs uppercase tracking-wider">Validation</td></tr>
-                                <tr class="border-b"><td class="p-3"><code>validation_failed</code></td><td class="p-3">400</td><td class="p-3">فشل التحقق من البيانات</td><td class="p-3">Validation failed</td></tr>
-                                <tr class="border-b"><td class="p-3"><code>resource_not_found</code></td><td class="p-3">404</td><td class="p-3">المورد غير موجود</td><td class="p-3">Resource not found</td></tr>
-                                <tr class="border-b"><td class="p-3"><code>rate_limit_exceeded</code></td><td class="p-3">429</td><td class="p-3">تم تجاوز حد الطلبات</td><td class="p-3">Too many requests</td></tr>
+                                <tr class="border-b bg-red-50/50"><td colspan="3" class="p-2 font-bold text-red-800 text-xs uppercase tracking-wider">Authentication</td></tr>
+                                <tr class="border-b"><td class="p-3"><code>authentication_required</code></td><td class="p-3">401</td><td class="p-3" data-ar="غير مصرح" data-en="Unauthenticated">Unauthenticated</td></tr>
+                                <tr class="border-b"><td class="p-3"><code>token_expired</code></td><td class="p-3">401</td><td class="p-3" data-ar="انتهت صلاحية التوكن" data-en="Token expired">Token expired</td></tr>
+                                <tr class="border-b"><td class="p-3"><code>token_invalid</code></td><td class="p-3">401</td><td class="p-3" data-ar="التوكن غير صالح" data-en="Token invalid">Token invalid</td></tr>
+                                <tr class="border-b"><td class="p-3"><code>token_blacklisted</code></td><td class="p-3">401</td><td class="p-3" data-ar="التوكن محظور" data-en="Token blacklisted">Token blacklisted</td></tr>
+                                <tr class="border-b"><td class="p-3"><code>invalid_login_credentials</code></td><td class="p-3">401</td><td class="p-3" data-ar="بيانات دخول خاطئة" data-en="Invalid credentials">Invalid credentials</td></tr>
+                                <tr class="border-b bg-orange-50/50"><td colspan="3" class="p-2 font-bold text-orange-800 text-xs uppercase tracking-wider">Authorization</td></tr>
+                                <tr class="border-b"><td class="p-3"><code>permission_denied</code></td><td class="p-3">403</td><td class="p-3" data-ar="ليس لديك صلاحية" data-en="Permission denied">Permission denied</td></tr>
+                                <tr class="border-b"><td class="p-3"><code>user_blocked</code></td><td class="p-3">403</td><td class="p-3" data-ar="الحساب محظور" data-en="Account blocked">Account blocked</td></tr>
+                                <tr class="border-b"><td class="p-3"><code>user_suspended</code></td><td class="p-3">403</td><td class="p-3" data-ar="الحساب موقوف" data-en="Account suspended">Account suspended</td></tr>
+                                <tr class="border-b bg-yellow-50/50"><td colspan="3" class="p-2 font-bold text-yellow-800 text-xs uppercase tracking-wider">Validation</td></tr>
+                                <tr class="border-b"><td class="p-3"><code>validation_failed</code></td><td class="p-3">400</td><td class="p-3" data-ar="فشل التحقق" data-en="Validation failed">Validation failed</td></tr>
+                                <tr class="border-b"><td class="p-3"><code>resource_not_found</code></td><td class="p-3">404</td><td class="p-3" data-ar="غير موجود" data-en="Not found">Resource not found</td></tr>
+                                <tr><td class="p-3"><code>rate_limit_exceeded</code></td><td class="p-3">429</td><td class="p-3" data-ar="تجاوز حد الطلبات" data-en="Too many requests">Too many requests</td></tr>
                             </tbody>
                         </table>
                     </div>
                 </section>
 
-                {{-- ============================================================ --}}
                 {{-- RATE LIMITING --}}
-                {{-- ============================================================ --}}
                 <section id="rate-limiting" class="mb-20">
                     <h2 class="text-3xl font-bold mb-4" data-ar="حد الطلبات" data-en="Rate Limiting">حد الطلبات</h2>
                     <div class="overflow-x-auto bg-white rounded-xl border border-gray-200">
                         <table class="w-full text-sm">
                             <thead><tr class="bg-gray-50 border-b"><th class="p-4 text-right" data-ar="النوع" data-en="Type">النوع</th><th class="p-4 text-right" data-ar="الحد" data-en="Limit">الحد</th><th class="p-4 text-right" data-ar="الفترة" data-en="Window">الفترة</th></tr></thead>
                             <tbody>
-                                <tr class="border-b"><td class="p-4">API Requests</td><td class="p-4">{{ config('auth-service.rate_limit.api_per_minute', 60) }}</td><td class="p-4" data-ar="دقيقة" data-en="minute">دقيقة</td></tr>
-                                <tr class="border-b"><td class="p-4">Login Attempts</td><td class="p-4">{{ config('auth-service.rate_limit.login_attempts', 5) }}</td><td class="p-4" data-ar="دقيقة" data-en="minute">دقيقة</td></tr>
-                                <tr><td class="p-4">Service-to-Service</td><td class="p-4">100</td><td class="p-4" data-ar="دقيقة" data-en="minute">دقيقة</td></tr>
+                                <tr class="border-b"><td class="p-4">API Requests</td><td class="p-4">{{ config('auth-service.rate_limit.api_per_minute', 60) }}</td><td class="p-4" data-ar="في الدقيقة" data-en="per minute">في الدقيقة</td></tr>
+                                <tr class="border-b"><td class="p-4">Login Attempts</td><td class="p-4">{{ config('auth-service.rate_limit.login_attempts', 5) }}</td><td class="p-4" data-ar="في الدقيقة" data-en="per minute">في الدقيقة</td></tr>
+                                <tr><td class="p-4">Service-to-Service</td><td class="p-4">100</td><td class="p-4" data-ar="في الدقيقة" data-en="per minute">في الدقيقة</td></tr>
                             </tbody>
                         </table>
                     </div>
                 </section>
 
-                {{-- ============================================================ --}}
                 {{-- DEFAULT ROLES --}}
-                {{-- ============================================================ --}}
                 <section id="default-roles" class="mb-20">
                     <h2 class="text-3xl font-bold mb-6" data-ar="الأدوار والصلاحيات الافتراضية" data-en="Default Roles & Permissions">الأدوار والصلاحيات الافتراضية</h2>
-                    <div class="grid grid-cols-1 md:grid-cols-3 gap-4 mb-8">
-                        <div class="bg-white rounded-xl border border-gray-200 p-5">
-                            <div class="flex items-center gap-2 mb-3">
-                                <span class="w-3 h-3 bg-red-500 rounded-full"></span>
-                                <h4 class="font-bold">super-admin</h4>
+
+                    <div class="grid grid-cols-2 md:grid-cols-4 gap-3 mb-8">
+                        @php $defaultRoles = [
+                            ['name' => 'super-admin', 'color' => 'red', 'ar' => 'وصول كامل', 'en' => 'Full access'],
+                            ['name' => 'admin', 'color' => 'blue', 'ar' => 'إدارة كاملة', 'en' => 'Administrative'],
+                            ['name' => 'supervisor', 'color' => 'indigo', 'ar' => 'مراقبة وموافقات', 'en' => 'Review & approve'],
+                            ['name' => 'investor', 'color' => 'emerald', 'ar' => 'إدارة المساحات', 'en' => 'Space management'],
+                            ['name' => 'merchant', 'color' => 'amber', 'ar' => 'طلبات إيجار وزيارة', 'en' => 'Rental & visit'],
+                            ['name' => 'sponsor', 'color' => 'purple', 'ar' => 'إدارة الرعاية', 'en' => 'Sponsorship'],
+                            ['name' => 'user', 'color' => 'gray', 'ar' => 'مستخدم عادي', 'en' => 'Basic user'],
+                        ]; @endphp
+                        @foreach($defaultRoles as $r)
+                        <div class="bg-white rounded-xl border border-gray-200 p-4 text-center">
+                            <div class="flex items-center justify-center gap-2 mb-2">
+                                <span class="w-3 h-3 bg-{{ $r['color'] }}-500 rounded-full"></span>
+                                <h4 class="font-bold text-sm">{{ $r['name'] }}</h4>
                             </div>
-                            <p class="text-sm text-gray-500" data-ar="وصول كامل - جميع الصلاحيات" data-en="Full access - all permissions">وصول كامل - جميع الصلاحيات</p>
+                            <p class="text-xs text-gray-500" data-ar="{{ $r['ar'] }}" data-en="{{ $r['en'] }}">{{ $r['ar'] }}</p>
                         </div>
-                        <div class="bg-white rounded-xl border border-gray-200 p-5">
-                            <div class="flex items-center gap-2 mb-3">
-                                <span class="w-3 h-3 bg-blue-500 rounded-full"></span>
-                                <h4 class="font-bold">admin</h4>
-                            </div>
-                            <p class="text-sm text-gray-500" data-ar="وصول إداري" data-en="Administrative access">وصول إداري</p>
-                        </div>
-                        <div class="bg-white rounded-xl border border-gray-200 p-5">
-                            <div class="flex items-center gap-2 mb-3">
-                                <span class="w-3 h-3 bg-green-500 rounded-full"></span>
-                                <h4 class="font-bold">user</h4>
-                            </div>
-                            <p class="text-sm text-gray-500" data-ar="مستخدم عادي" data-en="Regular user">مستخدم عادي</p>
-                        </div>
+                        @endforeach
                     </div>
 
                     <div class="overflow-x-auto bg-white rounded-xl border border-gray-200">
                         <table class="w-full text-sm">
                             <thead><tr class="bg-gray-50 border-b"><th class="p-3 text-right" data-ar="المورد" data-en="Resource">المورد</th><th class="p-3 text-right" data-ar="الصلاحيات" data-en="Permissions">الصلاحيات</th></tr></thead>
                             <tbody>
-                                <tr class="border-b"><td class="p-3 font-semibold" data-ar="المستخدمين" data-en="Users">المستخدمين</td><td class="p-3 space-x-1 space-x-reverse"><code class="bg-gray-100 px-2 py-0.5 rounded text-xs">users.view</code> <code class="bg-gray-100 px-2 py-0.5 rounded text-xs">users.create</code> <code class="bg-gray-100 px-2 py-0.5 rounded text-xs">users.update</code> <code class="bg-gray-100 px-2 py-0.5 rounded text-xs">users.delete</code></td></tr>
-                                <tr class="border-b"><td class="p-3 font-semibold" data-ar="الأدوار" data-en="Roles">الأدوار</td><td class="p-3 space-x-1 space-x-reverse"><code class="bg-gray-100 px-2 py-0.5 rounded text-xs">roles.view</code> <code class="bg-gray-100 px-2 py-0.5 rounded text-xs">roles.create</code> <code class="bg-gray-100 px-2 py-0.5 rounded text-xs">roles.update</code> <code class="bg-gray-100 px-2 py-0.5 rounded text-xs">roles.delete</code></td></tr>
-                                <tr class="border-b"><td class="p-3 font-semibold" data-ar="الصلاحيات" data-en="Permissions">الصلاحيات</td><td class="p-3 space-x-1 space-x-reverse"><code class="bg-gray-100 px-2 py-0.5 rounded text-xs">permissions.view</code> <code class="bg-gray-100 px-2 py-0.5 rounded text-xs">permissions.create</code> <code class="bg-gray-100 px-2 py-0.5 rounded text-xs">permissions.update</code> <code class="bg-gray-100 px-2 py-0.5 rounded text-xs">permissions.delete</code></td></tr>
-                                <tr><td class="p-3 font-semibold" data-ar="الخدمات" data-en="Services">الخدمات</td><td class="p-3 space-x-1 space-x-reverse"><code class="bg-gray-100 px-2 py-0.5 rounded text-xs">services.view</code> <code class="bg-gray-100 px-2 py-0.5 rounded text-xs">services.create</code> <code class="bg-gray-100 px-2 py-0.5 rounded text-xs">services.update</code> <code class="bg-gray-100 px-2 py-0.5 rounded text-xs">services.delete</code></td></tr>
+                                <tr class="border-b"><td class="p-3 font-semibold">Users</td><td class="p-3"><code class="bg-gray-100 px-2 py-0.5 rounded text-xs">users.view</code> <code class="bg-gray-100 px-2 py-0.5 rounded text-xs">users.create</code> <code class="bg-gray-100 px-2 py-0.5 rounded text-xs">users.update</code> <code class="bg-gray-100 px-2 py-0.5 rounded text-xs">users.delete</code></td></tr>
+                                <tr class="border-b"><td class="p-3 font-semibold">Roles</td><td class="p-3"><code class="bg-gray-100 px-2 py-0.5 rounded text-xs">roles.view</code> <code class="bg-gray-100 px-2 py-0.5 rounded text-xs">roles.create</code> <code class="bg-gray-100 px-2 py-0.5 rounded text-xs">roles.update</code> <code class="bg-gray-100 px-2 py-0.5 rounded text-xs">roles.delete</code></td></tr>
+                                <tr class="border-b"><td class="p-3 font-semibold">Permissions</td><td class="p-3"><code class="bg-gray-100 px-2 py-0.5 rounded text-xs">permissions.view</code> <code class="bg-gray-100 px-2 py-0.5 rounded text-xs">permissions.create</code> <code class="bg-gray-100 px-2 py-0.5 rounded text-xs">permissions.update</code> <code class="bg-gray-100 px-2 py-0.5 rounded text-xs">permissions.delete</code></td></tr>
+                                <tr><td class="p-3 font-semibold">Services</td><td class="p-3"><code class="bg-gray-100 px-2 py-0.5 rounded text-xs">services.view</code> <code class="bg-gray-100 px-2 py-0.5 rounded text-xs">services.create</code> <code class="bg-gray-100 px-2 py-0.5 rounded text-xs">services.update</code> <code class="bg-gray-100 px-2 py-0.5 rounded text-xs">services.delete</code></td></tr>
                             </tbody>
                         </table>
                     </div>
@@ -1340,7 +1098,6 @@ Accept-Language: ar</code></pre>
             const html = document.documentElement;
             html.setAttribute('dir', currentLang === 'ar' ? 'rtl' : 'ltr');
             html.setAttribute('lang', currentLang);
-
             document.getElementById('langLabel').textContent = currentLang === 'ar' ? 'English' : 'العربية';
 
             const sidebar = document.getElementById('sidebar');
@@ -1377,19 +1134,14 @@ Accept-Language: ar</code></pre>
         // Active link highlighting
         const sections = document.querySelectorAll('section[id]');
         const navLinks = document.querySelectorAll('.sidebar-link');
-
         window.addEventListener('scroll', () => {
             let current = '';
             sections.forEach(section => {
-                if (scrollY >= section.offsetTop - 120) {
-                    current = section.getAttribute('id');
-                }
+                if (scrollY >= section.offsetTop - 120) current = section.getAttribute('id');
             });
             navLinks.forEach(link => {
                 link.classList.remove('active');
-                if (link.getAttribute('href') === '#' + current) {
-                    link.classList.add('active');
-                }
+                if (link.getAttribute('href') === '#' + current) link.classList.add('active');
             });
         });
     </script>

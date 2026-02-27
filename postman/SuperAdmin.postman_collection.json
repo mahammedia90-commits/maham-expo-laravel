@@ -81,13 +81,13 @@
 					"request": {
 						"method": "GET",
 						"url": {
-							"raw": "{{expo_url}}/v1/super-admin/dashboard",
+							"raw": "{{expo_url}}/v1/manage/dashboard",
 							"host": [
 								"{{expo_url}}"
 							],
 							"path": [
 								"v1",
-								"super-admin",
+								"manage",
 								"dashboard"
 							]
 						}
@@ -98,13 +98,13 @@
 					"request": {
 						"method": "GET",
 						"url": {
-							"raw": "{{expo_url}}/v1/super-admin/statistics",
+							"raw": "{{expo_url}}/v1/manage/statistics",
 							"host": [
 								"{{expo_url}}"
 							],
 							"path": [
 								"v1",
-								"super-admin",
+								"manage",
 								"statistics"
 							]
 						}
@@ -120,13 +120,13 @@
 					"request": {
 						"method": "GET",
 						"url": {
-							"raw": "{{expo_url}}/v1/super-admin/categories",
+							"raw": "{{expo_url}}/v1/manage/categories",
 							"host": [
 								"{{expo_url}}"
 							],
 							"path": [
 								"v1",
-								"super-admin",
+								"manage",
 								"categories"
 							]
 						}
@@ -137,13 +137,13 @@
 					"request": {
 						"method": "POST",
 						"url": {
-							"raw": "{{expo_url}}/v1/super-admin/categories",
+							"raw": "{{expo_url}}/v1/manage/categories",
 							"host": [
 								"{{expo_url}}"
 							],
 							"path": [
 								"v1",
-								"super-admin",
+								"manage",
 								"categories"
 							]
 						},
@@ -164,13 +164,13 @@
 					"request": {
 						"method": "GET",
 						"url": {
-							"raw": "{{expo_url}}/v1/super-admin/categories/{category_id}",
+							"raw": "{{expo_url}}/v1/manage/categories/{category_id}",
 							"host": [
 								"{{expo_url}}"
 							],
 							"path": [
 								"v1",
-								"super-admin",
+								"manage",
 								"categories",
 								"{category_id}"
 							]
@@ -182,13 +182,13 @@
 					"request": {
 						"method": "PUT",
 						"url": {
-							"raw": "{{expo_url}}/v1/super-admin/categories/{category_id}",
+							"raw": "{{expo_url}}/v1/manage/categories/{category_id}",
 							"host": [
 								"{{expo_url}}"
 							],
 							"path": [
 								"v1",
-								"super-admin",
+								"manage",
 								"categories",
 								"{category_id}"
 							]
@@ -210,13 +210,13 @@
 					"request": {
 						"method": "DELETE",
 						"url": {
-							"raw": "{{expo_url}}/v1/super-admin/categories/{category_id}",
+							"raw": "{{expo_url}}/v1/manage/categories/{category_id}",
 							"host": [
 								"{{expo_url}}"
 							],
 							"path": [
 								"v1",
-								"super-admin",
+								"manage",
 								"categories",
 								"{category_id}"
 							]
@@ -233,13 +233,13 @@
 					"request": {
 						"method": "GET",
 						"url": {
-							"raw": "{{expo_url}}/v1/super-admin/cities",
+							"raw": "{{expo_url}}/v1/manage/cities",
 							"host": [
 								"{{expo_url}}"
 							],
 							"path": [
 								"v1",
-								"super-admin",
+								"manage",
 								"cities"
 							]
 						}
@@ -250,13 +250,13 @@
 					"request": {
 						"method": "POST",
 						"url": {
-							"raw": "{{expo_url}}/v1/super-admin/cities",
+							"raw": "{{expo_url}}/v1/manage/cities",
 							"host": [
 								"{{expo_url}}"
 							],
 							"path": [
 								"v1",
-								"super-admin",
+								"manage",
 								"cities"
 							]
 						},
@@ -277,13 +277,13 @@
 					"request": {
 						"method": "GET",
 						"url": {
-							"raw": "{{expo_url}}/v1/super-admin/cities/{city_id}",
+							"raw": "{{expo_url}}/v1/manage/cities/{city_id}",
 							"host": [
 								"{{expo_url}}"
 							],
 							"path": [
 								"v1",
-								"super-admin",
+								"manage",
 								"cities",
 								"{city_id}"
 							]
@@ -295,13 +295,13 @@
 					"request": {
 						"method": "PUT",
 						"url": {
-							"raw": "{{expo_url}}/v1/super-admin/cities/{city_id}",
+							"raw": "{{expo_url}}/v1/manage/cities/{city_id}",
 							"host": [
 								"{{expo_url}}"
 							],
 							"path": [
 								"v1",
-								"super-admin",
+								"manage",
 								"cities",
 								"{city_id}"
 							]
@@ -323,13 +323,13 @@
 					"request": {
 						"method": "DELETE",
 						"url": {
-							"raw": "{{expo_url}}/v1/super-admin/cities/{city_id}",
+							"raw": "{{expo_url}}/v1/manage/cities/{city_id}",
 							"host": [
 								"{{expo_url}}"
 							],
 							"path": [
 								"v1",
-								"super-admin",
+								"manage",
 								"cities",
 								"{city_id}"
 							]
@@ -346,13 +346,13 @@
 					"request": {
 						"method": "GET",
 						"url": {
-							"raw": "{{expo_url}}/v1/super-admin/settings",
+							"raw": "{{expo_url}}/v1/manage/settings",
 							"host": [
 								"{{expo_url}}"
 							],
 							"path": [
 								"v1",
-								"super-admin",
+								"manage",
 								"settings"
 							]
 						}
@@ -363,13 +363,13 @@
 					"request": {
 						"method": "GET",
 						"url": {
-							"raw": "{{expo_url}}/v1/super-admin/settings/{setting_key}",
+							"raw": "{{expo_url}}/v1/manage/settings/{setting_key}",
 							"host": [
 								"{{expo_url}}"
 							],
 							"path": [
 								"v1",
-								"super-admin",
+								"manage",
 								"settings",
 								"{setting_key}"
 							]
@@ -381,13 +381,13 @@
 					"request": {
 						"method": "PUT",
 						"url": {
-							"raw": "{{expo_url}}/v1/super-admin/settings",
+							"raw": "{{expo_url}}/v1/manage/settings",
 							"host": [
 								"{{expo_url}}"
 							],
 							"path": [
 								"v1",
-								"super-admin",
+								"manage",
 								"settings"
 							]
 						},
@@ -413,13 +413,13 @@
 					"request": {
 						"method": "GET",
 						"url": {
-							"raw": "{{expo_url}}/v1/super-admin/users",
+							"raw": "{{expo_url}}/v1/manage/users",
 							"host": [
 								"{{expo_url}}"
 							],
 							"path": [
 								"v1",
-								"super-admin",
+								"manage",
 								"users"
 							]
 						}
@@ -430,13 +430,13 @@
 					"request": {
 						"method": "GET",
 						"url": {
-							"raw": "{{expo_url}}/v1/super-admin/users/{profile_id}",
+							"raw": "{{expo_url}}/v1/manage/users/{profile_id}",
 							"host": [
 								"{{expo_url}}"
 							],
 							"path": [
 								"v1",
-								"super-admin",
+								"manage",
 								"users",
 								"{profile_id}"
 							]
@@ -448,13 +448,13 @@
 					"request": {
 						"method": "PUT",
 						"url": {
-							"raw": "{{expo_url}}/v1/super-admin/users/{profile_id}/approve",
+							"raw": "{{expo_url}}/v1/manage/users/{profile_id}/approve",
 							"host": [
 								"{{expo_url}}"
 							],
 							"path": [
 								"v1",
-								"super-admin",
+								"manage",
 								"users",
 								"{profile_id}",
 								"approve"
@@ -467,13 +467,13 @@
 					"request": {
 						"method": "PUT",
 						"url": {
-							"raw": "{{expo_url}}/v1/super-admin/users/{profile_id}/reject",
+							"raw": "{{expo_url}}/v1/manage/users/{profile_id}/reject",
 							"host": [
 								"{{expo_url}}"
 							],
 							"path": [
 								"v1",
-								"super-admin",
+								"manage",
 								"users",
 								"{profile_id}",
 								"reject"
@@ -496,13 +496,13 @@
 					"request": {
 						"method": "PUT",
 						"url": {
-							"raw": "{{expo_url}}/v1/super-admin/users/{profile_id}/suspend",
+							"raw": "{{expo_url}}/v1/manage/users/{profile_id}/suspend",
 							"host": [
 								"{{expo_url}}"
 							],
 							"path": [
 								"v1",
-								"super-admin",
+								"manage",
 								"users",
 								"{profile_id}",
 								"suspend"

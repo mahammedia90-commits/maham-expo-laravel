@@ -68,9 +68,9 @@
 							"raw": "{\n  \"identifier\": \"admin@maham-expo.com\",\n  \"password\": \"Admin@123456\"\n}"
 						},
 						"url": {
-							"raw": "{{auth_url}}/auth/login",
+							"raw": "{{auth_url}}/v1/auth/login",
 							"host": ["{{auth_url}}"],
-							"path": ["auth", "login"]
+							"path": ["v1", "auth", "login"]
 						},
 						"description": "Login as admin to obtain the admin_token. The test script automatically saves the token to both collection and environment variables."
 					},
@@ -109,9 +109,9 @@
 							{"key": "Accept-Language", "value": "ar"}
 						],
 						"url": {
-							"raw": "{{expo_url}}/admin/dashboard",
+							"raw": "{{expo_url}}/v1/manage/dashboard",
 							"host": ["{{expo_url}}"],
-							"path": ["admin", "dashboard"]
+							"path": ["v1", "manage", "dashboard"]
 						},
 						"description": "Retrieve all dashboard statistics without any filters."
 					},
@@ -144,9 +144,9 @@
 							{"key": "Accept-Language", "value": "ar"}
 						],
 						"url": {
-							"raw": "{{expo_url}}/admin/dashboard?event_id={{event_id}}",
+							"raw": "{{expo_url}}/v1/manage/dashboard?event_id={{event_id}}",
 							"host": ["{{expo_url}}"],
-							"path": ["admin", "dashboard"],
+							"path": ["v1", "manage", "dashboard"],
 							"query": [
 								{
 									"key": "event_id",
@@ -192,9 +192,9 @@
 							{"key": "Accept-Language", "value": "ar"}
 						],
 						"url": {
-							"raw": "{{expo_url}}/admin/dashboard?spaces_period=all",
+							"raw": "{{expo_url}}/v1/manage/dashboard?spaces_period=all",
 							"host": ["{{expo_url}}"],
-							"path": ["admin", "dashboard"],
+							"path": ["v1", "manage", "dashboard"],
 							"query": [
 								{
 									"key": "spaces_period",
@@ -229,9 +229,9 @@
 							{"key": "Accept-Language", "value": "ar"}
 						],
 						"url": {
-							"raw": "{{expo_url}}/admin/dashboard?spaces_period=today",
+							"raw": "{{expo_url}}/v1/manage/dashboard?spaces_period=today",
 							"host": ["{{expo_url}}"],
-							"path": ["admin", "dashboard"],
+							"path": ["v1", "manage", "dashboard"],
 							"query": [
 								{
 									"key": "spaces_period",
@@ -266,9 +266,9 @@
 							{"key": "Accept-Language", "value": "ar"}
 						],
 						"url": {
-							"raw": "{{expo_url}}/admin/dashboard?spaces_period=week",
+							"raw": "{{expo_url}}/v1/manage/dashboard?spaces_period=week",
 							"host": ["{{expo_url}}"],
-							"path": ["admin", "dashboard"],
+							"path": ["v1", "manage", "dashboard"],
 							"query": [
 								{
 									"key": "spaces_period",
@@ -303,9 +303,9 @@
 							{"key": "Accept-Language", "value": "ar"}
 						],
 						"url": {
-							"raw": "{{expo_url}}/admin/dashboard?spaces_period=month",
+							"raw": "{{expo_url}}/v1/manage/dashboard?spaces_period=month",
 							"host": ["{{expo_url}}"],
-							"path": ["admin", "dashboard"],
+							"path": ["v1", "manage", "dashboard"],
 							"query": [
 								{
 									"key": "spaces_period",
@@ -340,9 +340,9 @@
 							{"key": "Accept-Language", "value": "ar"}
 						],
 						"url": {
-							"raw": "{{expo_url}}/admin/dashboard?spaces_period=year",
+							"raw": "{{expo_url}}/v1/manage/dashboard?spaces_period=year",
 							"host": ["{{expo_url}}"],
-							"path": ["admin", "dashboard"],
+							"path": ["v1", "manage", "dashboard"],
 							"query": [
 								{
 									"key": "spaces_period",
@@ -388,9 +388,9 @@
 							{"key": "Accept-Language", "value": "ar"}
 						],
 						"url": {
-							"raw": "{{expo_url}}/admin/dashboard?revenue_period=all",
+							"raw": "{{expo_url}}/v1/manage/dashboard?revenue_period=all",
 							"host": ["{{expo_url}}"],
-							"path": ["admin", "dashboard"],
+							"path": ["v1", "manage", "dashboard"],
 							"query": [
 								{
 									"key": "revenue_period",
@@ -425,9 +425,9 @@
 							{"key": "Accept-Language", "value": "ar"}
 						],
 						"url": {
-							"raw": "{{expo_url}}/admin/dashboard?revenue_period=today",
+							"raw": "{{expo_url}}/v1/manage/dashboard?revenue_period=today",
 							"host": ["{{expo_url}}"],
-							"path": ["admin", "dashboard"],
+							"path": ["v1", "manage", "dashboard"],
 							"query": [
 								{
 									"key": "revenue_period",
@@ -462,9 +462,9 @@
 							{"key": "Accept-Language", "value": "ar"}
 						],
 						"url": {
-							"raw": "{{expo_url}}/admin/dashboard?revenue_period=week",
+							"raw": "{{expo_url}}/v1/manage/dashboard?revenue_period=week",
 							"host": ["{{expo_url}}"],
-							"path": ["admin", "dashboard"],
+							"path": ["v1", "manage", "dashboard"],
 							"query": [
 								{
 									"key": "revenue_period",
@@ -499,9 +499,9 @@
 							{"key": "Accept-Language", "value": "ar"}
 						],
 						"url": {
-							"raw": "{{expo_url}}/admin/dashboard?revenue_period=month",
+							"raw": "{{expo_url}}/v1/manage/dashboard?revenue_period=month",
 							"host": ["{{expo_url}}"],
-							"path": ["admin", "dashboard"],
+							"path": ["v1", "manage", "dashboard"],
 							"query": [
 								{
 									"key": "revenue_period",
@@ -536,9 +536,9 @@
 							{"key": "Accept-Language", "value": "ar"}
 						],
 						"url": {
-							"raw": "{{expo_url}}/admin/dashboard?revenue_period=year",
+							"raw": "{{expo_url}}/v1/manage/dashboard?revenue_period=year",
 							"host": ["{{expo_url}}"],
-							"path": ["admin", "dashboard"],
+							"path": ["v1", "manage", "dashboard"],
 							"query": [
 								{
 									"key": "revenue_period",
@@ -584,9 +584,9 @@
 							{"key": "Accept-Language", "value": "ar"}
 						],
 						"url": {
-							"raw": "{{expo_url}}/admin/dashboard?spaces_period=week&revenue_period=month",
+							"raw": "{{expo_url}}/v1/manage/dashboard?spaces_period=week&revenue_period=month",
 							"host": ["{{expo_url}}"],
-							"path": ["admin", "dashboard"],
+							"path": ["v1", "manage", "dashboard"],
 							"query": [
 								{
 									"key": "spaces_period",
@@ -631,9 +631,9 @@
 							{"key": "Accept-Language", "value": "ar"}
 						],
 						"url": {
-							"raw": "{{expo_url}}/admin/dashboard?spaces_period=month&revenue_period=month&event_id={{event_id}}",
+							"raw": "{{expo_url}}/v1/manage/dashboard?spaces_period=month&revenue_period=month&event_id={{event_id}}",
 							"host": ["{{expo_url}}"],
-							"path": ["admin", "dashboard"],
+							"path": ["v1", "manage", "dashboard"],
 							"query": [
 								{
 									"key": "spaces_period",
@@ -689,9 +689,9 @@
 							{"key": "Accept-Language", "value": "ar"}
 						],
 						"url": {
-							"raw": "{{auth_url}}/admin/stats/users",
+							"raw": "{{auth_url}}/v1/admin/stats/users",
 							"host": ["{{auth_url}}"],
-							"path": ["admin", "stats", "users"]
+							"path": ["v1", "admin", "stats", "users"]
 						},
 						"description": "Get user statistics from the auth service - all time."
 					},
@@ -719,9 +719,9 @@
 							{"key": "Accept-Language", "value": "ar"}
 						],
 						"url": {
-							"raw": "{{auth_url}}/admin/stats/users?period=today",
+							"raw": "{{auth_url}}/v1/admin/stats/users?period=today",
 							"host": ["{{auth_url}}"],
-							"path": ["admin", "stats", "users"],
+							"path": ["v1", "admin", "stats", "users"],
 							"query": [
 								{
 									"key": "period",
@@ -756,9 +756,9 @@
 							{"key": "Accept-Language", "value": "ar"}
 						],
 						"url": {
-							"raw": "{{auth_url}}/admin/stats/users?period=week",
+							"raw": "{{auth_url}}/v1/admin/stats/users?period=week",
 							"host": ["{{auth_url}}"],
-							"path": ["admin", "stats", "users"],
+							"path": ["v1", "admin", "stats", "users"],
 							"query": [
 								{
 									"key": "period",
@@ -793,9 +793,9 @@
 							{"key": "Accept-Language", "value": "ar"}
 						],
 						"url": {
-							"raw": "{{auth_url}}/admin/stats/users?period=month",
+							"raw": "{{auth_url}}/v1/admin/stats/users?period=month",
 							"host": ["{{auth_url}}"],
-							"path": ["admin", "stats", "users"],
+							"path": ["v1", "admin", "stats", "users"],
 							"query": [
 								{
 									"key": "period",
@@ -830,9 +830,9 @@
 							{"key": "Accept-Language", "value": "ar"}
 						],
 						"url": {
-							"raw": "{{auth_url}}/admin/stats/users?period=year",
+							"raw": "{{auth_url}}/v1/admin/stats/users?period=year",
 							"host": ["{{auth_url}}"],
-							"path": ["admin", "stats", "users"],
+							"path": ["v1", "admin", "stats", "users"],
 							"query": [
 								{
 									"key": "period",

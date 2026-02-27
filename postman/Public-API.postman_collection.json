@@ -23,7 +23,18 @@
 			"item": [
 				{
 					"name": "Health Check",
-					"request": { "method": "GET", "url": { "raw": "{{expo_url}}/health", "host": ["{{expo_url}}"], "path": ["health"] } }
+					"request": {
+						"method": "GET",
+						"url": {
+							"raw": "{{expo_url}}/health",
+							"host": [
+								"{{expo_url}}"
+							],
+							"path": [
+								"health"
+							]
+						}
+					}
 				}
 			]
 		},
@@ -32,31 +43,135 @@
 			"item": [
 				{
 					"name": "List Events",
-					"request": { "method": "GET", "url": { "raw": "{{expo_url}}/v1/events?page=1&per_page=15", "host": ["{{expo_url}}"], "path": ["v1","events"], "query": [{"key":"page","value":"1"},{"key":"per_page","value":"15"}] } }
+					"request": {
+						"method": "GET",
+						"url": {
+							"raw": "{{expo_url}}/v1/events?page=1&per_page=15",
+							"host": [
+								"{{expo_url}}"
+							],
+							"path": [
+								"v1",
+								"events"
+							],
+							"query": [
+								{
+									"key": "page",
+									"value": "1"
+								},
+								{
+									"key": "per_page",
+									"value": "15"
+								}
+							]
+						}
+					}
 				},
 				{
 					"name": "Featured Events",
-					"request": { "method": "GET", "url": { "raw": "{{expo_url}}/v1/events/featured", "host": ["{{expo_url}}"], "path": ["v1","events","featured"] } }
+					"request": {
+						"method": "GET",
+						"url": {
+							"raw": "{{expo_url}}/v1/events/featured",
+							"host": [
+								"{{expo_url}}"
+							],
+							"path": [
+								"v1",
+								"events",
+								"featured"
+							]
+						}
+					}
 				},
 				{
 					"name": "Show Event",
-					"request": { "method": "GET", "url": { "raw": "{{expo_url}}/v1/events/{{event_id}}", "host": ["{{expo_url}}"], "path": ["v1","events","{{event_id}}"] } }
+					"request": {
+						"method": "GET",
+						"url": {
+							"raw": "{{expo_url}}/v1/events/{{event_id}}",
+							"host": [
+								"{{expo_url}}"
+							],
+							"path": [
+								"v1",
+								"events",
+								"{{event_id}}"
+							]
+						}
+					}
 				},
 				{
 					"name": "Event Sections",
-					"request": { "method": "GET", "url": { "raw": "{{expo_url}}/v1/events/{{event_id}}/sections", "host": ["{{expo_url}}"], "path": ["v1","events","{{event_id}}","sections"] } }
+					"request": {
+						"method": "GET",
+						"url": {
+							"raw": "{{expo_url}}/v1/events/{{event_id}}/sections",
+							"host": [
+								"{{expo_url}}"
+							],
+							"path": [
+								"v1",
+								"events",
+								"{{event_id}}",
+								"sections"
+							]
+						}
+					}
 				},
 				{
 					"name": "Event Spaces",
-					"request": { "method": "GET", "url": { "raw": "{{expo_url}}/v1/events/{{event_id}}/spaces", "host": ["{{expo_url}}"], "path": ["v1","events","{{event_id}}","spaces"] } }
+					"request": {
+						"method": "GET",
+						"url": {
+							"raw": "{{expo_url}}/v1/events/{{event_id}}/spaces",
+							"host": [
+								"{{expo_url}}"
+							],
+							"path": [
+								"v1",
+								"events",
+								"{{event_id}}",
+								"spaces"
+							]
+						}
+					}
 				},
 				{
 					"name": "Event Sponsors",
-					"request": { "method": "GET", "url": { "raw": "{{expo_url}}/v1/events/{{event_id}}/sponsors", "host": ["{{expo_url}}"], "path": ["v1","events","{{event_id}}","sponsors"] } }
+					"request": {
+						"method": "GET",
+						"url": {
+							"raw": "{{expo_url}}/v1/events/{{event_id}}/sponsors",
+							"host": [
+								"{{expo_url}}"
+							],
+							"path": [
+								"v1",
+								"events",
+								"{{event_id}}",
+								"sponsors"
+							]
+						}
+					}
 				},
 				{
 					"name": "Event Sponsor Packages",
-					"request": { "method": "GET", "url": { "raw": "{{expo_url}}/v1/events/{{event_id}}/sponsor-packages", "host": ["{{expo_url}}"], "path": ["v1","events","{{event_id}}","sponsor-packages"] } }
+					"request": {
+						"method": "GET",
+						"url": {
+							"raw": "{{expo_url}}/v1/events/{{event_id}}/sponsor-packages",
+							"host": [
+								"{{expo_url}}"
+							],
+							"path": [
+								"v1",
+								"events",
+								"{{event_id}}",
+								"sponsor-packages"
+							]
+						}
+					}
 				}
 			]
 		},
@@ -65,7 +180,20 @@
 			"item": [
 				{
 					"name": "Show Space",
-					"request": { "method": "GET", "url": { "raw": "{{expo_url}}/v1/spaces/{{space_id}}", "host": ["{{expo_url}}"], "path": ["v1","spaces","{{space_id}}"] } }
+					"request": {
+						"method": "GET",
+						"url": {
+							"raw": "{{expo_url}}/v1/spaces/{{space_id}}",
+							"host": [
+								"{{expo_url}}"
+							],
+							"path": [
+								"v1",
+								"spaces",
+								"{{space_id}}"
+							]
+						}
+					}
 				}
 			]
 		},
@@ -74,11 +202,36 @@
 			"item": [
 				{
 					"name": "List Categories",
-					"request": { "method": "GET", "url": { "raw": "{{expo_url}}/v1/categories", "host": ["{{expo_url}}"], "path": ["v1","categories"] } }
+					"request": {
+						"method": "GET",
+						"url": {
+							"raw": "{{expo_url}}/v1/categories",
+							"host": [
+								"{{expo_url}}"
+							],
+							"path": [
+								"v1",
+								"categories"
+							]
+						}
+					}
 				},
 				{
 					"name": "Show Category",
-					"request": { "method": "GET", "url": { "raw": "{{expo_url}}/v1/categories/{{category_id}}", "host": ["{{expo_url}}"], "path": ["v1","categories","{{category_id}}"] } }
+					"request": {
+						"method": "GET",
+						"url": {
+							"raw": "{{expo_url}}/v1/categories/{{category_id}}",
+							"host": [
+								"{{expo_url}}"
+							],
+							"path": [
+								"v1",
+								"categories",
+								"{{category_id}}"
+							]
+						}
+					}
 				}
 			]
 		},
@@ -87,11 +240,36 @@
 			"item": [
 				{
 					"name": "List Cities",
-					"request": { "method": "GET", "url": { "raw": "{{expo_url}}/v1/cities", "host": ["{{expo_url}}"], "path": ["v1","cities"] } }
+					"request": {
+						"method": "GET",
+						"url": {
+							"raw": "{{expo_url}}/v1/cities",
+							"host": [
+								"{{expo_url}}"
+							],
+							"path": [
+								"v1",
+								"cities"
+							]
+						}
+					}
 				},
 				{
 					"name": "Show City",
-					"request": { "method": "GET", "url": { "raw": "{{expo_url}}/v1/cities/{{city_id}}", "host": ["{{expo_url}}"], "path": ["v1","cities","{{city_id}}"] } }
+					"request": {
+						"method": "GET",
+						"url": {
+							"raw": "{{expo_url}}/v1/cities/{{city_id}}",
+							"host": [
+								"{{expo_url}}"
+							],
+							"path": [
+								"v1",
+								"cities",
+								"{{city_id}}"
+							]
+						}
+					}
 				}
 			]
 		},
@@ -100,7 +278,19 @@
 			"item": [
 				{
 					"name": "List Services",
-					"request": { "method": "GET", "url": { "raw": "{{expo_url}}/v1/services", "host": ["{{expo_url}}"], "path": ["v1","services"] } }
+					"request": {
+						"method": "GET",
+						"url": {
+							"raw": "{{expo_url}}/v1/services",
+							"host": [
+								"{{expo_url}}"
+							],
+							"path": [
+								"v1",
+								"services"
+							]
+						}
+					}
 				}
 			]
 		},
@@ -109,11 +299,37 @@
 			"item": [
 				{
 					"name": "List Banners",
-					"request": { "method": "GET", "url": { "raw": "{{expo_url}}/v1/banners", "host": ["{{expo_url}}"], "path": ["v1","banners"] } }
+					"request": {
+						"method": "GET",
+						"url": {
+							"raw": "{{expo_url}}/v1/banners",
+							"host": [
+								"{{expo_url}}"
+							],
+							"path": [
+								"v1",
+								"banners"
+							]
+						}
+					}
 				},
 				{
 					"name": "Click Banner",
-					"request": { "method": "POST", "url": { "raw": "{{expo_url}}/v1/banners/{{banner_id}}/click", "host": ["{{expo_url}}"], "path": ["v1","banners","{{banner_id}}","click"] } }
+					"request": {
+						"method": "POST",
+						"url": {
+							"raw": "{{expo_url}}/v1/banners/{{banner_id}}/click",
+							"host": [
+								"{{expo_url}}"
+							],
+							"path": [
+								"v1",
+								"banners",
+								"{{banner_id}}",
+								"click"
+							]
+						}
+					}
 				}
 			]
 		},
@@ -122,19 +338,71 @@
 			"item": [
 				{
 					"name": "List FAQs",
-					"request": { "method": "GET", "url": { "raw": "{{expo_url}}/v1/faqs", "host": ["{{expo_url}}"], "path": ["v1","faqs"] } }
+					"request": {
+						"method": "GET",
+						"url": {
+							"raw": "{{expo_url}}/v1/faqs",
+							"host": [
+								"{{expo_url}}"
+							],
+							"path": [
+								"v1",
+								"faqs"
+							]
+						}
+					}
 				},
 				{
 					"name": "FAQ Categories",
-					"request": { "method": "GET", "url": { "raw": "{{expo_url}}/v1/faqs/categories", "host": ["{{expo_url}}"], "path": ["v1","faqs","categories"] } }
+					"request": {
+						"method": "GET",
+						"url": {
+							"raw": "{{expo_url}}/v1/faqs/categories",
+							"host": [
+								"{{expo_url}}"
+							],
+							"path": [
+								"v1",
+								"faqs",
+								"categories"
+							]
+						}
+					}
 				},
 				{
 					"name": "Show FAQ",
-					"request": { "method": "GET", "url": { "raw": "{{expo_url}}/v1/faqs/{{faq_id}}", "host": ["{{expo_url}}"], "path": ["v1","faqs","{{faq_id}}"] } }
+					"request": {
+						"method": "GET",
+						"url": {
+							"raw": "{{expo_url}}/v1/faqs/{{faq_id}}",
+							"host": [
+								"{{expo_url}}"
+							],
+							"path": [
+								"v1",
+								"faqs",
+								"{{faq_id}}"
+							]
+						}
+					}
 				},
 				{
 					"name": "Mark FAQ Helpful",
-					"request": { "method": "POST", "url": { "raw": "{{expo_url}}/v1/faqs/{{faq_id}}/helpful", "host": ["{{expo_url}}"], "path": ["v1","faqs","{{faq_id}}","helpful"] } }
+					"request": {
+						"method": "POST",
+						"url": {
+							"raw": "{{expo_url}}/v1/faqs/{{faq_id}}/helpful",
+							"host": [
+								"{{expo_url}}"
+							],
+							"path": [
+								"v1",
+								"faqs",
+								"{{faq_id}}",
+								"helpful"
+							]
+						}
+					}
 				}
 			]
 		},
@@ -143,11 +411,36 @@
 			"item": [
 				{
 					"name": "List Pages",
-					"request": { "method": "GET", "url": { "raw": "{{expo_url}}/v1/pages", "host": ["{{expo_url}}"], "path": ["v1","pages"] } }
+					"request": {
+						"method": "GET",
+						"url": {
+							"raw": "{{expo_url}}/v1/pages",
+							"host": [
+								"{{expo_url}}"
+							],
+							"path": [
+								"v1",
+								"pages"
+							]
+						}
+					}
 				},
 				{
 					"name": "Show Page by Slug",
-					"request": { "method": "GET", "url": { "raw": "{{expo_url}}/v1/pages/about-us", "host": ["{{expo_url}}"], "path": ["v1","pages","about-us"] } }
+					"request": {
+						"method": "GET",
+						"url": {
+							"raw": "{{expo_url}}/v1/pages/about-us",
+							"host": [
+								"{{expo_url}}"
+							],
+							"path": [
+								"v1",
+								"pages",
+								"about-us"
+							]
+						}
+					}
 				}
 			]
 		},
@@ -156,11 +449,56 @@
 			"item": [
 				{
 					"name": "List Ratings",
-					"request": { "method": "GET", "url": { "raw": "{{expo_url}}/v1/ratings?rateable_type=event&rateable_id={{event_id}}", "host": ["{{expo_url}}"], "path": ["v1","ratings"], "query": [{"key":"rateable_type","value":"event"},{"key":"rateable_id","value":"{{event_id}}"}] } }
+					"request": {
+						"method": "GET",
+						"url": {
+							"raw": "{{expo_url}}/v1/ratings?rateable_type=event&rateable_id={{event_id}}",
+							"host": [
+								"{{expo_url}}"
+							],
+							"path": [
+								"v1",
+								"ratings"
+							],
+							"query": [
+								{
+									"key": "rateable_type",
+									"value": "event"
+								},
+								{
+									"key": "rateable_id",
+									"value": "{{event_id}}"
+								}
+							]
+						}
+					}
 				},
 				{
 					"name": "Ratings Summary",
-					"request": { "method": "GET", "url": { "raw": "{{expo_url}}/v1/ratings/summary?rateable_type=event&rateable_id={{event_id}}", "host": ["{{expo_url}}"], "path": ["v1","ratings","summary"], "query": [{"key":"rateable_type","value":"event"},{"key":"rateable_id","value":"{{event_id}}"}] } }
+					"request": {
+						"method": "GET",
+						"url": {
+							"raw": "{{expo_url}}/v1/ratings/summary?rateable_type=event&rateable_id={{event_id}}",
+							"host": [
+								"{{expo_url}}"
+							],
+							"path": [
+								"v1",
+								"ratings",
+								"summary"
+							],
+							"query": [
+								{
+									"key": "rateable_type",
+									"value": "event"
+								},
+								{
+									"key": "rateable_id",
+									"value": "{{event_id}}"
+								}
+							]
+						}
+					}
 				}
 			]
 		},
@@ -169,15 +507,194 @@
 			"item": [
 				{
 					"name": "General Statistics",
-					"request": { "method": "GET", "url": { "raw": "{{expo_url}}/v1/statistics", "host": ["{{expo_url}}"], "path": ["v1","statistics"] } }
+					"request": {
+						"method": "GET",
+						"url": {
+							"raw": "{{expo_url}}/v1/statistics",
+							"host": [
+								"{{expo_url}}"
+							],
+							"path": [
+								"v1",
+								"statistics"
+							]
+						}
+					}
 				},
 				{
 					"name": "Event Statistics",
-					"request": { "method": "GET", "url": { "raw": "{{expo_url}}/v1/statistics/events", "host": ["{{expo_url}}"], "path": ["v1","statistics","events"] } }
+					"request": {
+						"method": "GET",
+						"url": {
+							"raw": "{{expo_url}}/v1/statistics/events",
+							"host": [
+								"{{expo_url}}"
+							],
+							"path": [
+								"v1",
+								"statistics",
+								"events"
+							]
+						}
+					}
 				},
 				{
 					"name": "Space Statistics",
-					"request": { "method": "GET", "url": { "raw": "{{expo_url}}/v1/statistics/spaces", "host": ["{{expo_url}}"], "path": ["v1","statistics","spaces"] } }
+					"request": {
+						"method": "GET",
+						"url": {
+							"raw": "{{expo_url}}/v1/statistics/spaces",
+							"host": [
+								"{{expo_url}}"
+							],
+							"path": [
+								"v1",
+								"statistics",
+								"spaces"
+							]
+						}
+					}
+				}
+			]
+		},
+		{
+			"name": "Tracking",
+			"description": "User activity tracking — works with or without authentication. X-Platform header recommended.",
+			"item": [
+				{
+					"name": "Track View",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "application/json"
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							},
+							{
+								"key": "Accept-Language",
+								"value": "{{language}}"
+							},
+							{
+								"key": "X-Platform",
+								"value": "web"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"resource_type\": \"event\",\n  \"resource_id\": \"{{event_id}}\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{expo_url}}/v1/track/view",
+							"host": [
+								"{{expo_url}}"
+							],
+							"path": [
+								"v1",
+								"track",
+								"view"
+							]
+						},
+						"description": "Track a page/resource view. Supports: event, space, section, sponsor, page, banner, faq, service."
+					}
+				},
+				{
+					"name": "Track Action",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "application/json"
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							},
+							{
+								"key": "Accept-Language",
+								"value": "{{language}}"
+							},
+							{
+								"key": "X-Platform",
+								"value": "web"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"action\": \"search\",\n  \"metadata\": {\n    \"search_query\": \"\\u0645\\u0639\\u0631\\u0636 \\u0627\\u0644\\u0631\\u064a\\u0627\\u0636\",\n    \"source_page\": \"home\"\n  }\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{expo_url}}/v1/track/action",
+							"host": [
+								"{{expo_url}}"
+							],
+							"path": [
+								"v1",
+								"track",
+								"action"
+							]
+						},
+						"description": "Track a user action (search, click, share, filter, download, favorite, etc.)."
+					}
+				},
+				{
+					"name": "Track Action — Click",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "application/json"
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							},
+							{
+								"key": "Accept-Language",
+								"value": "{{language}}"
+							},
+							{
+								"key": "X-Platform",
+								"value": "mobile"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"action\": \"click\",\n  \"resource_type\": \"banner\",\n  \"resource_id\": \"{{banner_id}}\",\n  \"metadata\": {\n    \"source_page\": \"home\",\n    \"target_url\": \"/events/123\"\n  }\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{expo_url}}/v1/track/action",
+							"host": [
+								"{{expo_url}}"
+							],
+							"path": [
+								"v1",
+								"track",
+								"action"
+							]
+						},
+						"description": "Track a click action on a specific resource."
+					}
 				}
 			]
 		}

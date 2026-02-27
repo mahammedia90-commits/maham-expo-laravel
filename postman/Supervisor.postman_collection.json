@@ -81,13 +81,13 @@
 					"request": {
 						"method": "GET",
 						"url": {
-							"raw": "{{expo_url}}/v1/supervisor/dashboard",
+							"raw": "{{expo_url}}/v1/manage/dashboard",
 							"host": [
 								"{{expo_url}}"
 							],
 							"path": [
 								"v1",
-								"supervisor",
+								"manage",
 								"dashboard"
 							]
 						}
@@ -98,13 +98,13 @@
 					"request": {
 						"method": "GET",
 						"url": {
-							"raw": "{{expo_url}}/v1/supervisor/statistics",
+							"raw": "{{expo_url}}/v1/manage/statistics",
 							"host": [
 								"{{expo_url}}"
 							],
 							"path": [
 								"v1",
-								"supervisor",
+								"manage",
 								"statistics"
 							]
 						}
@@ -120,13 +120,13 @@
 					"request": {
 						"method": "GET",
 						"url": {
-							"raw": "{{expo_url}}/v1/supervisor/events",
+							"raw": "{{expo_url}}/v1/manage/events",
 							"host": [
 								"{{expo_url}}"
 							],
 							"path": [
 								"v1",
-								"supervisor",
+								"manage",
 								"events"
 							]
 						}
@@ -137,13 +137,13 @@
 					"request": {
 						"method": "GET",
 						"url": {
-							"raw": "{{expo_url}}/v1/supervisor/events/{event_id}",
+							"raw": "{{expo_url}}/v1/manage/events/{event_id}",
 							"host": [
 								"{{expo_url}}"
 							],
 							"path": [
 								"v1",
-								"supervisor",
+								"manage",
 								"events",
 								"{event_id}"
 							]
@@ -155,13 +155,13 @@
 					"request": {
 						"method": "GET",
 						"url": {
-							"raw": "{{expo_url}}/v1/supervisor/events/{event_id}/sections",
+							"raw": "{{expo_url}}/v1/manage/events/{event_id}/sections",
 							"host": [
 								"{{expo_url}}"
 							],
 							"path": [
 								"v1",
-								"supervisor",
+								"manage",
 								"events",
 								"{event_id}",
 								"sections"
@@ -174,13 +174,13 @@
 					"request": {
 						"method": "GET",
 						"url": {
-							"raw": "{{expo_url}}/v1/supervisor/events/{event_id}/spaces",
+							"raw": "{{expo_url}}/v1/manage/events/{event_id}/spaces",
 							"host": [
 								"{{expo_url}}"
 							],
 							"path": [
 								"v1",
-								"supervisor",
+								"manage",
 								"events",
 								"{event_id}",
 								"spaces"
@@ -198,13 +198,13 @@
 					"request": {
 						"method": "GET",
 						"url": {
-							"raw": "{{expo_url}}/v1/supervisor/sections/{section_id}",
+							"raw": "{{expo_url}}/v1/manage/sections/{section_id}",
 							"host": [
 								"{{expo_url}}"
 							],
 							"path": [
 								"v1",
-								"supervisor",
+								"manage",
 								"sections",
 								"{section_id}"
 							]
@@ -221,13 +221,13 @@
 					"request": {
 						"method": "GET",
 						"url": {
-							"raw": "{{expo_url}}/v1/supervisor/spaces/{space_id}",
+							"raw": "{{expo_url}}/v1/manage/spaces/{space_id}",
 							"host": [
 								"{{expo_url}}"
 							],
 							"path": [
 								"v1",
-								"supervisor",
+								"manage",
 								"spaces",
 								"{space_id}"
 							]
@@ -244,13 +244,13 @@
 					"request": {
 						"method": "GET",
 						"url": {
-							"raw": "{{expo_url}}/v1/supervisor/services",
+							"raw": "{{expo_url}}/v1/manage/services",
 							"host": [
 								"{{expo_url}}"
 							],
 							"path": [
 								"v1",
-								"supervisor",
+								"manage",
 								"services"
 							]
 						}
@@ -261,13 +261,13 @@
 					"request": {
 						"method": "GET",
 						"url": {
-							"raw": "{{expo_url}}/v1/supervisor/services/{service_id}",
+							"raw": "{{expo_url}}/v1/manage/services/{service_id}",
 							"host": [
 								"{{expo_url}}"
 							],
 							"path": [
 								"v1",
-								"supervisor",
+								"manage",
 								"services",
 								"{service_id}"
 							]
@@ -284,13 +284,13 @@
 					"request": {
 						"method": "GET",
 						"url": {
-							"raw": "{{expo_url}}/v1/supervisor/profiles",
+							"raw": "{{expo_url}}/v1/manage/profiles",
 							"host": [
 								"{{expo_url}}"
 							],
 							"path": [
 								"v1",
-								"supervisor",
+								"manage",
 								"profiles"
 							]
 						}
@@ -301,13 +301,13 @@
 					"request": {
 						"method": "GET",
 						"url": {
-							"raw": "{{expo_url}}/v1/supervisor/profiles/{profile_id}",
+							"raw": "{{expo_url}}/v1/manage/profiles/{profile_id}",
 							"host": [
 								"{{expo_url}}"
 							],
 							"path": [
 								"v1",
-								"supervisor",
+								"manage",
 								"profiles",
 								"{profile_id}"
 							]
@@ -319,13 +319,13 @@
 					"request": {
 						"method": "PUT",
 						"url": {
-							"raw": "{{expo_url}}/v1/supervisor/profiles/{profile_id}/approve",
+							"raw": "{{expo_url}}/v1/manage/profiles/{profile_id}/approve",
 							"host": [
 								"{{expo_url}}"
 							],
 							"path": [
 								"v1",
-								"supervisor",
+								"manage",
 								"profiles",
 								"{profile_id}",
 								"approve"
@@ -338,13 +338,13 @@
 					"request": {
 						"method": "PUT",
 						"url": {
-							"raw": "{{expo_url}}/v1/supervisor/profiles/{profile_id}/reject",
+							"raw": "{{expo_url}}/v1/manage/profiles/{profile_id}/reject",
 							"host": [
 								"{{expo_url}}"
 							],
 							"path": [
 								"v1",
-								"supervisor",
+								"manage",
 								"profiles",
 								"{profile_id}",
 								"reject"
@@ -372,13 +372,13 @@
 					"request": {
 						"method": "GET",
 						"url": {
-							"raw": "{{expo_url}}/v1/supervisor/visit-requests",
+							"raw": "{{expo_url}}/v1/manage/visit-requests",
 							"host": [
 								"{{expo_url}}"
 							],
 							"path": [
 								"v1",
-								"supervisor",
+								"manage",
 								"visit-requests"
 							]
 						}
@@ -389,13 +389,13 @@
 					"request": {
 						"method": "GET",
 						"url": {
-							"raw": "{{expo_url}}/v1/supervisor/visit-requests/{visit_request_id}",
+							"raw": "{{expo_url}}/v1/manage/visit-requests/{visit_request_id}",
 							"host": [
 								"{{expo_url}}"
 							],
 							"path": [
 								"v1",
-								"supervisor",
+								"manage",
 								"visit-requests",
 								"{visit_request_id}"
 							]
@@ -407,13 +407,13 @@
 					"request": {
 						"method": "PUT",
 						"url": {
-							"raw": "{{expo_url}}/v1/supervisor/visit-requests/{visit_request_id}/approve",
+							"raw": "{{expo_url}}/v1/manage/visit-requests/{visit_request_id}/approve",
 							"host": [
 								"{{expo_url}}"
 							],
 							"path": [
 								"v1",
-								"supervisor",
+								"manage",
 								"visit-requests",
 								"{visit_request_id}",
 								"approve"
@@ -426,13 +426,13 @@
 					"request": {
 						"method": "PUT",
 						"url": {
-							"raw": "{{expo_url}}/v1/supervisor/visit-requests/{visit_request_id}/reject",
+							"raw": "{{expo_url}}/v1/manage/visit-requests/{visit_request_id}/reject",
 							"host": [
 								"{{expo_url}}"
 							],
 							"path": [
 								"v1",
-								"supervisor",
+								"manage",
 								"visit-requests",
 								"{visit_request_id}",
 								"reject"
@@ -460,13 +460,13 @@
 					"request": {
 						"method": "GET",
 						"url": {
-							"raw": "{{expo_url}}/v1/supervisor/rental-requests",
+							"raw": "{{expo_url}}/v1/manage/rental-requests",
 							"host": [
 								"{{expo_url}}"
 							],
 							"path": [
 								"v1",
-								"supervisor",
+								"manage",
 								"rental-requests"
 							]
 						}
@@ -477,13 +477,13 @@
 					"request": {
 						"method": "GET",
 						"url": {
-							"raw": "{{expo_url}}/v1/supervisor/rental-requests/{rental_request_id}",
+							"raw": "{{expo_url}}/v1/manage/rental-requests/{rental_request_id}",
 							"host": [
 								"{{expo_url}}"
 							],
 							"path": [
 								"v1",
-								"supervisor",
+								"manage",
 								"rental-requests",
 								"{rental_request_id}"
 							]
@@ -495,13 +495,13 @@
 					"request": {
 						"method": "PUT",
 						"url": {
-							"raw": "{{expo_url}}/v1/supervisor/rental-requests/{rental_request_id}/approve",
+							"raw": "{{expo_url}}/v1/manage/rental-requests/{rental_request_id}/approve",
 							"host": [
 								"{{expo_url}}"
 							],
 							"path": [
 								"v1",
-								"supervisor",
+								"manage",
 								"rental-requests",
 								"{rental_request_id}",
 								"approve"
@@ -514,13 +514,13 @@
 					"request": {
 						"method": "PUT",
 						"url": {
-							"raw": "{{expo_url}}/v1/supervisor/rental-requests/{rental_request_id}/reject",
+							"raw": "{{expo_url}}/v1/manage/rental-requests/{rental_request_id}/reject",
 							"host": [
 								"{{expo_url}}"
 							],
 							"path": [
 								"v1",
-								"supervisor",
+								"manage",
 								"rental-requests",
 								"{rental_request_id}",
 								"reject"
@@ -543,13 +543,13 @@
 					"request": {
 						"method": "POST",
 						"url": {
-							"raw": "{{expo_url}}/v1/supervisor/rental-requests/{rental_request_id}/payment",
+							"raw": "{{expo_url}}/v1/manage/rental-requests/{rental_request_id}/payment",
 							"host": [
 								"{{expo_url}}"
 							],
 							"path": [
 								"v1",
-								"supervisor",
+								"manage",
 								"rental-requests",
 								"{rental_request_id}",
 								"payment"
@@ -577,13 +577,13 @@
 					"request": {
 						"method": "GET",
 						"url": {
-							"raw": "{{expo_url}}/v1/supervisor/rental-contracts",
+							"raw": "{{expo_url}}/v1/manage/rental-contracts",
 							"host": [
 								"{{expo_url}}"
 							],
 							"path": [
 								"v1",
-								"supervisor",
+								"manage",
 								"rental-contracts"
 							]
 						}
@@ -594,13 +594,13 @@
 					"request": {
 						"method": "GET",
 						"url": {
-							"raw": "{{expo_url}}/v1/supervisor/rental-contracts/{rental_contract_id}",
+							"raw": "{{expo_url}}/v1/manage/rental-contracts/{rental_contract_id}",
 							"host": [
 								"{{expo_url}}"
 							],
 							"path": [
 								"v1",
-								"supervisor",
+								"manage",
 								"rental-contracts",
 								"{rental_contract_id}"
 							]
@@ -612,13 +612,13 @@
 					"request": {
 						"method": "PUT",
 						"url": {
-							"raw": "{{expo_url}}/v1/supervisor/rental-contracts/{rental_contract_id}/approve",
+							"raw": "{{expo_url}}/v1/manage/rental-contracts/{rental_contract_id}/approve",
 							"host": [
 								"{{expo_url}}"
 							],
 							"path": [
 								"v1",
-								"supervisor",
+								"manage",
 								"rental-contracts",
 								"{rental_contract_id}",
 								"approve"
@@ -631,13 +631,13 @@
 					"request": {
 						"method": "PUT",
 						"url": {
-							"raw": "{{expo_url}}/v1/supervisor/rental-contracts/{rental_contract_id}/reject",
+							"raw": "{{expo_url}}/v1/manage/rental-contracts/{rental_contract_id}/reject",
 							"host": [
 								"{{expo_url}}"
 							],
 							"path": [
 								"v1",
-								"supervisor",
+								"manage",
 								"rental-contracts",
 								"{rental_contract_id}",
 								"reject"
@@ -665,13 +665,13 @@
 					"request": {
 						"method": "GET",
 						"url": {
-							"raw": "{{expo_url}}/v1/supervisor/sponsors",
+							"raw": "{{expo_url}}/v1/manage/sponsors",
 							"host": [
 								"{{expo_url}}"
 							],
 							"path": [
 								"v1",
-								"supervisor",
+								"manage",
 								"sponsors"
 							]
 						}
@@ -682,13 +682,13 @@
 					"request": {
 						"method": "GET",
 						"url": {
-							"raw": "{{expo_url}}/v1/supervisor/sponsors/{sponsor_id}",
+							"raw": "{{expo_url}}/v1/manage/sponsors/{sponsor_id}",
 							"host": [
 								"{{expo_url}}"
 							],
 							"path": [
 								"v1",
-								"supervisor",
+								"manage",
 								"sponsors",
 								"{sponsor_id}"
 							]
@@ -705,13 +705,13 @@
 					"request": {
 						"method": "GET",
 						"url": {
-							"raw": "{{expo_url}}/v1/supervisor/sponsor-contracts",
+							"raw": "{{expo_url}}/v1/manage/sponsor-contracts",
 							"host": [
 								"{{expo_url}}"
 							],
 							"path": [
 								"v1",
-								"supervisor",
+								"manage",
 								"sponsor-contracts"
 							]
 						}
@@ -722,13 +722,13 @@
 					"request": {
 						"method": "GET",
 						"url": {
-							"raw": "{{expo_url}}/v1/supervisor/sponsor-contracts/{sponsor_contract_id}",
+							"raw": "{{expo_url}}/v1/manage/sponsor-contracts/{sponsor_contract_id}",
 							"host": [
 								"{{expo_url}}"
 							],
 							"path": [
 								"v1",
-								"supervisor",
+								"manage",
 								"sponsor-contracts",
 								"{sponsor_contract_id}"
 							]
@@ -740,13 +740,13 @@
 					"request": {
 						"method": "PUT",
 						"url": {
-							"raw": "{{expo_url}}/v1/supervisor/sponsor-contracts/{sponsor_contract_id}/approve",
+							"raw": "{{expo_url}}/v1/manage/sponsor-contracts/{sponsor_contract_id}/approve",
 							"host": [
 								"{{expo_url}}"
 							],
 							"path": [
 								"v1",
-								"supervisor",
+								"manage",
 								"sponsor-contracts",
 								"{sponsor_contract_id}",
 								"approve"
@@ -759,13 +759,13 @@
 					"request": {
 						"method": "PUT",
 						"url": {
-							"raw": "{{expo_url}}/v1/supervisor/sponsor-contracts/{sponsor_contract_id}/reject",
+							"raw": "{{expo_url}}/v1/manage/sponsor-contracts/{sponsor_contract_id}/reject",
 							"host": [
 								"{{expo_url}}"
 							],
 							"path": [
 								"v1",
-								"supervisor",
+								"manage",
 								"sponsor-contracts",
 								"{sponsor_contract_id}",
 								"reject"
@@ -793,13 +793,13 @@
 					"request": {
 						"method": "GET",
 						"url": {
-							"raw": "{{expo_url}}/v1/supervisor/support-tickets",
+							"raw": "{{expo_url}}/v1/manage/support-tickets",
 							"host": [
 								"{{expo_url}}"
 							],
 							"path": [
 								"v1",
-								"supervisor",
+								"manage",
 								"support-tickets"
 							]
 						}
@@ -810,13 +810,13 @@
 					"request": {
 						"method": "GET",
 						"url": {
-							"raw": "{{expo_url}}/v1/supervisor/support-tickets/{support_ticket_id}",
+							"raw": "{{expo_url}}/v1/manage/support-tickets/{support_ticket_id}",
 							"host": [
 								"{{expo_url}}"
 							],
 							"path": [
 								"v1",
-								"supervisor",
+								"manage",
 								"support-tickets",
 								"{support_ticket_id}"
 							]
@@ -828,13 +828,13 @@
 					"request": {
 						"method": "POST",
 						"url": {
-							"raw": "{{expo_url}}/v1/supervisor/support-tickets/{support_ticket_id}/reply",
+							"raw": "{{expo_url}}/v1/manage/support-tickets/{support_ticket_id}/reply",
 							"host": [
 								"{{expo_url}}"
 							],
 							"path": [
 								"v1",
-								"supervisor",
+								"manage",
 								"support-tickets",
 								"{support_ticket_id}",
 								"reply"
@@ -857,13 +857,13 @@
 					"request": {
 						"method": "PUT",
 						"url": {
-							"raw": "{{expo_url}}/v1/supervisor/support-tickets/{support_ticket_id}/resolve",
+							"raw": "{{expo_url}}/v1/manage/support-tickets/{support_ticket_id}/resolve",
 							"host": [
 								"{{expo_url}}"
 							],
 							"path": [
 								"v1",
-								"supervisor",
+								"manage",
 								"support-tickets",
 								"{support_ticket_id}",
 								"resolve"

@@ -274,4 +274,12 @@ return [
     'unauthorized' => 'Unauthorized',
     'validation_failed' => 'Validation failed',
     'server_error' => 'Server error',
+
+    // ================== TRACKING ==================
+    'tracking' => [
+        'view_recorded' => 'View recorded successfully',
+        'action_recorded' => 'Action recorded successfully',
+        'invalid_resource_type' => 'Invalid resource type for tracking',
+        'invalid_action' => 'Invalid tracking action',
+    ],
 ];
