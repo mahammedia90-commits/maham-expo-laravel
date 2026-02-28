@@ -5,38 +5,6 @@
 
 services:
   # ============================================
-  # Nginx Reverse Proxy + SSL (Certbot)
-  # ============================================
-  nginx-proxy:
-    build:
-      context: ./nginx
-      dockerfile: Dockerfile
-    restart: always
-    ports:
-      - "80:80"
-      - "443:443"
-    volumes:
-      - certbot-etc:/etc/letsencrypt:ro
-      - certbot-var:/var/lib/letsencrypt
-      - certbot-webroot:/var/www/certbot:ro
-    depends_on:
-      - auth-service
-      - expo-api
-    networks:
-      - maham-network
-
-  # Certbot for SSL
-  certbot:
-    image: certbot/certbot
-    volumes:
-      - certbot-etc:/etc/letsencrypt
-      - certbot-var:/var/lib/letsencrypt
-      - certbot-webroot:/var/www/certbot
-    networks:
-      - maham-network
-    entrypoint: "/bin/sh -c 'trap exit TERM; while :; do sleep 12h & wait $${!}; certbot renew --webroot -w /var/www/certbot --quiet; done'"
-
-  # ============================================
   # Auth Service (maham-auth-expo-api)
   # ============================================
   auth-service:
@@ -46,6 +14,8 @@ services:
       target: production
     container_name: auth-service
     restart: always
+    expose:
+      - "80"
     environment:
       # --- Application (Required) ---
       APP_NAME: "Maham Auth Service"
@@ -143,6 +113,8 @@ services:
       target: production
     container_name: expo-api
     restart: always
+    expose:
+      - "80"
     environment:
       # --- Application (Required) ---
       APP_NAME: "Maham Expo API"
@@ -354,14 +326,10 @@ services:
 
 networks:
   maham-network:
-    driver: bridge
-    name: maham-network
+    external: true
 
 volumes:
   auth-mysql-data:
   auth-redis-data:
   expo-mysql-data:
   expo-redis-data:
-  certbot-etc:
-  certbot-var:
-  certbot-webroot:
