@@ -3,7 +3,11 @@
 use Illuminate\Support\Facades\Route;
 
 Route::get('/docs', function () {
-    return view('welcome');
+    // Cache rendered HTML for 1 hour — the 250KB template is static content
+    $html = cache()->remember('docs-page-v1', 3600, function () {
+        return view('welcome')->render();
+    });
+    return response($html)->header('Content-Type', 'text/html');
 });
 
 Route::get('/', function () {
