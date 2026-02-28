@@ -1,13 +1,23 @@
 <?php
 
+use App\Http\Controllers\PostmanController;
 use Illuminate\Support\Facades\Route;
 
 Route::get('/docs', function () {
     // Cache rendered HTML for 1 hour — the 250KB template is static content
-    $html = cache()->remember('docs-page-v1', 3600, function () {
+    $html = cache()->remember('docs-page-v2', 3600, function () {
         return view('welcome')->render();
     });
     return response($html)->header('Content-Type', 'text/html');
+});
+
+// ── Postman Collection Downloads ────────────────────────────────────
+Route::prefix('docs/postman')->group(function () {
+    Route::get('/collections', [PostmanController::class, 'index']);
+    Route::get('/all',         [PostmanController::class, 'downloadAll']);
+    Route::get('/collection/{slug}',          [PostmanController::class, 'downloadCollection']);
+    Route::get('/collection/{slug}/{folder}', [PostmanController::class, 'downloadFolder']);
+    Route::get('/environment/{type?}',        [PostmanController::class, 'downloadEnvironment']);
 });
 
 Route::get('/', function () {

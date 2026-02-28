@@ -1,0 +1,1152 @@
+{
+	"info": {
+		"name": "Maham Expo - Investor",
+		"description": "Investor role endpoints for Maham Expo API.\nInvestors manage spaces, handle rental/visit requests, and track payments.",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"auth": {
+		"type": "bearer",
+		"bearer": [
+			{
+				"key": "token",
+				"value": "{{investor_token}}",
+				"type": "string"
+			}
+		]
+	},
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					"pm.request.addHeader({ key: 'Accept', value: 'application/json' });",
+					"pm.request.addHeader({ key: 'Accept-Language', value: pm.environment.get('language') || 'ar' });"
+				]
+			}
+		}
+	],
+	"item": [
+		{
+			"name": "🔒 Auth",
+			"item": [
+				{
+					"name": "Login as Investor",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"type": "text/javascript",
+								"exec": [
+									"if(pm.response.code===200){var d=pm.response.json();if(d.data&&d.data.token){pm.environment.set('investor_token',d.data.token);pm.environment.set('auth_token',d.data.token);}}"
+								]
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "noauth"
+						},
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"identifier\": \"investor@example.com\",\n    \"password\": \"password\",\n    \"service_token\": \"{{service_token}}\",\n    \"service_name\": \"maham-expo\"\n}"
+						},
+						"url": {
+							"raw": "{{auth_url}}/v1/auth/login",
+							"host": [
+								"{{auth_url}}"
+							],
+							"path": [
+								"v1",
+								"auth",
+								"login"
+							]
+						}
+					}
+				}
+			]
+		},
+		{
+			"name": "📊 Dashboard & Stats",
+			"item": [
+				{
+					"name": "Dashboard",
+					"request": {
+						"method": "GET",
+						"url": {
+							"raw": "{{expo_url}}/v1/my/dashboard",
+							"host": [
+								"{{expo_url}}"
+							],
+							"path": [
+								"v1",
+								"my",
+								"dashboard"
+							]
+						}
+					}
+				},
+				{
+					"name": "Statistics",
+					"request": {
+						"method": "GET",
+						"url": {
+							"raw": "{{expo_url}}/v1/my/statistics",
+							"host": [
+								"{{expo_url}}"
+							],
+							"path": [
+								"v1",
+								"my",
+								"statistics"
+							]
+						}
+					}
+				}
+			]
+		},
+		{
+			"name": "📍 Spaces",
+			"item": [
+				{
+					"name": "List Spaces",
+					"request": {
+						"method": "GET",
+						"url": {
+							"raw": "{{expo_url}}/v1/my/spaces",
+							"host": [
+								"{{expo_url}}"
+							],
+							"path": [
+								"v1",
+								"my",
+								"spaces"
+							]
+						}
+					}
+				},
+				{
+					"name": "Create Space",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"event_id\": \"{{event_id}}\",\n    \"section_id\": \"{{section_id}}\",\n    \"name\": \"Premium Booth A1\",\n    \"name_ar\": \"\\u0645\\u0633\\u0627\\u062d\\u0629 \\u0645\\u0645\\u064a\\u0632\\u0629 A1\",\n    \"description\": \"Corner booth with excellent visibility\",\n    \"description_ar\": \"\\u0645\\u0633\\u0627\\u062d\\u0629 \\u0631\\u0643\\u0646\\u064a\\u0629 \\u0628\\u0631\\u0624\\u064a\\u0629 \\u0645\\u0645\\u062a\\u0627\\u0632\\u0629\",\n    \"location_code\": \"A-01\",\n    \"area_sqm\": 50,\n    \"price_per_day\": 500,\n    \"price_total\": 5000,\n    \"floor_number\": 1,\n    \"space_type\": \"booth\",\n    \"payment_system\": \"full\",\n    \"rental_duration\": \"event\",\n    \"amenities\": [\n        \"wifi\",\n        \"electricity\",\n        \"water\"\n    ],\n    \"services\": []\n}"
+						},
+						"url": {
+							"raw": "{{expo_url}}/v1/my/spaces",
+							"host": [
+								"{{expo_url}}"
+							],
+							"path": [
+								"v1",
+								"my",
+								"spaces"
+							]
+						}
+					}
+				},
+				{
+					"name": "Show Space",
+					"request": {
+						"method": "GET",
+						"url": {
+							"raw": "{{expo_url}}/v1/my/spaces/{{space_id}}",
+							"host": [
+								"{{expo_url}}"
+							],
+							"path": [
+								"v1",
+								"my",
+								"spaces",
+								"{{space_id}}"
+							]
+						}
+					}
+				},
+				{
+					"name": "Update Space",
+					"request": {
+						"method": "PUT",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"name\": \"Updated Booth A1\",\n    \"price_total\": 6000,\n    \"amenities\": [\n        \"wifi\",\n        \"electricity\",\n        \"water\",\n        \"ac\"\n    ]\n}"
+						},
+						"url": {
+							"raw": "{{expo_url}}/v1/my/spaces/{{space_id}}",
+							"host": [
+								"{{expo_url}}"
+							],
+							"path": [
+								"v1",
+								"my",
+								"spaces",
+								"{{space_id}}"
+							]
+						}
+					}
+				},
+				{
+					"name": "Delete Space",
+					"request": {
+						"method": "DELETE",
+						"url": {
+							"raw": "{{expo_url}}/v1/my/spaces/{{space_id}}",
+							"host": [
+								"{{expo_url}}"
+							],
+							"path": [
+								"v1",
+								"my",
+								"spaces",
+								"{{space_id}}"
+							]
+						}
+					}
+				},
+				{
+					"name": "Attach Services to Space",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"services\": [\n        \"{{service_id}}\"\n    ]\n}"
+						},
+						"url": {
+							"raw": "{{expo_url}}/v1/my/spaces/{{space_id}}/services",
+							"host": [
+								"{{expo_url}}"
+							],
+							"path": [
+								"v1",
+								"my",
+								"spaces",
+								"{{space_id}}",
+								"services"
+							]
+						}
+					}
+				},
+				{
+					"name": "Detach Services from Space",
+					"request": {
+						"method": "DELETE",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"services\": [\n        \"{{service_id}}\"\n    ]\n}"
+						},
+						"url": {
+							"raw": "{{expo_url}}/v1/my/spaces/{{space_id}}/services",
+							"host": [
+								"{{expo_url}}"
+							],
+							"path": [
+								"v1",
+								"my",
+								"spaces",
+								"{{space_id}}",
+								"services"
+							]
+						}
+					}
+				}
+			]
+		},
+		{
+			"name": "🏠 Rental Requests",
+			"item": [
+				{
+					"name": "List Rental Requests",
+					"request": {
+						"method": "GET",
+						"url": {
+							"raw": "{{expo_url}}/v1/my/received-rental-requests",
+							"host": [
+								"{{expo_url}}"
+							],
+							"path": [
+								"v1",
+								"my",
+								"received-rental-requests"
+							]
+						}
+					}
+				},
+				{
+					"name": "Pending Count",
+					"request": {
+						"method": "GET",
+						"url": {
+							"raw": "{{expo_url}}/v1/my/received-rental-requests/pending-count",
+							"host": [
+								"{{expo_url}}"
+							],
+							"path": [
+								"v1",
+								"my",
+								"received-rental-requests",
+								"pending-count"
+							]
+						}
+					}
+				},
+				{
+					"name": "Show Rental Request",
+					"request": {
+						"method": "GET",
+						"url": {
+							"raw": "{{expo_url}}/v1/my/received-rental-requests/{{rental_request_id}}",
+							"host": [
+								"{{expo_url}}"
+							],
+							"path": [
+								"v1",
+								"my",
+								"received-rental-requests",
+								"{{rental_request_id}}"
+							]
+						}
+					}
+				},
+				{
+					"name": "Approve Rental Request",
+					"request": {
+						"method": "PUT",
+						"url": {
+							"raw": "{{expo_url}}/v1/my/received-rental-requests/{{rental_request_id}}/approve",
+							"host": [
+								"{{expo_url}}"
+							],
+							"path": [
+								"v1",
+								"my",
+								"received-rental-requests",
+								"{{rental_request_id}}",
+								"approve"
+							]
+						}
+					}
+				},
+				{
+					"name": "Reject Rental Request",
+					"request": {
+						"method": "PUT",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"reason\": \"Space not available for these dates\"\n}"
+						},
+						"url": {
+							"raw": "{{expo_url}}/v1/my/received-rental-requests/{{rental_request_id}}/reject",
+							"host": [
+								"{{expo_url}}"
+							],
+							"path": [
+								"v1",
+								"my",
+								"received-rental-requests",
+								"{{rental_request_id}}",
+								"reject"
+							]
+						}
+					}
+				}
+			]
+		},
+		{
+			"name": "📋 Rental Contracts",
+			"item": [
+				{
+					"name": "List Contracts",
+					"request": {
+						"method": "GET",
+						"url": {
+							"raw": "{{expo_url}}/v1/my/rental-contracts",
+							"host": [
+								"{{expo_url}}"
+							],
+							"path": [
+								"v1",
+								"my",
+								"rental-contracts"
+							]
+						}
+					}
+				},
+				{
+					"name": "Show Contract",
+					"request": {
+						"method": "GET",
+						"url": {
+							"raw": "{{expo_url}}/v1/my/rental-contracts/{{rental_contract_id}}",
+							"host": [
+								"{{expo_url}}"
+							],
+							"path": [
+								"v1",
+								"my",
+								"rental-contracts",
+								"{{rental_contract_id}}"
+							]
+						}
+					}
+				},
+				{
+					"name": "Sign Contract",
+					"request": {
+						"method": "PUT",
+						"url": {
+							"raw": "{{expo_url}}/v1/my/rental-contracts/{{rental_contract_id}}/sign",
+							"host": [
+								"{{expo_url}}"
+							],
+							"path": [
+								"v1",
+								"my",
+								"rental-contracts",
+								"{{rental_contract_id}}",
+								"sign"
+							]
+						}
+					}
+				}
+			]
+		},
+		{
+			"name": "👁️ Visit Requests",
+			"item": [
+				{
+					"name": "List Visit Requests",
+					"request": {
+						"method": "GET",
+						"url": {
+							"raw": "{{expo_url}}/v1/my/received-visit-requests",
+							"host": [
+								"{{expo_url}}"
+							],
+							"path": [
+								"v1",
+								"my",
+								"received-visit-requests"
+							]
+						}
+					}
+				},
+				{
+					"name": "Pending Count",
+					"request": {
+						"method": "GET",
+						"url": {
+							"raw": "{{expo_url}}/v1/my/received-visit-requests/pending-count",
+							"host": [
+								"{{expo_url}}"
+							],
+							"path": [
+								"v1",
+								"my",
+								"received-visit-requests",
+								"pending-count"
+							]
+						}
+					}
+				},
+				{
+					"name": "Show Visit Request",
+					"request": {
+						"method": "GET",
+						"url": {
+							"raw": "{{expo_url}}/v1/my/received-visit-requests/{{visit_request_id}}",
+							"host": [
+								"{{expo_url}}"
+							],
+							"path": [
+								"v1",
+								"my",
+								"received-visit-requests",
+								"{{visit_request_id}}"
+							]
+						}
+					}
+				},
+				{
+					"name": "Approve Visit Request",
+					"request": {
+						"method": "PUT",
+						"url": {
+							"raw": "{{expo_url}}/v1/my/received-visit-requests/{{visit_request_id}}/approve",
+							"host": [
+								"{{expo_url}}"
+							],
+							"path": [
+								"v1",
+								"my",
+								"received-visit-requests",
+								"{{visit_request_id}}",
+								"approve"
+							]
+						}
+					}
+				},
+				{
+					"name": "Reject Visit Request",
+					"request": {
+						"method": "PUT",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"reason\": \"No available time slots\"\n}"
+						},
+						"url": {
+							"raw": "{{expo_url}}/v1/my/received-visit-requests/{{visit_request_id}}/reject",
+							"host": [
+								"{{expo_url}}"
+							],
+							"path": [
+								"v1",
+								"my",
+								"received-visit-requests",
+								"{{visit_request_id}}",
+								"reject"
+							]
+						}
+					}
+				}
+			]
+		},
+		{
+			"name": "💰 Payments",
+			"item": [
+				{
+					"name": "List Payments",
+					"request": {
+						"method": "GET",
+						"url": {
+							"raw": "{{expo_url}}/v1/my/payments",
+							"host": [
+								"{{expo_url}}"
+							],
+							"path": [
+								"v1",
+								"my",
+								"payments"
+							]
+						}
+					}
+				},
+				{
+					"name": "Payment Summary",
+					"request": {
+						"method": "GET",
+						"url": {
+							"raw": "{{expo_url}}/v1/my/payments/summary",
+							"host": [
+								"{{expo_url}}"
+							],
+							"path": [
+								"v1",
+								"my",
+								"payments",
+								"summary"
+							]
+						}
+					}
+				},
+				{
+					"name": "Show Payment",
+					"request": {
+						"method": "GET",
+						"url": {
+							"raw": "{{expo_url}}/v1/my/payments/{{rental_request_id}}",
+							"host": [
+								"{{expo_url}}"
+							],
+							"path": [
+								"v1",
+								"my",
+								"payments",
+								"{{rental_request_id}}"
+							]
+						}
+					}
+				}
+			]
+		},
+		{
+			"name": "👤 Profile",
+			"item": [
+				{
+					"name": "Get My Profile",
+					"request": {
+						"method": "GET",
+						"url": {
+							"raw": "{{expo_url}}/v1/profile",
+							"host": [
+								"{{expo_url}}"
+							],
+							"path": [
+								"v1",
+								"profile"
+							]
+						}
+					}
+				},
+				{
+					"name": "Create Profile",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"company_name\": \"Investment Holdings LLC\",\n    \"company_name_ar\": \"\\u0634\\u0631\\u0643\\u0629 \\u0627\\u0644\\u0627\\u0633\\u062a\\u062b\\u0645\\u0627\\u0631 \\u0627\\u0644\\u0642\\u0627\\u0628\\u0636\\u0629\",\n    \"commercial_registration_number\": \"9876543210\",\n    \"national_id_number\": \"9876543210\",\n    \"contact_phone\": \"+966500000010\",\n    \"contact_email\": \"info@investor.com\",\n    \"website\": \"https://investor.com\",\n    \"business_type\": \"company\"\n}"
+						},
+						"url": {
+							"raw": "{{expo_url}}/v1/profile",
+							"host": [
+								"{{expo_url}}"
+							],
+							"path": [
+								"v1",
+								"profile"
+							]
+						}
+					}
+				},
+				{
+					"name": "Update Profile",
+					"request": {
+						"method": "PUT",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"company_name\": \"Updated Investment Co.\",\n    \"contact_phone\": \"+966500000011\"\n}"
+						},
+						"url": {
+							"raw": "{{expo_url}}/v1/profile",
+							"host": [
+								"{{expo_url}}"
+							],
+							"path": [
+								"v1",
+								"profile"
+							]
+						}
+					}
+				}
+			]
+		},
+		{
+			"name": "❤️ Favorites",
+			"item": [
+				{
+					"name": "List Favorites",
+					"request": {
+						"method": "GET",
+						"url": {
+							"raw": "{{expo_url}}/v1/favorites",
+							"host": [
+								"{{expo_url}}"
+							],
+							"path": [
+								"v1",
+								"favorites"
+							]
+						}
+					}
+				},
+				{
+					"name": "Toggle Favorite",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"type\": \"event\",\n    \"id\": \"{{event_id}}\"\n}"
+						},
+						"url": {
+							"raw": "{{expo_url}}/v1/favorites",
+							"host": [
+								"{{expo_url}}"
+							],
+							"path": [
+								"v1",
+								"favorites"
+							]
+						}
+					}
+				},
+				{
+					"name": "Remove Favorite",
+					"request": {
+						"method": "DELETE",
+						"url": {
+							"raw": "{{expo_url}}/v1/favorites/{{favorite_id}}",
+							"host": [
+								"{{expo_url}}"
+							],
+							"path": [
+								"v1",
+								"favorites",
+								"{{favorite_id}}"
+							]
+						}
+					}
+				}
+			]
+		},
+		{
+			"name": "🔔 Notifications",
+			"item": [
+				{
+					"name": "List Notifications",
+					"request": {
+						"method": "GET",
+						"url": {
+							"raw": "{{expo_url}}/v1/notifications",
+							"host": [
+								"{{expo_url}}"
+							],
+							"path": [
+								"v1",
+								"notifications"
+							]
+						}
+					}
+				},
+				{
+					"name": "Unread Count",
+					"request": {
+						"method": "GET",
+						"url": {
+							"raw": "{{expo_url}}/v1/notifications/unread-count",
+							"host": [
+								"{{expo_url}}"
+							],
+							"path": [
+								"v1",
+								"notifications",
+								"unread-count"
+							]
+						}
+					}
+				},
+				{
+					"name": "Mark as Read",
+					"request": {
+						"method": "PUT",
+						"url": {
+							"raw": "{{expo_url}}/v1/notifications/{{notification_id}}/read",
+							"host": [
+								"{{expo_url}}"
+							],
+							"path": [
+								"v1",
+								"notifications",
+								"{{notification_id}}",
+								"read"
+							]
+						}
+					}
+				},
+				{
+					"name": "Mark All Read",
+					"request": {
+						"method": "PUT",
+						"url": {
+							"raw": "{{expo_url}}/v1/notifications/read-all",
+							"host": [
+								"{{expo_url}}"
+							],
+							"path": [
+								"v1",
+								"notifications",
+								"read-all"
+							]
+						}
+					}
+				},
+				{
+					"name": "Get Preferences",
+					"request": {
+						"method": "GET",
+						"url": {
+							"raw": "{{expo_url}}/v1/notifications/preferences",
+							"host": [
+								"{{expo_url}}"
+							],
+							"path": [
+								"v1",
+								"notifications",
+								"preferences"
+							]
+						}
+					}
+				},
+				{
+					"name": "Update Preferences",
+					"request": {
+						"method": "PUT",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"email_enabled\": true,\n    \"push_enabled\": true,\n    \"in_app_enabled\": true,\n    \"notify_request_updates\": true,\n    \"notify_payment_reminders\": true,\n    \"notify_event_updates\": true\n}"
+						},
+						"url": {
+							"raw": "{{expo_url}}/v1/notifications/preferences",
+							"host": [
+								"{{expo_url}}"
+							],
+							"path": [
+								"v1",
+								"notifications",
+								"preferences"
+							]
+						}
+					}
+				}
+			]
+		},
+		{
+			"name": "🎫 Support Tickets",
+			"item": [
+				{
+					"name": "List Tickets",
+					"request": {
+						"method": "GET",
+						"url": {
+							"raw": "{{expo_url}}/v1/support-tickets",
+							"host": [
+								"{{expo_url}}"
+							],
+							"path": [
+								"v1",
+								"support-tickets"
+							]
+						}
+					}
+				},
+				{
+					"name": "Create Ticket",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"subject\": \"Space Management Issue\",\n    \"description\": \"Cannot update space amenities\",\n    \"category\": \"technical\",\n    \"priority\": \"medium\"\n}"
+						},
+						"url": {
+							"raw": "{{expo_url}}/v1/support-tickets",
+							"host": [
+								"{{expo_url}}"
+							],
+							"path": [
+								"v1",
+								"support-tickets"
+							]
+						}
+					}
+				},
+				{
+					"name": "Show Ticket",
+					"request": {
+						"method": "GET",
+						"url": {
+							"raw": "{{expo_url}}/v1/support-tickets/{{support_ticket_id}}",
+							"host": [
+								"{{expo_url}}"
+							],
+							"path": [
+								"v1",
+								"support-tickets",
+								"{{support_ticket_id}}"
+							]
+						}
+					}
+				},
+				{
+					"name": "Reply to Ticket",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"message\": \"Additional details attached\"\n}"
+						},
+						"url": {
+							"raw": "{{expo_url}}/v1/support-tickets/{{support_ticket_id}}/reply",
+							"host": [
+								"{{expo_url}}"
+							],
+							"path": [
+								"v1",
+								"support-tickets",
+								"{{support_ticket_id}}",
+								"reply"
+							]
+						}
+					}
+				},
+				{
+					"name": "Close Ticket",
+					"request": {
+						"method": "PUT",
+						"url": {
+							"raw": "{{expo_url}}/v1/support-tickets/{{support_ticket_id}}/close",
+							"host": [
+								"{{expo_url}}"
+							],
+							"path": [
+								"v1",
+								"support-tickets",
+								"{{support_ticket_id}}",
+								"close"
+							]
+						}
+					}
+				},
+				{
+					"name": "Reopen Ticket",
+					"request": {
+						"method": "PUT",
+						"url": {
+							"raw": "{{expo_url}}/v1/support-tickets/{{support_ticket_id}}/reopen",
+							"host": [
+								"{{expo_url}}"
+							],
+							"path": [
+								"v1",
+								"support-tickets",
+								"{{support_ticket_id}}",
+								"reopen"
+							]
+						}
+					}
+				}
+			]
+		},
+		{
+			"name": "🧾 Invoices",
+			"item": [
+				{
+					"name": "List Invoices",
+					"request": {
+						"method": "GET",
+						"url": {
+							"raw": "{{expo_url}}/v1/invoices",
+							"host": [
+								"{{expo_url}}"
+							],
+							"path": [
+								"v1",
+								"invoices"
+							]
+						}
+					}
+				},
+				{
+					"name": "Show Invoice",
+					"request": {
+						"method": "GET",
+						"url": {
+							"raw": "{{expo_url}}/v1/invoices/{{invoice_id}}",
+							"host": [
+								"{{expo_url}}"
+							],
+							"path": [
+								"v1",
+								"invoices",
+								"{{invoice_id}}"
+							]
+						}
+					}
+				}
+			]
+		},
+		{
+			"name": "My Activity",
+			"description": "User's own activity tracking history and summary.",
+			"item": [
+				{
+					"name": "My Activity Log",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "application/json"
+							},
+							{
+								"key": "Accept-Language",
+								"value": "{{language}}"
+							},
+							{
+								"key": "X-Platform",
+								"value": "web"
+							},
+							{
+								"key": "Authorization",
+								"value": "Bearer {{investor_token}}"
+							}
+						],
+						"url": {
+							"raw": "{{expo_url}}/v1/my/activity?per_page=20",
+							"host": [
+								"{{expo_url}}"
+							],
+							"path": [
+								"v1",
+								"my",
+								"activity"
+							],
+							"query": [
+								{
+									"key": "per_page",
+									"value": "20"
+								},
+								{
+									"key": "action",
+									"value": "view",
+									"disabled": true
+								},
+								{
+									"key": "platform",
+									"value": "web",
+									"disabled": true
+								},
+								{
+									"key": "resource_type",
+									"value": "event",
+									"disabled": true
+								},
+								{
+									"key": "from",
+									"value": "2024-01-01",
+									"disabled": true
+								},
+								{
+									"key": "to",
+									"value": "2024-12-31",
+									"disabled": true
+								}
+							]
+						},
+						"description": "Get authenticated user's activity history with optional filters."
+					}
+				},
+				{
+					"name": "My Activity Summary",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "application/json"
+							},
+							{
+								"key": "Accept-Language",
+								"value": "{{language}}"
+							},
+							{
+								"key": "X-Platform",
+								"value": "web"
+							},
+							{
+								"key": "Authorization",
+								"value": "Bearer {{investor_token}}"
+							}
+						],
+						"url": {
+							"raw": "{{expo_url}}/v1/my/activity/summary?period=30d",
+							"host": [
+								"{{expo_url}}"
+							],
+							"path": [
+								"v1",
+								"my",
+								"activity",
+								"summary"
+							],
+							"query": [
+								{
+									"key": "period",
+									"value": "30d"
+								}
+							]
+						},
+						"description": "Get activity summary with stats breakdown (actions, platforms, top viewed, recent searches)."
+					}
+				}
+			]
+		}
+	]
+}

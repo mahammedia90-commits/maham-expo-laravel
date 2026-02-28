@@ -1,0 +1,1023 @@
+{
+	"info": {
+		"name": "Maham Expo - Supervisor",
+		"description": "Supervisor role endpoints for Maham Expo API.\nSupervisors review and approve/reject requests, profiles, contracts.",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"auth": {
+		"type": "bearer",
+		"bearer": [
+			{
+				"key": "token",
+				"value": "{{supervisor_token}}",
+				"type": "string"
+			}
+		]
+	},
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					"pm.request.addHeader({ key: 'Accept', value: 'application/json' });",
+					"pm.request.addHeader({ key: 'Accept-Language', value: pm.environment.get('language') || 'ar' });"
+				]
+			}
+		}
+	],
+	"item": [
+		{
+			"name": "Auth",
+			"item": [
+				{
+					"name": "Login as Supervisor",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"type": "text/javascript",
+								"exec": [
+									"if(pm.response.code===200){var d=pm.response.json();if(d.data&&d.data.token){pm.environment.set('supervisor_token',d.data.token);pm.environment.set('auth_token',d.data.token);}}"
+								]
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "noauth"
+						},
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"identifier\": \"supervisor@example.com\",\n    \"password\": \"password\",\n    \"service_token\": \"{{service_token}}\",\n    \"service_name\": \"maham-expo\"\n}"
+						},
+						"url": {
+							"raw": "{{auth_url}}/v1/auth/login",
+							"host": [
+								"{{auth_url}}"
+							],
+							"path": [
+								"v1",
+								"auth",
+								"login"
+							]
+						}
+					}
+				}
+			]
+		},
+		{
+			"name": "Dashboard & Stats",
+			"item": [
+				{
+					"name": "Dashboard",
+					"request": {
+						"method": "GET",
+						"url": {
+							"raw": "{{expo_url}}/v1/manage/dashboard",
+							"host": [
+								"{{expo_url}}"
+							],
+							"path": [
+								"v1",
+								"manage",
+								"dashboard"
+							]
+						}
+					}
+				},
+				{
+					"name": "Statistics",
+					"request": {
+						"method": "GET",
+						"url": {
+							"raw": "{{expo_url}}/v1/manage/statistics",
+							"host": [
+								"{{expo_url}}"
+							],
+							"path": [
+								"v1",
+								"manage",
+								"statistics"
+							]
+						}
+					}
+				}
+			]
+		},
+		{
+			"name": "Events",
+			"item": [
+				{
+					"name": "List Events",
+					"request": {
+						"method": "GET",
+						"url": {
+							"raw": "{{expo_url}}/v1/manage/events",
+							"host": [
+								"{{expo_url}}"
+							],
+							"path": [
+								"v1",
+								"manage",
+								"events"
+							]
+						}
+					}
+				},
+				{
+					"name": "Show Event",
+					"request": {
+						"method": "GET",
+						"url": {
+							"raw": "{{expo_url}}/v1/manage/events/{event_id}",
+							"host": [
+								"{{expo_url}}"
+							],
+							"path": [
+								"v1",
+								"manage",
+								"events",
+								"{event_id}"
+							]
+						}
+					}
+				},
+				{
+					"name": "Event Sections",
+					"request": {
+						"method": "GET",
+						"url": {
+							"raw": "{{expo_url}}/v1/manage/events/{event_id}/sections",
+							"host": [
+								"{{expo_url}}"
+							],
+							"path": [
+								"v1",
+								"manage",
+								"events",
+								"{event_id}",
+								"sections"
+							]
+						}
+					}
+				},
+				{
+					"name": "Event Spaces",
+					"request": {
+						"method": "GET",
+						"url": {
+							"raw": "{{expo_url}}/v1/manage/events/{event_id}/spaces",
+							"host": [
+								"{{expo_url}}"
+							],
+							"path": [
+								"v1",
+								"manage",
+								"events",
+								"{event_id}",
+								"spaces"
+							]
+						}
+					}
+				}
+			]
+		},
+		{
+			"name": "Sections",
+			"item": [
+				{
+					"name": "Show Section",
+					"request": {
+						"method": "GET",
+						"url": {
+							"raw": "{{expo_url}}/v1/manage/sections/{section_id}",
+							"host": [
+								"{{expo_url}}"
+							],
+							"path": [
+								"v1",
+								"manage",
+								"sections",
+								"{section_id}"
+							]
+						}
+					}
+				}
+			]
+		},
+		{
+			"name": "Spaces",
+			"item": [
+				{
+					"name": "Show Space",
+					"request": {
+						"method": "GET",
+						"url": {
+							"raw": "{{expo_url}}/v1/manage/spaces/{space_id}",
+							"host": [
+								"{{expo_url}}"
+							],
+							"path": [
+								"v1",
+								"manage",
+								"spaces",
+								"{space_id}"
+							]
+						}
+					}
+				}
+			]
+		},
+		{
+			"name": "Services",
+			"item": [
+				{
+					"name": "List Services",
+					"request": {
+						"method": "GET",
+						"url": {
+							"raw": "{{expo_url}}/v1/manage/services",
+							"host": [
+								"{{expo_url}}"
+							],
+							"path": [
+								"v1",
+								"manage",
+								"services"
+							]
+						}
+					}
+				},
+				{
+					"name": "Show Service",
+					"request": {
+						"method": "GET",
+						"url": {
+							"raw": "{{expo_url}}/v1/manage/services/{service_id}",
+							"host": [
+								"{{expo_url}}"
+							],
+							"path": [
+								"v1",
+								"manage",
+								"services",
+								"{service_id}"
+							]
+						}
+					}
+				}
+			]
+		},
+		{
+			"name": "Profiles",
+			"item": [
+				{
+					"name": "List Profiles",
+					"request": {
+						"method": "GET",
+						"url": {
+							"raw": "{{expo_url}}/v1/manage/profiles",
+							"host": [
+								"{{expo_url}}"
+							],
+							"path": [
+								"v1",
+								"manage",
+								"profiles"
+							]
+						}
+					}
+				},
+				{
+					"name": "Show Profile",
+					"request": {
+						"method": "GET",
+						"url": {
+							"raw": "{{expo_url}}/v1/manage/profiles/{profile_id}",
+							"host": [
+								"{{expo_url}}"
+							],
+							"path": [
+								"v1",
+								"manage",
+								"profiles",
+								"{profile_id}"
+							]
+						}
+					}
+				},
+				{
+					"name": "Approve Profile",
+					"request": {
+						"method": "PUT",
+						"url": {
+							"raw": "{{expo_url}}/v1/manage/profiles/{profile_id}/approve",
+							"host": [
+								"{{expo_url}}"
+							],
+							"path": [
+								"v1",
+								"manage",
+								"profiles",
+								"{profile_id}",
+								"approve"
+							]
+						}
+					}
+				},
+				{
+					"name": "Reject Profile",
+					"request": {
+						"method": "PUT",
+						"url": {
+							"raw": "{{expo_url}}/v1/manage/profiles/{profile_id}/reject",
+							"host": [
+								"{{expo_url}}"
+							],
+							"path": [
+								"v1",
+								"manage",
+								"profiles",
+								"{profile_id}",
+								"reject"
+							]
+						},
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"reason\": \"Incomplete documentation\"\n}"
+						}
+					}
+				}
+			]
+		},
+		{
+			"name": "Visit Requests",
+			"item": [
+				{
+					"name": "List",
+					"request": {
+						"method": "GET",
+						"url": {
+							"raw": "{{expo_url}}/v1/manage/visit-requests",
+							"host": [
+								"{{expo_url}}"
+							],
+							"path": [
+								"v1",
+								"manage",
+								"visit-requests"
+							]
+						}
+					}
+				},
+				{
+					"name": "Show",
+					"request": {
+						"method": "GET",
+						"url": {
+							"raw": "{{expo_url}}/v1/manage/visit-requests/{visit_request_id}",
+							"host": [
+								"{{expo_url}}"
+							],
+							"path": [
+								"v1",
+								"manage",
+								"visit-requests",
+								"{visit_request_id}"
+							]
+						}
+					}
+				},
+				{
+					"name": "Approve",
+					"request": {
+						"method": "PUT",
+						"url": {
+							"raw": "{{expo_url}}/v1/manage/visit-requests/{visit_request_id}/approve",
+							"host": [
+								"{{expo_url}}"
+							],
+							"path": [
+								"v1",
+								"manage",
+								"visit-requests",
+								"{visit_request_id}",
+								"approve"
+							]
+						}
+					}
+				},
+				{
+					"name": "Reject",
+					"request": {
+						"method": "PUT",
+						"url": {
+							"raw": "{{expo_url}}/v1/manage/visit-requests/{visit_request_id}/reject",
+							"host": [
+								"{{expo_url}}"
+							],
+							"path": [
+								"v1",
+								"manage",
+								"visit-requests",
+								"{visit_request_id}",
+								"reject"
+							]
+						},
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"reason\": \"Schedule conflict\"\n}"
+						}
+					}
+				}
+			]
+		},
+		{
+			"name": "Rental Requests",
+			"item": [
+				{
+					"name": "List",
+					"request": {
+						"method": "GET",
+						"url": {
+							"raw": "{{expo_url}}/v1/manage/rental-requests",
+							"host": [
+								"{{expo_url}}"
+							],
+							"path": [
+								"v1",
+								"manage",
+								"rental-requests"
+							]
+						}
+					}
+				},
+				{
+					"name": "Show",
+					"request": {
+						"method": "GET",
+						"url": {
+							"raw": "{{expo_url}}/v1/manage/rental-requests/{rental_request_id}",
+							"host": [
+								"{{expo_url}}"
+							],
+							"path": [
+								"v1",
+								"manage",
+								"rental-requests",
+								"{rental_request_id}"
+							]
+						}
+					}
+				},
+				{
+					"name": "Approve",
+					"request": {
+						"method": "PUT",
+						"url": {
+							"raw": "{{expo_url}}/v1/manage/rental-requests/{rental_request_id}/approve",
+							"host": [
+								"{{expo_url}}"
+							],
+							"path": [
+								"v1",
+								"manage",
+								"rental-requests",
+								"{rental_request_id}",
+								"approve"
+							]
+						}
+					}
+				},
+				{
+					"name": "Reject",
+					"request": {
+						"method": "PUT",
+						"url": {
+							"raw": "{{expo_url}}/v1/manage/rental-requests/{rental_request_id}/reject",
+							"host": [
+								"{{expo_url}}"
+							],
+							"path": [
+								"v1",
+								"manage",
+								"rental-requests",
+								"{rental_request_id}",
+								"reject"
+							]
+						},
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"reason\": \"Space unavailable\"\n}"
+						}
+					}
+				},
+				{
+					"name": "Record Payment",
+					"request": {
+						"method": "POST",
+						"url": {
+							"raw": "{{expo_url}}/v1/manage/rental-requests/{rental_request_id}/payment",
+							"host": [
+								"{{expo_url}}"
+							],
+							"path": [
+								"v1",
+								"manage",
+								"rental-requests",
+								"{rental_request_id}",
+								"payment"
+							]
+						},
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"amount\": 5000,\n    \"payment_method\": \"bank_transfer\",\n    \"reference_number\": \"PAY-001\",\n    \"notes\": \"Full payment received\"\n}"
+						}
+					}
+				}
+			]
+		},
+		{
+			"name": "Rental Contracts",
+			"item": [
+				{
+					"name": "List",
+					"request": {
+						"method": "GET",
+						"url": {
+							"raw": "{{expo_url}}/v1/manage/rental-contracts",
+							"host": [
+								"{{expo_url}}"
+							],
+							"path": [
+								"v1",
+								"manage",
+								"rental-contracts"
+							]
+						}
+					}
+				},
+				{
+					"name": "Show",
+					"request": {
+						"method": "GET",
+						"url": {
+							"raw": "{{expo_url}}/v1/manage/rental-contracts/{rental_contract_id}",
+							"host": [
+								"{{expo_url}}"
+							],
+							"path": [
+								"v1",
+								"manage",
+								"rental-contracts",
+								"{rental_contract_id}"
+							]
+						}
+					}
+				},
+				{
+					"name": "Approve",
+					"request": {
+						"method": "PUT",
+						"url": {
+							"raw": "{{expo_url}}/v1/manage/rental-contracts/{rental_contract_id}/approve",
+							"host": [
+								"{{expo_url}}"
+							],
+							"path": [
+								"v1",
+								"manage",
+								"rental-contracts",
+								"{rental_contract_id}",
+								"approve"
+							]
+						}
+					}
+				},
+				{
+					"name": "Reject",
+					"request": {
+						"method": "PUT",
+						"url": {
+							"raw": "{{expo_url}}/v1/manage/rental-contracts/{rental_contract_id}/reject",
+							"host": [
+								"{{expo_url}}"
+							],
+							"path": [
+								"v1",
+								"manage",
+								"rental-contracts",
+								"{rental_contract_id}",
+								"reject"
+							]
+						},
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"reason\": \"Terms need revision\"\n}"
+						}
+					}
+				}
+			]
+		},
+		{
+			"name": "Sponsors",
+			"item": [
+				{
+					"name": "List Sponsors",
+					"request": {
+						"method": "GET",
+						"url": {
+							"raw": "{{expo_url}}/v1/manage/sponsors",
+							"host": [
+								"{{expo_url}}"
+							],
+							"path": [
+								"v1",
+								"manage",
+								"sponsors"
+							]
+						}
+					}
+				},
+				{
+					"name": "Show Sponsor",
+					"request": {
+						"method": "GET",
+						"url": {
+							"raw": "{{expo_url}}/v1/manage/sponsors/{sponsor_id}",
+							"host": [
+								"{{expo_url}}"
+							],
+							"path": [
+								"v1",
+								"manage",
+								"sponsors",
+								"{sponsor_id}"
+							]
+						}
+					}
+				}
+			]
+		},
+		{
+			"name": "Sponsor Contracts",
+			"item": [
+				{
+					"name": "List",
+					"request": {
+						"method": "GET",
+						"url": {
+							"raw": "{{expo_url}}/v1/manage/sponsor-contracts",
+							"host": [
+								"{{expo_url}}"
+							],
+							"path": [
+								"v1",
+								"manage",
+								"sponsor-contracts"
+							]
+						}
+					}
+				},
+				{
+					"name": "Show",
+					"request": {
+						"method": "GET",
+						"url": {
+							"raw": "{{expo_url}}/v1/manage/sponsor-contracts/{sponsor_contract_id}",
+							"host": [
+								"{{expo_url}}"
+							],
+							"path": [
+								"v1",
+								"manage",
+								"sponsor-contracts",
+								"{sponsor_contract_id}"
+							]
+						}
+					}
+				},
+				{
+					"name": "Approve",
+					"request": {
+						"method": "PUT",
+						"url": {
+							"raw": "{{expo_url}}/v1/manage/sponsor-contracts/{sponsor_contract_id}/approve",
+							"host": [
+								"{{expo_url}}"
+							],
+							"path": [
+								"v1",
+								"manage",
+								"sponsor-contracts",
+								"{sponsor_contract_id}",
+								"approve"
+							]
+						}
+					}
+				},
+				{
+					"name": "Reject",
+					"request": {
+						"method": "PUT",
+						"url": {
+							"raw": "{{expo_url}}/v1/manage/sponsor-contracts/{sponsor_contract_id}/reject",
+							"host": [
+								"{{expo_url}}"
+							],
+							"path": [
+								"v1",
+								"manage",
+								"sponsor-contracts",
+								"{sponsor_contract_id}",
+								"reject"
+							]
+						},
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"reason\": \"Budget not approved\"\n}"
+						}
+					}
+				}
+			]
+		},
+		{
+			"name": "Support Tickets",
+			"item": [
+				{
+					"name": "List",
+					"request": {
+						"method": "GET",
+						"url": {
+							"raw": "{{expo_url}}/v1/manage/support-tickets",
+							"host": [
+								"{{expo_url}}"
+							],
+							"path": [
+								"v1",
+								"manage",
+								"support-tickets"
+							]
+						}
+					}
+				},
+				{
+					"name": "Show",
+					"request": {
+						"method": "GET",
+						"url": {
+							"raw": "{{expo_url}}/v1/manage/support-tickets/{support_ticket_id}",
+							"host": [
+								"{{expo_url}}"
+							],
+							"path": [
+								"v1",
+								"manage",
+								"support-tickets",
+								"{support_ticket_id}"
+							]
+						}
+					}
+				},
+				{
+					"name": "Reply",
+					"request": {
+						"method": "POST",
+						"url": {
+							"raw": "{{expo_url}}/v1/manage/support-tickets/{support_ticket_id}/reply",
+							"host": [
+								"{{expo_url}}"
+							],
+							"path": [
+								"v1",
+								"manage",
+								"support-tickets",
+								"{support_ticket_id}",
+								"reply"
+							]
+						},
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"message\": \"We are looking into this\"\n}"
+						}
+					}
+				},
+				{
+					"name": "Resolve",
+					"request": {
+						"method": "PUT",
+						"url": {
+							"raw": "{{expo_url}}/v1/manage/support-tickets/{support_ticket_id}/resolve",
+							"host": [
+								"{{expo_url}}"
+							],
+							"path": [
+								"v1",
+								"manage",
+								"support-tickets",
+								"{support_ticket_id}",
+								"resolve"
+							]
+						}
+					}
+				}
+			]
+		},
+		{
+			"name": "My Profile",
+			"item": [
+				{
+					"name": "Get Profile",
+					"request": {
+						"method": "GET",
+						"url": {
+							"raw": "{{expo_url}}/v1/profile",
+							"host": [
+								"{{expo_url}}"
+							],
+							"path": [
+								"v1",
+								"profile"
+							]
+						}
+					}
+				},
+				{
+					"name": "Create Profile",
+					"request": {
+						"method": "POST",
+						"url": {
+							"raw": "{{expo_url}}/v1/profile",
+							"host": [
+								"{{expo_url}}"
+							],
+							"path": [
+								"v1",
+								"profile"
+							]
+						},
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"company_name\": \"Supervisor Office\",\n    \"contact_phone\": \"+966500000030\",\n    \"business_type\": \"individual\"\n}"
+						}
+					}
+				},
+				{
+					"name": "Update Profile",
+					"request": {
+						"method": "PUT",
+						"url": {
+							"raw": "{{expo_url}}/v1/profile",
+							"host": [
+								"{{expo_url}}"
+							],
+							"path": [
+								"v1",
+								"profile"
+							]
+						},
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"company_name\": \"Updated\"\n}"
+						}
+					}
+				}
+			]
+		},
+		{
+			"name": "My Notifications",
+			"item": [
+				{
+					"name": "List",
+					"request": {
+						"method": "GET",
+						"url": {
+							"raw": "{{expo_url}}/v1/notifications",
+							"host": [
+								"{{expo_url}}"
+							],
+							"path": [
+								"v1",
+								"notifications"
+							]
+						}
+					}
+				},
+				{
+					"name": "Unread Count",
+					"request": {
+						"method": "GET",
+						"url": {
+							"raw": "{{expo_url}}/v1/notifications/unread-count",
+							"host": [
+								"{{expo_url}}"
+							],
+							"path": [
+								"v1",
+								"notifications",
+								"unread-count"
+							]
+						}
+					}
+				},
+				{
+					"name": "Mark Read",
+					"request": {
+						"method": "PUT",
+						"url": {
+							"raw": "{{expo_url}}/v1/notifications/{notification_id}/read",
+							"host": [
+								"{{expo_url}}"
+							],
+							"path": [
+								"v1",
+								"notifications",
+								"{notification_id}",
+								"read"
+							]
+						}
+					}
+				},
+				{
+					"name": "Mark All Read",
+					"request": {
+						"method": "PUT",
+						"url": {
+							"raw": "{{expo_url}}/v1/notifications/read-all",
+							"host": [
+								"{{expo_url}}"
+							],
+							"path": [
+								"v1",
+								"notifications",
+								"read-all"
+							]
+						}
+					}
+				}
+			]
+		}
+	]
+}

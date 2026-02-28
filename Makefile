@@ -118,6 +118,10 @@ routes-expo: ## Show expo api routes
 #  Cleanup
 # ==========================================
 
+sync-postman: ## Sync Postman collections from /postman to expo-api/postman
+	@cp postman/*.json apps/expo-api/postman/
+	@echo "✅ Postman collections synced to apps/expo-api/postman/"
+
 clean: ## Stop and remove all containers, volumes, and images
 	docker compose down -v --rmi local
 	@echo "Cleaned!"

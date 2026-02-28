@@ -165,6 +165,7 @@
                 <div>
                     <h3 class="text-xs font-semibold text-gray-400 uppercase tracking-wider mb-2 px-3" data-ar="المرجع" data-en="Reference">المرجع</h3>
                     <ul class="space-y-0.5">
+                        <li><a href="#postman" class="sidebar-link block py-2 px-3 text-sm text-gray-600 rounded-lg" data-ar="مجموعات Postman" data-en="Postman Collections">📦 Postman</a></li>
                         <li><a href="#errors" class="sidebar-link block py-2 px-3 text-sm text-gray-600 rounded-lg" data-ar="رموز الحالة" data-en="Status Codes">رموز الحالة</a></li>
                         <li><a href="#error-codes" class="sidebar-link block py-2 px-3 text-sm text-gray-600 rounded-lg" data-ar="رموز الأخطاء" data-en="Error Codes">رموز الأخطاء</a></li>
                         <li><a href="#permissions-ref" class="sidebar-link block py-2 px-3 text-sm text-gray-600 rounded-lg" data-ar="جدول الصلاحيات" data-en="Permissions Map">جدول الصلاحيات</a></li>
@@ -1541,6 +1542,278 @@
                         <span class="text-[10px] text-gray-400 font-bold">⚠️</span>
                         <code class="bg-red-50 text-red-600 px-1.5 py-0.5 rounded text-[10px]">401 UNAUTHENTICATED</code>
                         <code class="bg-red-50 text-red-600 px-1.5 py-0.5 rounded text-[10px]">403 PERMISSION_DENIED</code>
+                    </div>
+                </section>
+
+
+                {{-- ============================================================ --}}
+                {{-- POSTMAN COLLECTIONS DOWNLOAD                                --}}
+                {{-- ============================================================ --}}
+
+                <section id="postman" class="mb-20 section-divider">
+                    <h2 class="text-3xl font-bold mb-2" data-ar="📦 مجموعات Postman" data-en="📦 Postman Collections">📦 مجموعات Postman</h2>
+                    <p class="text-gray-500 mb-6" data-ar="حمّل المجموعات مباشرة واستوردها في Postman — يمكنك تحميل المجموعة كاملة أو قسم معين فقط" data-en="Download collections and import them into Postman — download full collections or individual sections">حمّل المجموعات مباشرة واستوردها في Postman</p>
+
+                    {{-- Download All + Environments --}}
+                    <div class="flex flex-wrap gap-3 mb-8">
+                        <a href="/docs/postman/all" class="inline-flex items-center gap-2 bg-orange-500 hover:bg-orange-600 text-white px-5 py-2.5 rounded-xl font-bold text-sm transition-colors shadow-sm">
+                            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 10v6m0 0l-3-3m3 3l3-3m2 8H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"/></svg>
+                            <span data-ar="تحميل الكل (ZIP)" data-en="Download All (ZIP)">تحميل الكل (ZIP)</span>
+                        </a>
+                        <a href="/docs/postman/environment/production" class="inline-flex items-center gap-2 bg-emerald-500 hover:bg-emerald-600 text-white px-5 py-2.5 rounded-xl font-bold text-sm transition-colors shadow-sm">
+                            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3.055 11H5a2 2 0 012 2v1a2 2 0 002 2 2 2 0 012 2v2.945M8 3.935V5.5A2.5 2.5 0 0010.5 8h.5a2 2 0 012 2 2 2 0 104 0 2 2 0 012-2h1.064M15 20.488V18a2 2 0 012-2h3.064M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
+                            <span data-ar="بيئة Production" data-en="Production Environment">بيئة Production</span>
+                        </a>
+                        <a href="/docs/postman/environment/local" class="inline-flex items-center gap-2 bg-gray-500 hover:bg-gray-600 text-white px-5 py-2.5 rounded-xl font-bold text-sm transition-colors shadow-sm">
+                            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9.75 17L9 20l-1 1h8l-1-1-.75-3M3 13h18M5 17h14a2 2 0 002-2V5a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"/></svg>
+                            <span data-ar="بيئة Local" data-en="Local Environment">بيئة Local</span>
+                        </a>
+                    </div>
+
+                    <div class="bg-blue-50 border border-blue-200 rounded-xl p-4 mb-8">
+                        <h4 class="font-bold text-blue-800 mb-2" data-ar="كيفية الاستخدام" data-en="How to Use">كيفية الاستخدام</h4>
+                        <ol class="text-sm text-blue-700 space-y-1 list-decimal list-inside">
+                            <li data-ar="حمّل ملف البيئة (Production أو Local) واستورده في Postman ← Environments" data-en="Download the Environment file (Production or Local) and import it in Postman → Environments">حمّل ملف البيئة واستورده في Postman ← Environments</li>
+                            <li data-ar="حمّل المجموعة المطلوبة (أو القسم فقط) واستوردها في Postman ← Collections" data-en="Download the desired Collection (or just a section) and import it in Postman → Collections">حمّل المجموعة المطلوبة واستوردها في Postman ← Collections</li>
+                            <li data-ar="اختر البيئة من القائمة أعلى يمين Postman وابدأ الاختبار" data-en="Select the Environment from the dropdown in the top-right of Postman and start testing">اختر البيئة من القائمة وابدأ الاختبار</li>
+                        </ol>
+                    </div>
+
+                    <div class="bg-amber-50 border border-amber-200 rounded-xl p-4 mb-8">
+                        <h4 class="font-bold text-amber-800 mb-2" data-ar="متغيرات البيئة" data-en="Environment Variables">متغيرات البيئة</h4>
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-2 text-sm text-amber-700">
+                            <div>
+                                <strong>Production:</strong><br>
+                                <code class="text-xs bg-amber-100 px-1 rounded">auth_url</code> = <code class="text-xs">https://auth-service-api.mahamexpo.sa/api</code><br>
+                                <code class="text-xs bg-amber-100 px-1 rounded">expo_url</code> = <code class="text-xs">https://expo-service-api.mahamexpo.sa/api</code>
+                            </div>
+                            <div>
+                                <strong>Local:</strong><br>
+                                <code class="text-xs bg-amber-100 px-1 rounded">auth_url</code> = <code class="text-xs">http://localhost:8001/api</code><br>
+                                <code class="text-xs bg-amber-100 px-1 rounded">expo_url</code> = <code class="text-xs">http://localhost:8002/api</code>
+                            </div>
+                        </div>
+                    </div>
+
+                    {{-- Collections Grid --}}
+                    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 mb-8">
+
+                        {{-- Public API --}}
+                        <div class="bg-white rounded-xl border border-gray-200 p-4 hover:shadow-md transition-shadow">
+                            <div class="flex items-center justify-between mb-3">
+                                <h4 class="font-bold text-emerald-700">Public API</h4>
+                                <span class="text-xs bg-emerald-100 text-emerald-700 px-2 py-0.5 rounded-full">30 requests</span>
+                            </div>
+                            <p class="text-xs text-gray-500 mb-3" data-ar="المعارض، المساحات، الفئات، المدن، الخدمات، التقييمات" data-en="Events, Spaces, Categories, Cities, Services, Ratings">المعارض، المساحات، الفئات، المدن</p>
+                            <div class="flex flex-wrap gap-1 mb-3">
+                                <a href="/docs/postman/collection/public-api/health" class="text-[10px] bg-gray-100 hover:bg-emerald-100 text-gray-600 hover:text-emerald-700 px-2 py-0.5 rounded transition-colors" title="Download Health section">Health</a>
+                                <a href="/docs/postman/collection/public-api/events" class="text-[10px] bg-gray-100 hover:bg-emerald-100 text-gray-600 hover:text-emerald-700 px-2 py-0.5 rounded transition-colors" title="Download Events section">Events</a>
+                                <a href="/docs/postman/collection/public-api/spaces" class="text-[10px] bg-gray-100 hover:bg-emerald-100 text-gray-600 hover:text-emerald-700 px-2 py-0.5 rounded transition-colors" title="Download Spaces section">Spaces</a>
+                                <a href="/docs/postman/collection/public-api/categories" class="text-[10px] bg-gray-100 hover:bg-emerald-100 text-gray-600 hover:text-emerald-700 px-2 py-0.5 rounded transition-colors" title="Download Categories section">Categories</a>
+                                <a href="/docs/postman/collection/public-api/cities" class="text-[10px] bg-gray-100 hover:bg-emerald-100 text-gray-600 hover:text-emerald-700 px-2 py-0.5 rounded transition-colors" title="Download Cities section">Cities</a>
+                                <a href="/docs/postman/collection/public-api/services" class="text-[10px] bg-gray-100 hover:bg-emerald-100 text-gray-600 hover:text-emerald-700 px-2 py-0.5 rounded transition-colors" title="Download Services section">Services</a>
+                                <a href="/docs/postman/collection/public-api/banners" class="text-[10px] bg-gray-100 hover:bg-emerald-100 text-gray-600 hover:text-emerald-700 px-2 py-0.5 rounded transition-colors" title="Download Banners section">Banners</a>
+                                <a href="/docs/postman/collection/public-api/faqs" class="text-[10px] bg-gray-100 hover:bg-emerald-100 text-gray-600 hover:text-emerald-700 px-2 py-0.5 rounded transition-colors" title="Download FAQs section">FAQs</a>
+                                <a href="/docs/postman/collection/public-api/pages" class="text-[10px] bg-gray-100 hover:bg-emerald-100 text-gray-600 hover:text-emerald-700 px-2 py-0.5 rounded transition-colors" title="Download Pages section">Pages</a>
+                                <a href="/docs/postman/collection/public-api/ratings-public" class="text-[10px] bg-gray-100 hover:bg-emerald-100 text-gray-600 hover:text-emerald-700 px-2 py-0.5 rounded transition-colors" title="Download Ratings section">Ratings</a>
+                                <a href="/docs/postman/collection/public-api/statistics-public" class="text-[10px] bg-gray-100 hover:bg-emerald-100 text-gray-600 hover:text-emerald-700 px-2 py-0.5 rounded transition-colors" title="Download Statistics section">Statistics</a>
+                                <a href="/docs/postman/collection/public-api/tracking" class="text-[10px] bg-gray-100 hover:bg-emerald-100 text-gray-600 hover:text-emerald-700 px-2 py-0.5 rounded transition-colors" title="Download Tracking section">Tracking</a>
+                            </div>
+                            <a href="/docs/postman/collection/public-api" class="inline-flex items-center gap-1.5 text-emerald-600 hover:text-emerald-800 text-xs font-bold transition-colors">
+                                <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4"/></svg>
+                                <span data-ar="تحميل المجموعة كاملة" data-en="Download Full Collection">تحميل المجموعة كاملة</span>
+                            </a>
+                        </div>
+
+                        {{-- Admin --}}
+                        <div class="bg-white rounded-xl border border-gray-200 p-4 hover:shadow-md transition-shadow">
+                            <div class="flex items-center justify-between mb-3">
+                                <h4 class="font-bold text-purple-700">Admin</h4>
+                                <span class="text-xs bg-purple-100 text-purple-700 px-2 py-0.5 rounded-full">118 requests</span>
+                            </div>
+                            <p class="text-xs text-gray-500 mb-3" data-ar="إدارة كاملة: معارض، مساحات، مستخدمين، عقود، رعاة، فواتير" data-en="Full management: events, spaces, users, contracts, sponsors, invoices">إدارة كاملة: معارض، مساحات، مستخدمين</p>
+                            <div class="flex flex-wrap gap-1 mb-3">
+                                <a href="/docs/postman/collection/admin/dashboard-stats" class="text-[10px] bg-gray-100 hover:bg-purple-100 text-gray-600 hover:text-purple-700 px-2 py-0.5 rounded transition-colors">Dashboard</a>
+                                <a href="/docs/postman/collection/admin/events" class="text-[10px] bg-gray-100 hover:bg-purple-100 text-gray-600 hover:text-purple-700 px-2 py-0.5 rounded transition-colors">Events</a>
+                                <a href="/docs/postman/collection/admin/sections" class="text-[10px] bg-gray-100 hover:bg-purple-100 text-gray-600 hover:text-purple-700 px-2 py-0.5 rounded transition-colors">Sections</a>
+                                <a href="/docs/postman/collection/admin/spaces" class="text-[10px] bg-gray-100 hover:bg-purple-100 text-gray-600 hover:text-purple-700 px-2 py-0.5 rounded transition-colors">Spaces</a>
+                                <a href="/docs/postman/collection/admin/categories" class="text-[10px] bg-gray-100 hover:bg-purple-100 text-gray-600 hover:text-purple-700 px-2 py-0.5 rounded transition-colors">Categories</a>
+                                <a href="/docs/postman/collection/admin/services" class="text-[10px] bg-gray-100 hover:bg-purple-100 text-gray-600 hover:text-purple-700 px-2 py-0.5 rounded transition-colors">Services</a>
+                                <a href="/docs/postman/collection/admin/profiles" class="text-[10px] bg-gray-100 hover:bg-purple-100 text-gray-600 hover:text-purple-700 px-2 py-0.5 rounded transition-colors">Profiles</a>
+                                <a href="/docs/postman/collection/admin/visit-requests" class="text-[10px] bg-gray-100 hover:bg-purple-100 text-gray-600 hover:text-purple-700 px-2 py-0.5 rounded transition-colors">Visits</a>
+                                <a href="/docs/postman/collection/admin/rental-requests" class="text-[10px] bg-gray-100 hover:bg-purple-100 text-gray-600 hover:text-purple-700 px-2 py-0.5 rounded transition-colors">Rentals</a>
+                                <a href="/docs/postman/collection/admin/rental-contracts" class="text-[10px] bg-gray-100 hover:bg-purple-100 text-gray-600 hover:text-purple-700 px-2 py-0.5 rounded transition-colors">Contracts</a>
+                                <a href="/docs/postman/collection/admin/sponsors" class="text-[10px] bg-gray-100 hover:bg-purple-100 text-gray-600 hover:text-purple-700 px-2 py-0.5 rounded transition-colors">Sponsors</a>
+                                <a href="/docs/postman/collection/admin/invoices" class="text-[10px] bg-gray-100 hover:bg-purple-100 text-gray-600 hover:text-purple-700 px-2 py-0.5 rounded transition-colors">Invoices</a>
+                                <a href="/docs/postman/collection/admin/ratings" class="text-[10px] bg-gray-100 hover:bg-purple-100 text-gray-600 hover:text-purple-700 px-2 py-0.5 rounded transition-colors">Ratings</a>
+                                <a href="/docs/postman/collection/admin/support-tickets" class="text-[10px] bg-gray-100 hover:bg-purple-100 text-gray-600 hover:text-purple-700 px-2 py-0.5 rounded transition-colors">Tickets</a>
+                                <a href="/docs/postman/collection/admin/analytics" class="text-[10px] bg-gray-100 hover:bg-purple-100 text-gray-600 hover:text-purple-700 px-2 py-0.5 rounded transition-colors">Analytics</a>
+                            </div>
+                            <a href="/docs/postman/collection/admin" class="inline-flex items-center gap-1.5 text-purple-600 hover:text-purple-800 text-xs font-bold transition-colors">
+                                <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4"/></svg>
+                                <span data-ar="تحميل المجموعة كاملة" data-en="Download Full Collection">تحميل المجموعة كاملة</span>
+                            </a>
+                        </div>
+
+                        {{-- Investor --}}
+                        <div class="bg-white rounded-xl border border-gray-200 p-4 hover:shadow-md transition-shadow">
+                            <div class="flex items-center justify-between mb-3">
+                                <h4 class="font-bold text-blue-700">Investor</h4>
+                                <span class="text-xs bg-blue-100 text-blue-700 px-2 py-0.5 rounded-full">48 requests</span>
+                            </div>
+                            <p class="text-xs text-gray-500 mb-3" data-ar="مساحاتي، زيارات واردة، إيجارات، عقود، مدفوعات" data-en="My spaces, received visits, rentals, contracts, payments">مساحاتي، زيارات واردة، إيجارات، عقود</p>
+                            <div class="flex flex-wrap gap-1 mb-3">
+                                <a href="/docs/postman/collection/investor/dashboard-stats" class="text-[10px] bg-gray-100 hover:bg-blue-100 text-gray-600 hover:text-blue-700 px-2 py-0.5 rounded transition-colors">Dashboard</a>
+                                <a href="/docs/postman/collection/investor/spaces" class="text-[10px] bg-gray-100 hover:bg-blue-100 text-gray-600 hover:text-blue-700 px-2 py-0.5 rounded transition-colors">Spaces</a>
+                                <a href="/docs/postman/collection/investor/visit-requests" class="text-[10px] bg-gray-100 hover:bg-blue-100 text-gray-600 hover:text-blue-700 px-2 py-0.5 rounded transition-colors">Visits</a>
+                                <a href="/docs/postman/collection/investor/rental-requests" class="text-[10px] bg-gray-100 hover:bg-blue-100 text-gray-600 hover:text-blue-700 px-2 py-0.5 rounded transition-colors">Rentals</a>
+                                <a href="/docs/postman/collection/investor/rental-contracts" class="text-[10px] bg-gray-100 hover:bg-blue-100 text-gray-600 hover:text-blue-700 px-2 py-0.5 rounded transition-colors">Contracts</a>
+                                <a href="/docs/postman/collection/investor/payments" class="text-[10px] bg-gray-100 hover:bg-blue-100 text-gray-600 hover:text-blue-700 px-2 py-0.5 rounded transition-colors">Payments</a>
+                                <a href="/docs/postman/collection/investor/my-activity" class="text-[10px] bg-gray-100 hover:bg-blue-100 text-gray-600 hover:text-blue-700 px-2 py-0.5 rounded transition-colors">Activity</a>
+                            </div>
+                            <a href="/docs/postman/collection/investor" class="inline-flex items-center gap-1.5 text-blue-600 hover:text-blue-800 text-xs font-bold transition-colors">
+                                <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4"/></svg>
+                                <span data-ar="تحميل المجموعة كاملة" data-en="Download Full Collection">تحميل المجموعة كاملة</span>
+                            </a>
+                        </div>
+
+                        {{-- Merchant --}}
+                        <div class="bg-white rounded-xl border border-gray-200 p-4 hover:shadow-md transition-shadow">
+                            <div class="flex items-center justify-between mb-3">
+                                <h4 class="font-bold text-amber-700">Merchant</h4>
+                                <span class="text-xs bg-amber-100 text-amber-700 px-2 py-0.5 rounded-full">49 requests</span>
+                            </div>
+                            <p class="text-xs text-gray-500 mb-3" data-ar="ملف تجاري، مفضلة، إشعارات، زيارات، إيجارات، تقييمات" data-en="Profile, favorites, notifications, visits, rentals, ratings">ملف تجاري، مفضلة، زيارات، إيجارات</p>
+                            <div class="flex flex-wrap gap-1 mb-3">
+                                <a href="/docs/postman/collection/merchant/profile" class="text-[10px] bg-gray-100 hover:bg-amber-100 text-gray-600 hover:text-amber-700 px-2 py-0.5 rounded transition-colors">Profile</a>
+                                <a href="/docs/postman/collection/merchant/favorites" class="text-[10px] bg-gray-100 hover:bg-amber-100 text-gray-600 hover:text-amber-700 px-2 py-0.5 rounded transition-colors">Favorites</a>
+                                <a href="/docs/postman/collection/merchant/notifications" class="text-[10px] bg-gray-100 hover:bg-amber-100 text-gray-600 hover:text-amber-700 px-2 py-0.5 rounded transition-colors">Notifications</a>
+                                <a href="/docs/postman/collection/merchant/visit-requests" class="text-[10px] bg-gray-100 hover:bg-amber-100 text-gray-600 hover:text-amber-700 px-2 py-0.5 rounded transition-colors">Visits</a>
+                                <a href="/docs/postman/collection/merchant/rental-requests" class="text-[10px] bg-gray-100 hover:bg-amber-100 text-gray-600 hover:text-amber-700 px-2 py-0.5 rounded transition-colors">Rentals</a>
+                                <a href="/docs/postman/collection/merchant/ratings" class="text-[10px] bg-gray-100 hover:bg-amber-100 text-gray-600 hover:text-amber-700 px-2 py-0.5 rounded transition-colors">Ratings</a>
+                                <a href="/docs/postman/collection/merchant/support-tickets" class="text-[10px] bg-gray-100 hover:bg-amber-100 text-gray-600 hover:text-amber-700 px-2 py-0.5 rounded transition-colors">Tickets</a>
+                                <a href="/docs/postman/collection/merchant/invoices" class="text-[10px] bg-gray-100 hover:bg-amber-100 text-gray-600 hover:text-amber-700 px-2 py-0.5 rounded transition-colors">Invoices</a>
+                                <a href="/docs/postman/collection/merchant/my-activity" class="text-[10px] bg-gray-100 hover:bg-amber-100 text-gray-600 hover:text-amber-700 px-2 py-0.5 rounded transition-colors">Activity</a>
+                            </div>
+                            <a href="/docs/postman/collection/merchant" class="inline-flex items-center gap-1.5 text-amber-600 hover:text-amber-800 text-xs font-bold transition-colors">
+                                <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4"/></svg>
+                                <span data-ar="تحميل المجموعة كاملة" data-en="Download Full Collection">تحميل المجموعة كاملة</span>
+                            </a>
+                        </div>
+
+                        {{-- Sponsor --}}
+                        <div class="bg-white rounded-xl border border-gray-200 p-4 hover:shadow-md transition-shadow">
+                            <div class="flex items-center justify-between mb-3">
+                                <h4 class="font-bold text-pink-700">Sponsor</h4>
+                                <span class="text-xs bg-pink-100 text-pink-700 px-2 py-0.5 rounded-full">39 requests</span>
+                            </div>
+                            <p class="text-xs text-gray-500 mb-3" data-ar="بيانات الراعي، عقود الرعاية، حزم، أصول، مزايا" data-en="Sponsor data, contracts, packages, assets, benefits">بيانات الراعي، عقود، حزم، أصول</p>
+                            <div class="flex flex-wrap gap-1 mb-3">
+                                <a href="/docs/postman/collection/sponsor/profile" class="text-[10px] bg-gray-100 hover:bg-pink-100 text-gray-600 hover:text-pink-700 px-2 py-0.5 rounded transition-colors">Profile</a>
+                                <a href="/docs/postman/collection/sponsor/contracts" class="text-[10px] bg-gray-100 hover:bg-pink-100 text-gray-600 hover:text-pink-700 px-2 py-0.5 rounded transition-colors">Contracts</a>
+                                <a href="/docs/postman/collection/sponsor/assets" class="text-[10px] bg-gray-100 hover:bg-pink-100 text-gray-600 hover:text-pink-700 px-2 py-0.5 rounded transition-colors">Assets</a>
+                                <a href="/docs/postman/collection/sponsor/payments" class="text-[10px] bg-gray-100 hover:bg-pink-100 text-gray-600 hover:text-pink-700 px-2 py-0.5 rounded transition-colors">Payments</a>
+                                <a href="/docs/postman/collection/sponsor/exposure" class="text-[10px] bg-gray-100 hover:bg-pink-100 text-gray-600 hover:text-pink-700 px-2 py-0.5 rounded transition-colors">Exposure</a>
+                                <a href="/docs/postman/collection/sponsor/invoices" class="text-[10px] bg-gray-100 hover:bg-pink-100 text-gray-600 hover:text-pink-700 px-2 py-0.5 rounded transition-colors">Invoices</a>
+                                <a href="/docs/postman/collection/sponsor/my-activity" class="text-[10px] bg-gray-100 hover:bg-pink-100 text-gray-600 hover:text-pink-700 px-2 py-0.5 rounded transition-colors">Activity</a>
+                            </div>
+                            <a href="/docs/postman/collection/sponsor" class="inline-flex items-center gap-1.5 text-pink-600 hover:text-pink-800 text-xs font-bold transition-colors">
+                                <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4"/></svg>
+                                <span data-ar="تحميل المجموعة كاملة" data-en="Download Full Collection">تحميل المجموعة كاملة</span>
+                            </a>
+                        </div>
+
+                        {{-- Supervisor --}}
+                        <div class="bg-white rounded-xl border border-gray-200 p-4 hover:shadow-md transition-shadow">
+                            <div class="flex items-center justify-between mb-3">
+                                <h4 class="font-bold text-indigo-700">Supervisor</h4>
+                                <span class="text-xs bg-indigo-100 text-indigo-700 px-2 py-0.5 rounded-full">45 requests</span>
+                            </div>
+                            <p class="text-xs text-gray-500 mb-3" data-ar="عرض وموافقة: معارض، مساحات، طلبات، عقود" data-en="View & approve: events, spaces, requests, contracts">عرض وموافقة: معارض، مساحات، طلبات</p>
+                            <div class="flex flex-wrap gap-1 mb-3">
+                                <a href="/docs/postman/collection/supervisor/dashboard-stats" class="text-[10px] bg-gray-100 hover:bg-indigo-100 text-gray-600 hover:text-indigo-700 px-2 py-0.5 rounded transition-colors">Dashboard</a>
+                                <a href="/docs/postman/collection/supervisor/events" class="text-[10px] bg-gray-100 hover:bg-indigo-100 text-gray-600 hover:text-indigo-700 px-2 py-0.5 rounded transition-colors">Events</a>
+                                <a href="/docs/postman/collection/supervisor/sections" class="text-[10px] bg-gray-100 hover:bg-indigo-100 text-gray-600 hover:text-indigo-700 px-2 py-0.5 rounded transition-colors">Sections</a>
+                                <a href="/docs/postman/collection/supervisor/spaces" class="text-[10px] bg-gray-100 hover:bg-indigo-100 text-gray-600 hover:text-indigo-700 px-2 py-0.5 rounded transition-colors">Spaces</a>
+                                <a href="/docs/postman/collection/supervisor/visit-requests" class="text-[10px] bg-gray-100 hover:bg-indigo-100 text-gray-600 hover:text-indigo-700 px-2 py-0.5 rounded transition-colors">Visits</a>
+                                <a href="/docs/postman/collection/supervisor/rental-requests" class="text-[10px] bg-gray-100 hover:bg-indigo-100 text-gray-600 hover:text-indigo-700 px-2 py-0.5 rounded transition-colors">Rentals</a>
+                                <a href="/docs/postman/collection/supervisor/rental-contracts" class="text-[10px] bg-gray-100 hover:bg-indigo-100 text-gray-600 hover:text-indigo-700 px-2 py-0.5 rounded transition-colors">Contracts</a>
+                                <a href="/docs/postman/collection/supervisor/sponsors" class="text-[10px] bg-gray-100 hover:bg-indigo-100 text-gray-600 hover:text-indigo-700 px-2 py-0.5 rounded transition-colors">Sponsors</a>
+                                <a href="/docs/postman/collection/supervisor/support-tickets" class="text-[10px] bg-gray-100 hover:bg-indigo-100 text-gray-600 hover:text-indigo-700 px-2 py-0.5 rounded transition-colors">Tickets</a>
+                            </div>
+                            <a href="/docs/postman/collection/supervisor" class="inline-flex items-center gap-1.5 text-indigo-600 hover:text-indigo-800 text-xs font-bold transition-colors">
+                                <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4"/></svg>
+                                <span data-ar="تحميل المجموعة كاملة" data-en="Download Full Collection">تحميل المجموعة كاملة</span>
+                            </a>
+                        </div>
+
+                        {{-- SuperAdmin --}}
+                        <div class="bg-white rounded-xl border border-gray-200 p-4 hover:shadow-md transition-shadow">
+                            <div class="flex items-center justify-between mb-3">
+                                <h4 class="font-bold text-red-700">SuperAdmin</h4>
+                                <span class="text-xs bg-red-100 text-red-700 px-2 py-0.5 rounded-full">25 requests</span>
+                            </div>
+                            <p class="text-xs text-gray-500 mb-3" data-ar="صلاحيات كاملة: إعدادات النظام، إدارة عامة" data-en="Full access: system settings, general management">صلاحيات كاملة: إعدادات النظام</p>
+                            <div class="flex flex-wrap gap-1 mb-3">
+                                <a href="/docs/postman/collection/super-admin/dashboard-stats" class="text-[10px] bg-gray-100 hover:bg-red-100 text-gray-600 hover:text-red-700 px-2 py-0.5 rounded transition-colors">Dashboard</a>
+                                <a href="/docs/postman/collection/super-admin/settings" class="text-[10px] bg-gray-100 hover:bg-red-100 text-gray-600 hover:text-red-700 px-2 py-0.5 rounded transition-colors">Settings</a>
+                                <a href="/docs/postman/collection/super-admin/categories" class="text-[10px] bg-gray-100 hover:bg-red-100 text-gray-600 hover:text-red-700 px-2 py-0.5 rounded transition-colors">Categories</a>
+                                <a href="/docs/postman/collection/super-admin/cities" class="text-[10px] bg-gray-100 hover:bg-red-100 text-gray-600 hover:text-red-700 px-2 py-0.5 rounded transition-colors">Cities</a>
+                                <a href="/docs/postman/collection/super-admin/users" class="text-[10px] bg-gray-100 hover:bg-red-100 text-gray-600 hover:text-red-700 px-2 py-0.5 rounded transition-colors">Users</a>
+                            </div>
+                            <a href="/docs/postman/collection/super-admin" class="inline-flex items-center gap-1.5 text-red-600 hover:text-red-800 text-xs font-bold transition-colors">
+                                <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4"/></svg>
+                                <span data-ar="تحميل المجموعة كاملة" data-en="Download Full Collection">تحميل المجموعة كاملة</span>
+                            </a>
+                        </div>
+
+                        {{-- Dashboard --}}
+                        <div class="bg-white rounded-xl border border-gray-200 p-4 hover:shadow-md transition-shadow">
+                            <div class="flex items-center justify-between mb-3">
+                                <h4 class="font-bold text-cyan-700">Dashboard</h4>
+                                <span class="text-xs bg-cyan-100 text-cyan-700 px-2 py-0.5 rounded-full">22 requests</span>
+                            </div>
+                            <p class="text-xs text-gray-500 mb-3" data-ar="لوحة التحكم، إحصائيات، تقارير" data-en="Dashboard, statistics, reports">لوحة التحكم، إحصائيات، تقارير</p>
+                            <div class="flex flex-wrap gap-1 mb-3">
+                                <a href="/docs/postman/collection/dashboard/1-auth-tsgyl-aldkhol" class="text-[10px] bg-gray-100 hover:bg-cyan-100 text-gray-600 hover:text-cyan-700 px-2 py-0.5 rounded transition-colors">Auth</a>
+                                <a href="/docs/postman/collection/dashboard/2-dashboard-overview-nthr-aaam" class="text-[10px] bg-gray-100 hover:bg-cyan-100 text-gray-600 hover:text-cyan-700 px-2 py-0.5 rounded transition-colors">Overview</a>
+                                <a href="/docs/postman/collection/dashboard/3-dashboard-spaces-filter-fltr-almsahat" class="text-[10px] bg-gray-100 hover:bg-cyan-100 text-gray-600 hover:text-cyan-700 px-2 py-0.5 rounded transition-colors">Spaces</a>
+                                <a href="/docs/postman/collection/dashboard/4-dashboard-revenue-filter-fltr-alayradat" class="text-[10px] bg-gray-100 hover:bg-cyan-100 text-gray-600 hover:text-cyan-700 px-2 py-0.5 rounded transition-colors">Revenue</a>
+                                <a href="/docs/postman/collection/dashboard/5-dashboard-combined-filters-flatr-mgtmaa" class="text-[10px] bg-gray-100 hover:bg-cyan-100 text-gray-600 hover:text-cyan-700 px-2 py-0.5 rounded transition-colors">Filters</a>
+                                <a href="/docs/postman/collection/dashboard/6-user-stats-auth-service-ahsayyat-almstkhdmyn" class="text-[10px] bg-gray-100 hover:bg-cyan-100 text-gray-600 hover:text-cyan-700 px-2 py-0.5 rounded transition-colors">User Stats</a>
+                                <a href="/docs/postman/collection/dashboard/7-health-checks-fhs-alsh" class="text-[10px] bg-gray-100 hover:bg-cyan-100 text-gray-600 hover:text-cyan-700 px-2 py-0.5 rounded transition-colors">Health</a>
+                            </div>
+                            <a href="/docs/postman/collection/dashboard" class="inline-flex items-center gap-1.5 text-cyan-600 hover:text-cyan-800 text-xs font-bold transition-colors">
+                                <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4"/></svg>
+                                <span data-ar="تحميل المجموعة كاملة" data-en="Download Full Collection">تحميل المجموعة كاملة</span>
+                            </a>
+                        </div>
+
+                        {{-- Auth Service --}}
+                        <div class="bg-white rounded-xl border border-gray-200 p-4 hover:shadow-md transition-shadow">
+                            <div class="flex items-center justify-between mb-3">
+                                <h4 class="font-bold text-gray-700">Auth Service</h4>
+                                <span class="text-xs bg-gray-200 text-gray-700 px-2 py-0.5 rounded-full">51 requests</span>
+                            </div>
+                            <p class="text-xs text-gray-500 mb-3" data-ar="مصادقة، مستخدمين، أدوار، صلاحيات، إدارة خدمات" data-en="Auth, users, roles, permissions, service management">مصادقة، مستخدمين، أدوار، صلاحيات</p>
+                            <div class="flex flex-wrap gap-1 mb-3">
+                                <a href="/docs/postman/collection/auth-service/health-check" class="text-[10px] bg-gray-100 hover:bg-gray-200 text-gray-600 hover:text-gray-800 px-2 py-0.5 rounded transition-colors">Health</a>
+                                <a href="/docs/postman/collection/auth-service/authentication" class="text-[10px] bg-gray-100 hover:bg-gray-200 text-gray-600 hover:text-gray-800 px-2 py-0.5 rounded transition-colors">Auth</a>
+                                <a href="/docs/postman/collection/auth-service/users" class="text-[10px] bg-gray-100 hover:bg-gray-200 text-gray-600 hover:text-gray-800 px-2 py-0.5 rounded transition-colors">Users</a>
+                                <a href="/docs/postman/collection/auth-service/roles" class="text-[10px] bg-gray-100 hover:bg-gray-200 text-gray-600 hover:text-gray-800 px-2 py-0.5 rounded transition-colors">Roles</a>
+                                <a href="/docs/postman/collection/auth-service/permissions" class="text-[10px] bg-gray-100 hover:bg-gray-200 text-gray-600 hover:text-gray-800 px-2 py-0.5 rounded transition-colors">Permissions</a>
+                                <a href="/docs/postman/collection/auth-service/services-inter-service" class="text-[10px] bg-gray-100 hover:bg-gray-200 text-gray-600 hover:text-gray-800 px-2 py-0.5 rounded transition-colors">Services</a>
+                            </div>
+                            <a href="/docs/postman/collection/auth-service" class="inline-flex items-center gap-1.5 text-gray-600 hover:text-gray-800 text-xs font-bold transition-colors">
+                                <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4"/></svg>
+                                <span data-ar="تحميل المجموعة كاملة" data-en="Download Full Collection">تحميل المجموعة كاملة</span>
+                            </a>
+                        </div>
+                    </div>
+
+                    {{-- Total counter --}}
+                    <div class="text-center text-sm text-gray-400">
+                        <span data-ar="المجموع: 9 مجموعات • 427 طلب • بيئتين (Production + Local)" data-en="Total: 9 Collections • 427 Requests • 2 Environments (Production + Local)">المجموع: 9 مجموعات • 427 طلب • بيئتين</span>
                     </div>
                 </section>
 

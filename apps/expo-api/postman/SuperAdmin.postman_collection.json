@@ -1,0 +1,602 @@
+{
+	"info": {
+		"name": "Maham Expo - Super Admin",
+		"description": "Super Admin role endpoints for Maham Expo API.\nManages categories, cities, settings, and user approvals.",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"auth": {
+		"type": "bearer",
+		"bearer": [
+			{
+				"key": "token",
+				"value": "{{super_admin_token}}",
+				"type": "string"
+			}
+		]
+	},
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					"pm.request.addHeader({ key: 'Accept', value: 'application/json' });",
+					"pm.request.addHeader({ key: 'Accept-Language', value: pm.environment.get('language') || 'ar' });"
+				]
+			}
+		}
+	],
+	"item": [
+		{
+			"name": "Auth",
+			"item": [
+				{
+					"name": "Login as Super Admin",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"type": "text/javascript",
+								"exec": [
+									"if(pm.response.code===200){var d=pm.response.json();if(d.data&&d.data.token){pm.environment.set('super_admin_token',d.data.token);pm.environment.set('auth_token',d.data.token);}}"
+								]
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "noauth"
+						},
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"identifier\": \"superadmin@example.com\",\n    \"password\": \"password\",\n    \"service_token\": \"{{service_token}}\",\n    \"service_name\": \"maham-expo\"\n}"
+						},
+						"url": {
+							"raw": "{{auth_url}}/v1/auth/login",
+							"host": [
+								"{{auth_url}}"
+							],
+							"path": [
+								"v1",
+								"auth",
+								"login"
+							]
+						}
+					}
+				}
+			]
+		},
+		{
+			"name": "Dashboard & Stats",
+			"item": [
+				{
+					"name": "Dashboard",
+					"request": {
+						"method": "GET",
+						"url": {
+							"raw": "{{expo_url}}/v1/manage/dashboard",
+							"host": [
+								"{{expo_url}}"
+							],
+							"path": [
+								"v1",
+								"manage",
+								"dashboard"
+							]
+						}
+					}
+				},
+				{
+					"name": "Statistics",
+					"request": {
+						"method": "GET",
+						"url": {
+							"raw": "{{expo_url}}/v1/manage/statistics",
+							"host": [
+								"{{expo_url}}"
+							],
+							"path": [
+								"v1",
+								"manage",
+								"statistics"
+							]
+						}
+					}
+				}
+			]
+		},
+		{
+			"name": "Categories",
+			"item": [
+				{
+					"name": "List Categories",
+					"request": {
+						"method": "GET",
+						"url": {
+							"raw": "{{expo_url}}/v1/manage/categories",
+							"host": [
+								"{{expo_url}}"
+							],
+							"path": [
+								"v1",
+								"manage",
+								"categories"
+							]
+						}
+					}
+				},
+				{
+					"name": "Create Category",
+					"request": {
+						"method": "POST",
+						"url": {
+							"raw": "{{expo_url}}/v1/manage/categories",
+							"host": [
+								"{{expo_url}}"
+							],
+							"path": [
+								"v1",
+								"manage",
+								"categories"
+							]
+						},
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"name\": \"Technology\",\n    \"name_ar\": \"تقنية\",\n    \"icon\": \"laptop\",\n    \"description\": \"Tech exhibitions\",\n    \"description_ar\": \"معارض تقنية\",\n    \"is_active\": true,\n    \"sort_order\": 1\n}"
+						}
+					}
+				},
+				{
+					"name": "Show Category",
+					"request": {
+						"method": "GET",
+						"url": {
+							"raw": "{{expo_url}}/v1/manage/categories/{category_id}",
+							"host": [
+								"{{expo_url}}"
+							],
+							"path": [
+								"v1",
+								"manage",
+								"categories",
+								"{category_id}"
+							]
+						}
+					}
+				},
+				{
+					"name": "Update Category",
+					"request": {
+						"method": "PUT",
+						"url": {
+							"raw": "{{expo_url}}/v1/manage/categories/{category_id}",
+							"host": [
+								"{{expo_url}}"
+							],
+							"path": [
+								"v1",
+								"manage",
+								"categories",
+								"{category_id}"
+							]
+						},
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"name\": \"Updated Category\",\n    \"is_active\": true\n}"
+						}
+					}
+				},
+				{
+					"name": "Delete Category",
+					"request": {
+						"method": "DELETE",
+						"url": {
+							"raw": "{{expo_url}}/v1/manage/categories/{category_id}",
+							"host": [
+								"{{expo_url}}"
+							],
+							"path": [
+								"v1",
+								"manage",
+								"categories",
+								"{category_id}"
+							]
+						}
+					}
+				}
+			]
+		},
+		{
+			"name": "Cities",
+			"item": [
+				{
+					"name": "List Cities",
+					"request": {
+						"method": "GET",
+						"url": {
+							"raw": "{{expo_url}}/v1/manage/cities",
+							"host": [
+								"{{expo_url}}"
+							],
+							"path": [
+								"v1",
+								"manage",
+								"cities"
+							]
+						}
+					}
+				},
+				{
+					"name": "Create City",
+					"request": {
+						"method": "POST",
+						"url": {
+							"raw": "{{expo_url}}/v1/manage/cities",
+							"host": [
+								"{{expo_url}}"
+							],
+							"path": [
+								"v1",
+								"manage",
+								"cities"
+							]
+						},
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"name\": \"Riyadh\",\n    \"name_ar\": \"الرياض\",\n    \"region\": \"Central\",\n    \"region_ar\": \"الوسطى\",\n    \"latitude\": 24.7136,\n    \"longitude\": 46.6753,\n    \"is_active\": true,\n    \"sort_order\": 1\n}"
+						}
+					}
+				},
+				{
+					"name": "Show City",
+					"request": {
+						"method": "GET",
+						"url": {
+							"raw": "{{expo_url}}/v1/manage/cities/{city_id}",
+							"host": [
+								"{{expo_url}}"
+							],
+							"path": [
+								"v1",
+								"manage",
+								"cities",
+								"{city_id}"
+							]
+						}
+					}
+				},
+				{
+					"name": "Update City",
+					"request": {
+						"method": "PUT",
+						"url": {
+							"raw": "{{expo_url}}/v1/manage/cities/{city_id}",
+							"host": [
+								"{{expo_url}}"
+							],
+							"path": [
+								"v1",
+								"manage",
+								"cities",
+								"{city_id}"
+							]
+						},
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"name\": \"Updated City\",\n    \"is_active\": true\n}"
+						}
+					}
+				},
+				{
+					"name": "Delete City",
+					"request": {
+						"method": "DELETE",
+						"url": {
+							"raw": "{{expo_url}}/v1/manage/cities/{city_id}",
+							"host": [
+								"{{expo_url}}"
+							],
+							"path": [
+								"v1",
+								"manage",
+								"cities",
+								"{city_id}"
+							]
+						}
+					}
+				}
+			]
+		},
+		{
+			"name": "Settings",
+			"item": [
+				{
+					"name": "List Settings",
+					"request": {
+						"method": "GET",
+						"url": {
+							"raw": "{{expo_url}}/v1/manage/settings",
+							"host": [
+								"{{expo_url}}"
+							],
+							"path": [
+								"v1",
+								"manage",
+								"settings"
+							]
+						}
+					}
+				},
+				{
+					"name": "Get Setting by Key",
+					"request": {
+						"method": "GET",
+						"url": {
+							"raw": "{{expo_url}}/v1/manage/settings/{setting_key}",
+							"host": [
+								"{{expo_url}}"
+							],
+							"path": [
+								"v1",
+								"manage",
+								"settings",
+								"{setting_key}"
+							]
+						}
+					}
+				},
+				{
+					"name": "Update Settings",
+					"request": {
+						"method": "PUT",
+						"url": {
+							"raw": "{{expo_url}}/v1/manage/settings",
+							"host": [
+								"{{expo_url}}"
+							],
+							"path": [
+								"v1",
+								"manage",
+								"settings"
+							]
+						},
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"site_name\": \"Maham Expo\",\n    \"site_name_ar\": \"معرض محام\",\n    \"default_language\": \"ar\",\n    \"maintenance_mode\": false\n}"
+						}
+					}
+				}
+			]
+		},
+		{
+			"name": "Users",
+			"item": [
+				{
+					"name": "List Users",
+					"request": {
+						"method": "GET",
+						"url": {
+							"raw": "{{expo_url}}/v1/manage/users",
+							"host": [
+								"{{expo_url}}"
+							],
+							"path": [
+								"v1",
+								"manage",
+								"users"
+							]
+						}
+					}
+				},
+				{
+					"name": "Show User",
+					"request": {
+						"method": "GET",
+						"url": {
+							"raw": "{{expo_url}}/v1/manage/users/{profile_id}",
+							"host": [
+								"{{expo_url}}"
+							],
+							"path": [
+								"v1",
+								"manage",
+								"users",
+								"{profile_id}"
+							]
+						}
+					}
+				},
+				{
+					"name": "Approve User",
+					"request": {
+						"method": "PUT",
+						"url": {
+							"raw": "{{expo_url}}/v1/manage/users/{profile_id}/approve",
+							"host": [
+								"{{expo_url}}"
+							],
+							"path": [
+								"v1",
+								"manage",
+								"users",
+								"{profile_id}",
+								"approve"
+							]
+						}
+					}
+				},
+				{
+					"name": "Reject User",
+					"request": {
+						"method": "PUT",
+						"url": {
+							"raw": "{{expo_url}}/v1/manage/users/{profile_id}/reject",
+							"host": [
+								"{{expo_url}}"
+							],
+							"path": [
+								"v1",
+								"manage",
+								"users",
+								"{profile_id}",
+								"reject"
+							]
+						},
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"reason\": \"Invalid documents\"\n}"
+						}
+					}
+				},
+				{
+					"name": "Suspend User",
+					"request": {
+						"method": "PUT",
+						"url": {
+							"raw": "{{expo_url}}/v1/manage/users/{profile_id}/suspend",
+							"host": [
+								"{{expo_url}}"
+							],
+							"path": [
+								"v1",
+								"manage",
+								"users",
+								"{profile_id}",
+								"suspend"
+							]
+						},
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"reason\": \"Policy violation\"\n}"
+						}
+					}
+				}
+			]
+		},
+		{
+			"name": "My Profile",
+			"item": [
+				{
+					"name": "Get Profile",
+					"request": {
+						"method": "GET",
+						"url": {
+							"raw": "{{expo_url}}/v1/profile",
+							"host": [
+								"{{expo_url}}"
+							],
+							"path": [
+								"v1",
+								"profile"
+							]
+						}
+					}
+				}
+			]
+		},
+		{
+			"name": "My Notifications",
+			"item": [
+				{
+					"name": "List",
+					"request": {
+						"method": "GET",
+						"url": {
+							"raw": "{{expo_url}}/v1/notifications",
+							"host": [
+								"{{expo_url}}"
+							],
+							"path": [
+								"v1",
+								"notifications"
+							]
+						}
+					}
+				},
+				{
+					"name": "Unread Count",
+					"request": {
+						"method": "GET",
+						"url": {
+							"raw": "{{expo_url}}/v1/notifications/unread-count",
+							"host": [
+								"{{expo_url}}"
+							],
+							"path": [
+								"v1",
+								"notifications",
+								"unread-count"
+							]
+						}
+					}
+				},
+				{
+					"name": "Mark All Read",
+					"request": {
+						"method": "PUT",
+						"url": {
+							"raw": "{{expo_url}}/v1/notifications/read-all",
+							"host": [
+								"{{expo_url}}"
+							],
+							"path": [
+								"v1",
+								"notifications",
+								"read-all"
+							]
+						}
+					}
+				}
+			]
+		}
+	]
+}
