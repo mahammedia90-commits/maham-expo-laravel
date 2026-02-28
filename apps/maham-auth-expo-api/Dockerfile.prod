@@ -76,10 +76,11 @@ RUN chmod +x /usr/local/bin/entrypoint.sh
 
 # Create directories + permissions
 RUN mkdir -p storage/logs storage/framework/{cache/data,sessions,views} bootstrap/cache \
+    /var/log/supervisor /var/log/nginx \
     && chown -R www-data:www-data storage bootstrap/cache \
     && chmod -R 775 storage bootstrap/cache
 
 EXPOSE 80
 
 ENTRYPOINT ["entrypoint.sh"]
-CMD ["/usr/bin/supervisord", "-c", "/etc/supervisord.conf"]
+CMD ["/usr/bin/supervisord", "-n", "-c", "/etc/supervisord.conf"]

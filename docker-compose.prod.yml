@@ -191,6 +191,11 @@ services:
       LOG_CHANNEL: stack
       LOG_LEVEL: ${LOG_LEVEL:-warning}
 
+      # --- OneSignal Push Notifications (Optional) ---
+      ONESIGNAL_APP_ID: ${ONESIGNAL_APP_ID:-}
+      ONESIGNAL_REST_API_KEY: ${ONESIGNAL_REST_API_KEY:-}
+      ONESIGNAL_ENABLED: ${ONESIGNAL_ENABLED:-false}
+
       # --- Mail (Optional) ---
       MAIL_MAILER: ${MAIL_MAILER:-log}
       MAIL_HOST: ${MAIL_HOST:-}
@@ -348,7 +353,7 @@ services:
 networks:
   microservices:
     driver: bridge
-    name: maham_network
+    name: maham-network
 
 volumes:
   auth-mysql-data:

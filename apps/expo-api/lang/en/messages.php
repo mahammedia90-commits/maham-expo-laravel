@@ -93,6 +93,13 @@ return [
         'preferences_updated' => 'Notification preferences updated successfully',
     ],
 
+    // ================== DEVICE ==================
+    'device' => [
+        'registered' => 'Device registered for push notifications',
+        'unregistered' => 'Device unregistered from push notifications',
+        'not_found' => 'Device not found',
+    ],
+
     // ================== RATING ==================
     'rating' => [
         'created' => 'Rating submitted successfully',

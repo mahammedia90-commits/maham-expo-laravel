@@ -117,19 +117,19 @@ class RentalRequestController extends Controller
 
         // Notify investor (if space has investor)
         if ($space->investor_id) {
-            Notification::create([
-                'user_id' => $space->investor_id,
-                'type' => 'rental_request',
-                'title' => 'طلب إيجار جديد',
-                'title_en' => 'New Rental Request',
-                'message' => 'لديك طلب إيجار جديد للمساحة ' . $space->name,
-                'message_en' => 'You have a new rental request for space ' . $space->name,
-                'data' => [
+            Notification::send(
+                userId: $space->investor_id,
+                title: 'New Rental Request',
+                titleAr: 'طلب إيجار جديد',
+                type: 'rental_request',
+                body: 'You have a new rental request for space ' . $space->name,
+                bodyAr: 'لديك طلب إيجار جديد للمساحة ' . $space->name,
+                data: [
                     'rental_request_id' => $rentalRequest->id,
                     'request_number' => $rentalRequest->request_number,
                     'space_id' => $space->id,
                 ],
-            ]);
+            );
         }
 
         $rentalRequest->load([

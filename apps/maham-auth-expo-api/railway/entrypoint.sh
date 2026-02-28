@@ -87,8 +87,7 @@ echo "  Auth Service Ready! (Railway)"
 echo "  Listening on port: $RAILWAY_PORT" 
 echo "========================================="
 
-echo ">> Starting Laravel directly on port $RAILWAY_PORT..."
-php artisan serve --host=0.0.0.0 --port=$RAILWAY_PORT
-echo ">> Laravel server stopped, exiting."
+# Hand off to CMD (supervisord manages php-fpm + nginx + queue + scheduler)
+exec "$@"
 
 

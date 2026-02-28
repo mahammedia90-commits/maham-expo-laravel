@@ -2,6 +2,9 @@
 
 namespace App\Providers;
 
+use App\Services\OneSignal\OneSignalNotifier;
+use App\Services\OneSignal\OneSignalUserManager;
+use App\Services\NotificationService;
 use Illuminate\Support\ServiceProvider;
 
 class AppServiceProvider extends ServiceProvider
@@ -11,7 +14,9 @@ class AppServiceProvider extends ServiceProvider
      */
     public function register(): void
     {
-        //
+        $this->app->singleton(OneSignalNotifier::class);
+        $this->app->singleton(OneSignalUserManager::class);
+        $this->app->singleton(NotificationService::class);
     }
 
     /**

@@ -5,6 +5,7 @@ RUN apt-get update && apt-get install -y \
     git curl zip unzip \
     libpng-dev libonig-dev libxml2-dev libzip-dev \
     default-mysql-client \
+    nginx supervisor \
     && apt-get clean && rm -rf /var/lib/apt/lists/*
 
 # Install PHP extensions
@@ -52,6 +53,12 @@ FROM base AS production
 # Copy app from build
 COPY --from=build /var/www/html /var/www/html
 
+# Railway Nginx config (uses $PORT)
+COPY railway/nginx.conf /etc/nginx/nginx-template.conf
+
+# Supervisor config
+COPY railway/supervisord.conf /etc/supervisor/conf.d/app.conf
+
 # Entrypoint
 COPY railway/entrypoint.sh /usr/local/bin/entrypoint.sh
 RUN chmod +x /usr/local/bin/entrypoint.sh
@@ -60,5 +67,9 @@ RUN chmod +x /usr/local/bin/entrypoint.sh
 RUN chown -R www-data:www-data /var/www/html/storage /var/www/html/bootstrap/cache \
     && chmod -R 775 /var/www/html/storage /var/www/html/bootstrap/cache
 
+# Create log directories
+RUN mkdir -p /var/log/supervisor /var/log/nginx
+
 # Railway uses dynamic PORT - no EXPOSE needed
 ENTRYPOINT ["entrypoint.sh"]
+CMD ["/usr/bin/supervisord", "-n", "-c", "/etc/supervisor/conf.d/app.conf"]

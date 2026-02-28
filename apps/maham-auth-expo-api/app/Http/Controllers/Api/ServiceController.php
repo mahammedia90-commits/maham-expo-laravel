@@ -349,7 +349,7 @@ class ServiceController extends Controller
                         'phone' => $user->phone,
                         'status' => $user->status,
                         'roles' => $user->roles->pluck('name')->toArray(),
-                        'permissions' => $user->getAllPermissions()->pluck('name')->toArray(),
+                        'permissions' => $user->getAllPermissions()->toArray(),
                     ],
                     'expires_at' => $payload->get('exp'),
                 ]
@@ -497,7 +497,7 @@ class ServiceController extends Controller
                 'phone' => $user->phone,
                 'status' => $user->status,
                 'roles' => $user->roles->pluck('name')->toArray(),
-                'permissions' => $user->getAllPermissions()->pluck('name')->toArray(),
+                'permissions' => $user->getAllPermissions()->toArray(),
             ]
         ]);
     }

@@ -131,18 +131,18 @@ class VisitRequestController extends Controller
         ]);
 
         // Notify the merchant
-        Notification::create([
-            'user_id' => $visitRequest->user_id,
-            'type' => 'visit_request',
-            'title' => 'تمت موافقة المستثمر على طلب الزيارة',
-            'title_en' => 'Investor Approved Your Visit Request',
-            'message' => 'تمت موافقة المستثمر على طلب الزيارة الخاص بك رقم ' . $visitRequest->request_number . '. في انتظار الموافقة النهائية.',
-            'message_en' => 'The investor approved your visit request #' . $visitRequest->request_number . '. Awaiting final approval.',
-            'data' => [
+        Notification::send(
+            userId: $visitRequest->user_id,
+            title: 'Investor Approved Your Visit Request',
+            titleAr: 'تمت موافقة المستثمر على طلب الزيارة',
+            type: 'visit_request',
+            body: 'The investor approved your visit request #' . $visitRequest->request_number . '. Awaiting final approval.',
+            bodyAr: 'تمت موافقة المستثمر على طلب الزيارة الخاص بك رقم ' . $visitRequest->request_number . '. في انتظار الموافقة النهائية.',
+            data: [
                 'visit_request_id' => $visitRequest->id,
                 'request_number' => $visitRequest->request_number,
             ],
-        ]);
+        );
 
         return ApiResponse::success(
             data: $visitRequest,
@@ -194,19 +194,19 @@ class VisitRequestController extends Controller
         ]);
 
         // Notify the merchant
-        Notification::create([
-            'user_id' => $visitRequest->user_id,
-            'type' => 'visit_request',
-            'title' => 'تم رفض طلب الزيارة',
-            'title_en' => 'Visit Request Rejected',
-            'message' => 'تم رفض طلب الزيارة رقم ' . $visitRequest->request_number . ' من قبل المستثمر.',
-            'message_en' => 'Your visit request #' . $visitRequest->request_number . ' was rejected by the investor.',
-            'data' => [
+        Notification::send(
+            userId: $visitRequest->user_id,
+            title: 'Visit Request Rejected',
+            titleAr: 'تم رفض طلب الزيارة',
+            type: 'visit_request',
+            body: 'Your visit request #' . $visitRequest->request_number . ' was rejected by the investor.',
+            bodyAr: 'تم رفض طلب الزيارة رقم ' . $visitRequest->request_number . ' من قبل المستثمر.',
+            data: [
                 'visit_request_id' => $visitRequest->id,
                 'request_number' => $visitRequest->request_number,
                 'reason' => $validated['reason'],
             ],
-        ]);
+        );
 
         return ApiResponse::success(
             data: $visitRequest,

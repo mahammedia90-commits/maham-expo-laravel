@@ -117,18 +117,18 @@ class VisitRequestController extends Controller
         ]);
 
         // Notify merchant
-        Notification::create([
-            'user_id' => $visitRequest->user_id,
-            'type' => 'visit_request',
-            'title' => 'تمت الموافقة على طلب الزيارة',
-            'title_en' => 'Visit Request Approved',
-            'message' => 'تمت الموافقة على طلب الزيارة الخاص بك',
-            'message_en' => 'Your visit request has been approved',
-            'data' => [
+        Notification::send(
+            userId: $visitRequest->user_id,
+            title: 'Visit Request Approved',
+            titleAr: 'تمت الموافقة على طلب الزيارة',
+            type: 'visit_request',
+            body: 'Your visit request has been approved',
+            bodyAr: 'تمت الموافقة على طلب الزيارة الخاص بك',
+            data: [
                 'visit_request_id' => $visitRequest->id,
                 'visit_date' => $visitRequest->visit_date->toDateString(),
             ],
-        ]);
+        );
 
         return ApiResponse::success(
             data: $visitRequest,
@@ -163,18 +163,18 @@ class VisitRequestController extends Controller
         ]);
 
         // Notify merchant
-        Notification::create([
-            'user_id' => $visitRequest->user_id,
-            'type' => 'visit_request',
-            'title' => 'تم رفض طلب الزيارة',
-            'title_en' => 'Visit Request Rejected',
-            'message' => 'تم رفض طلب الزيارة الخاص بك',
-            'message_en' => 'Your visit request has been rejected',
-            'data' => [
+        Notification::send(
+            userId: $visitRequest->user_id,
+            title: 'Visit Request Rejected',
+            titleAr: 'تم رفض طلب الزيارة',
+            type: 'visit_request',
+            body: 'Your visit request has been rejected',
+            bodyAr: 'تم رفض طلب الزيارة الخاص بك',
+            data: [
                 'visit_request_id' => $visitRequest->id,
                 'reason' => $validated['reason'],
             ],
-        ]);
+        );
 
         return ApiResponse::success(
             data: $visitRequest,

@@ -2,9 +2,11 @@
 
 namespace App\Models;
 
+use App\Services\OneSignal\OneSignalNotifier;
 use Illuminate\Database\Eloquent\Concerns\HasUuids;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Facades\Log;
 
 class Notification extends Model
 {
@@ -26,6 +28,54 @@ class Notification extends Model
         'data' => 'array',
         'read_at' => 'datetime',
     ];
+
+    /**
+     * Boot the model — fire push notification on creation.
+     */
+    protected static function booted(): void
+    {
+        static::created(function (Notification $notification) {
+            try {
+                $notifier = app(OneSignalNotifier::class);
+
+                if (!$notifier->isEnabled()) {
+                    return;
+                }
+
+                // Check user push preference
+                $preferences = \App\Models\NotificationPreference::getOrCreateForUser($notification->user_id);
+                if (!$preferences->push_enabled) {
+                    return;
+                }
+
+                $pushData = array_filter([
+                    'type' => $notification->type,
+                    'notification_id' => $notification->id,
+                    'action_url' => $notification->action_url,
+                    ...(is_array($notification->data) ? $notification->data : []),
+                ]);
+
+                $notifier->sendToUser(
+                    userId: $notification->user_id,
+                    message: $notification->body ?? $notification->title,
+                    heading: $notification->title,
+                    data: $pushData ?: null,
+                    options: array_filter([
+                        'ar' => $notification->body_ar ?? $notification->title_ar,
+                        'heading_ar' => $notification->title_ar,
+                        'url' => $notification->action_url,
+                    ])
+                );
+            } catch (\Exception $e) {
+                // Push failure should never prevent in-app notification creation
+                Log::warning('[Notification] Push notification failed', [
+                    'notification_id' => $notification->id,
+                    'user_id' => $notification->user_id,
+                    'error' => $e->getMessage(),
+                ]);
+            }
+        });
+    }
 
     /* ========================================
      * Scopes

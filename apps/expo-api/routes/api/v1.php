@@ -19,6 +19,7 @@ use App\Http\Controllers\Api\PageController;
 use App\Http\Controllers\Api\FaqController;
 use App\Http\Controllers\Api\BannerController;
 use App\Http\Controllers\Api\NotificationPreferenceController;
+use App\Http\Controllers\Api\DeviceController;
 
 // Management Controllers (Admin/Supervisor/SuperAdmin — permission-based, no role checks)
 use App\Http\Controllers\Api\Admin\SponsorController as AdminSponsorController;
@@ -207,6 +208,13 @@ Route::middleware([SetLocale::class, 'throttle:60,1'])->group(function () {
                     ->middleware(CheckPermission::class . ':notification-preferences.view');
                 Route::put('/preferences', [NotificationPreferenceController::class, 'update'])
                     ->middleware(CheckPermission::class . ':notification-preferences.update');
+            });
+
+            // Devices (Push Notification Registration)
+            Route::prefix('devices')->group(function () {
+                Route::get('/', [DeviceController::class, 'index']);
+                Route::post('/', [DeviceController::class, 'register']);
+                Route::delete('/', [DeviceController::class, 'unregister']);
             });
 
             // Ratings (Authenticated - Create/Update/Delete own)

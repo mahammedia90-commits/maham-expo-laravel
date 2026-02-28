@@ -31,7 +31,18 @@ class AuthServiceClient
         $cacheKey = 'auth_verify_' . md5($token);
 
         if ($this->cacheEnabled && Cache::has($cacheKey)) {
-            return Cache::get($cacheKey);
+            $cached = Cache::get($cacheKey);
+
+            // Validate cached data has valid permissions (not null-filled from old bug)
+            if ($cached && $this->hasValidPermissions($cached)) {
+                return $cached;
+            }
+
+            // Stale cache with invalid permissions — clear and re-fetch
+            Cache::forget($cacheKey);
+            Log::info('Cleared stale auth cache with invalid permissions', [
+                'user_id' => $cached['user']['id'] ?? 'unknown',
+            ]);
         }
 
         $response = $this->request('POST', '/service/verify-token', [
@@ -49,6 +60,33 @@ class AuthServiceClient
         }
 
         return $userData;
+    }
+
+    /**
+     * Validate that cached user data has valid (non-null) permissions
+     */
+    protected function hasValidPermissions(array $data): bool
+    {
+        $permissions = $data['user']['permissions'] ?? null;
+
+        // No permissions key at all
+        if ($permissions === null) {
+            return false;
+        }
+
+        // Empty permissions is valid (user might genuinely have none)
+        if (empty($permissions)) {
+            return true;
+        }
+
+        // Check that permissions are strings, not nulls (from the old double-pluck bug)
+        foreach ($permissions as $permission) {
+            if (!is_string($permission)) {
+                return false;
+            }
+        }
+
+        return true;
     }
 
     /**

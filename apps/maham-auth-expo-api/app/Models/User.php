@@ -135,7 +135,7 @@ class User extends Authenticatable implements JWTSubject
             'avatar' => $this->avatar,
             'status' => $this->status,
             'roles' => $this->roles->pluck('name')->toArray(),
-            'permissions' => $this->getAllPermissions()->pluck('name')->toArray(),
+            'permissions' => $this->getAllPermissions()->toArray(),
             'last_login_at' => $this->last_login_at?->toISOString(),
             'created_at' => $this->created_at->toISOString(),
         ];

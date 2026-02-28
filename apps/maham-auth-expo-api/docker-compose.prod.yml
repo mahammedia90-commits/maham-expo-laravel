@@ -16,7 +16,7 @@ services:
       APP_NAME: "${APP_NAME:-MahamAuthAPI}"
       APP_ENV: ${APP_ENV:-production}
       APP_KEY: ${APP_KEY:-base64:0+WIHkXmrh9hJjbSPMaLh47S7a8Dysp32SuSgV6Hr6k=}
-      APP_DEBUG: ${APP_DEBUG:-true}
+      APP_DEBUG: ${APP_DEBUG:-false}
       APP_URL: ${APP_URL}
       APP_TIMEZONE: ${APP_TIMEZONE:-Asia/Riyadh}
 
@@ -108,7 +108,7 @@ services:
     networks:
       - maham-network
     healthcheck:
-      test: ["CMD", "redis-cli", "ping"]
+      test: ["CMD", "sh", "-c", "redis-cli -a \"$REDIS_PASSWORD\" ping | grep -q PONG"]
       interval: 10s
       timeout: 5s
       retries: 5

@@ -118,18 +118,18 @@ class RentalRequestController extends Controller
         // TODO: Implement notification to admins
 
         // Notify the merchant
-        Notification::create([
-            'user_id' => $rentalRequest->businessProfile?->user_id,
-            'type' => 'rental_request',
-            'title' => 'تمت موافقة المستثمر على طلب الإيجار',
-            'title_en' => 'Investor Approved Your Rental Request',
-            'message' => 'تمت موافقة المستثمر على طلب الإيجار الخاص بك رقم ' . $rentalRequest->request_number . '. في انتظار الموافقة النهائية.',
-            'message_en' => 'The investor approved your rental request #' . $rentalRequest->request_number . '. Awaiting final approval.',
-            'data' => [
+        Notification::send(
+            userId: $rentalRequest->businessProfile?->user_id,
+            title: 'Investor Approved Your Rental Request',
+            titleAr: 'تمت موافقة المستثمر على طلب الإيجار',
+            type: 'rental_request',
+            body: 'The investor approved your rental request #' . $rentalRequest->request_number . '. Awaiting final approval.',
+            bodyAr: 'تمت موافقة المستثمر على طلب الإيجار الخاص بك رقم ' . $rentalRequest->request_number . '. في انتظار الموافقة النهائية.',
+            data: [
                 'rental_request_id' => $rentalRequest->id,
                 'request_number' => $rentalRequest->request_number,
             ],
-        ]);
+        );
 
         return ApiResponse::success(
             data: $rentalRequest,
@@ -177,19 +177,19 @@ class RentalRequestController extends Controller
         ]);
 
         // Notify the merchant
-        Notification::create([
-            'user_id' => $rentalRequest->businessProfile?->user_id,
-            'type' => 'rental_request',
-            'title' => 'تم رفض طلب الإيجار',
-            'title_en' => 'Rental Request Rejected',
-            'message' => 'تم رفض طلب الإيجار رقم ' . $rentalRequest->request_number . ' من قبل المستثمر.',
-            'message_en' => 'Your rental request #' . $rentalRequest->request_number . ' was rejected by the investor.',
-            'data' => [
+        Notification::send(
+            userId: $rentalRequest->businessProfile?->user_id,
+            title: 'Rental Request Rejected',
+            titleAr: 'تم رفض طلب الإيجار',
+            type: 'rental_request',
+            body: 'Your rental request #' . $rentalRequest->request_number . ' was rejected by the investor.',
+            bodyAr: 'تم رفض طلب الإيجار رقم ' . $rentalRequest->request_number . ' من قبل المستثمر.',
+            data: [
                 'rental_request_id' => $rentalRequest->id,
                 'request_number' => $rentalRequest->request_number,
                 'reason' => $validated['reason'],
             ],
-        ]);
+        );
 
         return ApiResponse::success(
             data: $rentalRequest,

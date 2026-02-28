@@ -113,18 +113,18 @@ class RentalRequestController extends Controller
         $rentalRequest->approve($supervisorId, $validated['notes'] ?? null);
 
         // Notify merchant
-        Notification::create([
-            'user_id' => $rentalRequest->businessProfile?->user_id,
-            'type' => 'rental_request',
-            'title' => 'تمت الموافقة على طلب الإيجار',
-            'title_en' => 'Rental Request Approved',
-            'message' => 'تمت الموافقة على طلب الإيجار رقم ' . $rentalRequest->request_number,
-            'message_en' => 'Your rental request #' . $rentalRequest->request_number . ' has been approved',
-            'data' => [
+        Notification::send(
+            userId: $rentalRequest->businessProfile?->user_id,
+            title: 'Rental Request Approved',
+            titleAr: 'تمت الموافقة على طلب الإيجار',
+            type: 'rental_request',
+            body: 'Your rental request #' . $rentalRequest->request_number . ' has been approved',
+            bodyAr: 'تمت الموافقة على طلب الإيجار رقم ' . $rentalRequest->request_number,
+            data: [
                 'rental_request_id' => $rentalRequest->id,
                 'request_number' => $rentalRequest->request_number,
             ],
-        ]);
+        );
 
         return ApiResponse::success(
             data: $rentalRequest,
@@ -155,19 +155,19 @@ class RentalRequestController extends Controller
         $rentalRequest->reject($supervisorId, $validated['reason'], $validated['notes'] ?? null);
 
         // Notify merchant
-        Notification::create([
-            'user_id' => $rentalRequest->businessProfile?->user_id,
-            'type' => 'rental_request',
-            'title' => 'تم رفض طلب الإيجار',
-            'title_en' => 'Rental Request Rejected',
-            'message' => 'تم رفض طلب الإيجار رقم ' . $rentalRequest->request_number,
-            'message_en' => 'Your rental request #' . $rentalRequest->request_number . ' has been rejected',
-            'data' => [
+        Notification::send(
+            userId: $rentalRequest->businessProfile?->user_id,
+            title: 'Rental Request Rejected',
+            titleAr: 'تم رفض طلب الإيجار',
+            type: 'rental_request',
+            body: 'Your rental request #' . $rentalRequest->request_number . ' has been rejected',
+            bodyAr: 'تم رفض طلب الإيجار رقم ' . $rentalRequest->request_number,
+            data: [
                 'rental_request_id' => $rentalRequest->id,
                 'request_number' => $rentalRequest->request_number,
                 'reason' => $validated['reason'],
             ],
-        ]);
+        );
 
         return ApiResponse::success(
             data: $rentalRequest,
@@ -195,19 +195,19 @@ class RentalRequestController extends Controller
         $rentalRequest->recordPayment($validated['amount']);
 
         // Notify merchant
-        Notification::create([
-            'user_id' => $rentalRequest->businessProfile?->user_id,
-            'type' => 'payment',
-            'title' => 'تم تسجيل دفعة',
-            'title_en' => 'Payment Recorded',
-            'message' => 'تم تسجيل دفعة بمبلغ ' . $validated['amount'] . ' ر.س للطلب رقم ' . $rentalRequest->request_number,
-            'message_en' => 'Payment of ' . $validated['amount'] . ' SAR recorded for request #' . $rentalRequest->request_number,
-            'data' => [
+        Notification::send(
+            userId: $rentalRequest->businessProfile?->user_id,
+            title: 'Payment Recorded',
+            titleAr: 'تم تسجيل دفعة',
+            type: 'payment',
+            body: 'Payment of ' . $validated['amount'] . ' SAR recorded for request #' . $rentalRequest->request_number,
+            bodyAr: 'تم تسجيل دفعة بمبلغ ' . $validated['amount'] . ' ر.س للطلب رقم ' . $rentalRequest->request_number,
+            data: [
                 'rental_request_id' => $rentalRequest->id,
                 'amount' => $validated['amount'],
                 'remaining' => $rentalRequest->remaining_amount,
             ],
-        ]);
+        );
 
         return ApiResponse::success(
             data: $rentalRequest,

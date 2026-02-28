@@ -1,0 +1,36 @@
+# Git
+.git
+.gitignore
+.gitattributes
+
+# IDE
+.idea
+.vscode
+*.swp
+*.swo
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Documentation
+*.md
+LICENSE
+
+# Docker files (not needed in build context)
+docker-compose*.yml
+Dockerfile*
+
+# Postman
+postman/
+*.postman_collection.json
+*.postman_environment.json
+
+# CI/CD
+.github/
+
+# Deployment scripts
+deploy.sh
+setup-vps.sh
+ssl-setup.sh
+Makefile
