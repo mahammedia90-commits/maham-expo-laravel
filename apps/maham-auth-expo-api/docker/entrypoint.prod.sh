@@ -7,6 +7,15 @@ echo "========================================="
 
 cd /var/www/html
 
+# Create .env file from environment variables if not exists
+if [ ! -f .env ]; then
+    echo ">> Creating .env file from environment variables..."
+    env | grep -E '^(APP_|DB_|REDIS_|QUEUE_|CACHE_|LOG_|RATE_LIMIT_|MAIL_|SESSION_|JWT_|SERVICE_|TRUSTED_|BCRYPT_|FILESYSTEM_)' | while IFS='=' read -r key value; do
+        echo "${key}=\"${value}\""
+    done > .env 2>/dev/null || true
+    grep -q "^APP_KEY=" .env 2>/dev/null || echo 'APP_KEY=""' >> .env
+fi
+
 # Ensure storage directories exist
 mkdir -p storage/logs storage/framework/cache/data storage/framework/sessions storage/framework/views bootstrap/cache
 

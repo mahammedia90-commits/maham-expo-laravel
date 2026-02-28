@@ -10,8 +10,10 @@ cd /var/www/html
 # Create .env file from environment variables if not exists
 if [ ! -f .env ]; then
     echo ">> Creating .env file from environment variables..."
-    env | grep -E '^(APP_|DB_|REDIS_|QUEUE_|CACHE_|LOG_|AUTH_SERVICE_|RATE_LIMIT_|MAIL_|SESSION_)' > .env 2>/dev/null || true
-    grep -q "^APP_KEY=" .env 2>/dev/null || echo "APP_KEY=" >> .env
+    env | grep -E '^(APP_|DB_|REDIS_|QUEUE_|CACHE_|LOG_|AUTH_SERVICE_|RATE_LIMIT_|MAIL_|SESSION_|ONESIGNAL_|BCRYPT_|FILESYSTEM_|SERVICE_)' | while IFS='=' read -r key value; do
+        echo "${key}=\"${value}\""
+    done > .env 2>/dev/null || true
+    grep -q "^APP_KEY=" .env 2>/dev/null || echo 'APP_KEY=""' >> .env
 fi
 
 # Ensure storage directories exist
