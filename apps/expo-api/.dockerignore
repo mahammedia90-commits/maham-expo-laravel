@@ -9,8 +9,6 @@ docker-compose.yml
 docker-compose.prod.yml
 Dockerfile.railway
 railway.toml
-postman/
-*.postman_collection.json
 storage/logs/*
 storage/framework/cache/*
 storage/framework/sessions/*

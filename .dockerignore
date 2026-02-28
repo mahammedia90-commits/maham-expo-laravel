@@ -21,11 +21,6 @@ LICENSE
 docker-compose*.yml
 Dockerfile*
 
-# Postman
-postman/
-*.postman_collection.json
-*.postman_environment.json
-
 # CI/CD
 .github/
 
