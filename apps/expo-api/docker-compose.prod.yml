@@ -31,12 +31,12 @@ services:
       # Redis
       REDIS_HOST: ${REDIS_HOST:-redis}
       REDIS_PORT: ${REDIS_PORT:-6379}
-      REDIS_PASSWORD: ${REDIS_PASSWORD:-}
+      REDIS_PASSWORD: ${REDIS_PASSWORD:-maham_redis_2024}
 
-      # Cache & Queue
-      CACHE_STORE: ${CACHE_STORE:-redis}
-      QUEUE_CONNECTION: ${QUEUE_CONNECTION:-redis}
-      SESSION_DRIVER: ${SESSION_DRIVER:-redis}
+      # Cache & Queue (database = safe default, set to 'redis' if Redis is confirmed working)
+      CACHE_STORE: ${CACHE_STORE:-database}
+      QUEUE_CONNECTION: ${QUEUE_CONNECTION:-database}
+      SESSION_DRIVER: ${SESSION_DRIVER:-file}
 
       # JWT
       JWT_SECRET: ${JWT_SECRET:-dVefKKh4jZQm5gfGIzfKpCuUDpcwAh2i8V9L8jfhiH8giFuze6wavfVpAqIqyhFv}
@@ -112,14 +112,13 @@ services:
   redis:
     image: redis:7-alpine
     restart: unless-stopped
-    command: ["redis-server", "--appendonly", "yes", "--requirepass", "${REDIS_PASSWORD}"]
-    # command: ["redis-server", "--appendonly", "yes"]
+    command: ["redis-server", "--appendonly", "yes", "--maxmemory", "64mb", "--maxmemory-policy", "allkeys-lru", "--requirepass", "${REDIS_PASSWORD:-maham_redis_2024}"]
     volumes:
       - redis_data:/data
     networks:
       - maham-network
     healthcheck:
-      test: ["CMD", "sh", "-c", "redis-cli -a \"$REDIS_PASSWORD\" ping | grep -q PONG"]
+      test: ["CMD", "sh", "-c", "redis-cli -a \"${REDIS_PASSWORD:-maham_redis_2024}\" ping | grep -q PONG"]
       interval: 10s
       timeout: 5s
       retries: 5

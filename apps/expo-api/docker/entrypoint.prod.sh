@@ -35,6 +35,38 @@ while ! mysqladmin ping -h"${DB_HOST:-expo-mysql}" -P"${DB_PORT:-3306}" --silent
 done
 echo ">> MySQL check completed!"
 
+# Check Redis connectivity (non-blocking)
+if [ "${CACHE_STORE:-database}" = "redis" ] || [ "${QUEUE_CONNECTION:-database}" = "redis" ] || [ "${SESSION_DRIVER:-file}" = "redis" ]; then
+    echo ">> Checking Redis at ${REDIS_HOST:-expo-redis}:${REDIS_PORT:-6379}..."
+    redis_retries=15
+    redis_count=0
+    redis_ready=false
+    while [ "$redis_ready" = "false" ]; do
+        if php -r "try { \$r = new Redis(); \$r->connect('${REDIS_HOST:-expo-redis}', ${REDIS_PORT:-6379}, 2); if('${REDIS_PASSWORD:-}') \$r->auth('${REDIS_PASSWORD:-}'); \$r->ping(); echo 'OK'; } catch(Exception \$e) { exit(1); }" 2>/dev/null; then
+            redis_ready=true
+            echo ">> Redis is ready!"
+        else
+            redis_count=$((redis_count + 1))
+            if [ $redis_count -ge $redis_retries ]; then
+                echo ">> WARNING: Redis not available after ${redis_retries} attempts"
+                echo ">> Falling back: CACHE_STORE=database, QUEUE_CONNECTION=database, SESSION_DRIVER=file"
+                export CACHE_STORE=database
+                export QUEUE_CONNECTION=database
+                export SESSION_DRIVER=file
+                # Update .env if it exists
+                if [ -f .env ]; then
+                    sed -i 's/^CACHE_STORE=.*/CACHE_STORE="database"/' .env 2>/dev/null || true
+                    sed -i 's/^QUEUE_CONNECTION=.*/QUEUE_CONNECTION="database"/' .env 2>/dev/null || true
+                    sed -i 's/^SESSION_DRIVER=.*/SESSION_DRIVER="file"/' .env 2>/dev/null || true
+                fi
+                break
+            fi
+            echo ">> Waiting for Redis... ($redis_count/$redis_retries)"
+            sleep 2
+        fi
+    done
+fi
+
 # Wait for Auth Service to be ready (non-blocking - don't prevent startup)
 if [ -n "$AUTH_SERVICE_URL" ]; then
     echo ">> Checking Auth Service at ${AUTH_SERVICE_URL}..."

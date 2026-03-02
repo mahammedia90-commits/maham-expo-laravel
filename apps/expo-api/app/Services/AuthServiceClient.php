@@ -30,19 +30,28 @@ class AuthServiceClient
     {
         $cacheKey = 'auth_verify_' . md5($token);
 
-        if ($this->cacheEnabled && Cache::has($cacheKey)) {
-            $cached = Cache::get($cacheKey);
+        // Try cache first (gracefully handle cache failures)
+        if ($this->cacheEnabled) {
+            try {
+                if (Cache::has($cacheKey)) {
+                    $cached = Cache::get($cacheKey);
 
-            // Validate cached data has valid permissions (not null-filled from old bug)
-            if ($cached && $this->hasValidPermissions($cached)) {
-                return $cached;
+                    // Validate cached data has valid permissions (not null-filled from old bug)
+                    if ($cached && $this->hasValidPermissions($cached)) {
+                        return $cached;
+                    }
+
+                    // Stale cache with invalid permissions — clear and re-fetch
+                    Cache::forget($cacheKey);
+                    Log::info('Cleared stale auth cache with invalid permissions', [
+                        'user_id' => $cached['user']['id'] ?? 'unknown',
+                    ]);
+                }
+            } catch (\Throwable $e) {
+                Log::warning('Cache unavailable for auth verification, proceeding without cache', [
+                    'error' => $e->getMessage(),
+                ]);
             }
-
-            // Stale cache with invalid permissions — clear and re-fetch
-            Cache::forget($cacheKey);
-            Log::info('Cleared stale auth cache with invalid permissions', [
-                'user_id' => $cached['user']['id'] ?? 'unknown',
-            ]);
         }
 
         $response = $this->request('POST', '/service/verify-token', [
@@ -56,7 +65,13 @@ class AuthServiceClient
         $userData = $response['data'];
 
         if ($this->cacheEnabled) {
-            Cache::put($cacheKey, $userData, $this->cacheTtl);
+            try {
+                Cache::put($cacheKey, $userData, $this->cacheTtl);
+            } catch (\Throwable $e) {
+                Log::warning('Cache write failed for auth verification', [
+                    'error' => $e->getMessage(),
+                ]);
+            }
         }
 
         return $userData;
@@ -96,8 +111,14 @@ class AuthServiceClient
     {
         $cacheKey = "auth_perm_{$userId}_{$permission}";
 
-        if ($this->cacheEnabled && Cache::has($cacheKey)) {
-            return Cache::get($cacheKey);
+        if ($this->cacheEnabled) {
+            try {
+                if (Cache::has($cacheKey)) {
+                    return Cache::get($cacheKey);
+                }
+            } catch (\Throwable $e) {
+                // Cache unavailable, proceed without it
+            }
         }
 
         $response = $this->request('POST', '/service/check-permission', [
@@ -108,7 +129,11 @@ class AuthServiceClient
         $hasPermission = $response['success'] && ($response['data']['has_permission'] ?? false);
 
         if ($this->cacheEnabled) {
-            Cache::put($cacheKey, $hasPermission, $this->cacheTtl);
+            try {
+                Cache::put($cacheKey, $hasPermission, $this->cacheTtl);
+            } catch (\Throwable $e) {
+                // Cache write failed, continue
+            }
         }
 
         return $hasPermission;
@@ -121,8 +146,14 @@ class AuthServiceClient
     {
         $cacheKey = "auth_user_{$userId}";
 
-        if ($this->cacheEnabled && Cache::has($cacheKey)) {
-            return Cache::get($cacheKey);
+        if ($this->cacheEnabled) {
+            try {
+                if (Cache::has($cacheKey)) {
+                    return Cache::get($cacheKey);
+                }
+            } catch (\Throwable $e) {
+                // Cache unavailable, proceed without it
+            }
         }
 
         $response = $this->request('POST', '/service/user-info', [
@@ -136,7 +167,11 @@ class AuthServiceClient
         $userData = $response['data'];
 
         if ($this->cacheEnabled) {
-            Cache::put($cacheKey, $userData, $this->cacheTtl);
+            try {
+                Cache::put($cacheKey, $userData, $this->cacheTtl);
+            } catch (\Throwable $e) {
+                // Cache write failed, continue
+            }
         }
 
         return $userData;
@@ -171,7 +206,11 @@ class AuthServiceClient
      */
     public function clearUserCache(string $userId): void
     {
-        Cache::forget("auth_user_{$userId}");
+        try {
+            Cache::forget("auth_user_{$userId}");
+        } catch (\Throwable $e) {
+            // Cache unavailable
+        }
     }
 
     /**
@@ -179,7 +218,11 @@ class AuthServiceClient
      */
     public function clearTokenCache(string $token): void
     {
-        Cache::forget('auth_verify_' . md5($token));
+        try {
+            Cache::forget('auth_verify_' . md5($token));
+        } catch (\Throwable $e) {
+            // Cache unavailable
+        }
     }
 
     /**
