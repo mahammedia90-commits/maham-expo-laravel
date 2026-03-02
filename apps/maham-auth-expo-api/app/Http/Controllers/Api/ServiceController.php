@@ -18,7 +18,7 @@ class ServiceController extends Controller
    
     public function index(): JsonResponse
     {
-        $services = Service::orderBy('name')->get();
+        $services = Service::with('roles.permissions')->orderBy('name')->get();
 
         return response()->json([
             'success' => true,
@@ -30,9 +30,17 @@ class ServiceController extends Controller
                     'description' => $service->description,
                     'status' => $service->status,
                     'is_active' => $service->is_active,
-                    'allowed_permissions' => $service->allowed_permissions,
                     'last_used_at' => $service->last_used_at?->toISOString(),
                     'created_at' => $service->created_at->toISOString(),
+                    'roles' => $service->roles->map(fn($role) => [
+                        'id' => $role->id,
+                        'name' => $role->name,
+                        'display_name' => $role->display_name,
+                    ]),
+                    'permissions' => $service->roles
+                        ->flatMap(fn($role) => $role->permissions->pluck('name'))
+                        ->unique()
+                        ->values(),
                 ];
             }),
         ]);
@@ -50,8 +58,6 @@ class ServiceController extends Controller
             'description' => 'nullable|string',
             'allowed_ips' => 'nullable|array',
             'allowed_ips.*' => 'string',
-            'allowed_permissions' => 'nullable|array',
-            'allowed_permissions.*' => 'string',
             'webhook_url' => 'nullable|url',
             'roles' => 'nullable|array',
             'roles.*' => 'string|exists:roles,name',
@@ -91,6 +97,8 @@ class ServiceController extends Controller
 
     public function show(Service $service): JsonResponse
     {
+        $service->load('roles.permissions');
+
         return response()->json([
             'success' => true,
             'data' => [
@@ -99,7 +107,6 @@ class ServiceController extends Controller
                 'display_name' => $service->display_name,
                 'description' => $service->description,
                 'allowed_ips' => $service->allowed_ips,
-                'allowed_permissions' => $service->allowed_permissions,
                 'webhook_url' => $service->webhook_url,
                 'status' => $service->status,
                 'last_used_at' => $service->last_used_at?->toISOString(),
@@ -109,6 +116,10 @@ class ServiceController extends Controller
                     'name' => $role->name,
                     'display_name' => $role->display_name,
                 ]),
+                'permissions' => $service->roles
+                    ->flatMap(fn($role) => $role->permissions->pluck('name'))
+                    ->unique()
+                    ->values(),
             ]
         ]);
     }
@@ -123,7 +134,6 @@ class ServiceController extends Controller
             'display_name' => 'sometimes|string|max:255',
             'description' => 'nullable|string',
             'allowed_ips' => 'nullable|array',
-            'allowed_permissions' => 'nullable|array',
             'webhook_url' => 'nullable|url',
             'status' => 'in:active,inactive,suspended',
             'roles' => 'nullable|array',

@@ -94,7 +94,7 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::middleware([SetLocale::class, 'throttle:60,1'])->group(function () {
+Route::middleware([SetLocale::class])->group(function () {
 
     // ==================== HEALTH CHECK ====================
     Route::get('/health', function () {
@@ -167,7 +167,7 @@ Route::middleware([SetLocale::class, 'throttle:60,1'])->group(function () {
         // ==================== TRACKING ROUTES ====================
         // These work for both authenticated & anonymous users.
         // If user is authenticated, user_id is recorded; otherwise null.
-        Route::prefix('track')->middleware('throttle:120,1')->group(function () {
+        Route::prefix('track')->group(function () {
             Route::post('/view', [TrackingController::class, 'view']);
             Route::post('/action', [TrackingController::class, 'action']);
         });

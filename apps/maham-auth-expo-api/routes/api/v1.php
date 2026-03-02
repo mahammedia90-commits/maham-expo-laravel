@@ -31,13 +31,13 @@ Route::prefix('v1')->group(function () {
 | Public Routes (No Authentication Required)
 |--------------------------------------------------------------------------
 */
-Route::prefix('auth')->middleware('throttle:10,1')->group(function () {
-    Route::post('/register', [AuthController::class, 'register'])->middleware('throttle:5,1');
-    Route::post('/login', [AuthController::class, 'login'])->middleware('throttle:5,1');
+Route::prefix('auth')->group(function () {
+    Route::post('/register', [AuthController::class, 'register']);
+    Route::post('/login', [AuthController::class, 'login'])->middleware('throttle:10,1');
 
-    // Password Reset (Public) - stricter rate limit
-    Route::post('/forgot-password', [AuthController::class, 'forgotPassword'])->middleware('throttle:3,1');
-    Route::post('/reset-password', [AuthController::class, 'resetPassword'])->middleware('throttle:5,1');
+    // Password Reset (Public)
+    Route::post('/forgot-password', [AuthController::class, 'forgotPassword']);
+    Route::post('/reset-password', [AuthController::class, 'resetPassword']);
 });
 
 /*
@@ -46,7 +46,7 @@ Route::prefix('auth')->middleware('throttle:10,1')->group(function () {
 | يتم التحقق عبر X-Service-Token header
 |--------------------------------------------------------------------------
 */
-Route::prefix('service')->middleware('throttle:100,1')->group(function () {
+Route::prefix('service')->group(function () {
     Route::post('/verify-token', [ServiceController::class, 'verifyUserToken']);
     Route::post('/check-permission', [ServiceController::class, 'checkUserPermission']);
     Route::post('/user-info', [ServiceController::class, 'getUserInfo']);

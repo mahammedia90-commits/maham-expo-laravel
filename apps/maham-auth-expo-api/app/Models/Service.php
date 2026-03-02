@@ -217,25 +217,22 @@ class Service extends Model
 
     public function canCheckPermission(string $permission): bool
     {
-        if (empty($this->allowed_permissions)) {
+        // إذا الخدمة ما عندها أدوار محددة، الكل مسموح
+        if (!$this->hasRoles()) {
             return true;
         }
 
-        foreach ($this->allowed_permissions as $allowed) {
-            // دعم wildcards مثل users.*
-            if ($allowed === '*' || $permission === $allowed) {
-                return true;
-            }
-            
-            if (Str::endsWith($allowed, '.*')) {
-                $prefix = Str::beforeLast($allowed, '.*');
-                if (Str::startsWith($permission, $prefix . '.')) {
-                    return true;
-                }
-            }
+        // الصلاحيات تؤخذ من الأدوار المعيّنة للخدمة
+        $allowedPermissions = $this->roles
+            ->flatMap(fn($role) => $role->permissions->pluck('name'))
+            ->unique()
+            ->toArray();
+
+        if (empty($allowedPermissions)) {
+            return true;
         }
 
-        return false;
+        return in_array($permission, $allowedPermissions);
     }
 
     protected function ipMatches(string $ip, string $pattern): bool

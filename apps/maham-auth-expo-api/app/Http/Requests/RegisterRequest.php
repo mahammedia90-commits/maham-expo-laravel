@@ -26,7 +26,7 @@ class RegisterRequest extends FormRequest
             ],
             'phone' => ['required', 'string', 'max:20', 'unique:users,phone'],
             'roles' => 'array',
-            'roles.*' => 'exists:roles,name',
+            'roles.*' => ['exists:roles,name', 'not_in:super-admin,admin,supervisor'],
         ];
     }
 
@@ -44,6 +44,7 @@ class RegisterRequest extends FormRequest
             'phone.max' => 'رقم الهاتف طويل جداً',
             'roles.array' => 'الأدوار يجب أن تكون مصفوفة',
             'roles.*.exists' => 'الدور المحدد غير موجود',
+            'roles.*.not_in' => 'لا يمكن تعيين هذا الدور عند التسجيل',
             
         ];
     }

@@ -43,9 +43,9 @@ return [
     |--------------------------------------------------------------------------
     */
     'rate_limit' => [
-        'login_attempts' => 5,
+        'login_attempts' => 10,
         'login_decay_minutes' => 1,
-        'api_per_minute' => env('RATE_LIMIT_PER_MINUTE', 60),
+        'api_per_minute' => null, // unlimited
     ],
 
     /*
