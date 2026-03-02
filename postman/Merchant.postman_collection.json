@@ -1,1152 +1,140 @@
 {
-	"info": {
-		"name": "Maham Expo - Merchant",
-		"description": "Merchant role endpoints for Maham Expo API.\nLogin as merchant first, then use the token for authenticated requests.",
-		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
-	},
-	"auth": {
-		"type": "bearer",
-		"bearer": [
-			{
-				"key": "token",
-				"value": "{{merchant_token}}",
-				"type": "string"
-			}
-		]
-	},
-	"event": [
-		{
-			"listen": "prerequest",
-			"script": {
-				"type": "text/javascript",
-				"exec": [
-					"pm.request.addHeader({ key: 'Accept', value: 'application/json' });",
-					"pm.request.addHeader({ key: 'Accept-Language', value: pm.environment.get('language') || 'ar' });"
-				]
-			}
-		}
-	],
-	"item": [
-		{
-			"name": "🔐 Auth",
-			"item": [
-				{
-					"name": "Login as Merchant",
-					"event": [
-						{
-							"listen": "test",
-							"script": {
-								"type": "text/javascript",
-								"exec": [
-									"if(pm.response.code===200){var d=pm.response.json();if(d.data&&d.data.token){pm.environment.set('merchant_token',d.data.token);pm.environment.set('auth_token',d.data.token);}}"
-								]
-							}
-						}
-					],
-					"request": {
-						"auth": {
-							"type": "noauth"
-						},
-						"method": "POST",
-						"header": [
-							{
-								"key": "Content-Type",
-								"value": "application/json"
-							}
-						],
-						"body": {
-							"mode": "raw",
-							"raw": "{\n    \"identifier\": \"merchant@example.com\",\n    \"password\": \"password\",\n    \"service_token\": \"{{service_token}}\",\n    \"service_name\": \"maham-expo\"\n}"
-						},
-						"url": {
-							"raw": "{{auth_url}}/v1/auth/login",
-							"host": [
-								"{{auth_url}}"
-							],
-							"path": [
-								"v1",
-								"auth",
-								"login"
-							]
-						}
-					}
-				}
-			]
-		},
-		{
-			"name": "📊 Dashboard & Stats",
-			"item": [
-				{
-					"name": "Dashboard",
-					"request": {
-						"method": "GET",
-						"url": {
-							"raw": "{{expo_url}}/v1/my/dashboard",
-							"host": [
-								"{{expo_url}}"
-							],
-							"path": [
-								"v1",
-								"my",
-								"dashboard"
-							]
-						}
-					}
-				},
-				{
-					"name": "Statistics",
-					"request": {
-						"method": "GET",
-						"url": {
-							"raw": "{{expo_url}}/v1/my/dashboard",
-							"host": [
-								"{{expo_url}}"
-							],
-							"path": [
-								"v1",
-								"my",
-								"dashboard"
-							]
-						}
-					}
-				}
-			]
-		},
-		{
-			"name": "📅 Events",
-			"item": [
-				{
-					"name": "List Events",
-					"request": {
-						"method": "GET",
-						"url": {
-							"raw": "{{expo_url}}/v1/events",
-							"host": [
-								"{{expo_url}}"
-							],
-							"path": [
-								"v1",
-								"events"
-							]
-						}
-					}
-				},
-				{
-					"name": "Show Event",
-					"request": {
-						"method": "GET",
-						"url": {
-							"raw": "{{expo_url}}/v1/events/{{event_id}}",
-							"host": [
-								"{{expo_url}}"
-							],
-							"path": [
-								"v1",
-								"events",
-								"{{event_id}}"
-							]
-						}
-					}
-				},
-				{
-					"name": "Event Sections",
-					"request": {
-						"method": "GET",
-						"url": {
-							"raw": "{{expo_url}}/v1/events/{{event_id}}/sections",
-							"host": [
-								"{{expo_url}}"
-							],
-							"path": [
-								"v1",
-								"events",
-								"{{event_id}}",
-								"sections"
-							]
-						}
-					}
-				},
-				{
-					"name": "Event Spaces",
-					"request": {
-						"method": "GET",
-						"url": {
-							"raw": "{{expo_url}}/v1/events/{{event_id}}/spaces",
-							"host": [
-								"{{expo_url}}"
-							],
-							"path": [
-								"v1",
-								"events",
-								"{{event_id}}",
-								"spaces"
-							]
-						}
-					}
-				}
-			]
-		},
-		{
-			"name": "📍 Spaces",
-			"item": [
-				{
-					"name": "List Spaces",
-					"request": {
-						"method": "GET",
-						"url": {
-							"raw": "{{expo_url}}/v1/spaces",
-							"host": [
-								"{{expo_url}}"
-							],
-							"path": [
-								"v1",
-								"spaces"
-							]
-						}
-					}
-				},
-				{
-					"name": "Show Space",
-					"request": {
-						"method": "GET",
-						"url": {
-							"raw": "{{expo_url}}/v1/spaces/{{space_id}}",
-							"host": [
-								"{{expo_url}}"
-							],
-							"path": [
-								"v1",
-								"spaces",
-								"{{space_id}}"
-							]
-						}
-					}
-				}
-			]
-		},
-		{
-			"name": "🔧 Services",
-			"item": [
-				{
-					"name": "List Services",
-					"request": {
-						"method": "GET",
-						"url": {
-							"raw": "{{expo_url}}/v1/services",
-							"host": [
-								"{{expo_url}}"
-							],
-							"path": [
-								"v1",
-								"services"
-							]
-						}
-					}
-				},
-				{
-					"name": "Show Service",
-					"request": {
-						"method": "GET",
-						"url": {
-							"raw": "{{expo_url}}/v1/services/{{service_id}}",
-							"host": [
-								"{{expo_url}}"
-							],
-							"path": [
-								"v1",
-								"services",
-								"{{service_id}}"
-							]
-						}
-					}
-				}
-			]
-		},
-		{
-			"name": "👁️ Visit Requests",
-			"item": [
-				{
-					"name": "List Visit Requests",
-					"request": {
-						"method": "GET",
-						"url": {
-							"raw": "{{expo_url}}/v1/visit-requests",
-							"host": [
-								"{{expo_url}}"
-							],
-							"path": [
-								"v1",
-								"visit-requests"
-							]
-						}
-					}
-				},
-				{
-					"name": "Create Visit Request",
-					"request": {
-						"method": "POST",
-						"header": [
-							{
-								"key": "Content-Type",
-								"value": "application/json"
-							}
-						],
-						"body": {
-							"mode": "raw",
-							"raw": "{\n    \"event_id\": \"{{event_id}}\",\n    \"visit_date\": \"2025-03-01\",\n    \"visit_time\": \"10:00\",\n    \"notes\": \"Interested in booth spaces\",\n    \"contact_name\": \"Ahmed Mohammed\",\n    \"contact_phone\": \"+966500000001\",\n    \"contact_email\": \"ahmed@merchant.com\"\n}"
-						},
-						"url": {
-							"raw": "{{expo_url}}/v1/visit-requests",
-							"host": [
-								"{{expo_url}}"
-							],
-							"path": [
-								"v1",
-								"visit-requests"
-							]
-						}
-					}
-				},
-				{
-					"name": "Show Visit Request",
-					"request": {
-						"method": "GET",
-						"url": {
-							"raw": "{{expo_url}}/v1/visit-requests/{{visit_request_id}}",
-							"host": [
-								"{{expo_url}}"
-							],
-							"path": [
-								"v1",
-								"visit-requests",
-								"{{visit_request_id}}"
-							]
-						}
-					}
-				},
-				{
-					"name": "Update Visit Request",
-					"request": {
-						"method": "PUT",
-						"header": [
-							{
-								"key": "Content-Type",
-								"value": "application/json"
-							}
-						],
-						"body": {
-							"mode": "raw",
-							"raw": "{\n    \"visit_date\": \"2025-03-15\",\n    \"visit_time\": \"14:00\",\n    \"notes\": \"Updated: need larger space\"\n}"
-						},
-						"url": {
-							"raw": "{{expo_url}}/v1/visit-requests/{{visit_request_id}}",
-							"host": [
-								"{{expo_url}}"
-							],
-							"path": [
-								"v1",
-								"visit-requests",
-								"{{visit_request_id}}"
-							]
-						}
-					}
-				},
-				{
-					"name": "Delete Visit Request",
-					"request": {
-						"method": "DELETE",
-						"url": {
-							"raw": "{{expo_url}}/v1/visit-requests/{{visit_request_id}}",
-							"host": [
-								"{{expo_url}}"
-							],
-							"path": [
-								"v1",
-								"visit-requests",
-								"{{visit_request_id}}"
-							]
-						}
-					}
-				}
-			]
-		},
-		{
-			"name": "🏠 Rental Requests",
-			"item": [
-				{
-					"name": "List Rental Requests",
-					"request": {
-						"method": "GET",
-						"url": {
-							"raw": "{{expo_url}}/v1/rental-requests",
-							"host": [
-								"{{expo_url}}"
-							],
-							"path": [
-								"v1",
-								"rental-requests"
-							]
-						}
-					}
-				},
-				{
-					"name": "Create Rental Request",
-					"request": {
-						"method": "POST",
-						"header": [
-							{
-								"key": "Content-Type",
-								"value": "application/json"
-							}
-						],
-						"body": {
-							"mode": "raw",
-							"raw": "{\n    \"space_id\": \"{{space_id}}\",\n    \"start_date\": \"2025-03-01\",\n    \"end_date\": \"2025-03-10\",\n    \"notes\": \"Need space for product display booth\"\n}"
-						},
-						"url": {
-							"raw": "{{expo_url}}/v1/rental-requests",
-							"host": [
-								"{{expo_url}}"
-							],
-							"path": [
-								"v1",
-								"rental-requests"
-							]
-						}
-					}
-				},
-				{
-					"name": "Show Rental Request",
-					"request": {
-						"method": "GET",
-						"url": {
-							"raw": "{{expo_url}}/v1/rental-requests/{{rental_request_id}}",
-							"host": [
-								"{{expo_url}}"
-							],
-							"path": [
-								"v1",
-								"rental-requests",
-								"{{rental_request_id}}"
-							]
-						}
-					}
-				},
-				{
-					"name": "Update Rental Request",
-					"request": {
-						"method": "PUT",
-						"header": [
-							{
-								"key": "Content-Type",
-								"value": "application/json"
-							}
-						],
-						"body": {
-							"mode": "raw",
-							"raw": "{\n    \"start_date\": \"2025-03-05\",\n    \"end_date\": \"2025-03-15\",\n    \"notes\": \"Extended rental period\"\n}"
-						},
-						"url": {
-							"raw": "{{expo_url}}/v1/rental-requests/{{rental_request_id}}",
-							"host": [
-								"{{expo_url}}"
-							],
-							"path": [
-								"v1",
-								"rental-requests",
-								"{{rental_request_id}}"
-							]
-						}
-					}
-				},
-				{
-					"name": "Delete Rental Request",
-					"request": {
-						"method": "DELETE",
-						"url": {
-							"raw": "{{expo_url}}/v1/rental-requests/{{rental_request_id}}",
-							"host": [
-								"{{expo_url}}"
-							],
-							"path": [
-								"v1",
-								"rental-requests",
-								"{{rental_request_id}}"
-							]
-						}
-					}
-				}
-			]
-		},
-		{
-			"name": "📋 Rental Contracts",
-			"item": [
-				{
-					"name": "List Contracts",
-					"request": {
-						"method": "GET",
-						"url": {
-							"raw": "{{expo_url}}/v1/my/rental-contracts",
-							"host": [
-								"{{expo_url}}"
-							],
-							"path": [
-								"v1",
-								"my",
-								"rental-contracts"
-							]
-						}
-					}
-				},
-				{
-					"name": "Show Contract",
-					"request": {
-						"method": "GET",
-						"url": {
-							"raw": "{{expo_url}}/v1/my/rental-contracts/{{rental_contract_id}}",
-							"host": [
-								"{{expo_url}}"
-							],
-							"path": [
-								"v1",
-								"my",
-								"rental-contracts",
-								"{{rental_contract_id}}"
-							]
-						}
-					}
-				},
-				{
-					"name": "Sign Contract",
-					"request": {
-						"method": "PUT",
-						"url": {
-							"raw": "{{expo_url}}/v1/my/rental-contracts/{{rental_contract_id}}/sign",
-							"host": [
-								"{{expo_url}}"
-							],
-							"path": [
-								"v1",
-								"my",
-								"rental-contracts",
-								"{{rental_contract_id}}",
-								"sign"
-							]
-						}
-					}
-				}
-			]
-		},
-		{
-			"name": "👤 Profile",
-			"item": [
-				{
-					"name": "Get My Profile",
-					"request": {
-						"method": "GET",
-						"url": {
-							"raw": "{{expo_url}}/v1/profile",
-							"host": [
-								"{{expo_url}}"
-							],
-							"path": [
-								"v1",
-								"profile"
-							]
-						}
-					}
-				},
-				{
-					"name": "Create Profile",
-					"request": {
-						"method": "POST",
-						"header": [
-							{
-								"key": "Content-Type",
-								"value": "application/json"
-							}
-						],
-						"body": {
-							"mode": "raw",
-							"raw": "{\n    \"company_name\": \"Merchant Trading Co.\",\n    \"company_name_ar\": \"شركة التاجر للتجارة\",\n    \"commercial_registration_number\": \"1234567890\",\n    \"national_id_number\": \"1234567890\",\n    \"contact_phone\": \"+966500000001\",\n    \"contact_email\": \"info@merchant.com\",\n    \"website\": \"https://merchant.com\",\n    \"business_type\": \"company\"\n}"
-						},
-						"url": {
-							"raw": "{{expo_url}}/v1/profile",
-							"host": [
-								"{{expo_url}}"
-							],
-							"path": [
-								"v1",
-								"profile"
-							]
-						}
-					}
-				},
-				{
-					"name": "Update Profile",
-					"request": {
-						"method": "PUT",
-						"header": [
-							{
-								"key": "Content-Type",
-								"value": "application/json"
-							}
-						],
-						"body": {
-							"mode": "raw",
-							"raw": "{\n    \"company_name\": \"Updated Merchant Co.\",\n    \"contact_phone\": \"+966500000099\"\n}"
-						},
-						"url": {
-							"raw": "{{expo_url}}/v1/profile",
-							"host": [
-								"{{expo_url}}"
-							],
-							"path": [
-								"v1",
-								"profile"
-							]
-						}
-					}
-				}
-			]
-		},
-		{
-			"name": "❤️ Favorites",
-			"item": [
-				{
-					"name": "List Favorites",
-					"request": {
-						"method": "GET",
-						"url": {
-							"raw": "{{expo_url}}/v1/favorites",
-							"host": [
-								"{{expo_url}}"
-							],
-							"path": [
-								"v1",
-								"favorites"
-							]
-						}
-					}
-				},
-				{
-					"name": "Toggle Favorite",
-					"request": {
-						"method": "POST",
-						"header": [
-							{
-								"key": "Content-Type",
-								"value": "application/json"
-							}
-						],
-						"body": {
-							"mode": "raw",
-							"raw": "{\n    \"type\": \"event\",\n    \"id\": \"{{event_id}}\"\n}"
-						},
-						"url": {
-							"raw": "{{expo_url}}/v1/favorites",
-							"host": [
-								"{{expo_url}}"
-							],
-							"path": [
-								"v1",
-								"favorites"
-							]
-						}
-					}
-				},
-				{
-					"name": "Remove Favorite",
-					"request": {
-						"method": "DELETE",
-						"url": {
-							"raw": "{{expo_url}}/v1/favorites/{{favorite_id}}",
-							"host": [
-								"{{expo_url}}"
-							],
-							"path": [
-								"v1",
-								"favorites",
-								"{{favorite_id}}"
-							]
-						}
-					}
-				}
-			]
-		},
-		{
-			"name": "⭐ Ratings",
-			"item": [
-				{
-					"name": "Create Rating",
-					"request": {
-						"method": "POST",
-						"header": [
-							{
-								"key": "Content-Type",
-								"value": "application/json"
-							}
-						],
-						"body": {
-							"mode": "raw",
-							"raw": "{\n    \"rateable_type\": \"event\",\n    \"rateable_id\": \"{{event_id}}\",\n    \"overall_rating\": 5,\n    \"cleanliness_rating\": 4,\n    \"location_rating\": 5,\n    \"facilities_rating\": 4,\n    \"value_rating\": 5,\n    \"communication_rating\": 4,\n    \"comment\": \"Great expo!\"\n}"
-						},
-						"url": {
-							"raw": "{{expo_url}}/v1/ratings",
-							"host": [
-								"{{expo_url}}"
-							],
-							"path": [
-								"v1",
-								"ratings"
-							]
-						}
-					}
-				},
-				{
-					"name": "Update Rating",
-					"request": {
-						"method": "PUT",
-						"header": [
-							{
-								"key": "Content-Type",
-								"value": "application/json"
-							}
-						],
-						"body": {
-							"mode": "raw",
-							"raw": "{\n    \"overall_rating\": 4,\n    \"comment\": \"Updated review\"\n}"
-						},
-						"url": {
-							"raw": "{{expo_url}}/v1/ratings/{{rating_id}}",
-							"host": [
-								"{{expo_url}}"
-							],
-							"path": [
-								"v1",
-								"ratings",
-								"{{rating_id}}"
-							]
-						}
-					}
-				},
-				{
-					"name": "Delete Rating",
-					"request": {
-						"method": "DELETE",
-						"url": {
-							"raw": "{{expo_url}}/v1/ratings/{{rating_id}}",
-							"host": [
-								"{{expo_url}}"
-							],
-							"path": [
-								"v1",
-								"ratings",
-								"{{rating_id}}"
-							]
-						}
-					}
-				}
-			]
-		},
-		{
-			"name": "🔔 Notifications",
-			"item": [
-				{
-					"name": "List Notifications",
-					"request": {
-						"method": "GET",
-						"url": {
-							"raw": "{{expo_url}}/v1/notifications",
-							"host": [
-								"{{expo_url}}"
-							],
-							"path": [
-								"v1",
-								"notifications"
-							]
-						}
-					}
-				},
-				{
-					"name": "Unread Count",
-					"request": {
-						"method": "GET",
-						"url": {
-							"raw": "{{expo_url}}/v1/notifications/unread-count",
-							"host": [
-								"{{expo_url}}"
-							],
-							"path": [
-								"v1",
-								"notifications",
-								"unread-count"
-							]
-						}
-					}
-				},
-				{
-					"name": "Mark as Read",
-					"request": {
-						"method": "PUT",
-						"url": {
-							"raw": "{{expo_url}}/v1/notifications/{{notification_id}}/read",
-							"host": [
-								"{{expo_url}}"
-							],
-							"path": [
-								"v1",
-								"notifications",
-								"{{notification_id}}",
-								"read"
-							]
-						}
-					}
-				},
-				{
-					"name": "Mark All Read",
-					"request": {
-						"method": "PUT",
-						"url": {
-							"raw": "{{expo_url}}/v1/notifications/read-all",
-							"host": [
-								"{{expo_url}}"
-							],
-							"path": [
-								"v1",
-								"notifications",
-								"read-all"
-							]
-						}
-					}
-				},
-				{
-					"name": "Get Preferences",
-					"request": {
-						"method": "GET",
-						"url": {
-							"raw": "{{expo_url}}/v1/notifications/preferences",
-							"host": [
-								"{{expo_url}}"
-							],
-							"path": [
-								"v1",
-								"notifications",
-								"preferences"
-							]
-						}
-					}
-				},
-				{
-					"name": "Update Preferences",
-					"request": {
-						"method": "PUT",
-						"header": [
-							{
-								"key": "Content-Type",
-								"value": "application/json"
-							}
-						],
-						"body": {
-							"mode": "raw",
-							"raw": "{\n    \"email_enabled\": true,\n    \"push_enabled\": true,\n    \"in_app_enabled\": true,\n    \"notify_request_updates\": true,\n    \"notify_payment_reminders\": true,\n    \"notify_event_updates\": true,\n    \"notify_contract_milestones\": true,\n    \"notify_promotions\": false,\n    \"notify_support_updates\": true,\n    \"notify_ratings\": true\n}"
-						},
-						"url": {
-							"raw": "{{expo_url}}/v1/notifications/preferences",
-							"host": [
-								"{{expo_url}}"
-							],
-							"path": [
-								"v1",
-								"notifications",
-								"preferences"
-							]
-						}
-					}
-				}
-			]
-		},
-		{
-			"name": "🎫 Support Tickets",
-			"item": [
-				{
-					"name": "List Tickets",
-					"request": {
-						"method": "GET",
-						"url": {
-							"raw": "{{expo_url}}/v1/support-tickets",
-							"host": [
-								"{{expo_url}}"
-							],
-							"path": [
-								"v1",
-								"support-tickets"
-							]
-						}
-					}
-				},
-				{
-					"name": "Create Ticket",
-					"request": {
-						"method": "POST",
-						"header": [
-							{
-								"key": "Content-Type",
-								"value": "application/json"
-							}
-						],
-						"body": {
-							"mode": "raw",
-							"raw": "{\n    \"subject\": \"Rental Payment Issue\",\n    \"subject_ar\": \"مشكلة في دفع الإيجار\",\n    \"description\": \"Cannot complete payment for space rental\",\n    \"description_ar\": \"لا أستطيع إتمام دفع إيجار المساحة\",\n    \"category\": \"payment\",\n    \"priority\": \"high\"\n}"
-						},
-						"url": {
-							"raw": "{{expo_url}}/v1/support-tickets",
-							"host": [
-								"{{expo_url}}"
-							],
-							"path": [
-								"v1",
-								"support-tickets"
-							]
-						}
-					}
-				},
-				{
-					"name": "Show Ticket",
-					"request": {
-						"method": "GET",
-						"url": {
-							"raw": "{{expo_url}}/v1/support-tickets/{{support_ticket_id}}",
-							"host": [
-								"{{expo_url}}"
-							],
-							"path": [
-								"v1",
-								"support-tickets",
-								"{{support_ticket_id}}"
-							]
-						}
-					}
-				},
-				{
-					"name": "Reply to Ticket",
-					"request": {
-						"method": "POST",
-						"header": [
-							{
-								"key": "Content-Type",
-								"value": "application/json"
-							}
-						],
-						"body": {
-							"mode": "raw",
-							"raw": "{\n    \"message\": \"Thank you for the update\",\n    \"message_ar\": \"شكراً على التحديث\"\n}"
-						},
-						"url": {
-							"raw": "{{expo_url}}/v1/support-tickets/{{support_ticket_id}}/reply",
-							"host": [
-								"{{expo_url}}"
-							],
-							"path": [
-								"v1",
-								"support-tickets",
-								"{{support_ticket_id}}",
-								"reply"
-							]
-						}
-					}
-				},
-				{
-					"name": "Close Ticket",
-					"request": {
-						"method": "PUT",
-						"url": {
-							"raw": "{{expo_url}}/v1/support-tickets/{{support_ticket_id}}/close",
-							"host": [
-								"{{expo_url}}"
-							],
-							"path": [
-								"v1",
-								"support-tickets",
-								"{{support_ticket_id}}",
-								"close"
-							]
-						}
-					}
-				},
-				{
-					"name": "Reopen Ticket",
-					"request": {
-						"method": "PUT",
-						"url": {
-							"raw": "{{expo_url}}/v1/support-tickets/{{support_ticket_id}}/reopen",
-							"host": [
-								"{{expo_url}}"
-							],
-							"path": [
-								"v1",
-								"support-tickets",
-								"{{support_ticket_id}}",
-								"reopen"
-							]
-						}
-					}
-				}
-			]
-		},
-		{
-			"name": "🧾 Invoices",
-			"item": [
-				{
-					"name": "List My Invoices",
-					"request": {
-						"method": "GET",
-						"url": {
-							"raw": "{{expo_url}}/v1/invoices",
-							"host": [
-								"{{expo_url}}"
-							],
-							"path": [
-								"v1",
-								"invoices"
-							]
-						}
-					}
-				},
-				{
-					"name": "Show Invoice",
-					"request": {
-						"method": "GET",
-						"url": {
-							"raw": "{{expo_url}}/v1/invoices/{{invoice_id}}",
-							"host": [
-								"{{expo_url}}"
-							],
-							"path": [
-								"v1",
-								"invoices",
-								"{{invoice_id}}"
-							]
-						}
-					}
-				}
-			]
-		},
-		{
-			"name": "My Activity",
-			"description": "User's own activity tracking history and summary.",
-			"item": [
-				{
-					"name": "My Activity Log",
-					"request": {
-						"method": "GET",
-						"header": [
-							{
-								"key": "Accept",
-								"value": "application/json"
-							},
-							{
-								"key": "Accept-Language",
-								"value": "{{language}}"
-							},
-							{
-								"key": "X-Platform",
-								"value": "web"
-							},
-							{
-								"key": "Authorization",
-								"value": "Bearer {{merchant_token}}"
-							}
-						],
-						"url": {
-							"raw": "{{expo_url}}/v1/my/activity?per_page=20",
-							"host": [
-								"{{expo_url}}"
-							],
-							"path": [
-								"v1",
-								"my",
-								"activity"
-							],
-							"query": [
-								{
-									"key": "per_page",
-									"value": "20"
-								},
-								{
-									"key": "action",
-									"value": "view",
-									"disabled": true
-								},
-								{
-									"key": "platform",
-									"value": "web",
-									"disabled": true
-								},
-								{
-									"key": "resource_type",
-									"value": "event",
-									"disabled": true
-								},
-								{
-									"key": "from",
-									"value": "2024-01-01",
-									"disabled": true
-								},
-								{
-									"key": "to",
-									"value": "2024-12-31",
-									"disabled": true
-								}
-							]
-						},
-						"description": "Get authenticated user's activity history with optional filters."
-					}
-				},
-				{
-					"name": "My Activity Summary",
-					"request": {
-						"method": "GET",
-						"header": [
-							{
-								"key": "Accept",
-								"value": "application/json"
-							},
-							{
-								"key": "Accept-Language",
-								"value": "{{language}}"
-							},
-							{
-								"key": "X-Platform",
-								"value": "web"
-							},
-							{
-								"key": "Authorization",
-								"value": "Bearer {{merchant_token}}"
-							}
-						],
-						"url": {
-							"raw": "{{expo_url}}/v1/my/activity/summary?period=30d",
-							"host": [
-								"{{expo_url}}"
-							],
-							"path": [
-								"v1",
-								"my",
-								"activity",
-								"summary"
-							],
-							"query": [
-								{
-									"key": "period",
-									"value": "30d"
-								}
-							]
-						},
-						"description": "Get activity summary with stats breakdown (actions, platforms, top viewed, recent searches)."
-					}
-				}
-			]
-		}
-	]
+  "info": {
+    "_postman_id": "merchant-collection-001",
+    "name": "Maham Expo - Merchant",
+    "description": "Merchant collection — booth renter/visitor.\n\nIncludes:\n- /v1/ — Authenticated routes: visit requests, rental requests (requires verified profile), ratings, support tickets, invoices\n- /v1/my/ — Own activity & dashboard\n\n**Headers (auto-added via pre-request):**\n- Accept: application/json\n- Accept-Language: {{language}}\n- X-Platform: {{platform}}",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "auth": {
+    "type": "bearer",
+    "bearer": [{ "key": "token", "value": "{{merchant_token}}", "type": "string" }]
+  },
+  "event": [
+    {
+      "listen": "prerequest",
+      "script": {
+        "type": "text/javascript",
+        "exec": [
+          "pm.request.headers.add({ key: 'Accept', value: 'application/json' });",
+          "pm.request.headers.add({ key: 'Accept-Language', value: pm.environment.get('language') || 'ar' });",
+          "pm.request.headers.add({ key: 'X-Platform', value: pm.environment.get('platform') || 'web' });"
+        ]
+      }
+    }
+  ],
+  "variable": [],
+  "item": [
+    {
+      "name": "🔐 Auth",
+      "item": [
+        {
+          "name": "Login as Merchant",
+          "event": [{ "listen": "test", "script": { "type": "text/javascript", "exec": ["var jsonData = pm.response.json();", "if (jsonData.data && jsonData.data.access_token) {", "    pm.environment.set('merchant_token', jsonData.data.access_token);", "    pm.environment.set('auth_token', jsonData.data.access_token);", "}", "if (jsonData.data && jsonData.data.user) {", "    pm.environment.set('user_id', jsonData.data.user.id);", "}"] } }],
+          "request": {
+            "auth": { "type": "noauth" },
+            "method": "POST",
+            "header": [],
+            "body": { "mode": "raw", "raw": "{\n    \"identifier\": \"merchant@example.com\",\n    \"password\": \"password\",\n    \"service_token\": \"{{service_token}}\",\n    \"service_name\": \"maham-expo\"\n}", "options": { "raw": { "language": "json" } } },
+            "url": { "raw": "{{auth_url}}/v1/auth/login", "host": ["{{auth_url}}"], "path": ["v1", "auth", "login"] },
+            "description": "Login as Merchant. Saves `merchant_token` and `auth_token`."
+          }
+        }
+      ]
+    },
+    {
+      "name": "📊 My Dashboard",
+      "item": [
+        { "name": "Dashboard", "request": { "method": "GET", "header": [], "url": { "raw": "{{expo_url}}/v1/my/dashboard", "host": ["{{expo_url}}"], "path": ["v1", "my", "dashboard"] } } }
+      ]
+    },
+    {
+      "name": "👤 Profile",
+      "item": [
+        { "name": "Get Profile", "request": { "method": "GET", "header": [], "url": { "raw": "{{expo_url}}/v1/profile", "host": ["{{expo_url}}"], "path": ["v1", "profile"] } } },
+        { "name": "Create Profile", "request": { "method": "POST", "header": [], "body": { "mode": "raw", "raw": "{\n    \"company_name\": \"Merchant Co\",\n    \"company_name_ar\": \"شركة التاجر\",\n    \"commercial_register\": \"9876543210\",\n    \"phone\": \"+966500000001\"\n}", "options": { "raw": { "language": "json" } } }, "url": { "raw": "{{expo_url}}/v1/profile", "host": ["{{expo_url}}"], "path": ["v1", "profile"] } } },
+        { "name": "Update Profile", "request": { "method": "PUT", "header": [], "body": { "mode": "raw", "raw": "{\n    \"company_name\": \"Updated Merchant\"\n}", "options": { "raw": { "language": "json" } } }, "url": { "raw": "{{expo_url}}/v1/profile", "host": ["{{expo_url}}"], "path": ["v1", "profile"] } } }
+      ]
+    },
+    {
+      "name": "👁️ Visit Requests",
+      "description": "Own visit requests.\n\n**Permission:** visit-requests.view, visit-requests.create, visit-requests.update, visit-requests.delete",
+      "item": [
+        { "name": "List My Visit Requests", "request": { "method": "GET", "header": [], "url": { "raw": "{{expo_url}}/v1/visit-requests", "host": ["{{expo_url}}"], "path": ["v1", "visit-requests"], "query": [{ "key": "status", "value": "", "disabled": true }, { "key": "event_id", "value": "", "disabled": true }, { "key": "per_page", "value": "15", "disabled": true }, { "key": "page", "value": "1", "disabled": true }] } } },
+        { "name": "Create Visit Request", "request": { "method": "POST", "header": [], "body": { "mode": "raw", "raw": "{\n    \"event_id\": \"{{event_id}}\",\n    \"visit_date\": \"2025-06-01\",\n    \"visitors_count\": 3,\n    \"purpose\": \"Business meeting\",\n    \"notes\": \"Looking for booth spaces\"\n}", "options": { "raw": { "language": "json" } } }, "url": { "raw": "{{expo_url}}/v1/visit-requests", "host": ["{{expo_url}}"], "path": ["v1", "visit-requests"] }, "description": "**Required:** event_id, visit_date, visitors_count\n**Optional:** purpose, notes" } },
+        { "name": "Show Visit Request", "request": { "method": "GET", "header": [], "url": { "raw": "{{expo_url}}/v1/visit-requests/{{visit_request_id}}", "host": ["{{expo_url}}"], "path": ["v1", "visit-requests", "{{visit_request_id}}"] } } },
+        { "name": "Update Visit Request", "request": { "method": "PUT", "header": [], "body": { "mode": "raw", "raw": "{\n    \"visit_date\": \"2025-06-02\",\n    \"visitors_count\": 5\n}", "options": { "raw": { "language": "json" } } }, "url": { "raw": "{{expo_url}}/v1/visit-requests/{{visit_request_id}}", "host": ["{{expo_url}}"], "path": ["v1", "visit-requests", "{{visit_request_id}}"] } } },
+        { "name": "Delete Visit Request", "request": { "method": "DELETE", "header": [], "url": { "raw": "{{expo_url}}/v1/visit-requests/{{visit_request_id}}", "host": ["{{expo_url}}"], "path": ["v1", "visit-requests", "{{visit_request_id}}"] } } }
+      ]
+    },
+    {
+      "name": "🏠 Rental Requests",
+      "description": "Own rental requests. Requires verified business profile (CheckVerifiedProfile middleware).\n\n**Permission:** rental-requests.view, rental-requests.create, rental-requests.update, rental-requests.delete",
+      "item": [
+        { "name": "List My Rental Requests", "request": { "method": "GET", "header": [], "url": { "raw": "{{expo_url}}/v1/rental-requests", "host": ["{{expo_url}}"], "path": ["v1", "rental-requests"], "query": [{ "key": "status", "value": "", "disabled": true }, { "key": "event_id", "value": "", "disabled": true }, { "key": "per_page", "value": "15", "disabled": true }, { "key": "page", "value": "1", "disabled": true }] } } },
+        { "name": "Create Rental Request", "request": { "method": "POST", "header": [], "body": { "mode": "raw", "raw": "{\n    \"space_id\": \"{{space_id}}\",\n    \"start_date\": \"2025-06-01\",\n    \"end_date\": \"2025-06-05\",\n    \"notes\": \"Need electricity\",\n    \"services\": [\"{{service_id}}\"]\n}", "options": { "raw": { "language": "json" } } }, "url": { "raw": "{{expo_url}}/v1/rental-requests", "host": ["{{expo_url}}"], "path": ["v1", "rental-requests"] }, "description": "⚠️ Requires verified profile.\n\n**Required:** space_id, start_date, end_date\n**Optional:** notes, services" } },
+        { "name": "Show Rental Request", "request": { "method": "GET", "header": [], "url": { "raw": "{{expo_url}}/v1/rental-requests/{{rental_request_id}}", "host": ["{{expo_url}}"], "path": ["v1", "rental-requests", "{{rental_request_id}}"] } } },
+        { "name": "Update Rental Request", "request": { "method": "PUT", "header": [], "body": { "mode": "raw", "raw": "{\n    \"notes\": \"Updated notes\"\n}", "options": { "raw": { "language": "json" } } }, "url": { "raw": "{{expo_url}}/v1/rental-requests/{{rental_request_id}}", "host": ["{{expo_url}}"], "path": ["v1", "rental-requests", "{{rental_request_id}}"] } } },
+        { "name": "Delete Rental Request", "request": { "method": "DELETE", "header": [], "url": { "raw": "{{expo_url}}/v1/rental-requests/{{rental_request_id}}", "host": ["{{expo_url}}"], "path": ["v1", "rental-requests", "{{rental_request_id}}"] } } }
+      ]
+    },
+    {
+      "name": "⭐ Ratings",
+      "description": "Own ratings CRUD.\n\n**Permission:** ratings.create, ratings.update, ratings.delete",
+      "item": [
+        { "name": "Create Rating", "request": { "method": "POST", "header": [], "body": { "mode": "raw", "raw": "{\n    \"rateable_type\": \"event\",\n    \"rateable_id\": \"{{event_id}}\",\n    \"rating\": 5,\n    \"comment\": \"Great event!\"\n}", "options": { "raw": { "language": "json" } } }, "url": { "raw": "{{expo_url}}/v1/ratings", "host": ["{{expo_url}}"], "path": ["v1", "ratings"] }, "description": "**Required:** rateable_type (event|space), rateable_id, rating (1-5)\n**Optional:** comment" } },
+        { "name": "Update Rating", "request": { "method": "PUT", "header": [], "body": { "mode": "raw", "raw": "{\n    \"rating\": 4,\n    \"comment\": \"Updated review\"\n}", "options": { "raw": { "language": "json" } } }, "url": { "raw": "{{expo_url}}/v1/ratings/{{rating_id}}", "host": ["{{expo_url}}"], "path": ["v1", "ratings", "{{rating_id}}"] } } },
+        { "name": "Delete Rating", "request": { "method": "DELETE", "header": [], "url": { "raw": "{{expo_url}}/v1/ratings/{{rating_id}}", "host": ["{{expo_url}}"], "path": ["v1", "ratings", "{{rating_id}}"] } } }
+      ]
+    },
+    {
+      "name": "❤️ Favorites",
+      "item": [
+        { "name": "List Favorites", "request": { "method": "GET", "header": [], "url": { "raw": "{{expo_url}}/v1/favorites", "host": ["{{expo_url}}"], "path": ["v1", "favorites"] } } },
+        { "name": "Add Favorite", "request": { "method": "POST", "header": [], "body": { "mode": "raw", "raw": "{\n    \"favorable_type\": \"event\",\n    \"favorable_id\": \"{{event_id}}\"\n}", "options": { "raw": { "language": "json" } } }, "url": { "raw": "{{expo_url}}/v1/favorites", "host": ["{{expo_url}}"], "path": ["v1", "favorites"] } } },
+        { "name": "Remove Favorite", "request": { "method": "DELETE", "header": [], "url": { "raw": "{{expo_url}}/v1/favorites/{{favorite_id}}", "host": ["{{expo_url}}"], "path": ["v1", "favorites", "{{favorite_id}}"] } } }
+      ]
+    },
+    {
+      "name": "🔔 Notifications",
+      "item": [
+        { "name": "List Notifications", "request": { "method": "GET", "header": [], "url": { "raw": "{{expo_url}}/v1/notifications", "host": ["{{expo_url}}"], "path": ["v1", "notifications"], "query": [{ "key": "unread_only", "value": "1", "disabled": true }] } } },
+        { "name": "Unread Count", "request": { "method": "GET", "header": [], "url": { "raw": "{{expo_url}}/v1/notifications/unread-count", "host": ["{{expo_url}}"], "path": ["v1", "notifications", "unread-count"] } } },
+        { "name": "Mark as Read", "request": { "method": "PUT", "header": [], "url": { "raw": "{{expo_url}}/v1/notifications/{{notification_id}}/read", "host": ["{{expo_url}}"], "path": ["v1", "notifications", "{{notification_id}}", "read"] } } },
+        { "name": "Mark All Read", "request": { "method": "PUT", "header": [], "url": { "raw": "{{expo_url}}/v1/notifications/read-all", "host": ["{{expo_url}}"], "path": ["v1", "notifications", "read-all"] } } }
+      ]
+    },
+    {
+      "name": "🧾 My Invoices",
+      "item": [
+        { "name": "List Invoices", "request": { "method": "GET", "header": [], "url": { "raw": "{{expo_url}}/v1/invoices", "host": ["{{expo_url}}"], "path": ["v1", "invoices"] } } },
+        { "name": "Show Invoice", "request": { "method": "GET", "header": [], "url": { "raw": "{{expo_url}}/v1/invoices/{{invoice_id}}", "host": ["{{expo_url}}"], "path": ["v1", "invoices", "{{invoice_id}}"] } } }
+      ]
+    },
+    {
+      "name": "🎫 Support Tickets",
+      "item": [
+        { "name": "List My Tickets", "request": { "method": "GET", "header": [], "url": { "raw": "{{expo_url}}/v1/support-tickets", "host": ["{{expo_url}}"], "path": ["v1", "support-tickets"] } } },
+        { "name": "Create Ticket", "request": { "method": "POST", "header": [], "body": { "mode": "raw", "raw": "{\n    \"subject\": \"Rental issue\",\n    \"message\": \"Details\",\n    \"category\": \"billing\",\n    \"priority\": \"high\"\n}", "options": { "raw": { "language": "json" } } }, "url": { "raw": "{{expo_url}}/v1/support-tickets", "host": ["{{expo_url}}"], "path": ["v1", "support-tickets"] } } },
+        { "name": "Show Ticket", "request": { "method": "GET", "header": [], "url": { "raw": "{{expo_url}}/v1/support-tickets/{{support_ticket_id}}", "host": ["{{expo_url}}"], "path": ["v1", "support-tickets", "{{support_ticket_id}}"] } } },
+        { "name": "Reply to Ticket", "request": { "method": "POST", "header": [], "body": { "mode": "raw", "raw": "{\n    \"message\": \"More details\"\n}", "options": { "raw": { "language": "json" } } }, "url": { "raw": "{{expo_url}}/v1/support-tickets/{{support_ticket_id}}/reply", "host": ["{{expo_url}}"], "path": ["v1", "support-tickets", "{{support_ticket_id}}", "reply"] } } },
+        { "name": "Close Ticket", "request": { "method": "PUT", "header": [], "url": { "raw": "{{expo_url}}/v1/support-tickets/{{support_ticket_id}}/close", "host": ["{{expo_url}}"], "path": ["v1", "support-tickets", "{{support_ticket_id}}", "close"] } } },
+        { "name": "Reopen Ticket", "request": { "method": "PUT", "header": [], "url": { "raw": "{{expo_url}}/v1/support-tickets/{{support_ticket_id}}/reopen", "host": ["{{expo_url}}"], "path": ["v1", "support-tickets", "{{support_ticket_id}}", "reopen"] } } }
+      ]
+    },
+    {
+      "name": "📱 Devices",
+      "item": [
+        { "name": "List Devices", "request": { "method": "GET", "header": [], "url": { "raw": "{{expo_url}}/v1/devices", "host": ["{{expo_url}}"], "path": ["v1", "devices"] } } },
+        { "name": "Register Device", "request": { "method": "POST", "header": [], "body": { "mode": "raw", "raw": "{\n    \"device_token\": \"fcm-token\",\n    \"device_type\": \"ios\",\n    \"device_name\": \"iPhone 15\"\n}", "options": { "raw": { "language": "json" } } }, "url": { "raw": "{{expo_url}}/v1/devices", "host": ["{{expo_url}}"], "path": ["v1", "devices"] } } },
+        { "name": "Unregister Device", "request": { "method": "DELETE", "header": [], "body": { "mode": "raw", "raw": "{\n    \"device_token\": \"fcm-token\"\n}", "options": { "raw": { "language": "json" } } }, "url": { "raw": "{{expo_url}}/v1/devices", "host": ["{{expo_url}}"], "path": ["v1", "devices"] } } }
+      ]
+    },
+    {
+      "name": "📜 My Activity",
+      "item": [
+        { "name": "Activity Log", "request": { "method": "GET", "header": [], "url": { "raw": "{{expo_url}}/v1/my/activity", "host": ["{{expo_url}}"], "path": ["v1", "my", "activity"] } } },
+        { "name": "Activity Summary", "request": { "method": "GET", "header": [], "url": { "raw": "{{expo_url}}/v1/my/activity/summary", "host": ["{{expo_url}}"], "path": ["v1", "my", "activity", "summary"] } } }
+      ]
+    }
+  ]
 }

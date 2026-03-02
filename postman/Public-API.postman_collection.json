@@ -2,8 +2,11 @@
 	"info": {
 		"_postman_id": "public-api-001",
 		"name": "Maham Expo - Public API",
-		"description": "Public endpoints that do not require authentication.\nBase URL: http://localhost:8002/api",
+		"description": "Public API endpoints for Maham Expo platform. No authentication required.\n\nBase URL: `{{expo_url}}/v1`\n\nAll endpoints are publicly accessible and return JSON responses.",
 		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"auth": {
+		"type": "noauth"
 	},
 	"event": [
 		{
@@ -11,555 +14,772 @@
 			"script": {
 				"type": "text/javascript",
 				"exec": [
-					"pm.request.addHeader({ key: 'Accept', value: 'application/json' });",
-					"pm.request.addHeader({ key: 'Accept-Language', value: pm.environment.get('language') || 'ar' });"
+					"pm.request.headers.add({",
+					"    key: 'Accept',",
+					"    value: 'application/json'",
+					"});",
+					"",
+					"pm.request.headers.add({",
+					"    key: 'Accept-Language',",
+					"    value: pm.variables.get('language') || 'ar'",
+					"});",
+					"",
+					"pm.request.headers.add({",
+					"    key: 'X-Platform',",
+					"    value: pm.variables.get('platform') || 'web'",
+					"});"
 				]
 			}
+		}
+	],
+	"variable": [
+		{
+			"key": "expo_url",
+			"value": "http://localhost:8000",
+			"description": "Base URL for the Expo API"
+		},
+		{
+			"key": "event_id",
+			"value": "",
+			"description": "Event UUID"
+		},
+		{
+			"key": "space_id",
+			"value": "",
+			"description": "Space UUID"
+		},
+		{
+			"key": "category_id",
+			"value": "",
+			"description": "Category UUID"
+		},
+		{
+			"key": "city_id",
+			"value": "",
+			"description": "City UUID"
+		},
+		{
+			"key": "faq_id",
+			"value": "",
+			"description": "FAQ UUID"
+		},
+		{
+			"key": "banner_id",
+			"value": "",
+			"description": "Banner UUID"
+		},
+		{
+			"key": "page_slug",
+			"value": "",
+			"description": "Page slug identifier"
+		},
+		{
+			"key": "platform",
+			"value": "web",
+			"description": "Platform identifier (web, ios, android)"
+		},
+		{
+			"key": "language",
+			"value": "ar",
+			"description": "Language code (ar, en)"
 		}
 	],
 	"item": [
 		{
 			"name": "🏥 Health",
+			"description": "Health check endpoints to verify the API is running.",
 			"item": [
 				{
 					"name": "Health Check",
 					"request": {
 						"method": "GET",
+						"header": [],
 						"url": {
 							"raw": "{{expo_url}}/health",
-							"host": [
-								"{{expo_url}}"
-							],
-							"path": [
-								"health"
-							]
-						}
-					}
+							"host": ["{{expo_url}}"],
+							"path": ["health"]
+						},
+						"description": "Check if the API service is running and healthy.\n\n**Response:** Returns the health status of the API."
+					},
+					"response": []
 				}
 			]
 		},
 		{
 			"name": "📅 Events",
+			"description": "Public event endpoints for browsing and viewing expo events.",
 			"item": [
 				{
 					"name": "List Events",
 					"request": {
 						"method": "GET",
+						"header": [],
 						"url": {
-							"raw": "{{expo_url}}/v1/events?page=1&per_page=15",
-							"host": [
-								"{{expo_url}}"
-							],
-							"path": [
-								"v1",
-								"events"
-							],
+							"raw": "{{expo_url}}/v1/events",
+							"host": ["{{expo_url}}"],
+							"path": ["v1", "events"],
 							"query": [
 								{
-									"key": "page",
-									"value": "1"
+									"key": "search",
+									"value": "",
+									"description": "(string) Search by event name",
+									"disabled": true
+								},
+								{
+									"key": "city_id",
+									"value": "",
+									"description": "(uuid) Filter by city",
+									"disabled": true
+								},
+								{
+									"key": "category_id",
+									"value": "",
+									"description": "(uuid) Filter by category",
+									"disabled": true
+								},
+								{
+									"key": "status",
+									"value": "",
+									"description": "(string) ongoing|upcoming",
+									"disabled": true
+								},
+								{
+									"key": "featured",
+									"value": "",
+									"description": "(boolean) 1|0 - Featured events only",
+									"disabled": true
+								},
+								{
+									"key": "start_date",
+									"value": "",
+									"description": "(date) Filter from date (Y-m-d)",
+									"disabled": true
+								},
+								{
+									"key": "end_date",
+									"value": "",
+									"description": "(date) Filter to date (Y-m-d)",
+									"disabled": true
+								},
+								{
+									"key": "rental_duration",
+									"value": "",
+									"description": "(string) Filter by rental duration",
+									"disabled": true
+								},
+								{
+									"key": "min_price",
+									"value": "",
+									"description": "(number) Min space price",
+									"disabled": true
+								},
+								{
+									"key": "max_price",
+									"value": "",
+									"description": "(number) Max space price",
+									"disabled": true
+								},
+								{
+									"key": "min_area",
+									"value": "",
+									"description": "(number) Min space area (sqm)",
+									"disabled": true
+								},
+								{
+									"key": "max_area",
+									"value": "",
+									"description": "(number) Max space area (sqm)",
+									"disabled": true
+								},
+								{
+									"key": "sort_by",
+									"value": "",
+									"description": "(string) start_date|end_date|created_at|name|name_ar",
+									"disabled": true
+								},
+								{
+									"key": "sort_order",
+									"value": "",
+									"description": "(string) asc|desc",
+									"disabled": true
 								},
 								{
 									"key": "per_page",
-									"value": "15"
+									"value": "15",
+									"description": "(number) Items per page (default 15, max 50)",
+									"disabled": true
+								},
+								{
+									"key": "page",
+									"value": "1",
+									"description": "(number) Page number",
+									"disabled": true
 								}
 							]
-						}
-					}
+						},
+						"description": "Retrieve a paginated list of public events.\n\n**Query Parameters (all optional):**\n- `search` - Search by event name\n- `city_id` - Filter by city UUID\n- `category_id` - Filter by category UUID\n- `status` - Filter by status: `ongoing` or `upcoming`\n- `featured` - Filter featured events: `1` or `0`\n- `start_date` / `end_date` - Date range filter (Y-m-d)\n- `rental_duration` - Filter by rental duration\n- `min_price` / `max_price` - Price range filter\n- `min_area` / `max_area` - Area range filter (sqm)\n- `sort_by` - Sort field: `start_date`, `end_date`, `created_at`, `name`, `name_ar`\n- `sort_order` - Sort direction: `asc` or `desc`\n- `per_page` - Items per page (default 15, max 50)\n- `page` - Page number"
+					},
+					"response": []
 				},
 				{
 					"name": "Featured Events",
 					"request": {
 						"method": "GET",
+						"header": [],
 						"url": {
 							"raw": "{{expo_url}}/v1/events/featured",
-							"host": [
-								"{{expo_url}}"
-							],
-							"path": [
-								"v1",
-								"events",
-								"featured"
+							"host": ["{{expo_url}}"],
+							"path": ["v1", "events", "featured"],
+							"query": [
+								{
+									"key": "limit",
+									"value": "10",
+									"description": "(number) Number of featured events to return (default 10, max 20)",
+									"disabled": true
+								}
 							]
-						}
-					}
+						},
+						"description": "Retrieve a list of featured events.\n\n**Query Parameters (optional):**\n- `limit` - Number of featured events to return (default 10, max 20)"
+					},
+					"response": []
 				},
 				{
 					"name": "Show Event",
 					"request": {
 						"method": "GET",
+						"header": [],
 						"url": {
 							"raw": "{{expo_url}}/v1/events/{{event_id}}",
-							"host": [
-								"{{expo_url}}"
-							],
-							"path": [
-								"v1",
-								"events",
-								"{{event_id}}"
-							]
-						}
-					}
+							"host": ["{{expo_url}}"],
+							"path": ["v1", "events", "{{event_id}}"]
+						},
+						"description": "Retrieve details of a specific event.\n\n**Path Parameters:**\n- `event_id` (uuid, **required**) - The event UUID"
+					},
+					"response": []
 				},
 				{
 					"name": "Event Sections",
 					"request": {
 						"method": "GET",
+						"header": [],
 						"url": {
 							"raw": "{{expo_url}}/v1/events/{{event_id}}/sections",
-							"host": [
-								"{{expo_url}}"
-							],
-							"path": [
-								"v1",
-								"events",
-								"{{event_id}}",
-								"sections"
-							]
-						}
-					}
+							"host": ["{{expo_url}}"],
+							"path": ["v1", "events", "{{event_id}}", "sections"]
+						},
+						"description": "Retrieve all sections for a specific event.\n\n**Path Parameters:**\n- `event_id` (uuid, **required**) - The event UUID"
+					},
+					"response": []
 				},
 				{
 					"name": "Event Spaces",
 					"request": {
 						"method": "GET",
+						"header": [],
 						"url": {
 							"raw": "{{expo_url}}/v1/events/{{event_id}}/spaces",
-							"host": [
-								"{{expo_url}}"
-							],
-							"path": [
-								"v1",
-								"events",
-								"{{event_id}}",
-								"spaces"
+							"host": ["{{expo_url}}"],
+							"path": ["v1", "events", "{{event_id}}", "spaces"],
+							"query": [
+								{
+									"key": "available_only",
+									"value": "",
+									"description": "(boolean) 1|0 - Show only available spaces",
+									"disabled": true
+								},
+								{
+									"key": "section_id",
+									"value": "",
+									"description": "(uuid) Filter by section",
+									"disabled": true
+								},
+								{
+									"key": "space_type",
+									"value": "",
+									"description": "(string) Filter by type",
+									"disabled": true
+								},
+								{
+									"key": "payment_system",
+									"value": "",
+									"description": "(string) Filter by payment system",
+									"disabled": true
+								},
+								{
+									"key": "rental_duration",
+									"value": "",
+									"description": "(string) Filter by duration",
+									"disabled": true
+								},
+								{
+									"key": "service_id",
+									"value": "",
+									"description": "(uuid) Filter by service",
+									"disabled": true
+								},
+								{
+									"key": "min_price",
+									"value": "",
+									"description": "(number) Min price",
+									"disabled": true
+								},
+								{
+									"key": "max_price",
+									"value": "",
+									"description": "(number) Max price",
+									"disabled": true
+								},
+								{
+									"key": "min_area",
+									"value": "",
+									"description": "(number) Min area sqm",
+									"disabled": true
+								},
+								{
+									"key": "max_area",
+									"value": "",
+									"description": "(number) Max area sqm",
+									"disabled": true
+								},
+								{
+									"key": "floor",
+									"value": "",
+									"description": "(string) Filter by floor",
+									"disabled": true
+								},
+								{
+									"key": "grouped_by_section",
+									"value": "",
+									"description": "(boolean) 1|0 - Group results by section",
+									"disabled": true
+								},
+								{
+									"key": "sort_by",
+									"value": "",
+									"description": "(string) location_code|area_sqm|price_per_day|price_total|status|floor_number|created_at",
+									"disabled": true
+								},
+								{
+									"key": "sort_order",
+									"value": "",
+									"description": "(string) asc|desc",
+									"disabled": true
+								}
 							]
-						}
-					}
+						},
+						"description": "Retrieve all spaces for a specific event.\n\n**Path Parameters:**\n- `event_id` (uuid, **required**) - The event UUID\n\n**Query Parameters (all optional):**\n- `available_only` - Show only available spaces: `1` or `0`\n- `section_id` - Filter by section UUID\n- `space_type` - Filter by space type\n- `payment_system` - Filter by payment system\n- `rental_duration` - Filter by rental duration\n- `service_id` - Filter by service UUID\n- `min_price` / `max_price` - Price range filter\n- `min_area` / `max_area` - Area range filter (sqm)\n- `floor` - Filter by floor\n- `grouped_by_section` - Group results by section: `1` or `0`\n- `sort_by` - Sort field: `location_code`, `area_sqm`, `price_per_day`, `price_total`, `status`, `floor_number`, `created_at`\n- `sort_order` - Sort direction: `asc` or `desc`"
+					},
+					"response": []
 				},
 				{
 					"name": "Event Sponsors",
 					"request": {
 						"method": "GET",
+						"header": [],
 						"url": {
 							"raw": "{{expo_url}}/v1/events/{{event_id}}/sponsors",
-							"host": [
-								"{{expo_url}}"
-							],
-							"path": [
-								"v1",
-								"events",
-								"{{event_id}}",
-								"sponsors"
-							]
-						}
-					}
+							"host": ["{{expo_url}}"],
+							"path": ["v1", "events", "{{event_id}}", "sponsors"]
+						},
+						"description": "Retrieve all sponsors for a specific event.\n\n**Path Parameters:**\n- `event_id` (uuid, **required**) - The event UUID"
+					},
+					"response": []
 				},
 				{
 					"name": "Event Sponsor Packages",
 					"request": {
 						"method": "GET",
+						"header": [],
 						"url": {
 							"raw": "{{expo_url}}/v1/events/{{event_id}}/sponsor-packages",
-							"host": [
-								"{{expo_url}}"
-							],
-							"path": [
-								"v1",
-								"events",
-								"{{event_id}}",
-								"sponsor-packages"
-							]
-						}
-					}
+							"host": ["{{expo_url}}"],
+							"path": ["v1", "events", "{{event_id}}", "sponsor-packages"]
+						},
+						"description": "Retrieve all sponsor packages available for a specific event.\n\n**Path Parameters:**\n- `event_id` (uuid, **required**) - The event UUID"
+					},
+					"response": []
 				}
 			]
 		},
 		{
 			"name": "📍 Spaces",
+			"description": "Public space endpoints for viewing individual space details.",
 			"item": [
 				{
 					"name": "Show Space",
 					"request": {
 						"method": "GET",
+						"header": [],
 						"url": {
 							"raw": "{{expo_url}}/v1/spaces/{{space_id}}",
-							"host": [
-								"{{expo_url}}"
-							],
-							"path": [
-								"v1",
-								"spaces",
-								"{{space_id}}"
-							]
-						}
-					}
+							"host": ["{{expo_url}}"],
+							"path": ["v1", "spaces", "{{space_id}}"]
+						},
+						"description": "Retrieve details of a specific space.\n\n**Path Parameters:**\n- `space_id` (uuid, **required**) - The space UUID"
+					},
+					"response": []
 				}
 			]
 		},
 		{
 			"name": "📁 Categories",
+			"description": "Public category endpoints for browsing event categories.",
 			"item": [
 				{
 					"name": "List Categories",
 					"request": {
 						"method": "GET",
+						"header": [],
 						"url": {
 							"raw": "{{expo_url}}/v1/categories",
-							"host": [
-								"{{expo_url}}"
-							],
-							"path": [
-								"v1",
-								"categories"
-							]
-						}
-					}
+							"host": ["{{expo_url}}"],
+							"path": ["v1", "categories"]
+						},
+						"description": "Retrieve a list of all event categories."
+					},
+					"response": []
 				},
 				{
 					"name": "Show Category",
 					"request": {
 						"method": "GET",
+						"header": [],
 						"url": {
 							"raw": "{{expo_url}}/v1/categories/{{category_id}}",
-							"host": [
-								"{{expo_url}}"
-							],
-							"path": [
-								"v1",
-								"categories",
-								"{{category_id}}"
-							]
-						}
-					}
+							"host": ["{{expo_url}}"],
+							"path": ["v1", "categories", "{{category_id}}"]
+						},
+						"description": "Retrieve details of a specific category.\n\n**Path Parameters:**\n- `category_id` (uuid, **required**) - The category UUID"
+					},
+					"response": []
 				}
 			]
 		},
 		{
 			"name": "🏙️ Cities",
+			"description": "Public city endpoints for browsing available cities.",
 			"item": [
 				{
 					"name": "List Cities",
 					"request": {
 						"method": "GET",
+						"header": [],
 						"url": {
 							"raw": "{{expo_url}}/v1/cities",
-							"host": [
-								"{{expo_url}}"
-							],
-							"path": [
-								"v1",
-								"cities"
-							]
-						}
-					}
+							"host": ["{{expo_url}}"],
+							"path": ["v1", "cities"]
+						},
+						"description": "Retrieve a list of all available cities."
+					},
+					"response": []
 				},
 				{
 					"name": "Show City",
 					"request": {
 						"method": "GET",
+						"header": [],
 						"url": {
 							"raw": "{{expo_url}}/v1/cities/{{city_id}}",
-							"host": [
-								"{{expo_url}}"
-							],
-							"path": [
-								"v1",
-								"cities",
-								"{{city_id}}"
-							]
-						}
-					}
+							"host": ["{{expo_url}}"],
+							"path": ["v1", "cities", "{{city_id}}"]
+						},
+						"description": "Retrieve details of a specific city.\n\n**Path Parameters:**\n- `city_id` (uuid, **required**) - The city UUID"
+					},
+					"response": []
 				}
 			]
 		},
 		{
 			"name": "🔧 Services",
+			"description": "Public service endpoints for browsing available services.",
 			"item": [
 				{
 					"name": "List Services",
 					"request": {
 						"method": "GET",
+						"header": [],
 						"url": {
 							"raw": "{{expo_url}}/v1/services",
-							"host": [
-								"{{expo_url}}"
-							],
-							"path": [
-								"v1",
-								"services"
-							]
-						}
-					}
+							"host": ["{{expo_url}}"],
+							"path": ["v1", "services"]
+						},
+						"description": "Retrieve a list of all available services."
+					},
+					"response": []
 				}
 			]
 		},
 		{
-			"name": "🎯 Banners",
-			"item": [
-				{
-					"name": "List Banners",
-					"request": {
-						"method": "GET",
-						"url": {
-							"raw": "{{expo_url}}/v1/banners",
-							"host": [
-								"{{expo_url}}"
-							],
-							"path": [
-								"v1",
-								"banners"
-							]
-						}
-					}
-				},
-				{
-					"name": "Click Banner",
-					"request": {
-						"method": "POST",
-						"url": {
-							"raw": "{{expo_url}}/v1/banners/{{banner_id}}/click",
-							"host": [
-								"{{expo_url}}"
-							],
-							"path": [
-								"v1",
-								"banners",
-								"{{banner_id}}",
-								"click"
-							]
-						}
-					}
-				}
-			]
-		},
-		{
-			"name": "❓ FAQs",
-			"item": [
-				{
-					"name": "List FAQs",
-					"request": {
-						"method": "GET",
-						"url": {
-							"raw": "{{expo_url}}/v1/faqs",
-							"host": [
-								"{{expo_url}}"
-							],
-							"path": [
-								"v1",
-								"faqs"
-							]
-						}
-					}
-				},
-				{
-					"name": "FAQ Categories",
-					"request": {
-						"method": "GET",
-						"url": {
-							"raw": "{{expo_url}}/v1/faqs/categories",
-							"host": [
-								"{{expo_url}}"
-							],
-							"path": [
-								"v1",
-								"faqs",
-								"categories"
-							]
-						}
-					}
-				},
-				{
-					"name": "Show FAQ",
-					"request": {
-						"method": "GET",
-						"url": {
-							"raw": "{{expo_url}}/v1/faqs/{{faq_id}}",
-							"host": [
-								"{{expo_url}}"
-							],
-							"path": [
-								"v1",
-								"faqs",
-								"{{faq_id}}"
-							]
-						}
-					}
-				},
-				{
-					"name": "Mark FAQ Helpful",
-					"request": {
-						"method": "POST",
-						"url": {
-							"raw": "{{expo_url}}/v1/faqs/{{faq_id}}/helpful",
-							"host": [
-								"{{expo_url}}"
-							],
-							"path": [
-								"v1",
-								"faqs",
-								"{{faq_id}}",
-								"helpful"
-							]
-						}
-					}
-				}
-			]
-		},
-		{
-			"name": "📄 Pages",
-			"item": [
-				{
-					"name": "List Pages",
-					"request": {
-						"method": "GET",
-						"url": {
-							"raw": "{{expo_url}}/v1/pages",
-							"host": [
-								"{{expo_url}}"
-							],
-							"path": [
-								"v1",
-								"pages"
-							]
-						}
-					}
-				},
-				{
-					"name": "Show Page by Slug",
-					"request": {
-						"method": "GET",
-						"url": {
-							"raw": "{{expo_url}}/v1/pages/about-us",
-							"host": [
-								"{{expo_url}}"
-							],
-							"path": [
-								"v1",
-								"pages",
-								"about-us"
-							]
-						}
-					}
-				}
-			]
-		},
-		{
-			"name": "⭐ Ratings (Public)",
-			"item": [
-				{
-					"name": "List Ratings",
-					"request": {
-						"method": "GET",
-						"url": {
-							"raw": "{{expo_url}}/v1/ratings?rateable_type=event&rateable_id={{event_id}}",
-							"host": [
-								"{{expo_url}}"
-							],
-							"path": [
-								"v1",
-								"ratings"
-							],
-							"query": [
-								{
-									"key": "rateable_type",
-									"value": "event"
-								},
-								{
-									"key": "rateable_id",
-									"value": "{{event_id}}"
-								}
-							]
-						}
-					}
-				},
-				{
-					"name": "Ratings Summary",
-					"request": {
-						"method": "GET",
-						"url": {
-							"raw": "{{expo_url}}/v1/ratings/summary?rateable_type=event&rateable_id={{event_id}}",
-							"host": [
-								"{{expo_url}}"
-							],
-							"path": [
-								"v1",
-								"ratings",
-								"summary"
-							],
-							"query": [
-								{
-									"key": "rateable_type",
-									"value": "event"
-								},
-								{
-									"key": "rateable_id",
-									"value": "{{event_id}}"
-								}
-							]
-						}
-					}
-				}
-			]
-		},
-		{
-			"name": "📊 Statistics (Public)",
+			"name": "📊 Statistics",
+			"description": "Public statistics endpoints for viewing platform metrics.",
 			"item": [
 				{
 					"name": "General Statistics",
 					"request": {
 						"method": "GET",
+						"header": [],
 						"url": {
 							"raw": "{{expo_url}}/v1/statistics",
-							"host": [
-								"{{expo_url}}"
-							],
-							"path": [
-								"v1",
-								"statistics"
-							]
-						}
-					}
+							"host": ["{{expo_url}}"],
+							"path": ["v1", "statistics"]
+						},
+						"description": "Retrieve general platform statistics."
+					},
+					"response": []
 				},
 				{
 					"name": "Event Statistics",
 					"request": {
 						"method": "GET",
+						"header": [],
 						"url": {
 							"raw": "{{expo_url}}/v1/statistics/events",
-							"host": [
-								"{{expo_url}}"
-							],
-							"path": [
-								"v1",
-								"statistics",
-								"events"
-							]
-						}
-					}
+							"host": ["{{expo_url}}"],
+							"path": ["v1", "statistics", "events"]
+						},
+						"description": "Retrieve event-related statistics."
+					},
+					"response": []
 				},
 				{
 					"name": "Space Statistics",
 					"request": {
 						"method": "GET",
+						"header": [],
 						"url": {
 							"raw": "{{expo_url}}/v1/statistics/spaces",
-							"host": [
-								"{{expo_url}}"
-							],
-							"path": [
-								"v1",
-								"statistics",
-								"spaces"
-							]
-						}
-					}
+							"host": ["{{expo_url}}"],
+							"path": ["v1", "statistics", "spaces"]
+						},
+						"description": "Retrieve space-related statistics."
+					},
+					"response": []
 				}
 			]
 		},
 		{
-			"name": "Tracking",
-			"description": "User activity tracking — works with or without authentication. X-Platform header recommended.",
+			"name": "⭐ Ratings",
+			"description": "Public rating endpoints for viewing ratings and summaries.",
+			"item": [
+				{
+					"name": "List Ratings",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{expo_url}}/v1/ratings?rateable_type=event&rateable_id={{event_id}}",
+							"host": ["{{expo_url}}"],
+							"path": ["v1", "ratings"],
+							"query": [
+								{
+									"key": "rateable_type",
+									"value": "event",
+									"description": "(string, REQUIRED) The type of rateable entity: event|space",
+									"disabled": false
+								},
+								{
+									"key": "rateable_id",
+									"value": "{{event_id}}",
+									"description": "(uuid, REQUIRED) The UUID of the rateable entity",
+									"disabled": false
+								},
+								{
+									"key": "per_page",
+									"value": "15",
+									"description": "(number) Items per page",
+									"disabled": true
+								}
+							]
+						},
+						"description": "Retrieve a list of ratings for a specific entity.\n\nBoth `rateable_type` and `rateable_id` are **REQUIRED**.\n\n**Query Parameters:**\n- `rateable_type` (string, **required**) - The type of rateable entity: `event` or `space`\n- `rateable_id` (uuid, **required**) - The UUID of the rateable entity\n- `per_page` (number, optional) - Items per page"
+					},
+					"response": []
+				},
+				{
+					"name": "Ratings Summary",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{expo_url}}/v1/ratings/summary?rateable_type=event&rateable_id={{event_id}}",
+							"host": ["{{expo_url}}"],
+							"path": ["v1", "ratings", "summary"],
+							"query": [
+								{
+									"key": "rateable_type",
+									"value": "event",
+									"description": "(string, REQUIRED) The type of rateable entity: event|space",
+									"disabled": false
+								},
+								{
+									"key": "rateable_id",
+									"value": "{{event_id}}",
+									"description": "(uuid, REQUIRED) The UUID of the rateable entity",
+									"disabled": false
+								}
+							]
+						},
+						"description": "Retrieve a ratings summary for a specific entity.\n\nBoth `rateable_type` and `rateable_id` are **REQUIRED**.\n\n**Query Parameters:**\n- `rateable_type` (string, **required**) - The type of rateable entity: `event` or `space`\n- `rateable_id` (uuid, **required**) - The UUID of the rateable entity"
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "📄 Pages",
+			"description": "Public page endpoints for viewing static content pages.",
+			"item": [
+				{
+					"name": "List Pages",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{expo_url}}/v1/pages",
+							"host": ["{{expo_url}}"],
+							"path": ["v1", "pages"]
+						},
+						"description": "Retrieve a list of all published pages."
+					},
+					"response": []
+				},
+				{
+					"name": "Show Page by Slug",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{expo_url}}/v1/pages/{{page_slug}}",
+							"host": ["{{expo_url}}"],
+							"path": ["v1", "pages", "{{page_slug}}"]
+						},
+						"description": "Retrieve a specific page by its slug.\n\n**Path Parameters:**\n- `page_slug` (string, **required**) - The page slug identifier"
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "❓ FAQs",
+			"description": "Public FAQ endpoints for browsing frequently asked questions.",
+			"item": [
+				{
+					"name": "List FAQs",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{expo_url}}/v1/faqs",
+							"host": ["{{expo_url}}"],
+							"path": ["v1", "faqs"],
+							"query": [
+								{
+									"key": "category",
+									"value": "",
+									"description": "(string) Filter by FAQ category",
+									"disabled": true
+								},
+								{
+									"key": "search",
+									"value": "",
+									"description": "(string) Search FAQs by keyword",
+									"disabled": true
+								}
+							]
+						},
+						"description": "Retrieve a list of frequently asked questions.\n\n**Query Parameters (optional):**\n- `category` - Filter by FAQ category\n- `search` - Search FAQs by keyword"
+					},
+					"response": []
+				},
+				{
+					"name": "FAQ Categories",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{expo_url}}/v1/faqs/categories",
+							"host": ["{{expo_url}}"],
+							"path": ["v1", "faqs", "categories"]
+						},
+						"description": "Retrieve a list of all FAQ categories."
+					},
+					"response": []
+				},
+				{
+					"name": "Show FAQ",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{expo_url}}/v1/faqs/{{faq_id}}",
+							"host": ["{{expo_url}}"],
+							"path": ["v1", "faqs", "{{faq_id}}"]
+						},
+						"description": "Retrieve details of a specific FAQ.\n\n**Path Parameters:**\n- `faq_id` (uuid, **required**) - The FAQ UUID"
+					},
+					"response": []
+				},
+				{
+					"name": "Mark FAQ as Helpful",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"url": {
+							"raw": "{{expo_url}}/v1/faqs/{{faq_id}}/helpful",
+							"host": ["{{expo_url}}"],
+							"path": ["v1", "faqs", "{{faq_id}}", "helpful"]
+						},
+						"description": "Mark a specific FAQ as helpful. No request body is needed.\n\n**Path Parameters:**\n- `faq_id` (uuid, **required**) - The FAQ UUID"
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "🎯 Banners",
+			"description": "Public banner endpoints for retrieving promotional banners and tracking clicks.",
+			"item": [
+				{
+					"name": "List Banners",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{expo_url}}/v1/banners",
+							"host": ["{{expo_url}}"],
+							"path": ["v1", "banners"],
+							"query": [
+								{
+									"key": "position",
+									"value": "home",
+									"description": "(string) Banner position (default: home). Use \"all\" for all positions",
+									"disabled": true
+								}
+							]
+						},
+						"description": "Retrieve a list of active banners.\n\n**Query Parameters (optional):**\n- `position` - Banner position (default: `home`). Use `\"all\"` for all positions"
+					},
+					"response": []
+				},
+				{
+					"name": "Record Banner Click",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"url": {
+							"raw": "{{expo_url}}/v1/banners/{{banner_id}}/click",
+							"host": ["{{expo_url}}"],
+							"path": ["v1", "banners", "{{banner_id}}", "click"]
+						},
+						"description": "Record a click event on a banner. No request body is needed.\n\n**Path Parameters:**\n- `banner_id` (uuid, **required**) - The banner UUID"
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "📡 Tracking",
+			"description": "Public tracking endpoints for recording views and actions on resources.",
 			"item": [
 				{
 					"name": "Track View",
@@ -567,25 +787,17 @@
 						"method": "POST",
 						"header": [
 							{
-								"key": "Accept",
-								"value": "application/json"
-							},
-							{
 								"key": "Content-Type",
 								"value": "application/json"
 							},
 							{
-								"key": "Accept-Language",
-								"value": "{{language}}"
-							},
-							{
 								"key": "X-Platform",
-								"value": "web"
+								"value": "{{platform}}"
 							}
 						],
 						"body": {
 							"mode": "raw",
-							"raw": "{\n  \"resource_type\": \"event\",\n  \"resource_id\": \"{{event_id}}\"\n}",
+							"raw": "{\n    \"resource_type\": \"event\",\n    \"resource_id\": \"{{event_id}}\",\n    \"session_id\": \"unique-session-id\",\n    \"metadata\": {}\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -594,17 +806,12 @@
 						},
 						"url": {
 							"raw": "{{expo_url}}/v1/track/view",
-							"host": [
-								"{{expo_url}}"
-							],
-							"path": [
-								"v1",
-								"track",
-								"view"
-							]
+							"host": ["{{expo_url}}"],
+							"path": ["v1", "track", "view"]
 						},
-						"description": "Track a page/resource view. Supports: event, space, section, sponsor, page, banner, faq, service."
-					}
+						"description": "Track a view event on a resource.\n\n**Headers:**\n- `X-Platform` - Platform identifier\n\n**Body Parameters:**\n- `resource_type` (string, **required**) - The type of resource. Options: `event`, `space`, `section`, `sponsor`, `page`, `banner`, `faq`, `service`\n- `resource_id` (uuid, **required**) - The UUID of the resource being viewed\n- `session_id` (string, optional) - Unique session identifier for the viewer\n- `metadata` (object, optional) - Additional metadata for the view event"
+					},
+					"response": []
 				},
 				{
 					"name": "Track Action",
@@ -612,25 +819,13 @@
 						"method": "POST",
 						"header": [
 							{
-								"key": "Accept",
-								"value": "application/json"
-							},
-							{
 								"key": "Content-Type",
 								"value": "application/json"
-							},
-							{
-								"key": "Accept-Language",
-								"value": "{{language}}"
-							},
-							{
-								"key": "X-Platform",
-								"value": "web"
 							}
 						],
 						"body": {
 							"mode": "raw",
-							"raw": "{\n  \"action\": \"search\",\n  \"metadata\": {\n    \"search_query\": \"\\u0645\\u0639\\u0631\\u0636 \\u0627\\u0644\\u0631\\u064a\\u0627\\u0636\",\n    \"source_page\": \"home\"\n  }\n}",
+							"raw": "{\n    \"action\": \"click\",\n    \"resource_type\": \"event\",\n    \"resource_id\": \"{{event_id}}\",\n    \"session_id\": \"unique-session-id\",\n    \"metadata\": {\n        \"source_page\": \"home\"\n    }\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -639,62 +834,12 @@
 						},
 						"url": {
 							"raw": "{{expo_url}}/v1/track/action",
-							"host": [
-								"{{expo_url}}"
-							],
-							"path": [
-								"v1",
-								"track",
-								"action"
-							]
+							"host": ["{{expo_url}}"],
+							"path": ["v1", "track", "action"]
 						},
-						"description": "Track a user action (search, click, share, filter, download, favorite, etc.)."
-					}
-				},
-				{
-					"name": "Track Action — Click",
-					"request": {
-						"method": "POST",
-						"header": [
-							{
-								"key": "Accept",
-								"value": "application/json"
-							},
-							{
-								"key": "Content-Type",
-								"value": "application/json"
-							},
-							{
-								"key": "Accept-Language",
-								"value": "{{language}}"
-							},
-							{
-								"key": "X-Platform",
-								"value": "mobile"
-							}
-						],
-						"body": {
-							"mode": "raw",
-							"raw": "{\n  \"action\": \"click\",\n  \"resource_type\": \"banner\",\n  \"resource_id\": \"{{banner_id}}\",\n  \"metadata\": {\n    \"source_page\": \"home\",\n    \"target_url\": \"/events/123\"\n  }\n}",
-							"options": {
-								"raw": {
-									"language": "json"
-								}
-							}
-						},
-						"url": {
-							"raw": "{{expo_url}}/v1/track/action",
-							"host": [
-								"{{expo_url}}"
-							],
-							"path": [
-								"v1",
-								"track",
-								"action"
-							]
-						},
-						"description": "Track a click action on a specific resource."
-					}
+						"description": "Track an action event on a resource.\n\n**Body Parameters:**\n- `action` (string, **required**) - The action being tracked. Options: `view`, `search`, `filter`, `click`, `share`, `download`, `favorite`, `unfavorite`, `apply`, `book`, `cancel`, `rate`, `contact`, `compare`\n- `resource_type` (string, **required**) - The type of resource. Options: `event`, `space`, `section`, `sponsor`, `page`, `banner`, `faq`, `service`\n- `resource_id` (uuid, optional) - The UUID of the resource\n- `session_id` (string, optional) - Unique session identifier\n- `metadata` (object, optional) - Additional metadata (e.g., `source_page`)"
+					},
+					"response": []
 				}
 			]
 		}

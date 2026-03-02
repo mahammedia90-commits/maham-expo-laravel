@@ -1,1023 +1,164 @@
 {
-	"info": {
-		"name": "Maham Expo - Supervisor",
-		"description": "Supervisor role endpoints for Maham Expo API.\nSupervisors review and approve/reject requests, profiles, contracts.",
-		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
-	},
-	"auth": {
-		"type": "bearer",
-		"bearer": [
-			{
-				"key": "token",
-				"value": "{{supervisor_token}}",
-				"type": "string"
-			}
-		]
-	},
-	"event": [
-		{
-			"listen": "prerequest",
-			"script": {
-				"type": "text/javascript",
-				"exec": [
-					"pm.request.addHeader({ key: 'Accept', value: 'application/json' });",
-					"pm.request.addHeader({ key: 'Accept-Language', value: pm.environment.get('language') || 'ar' });"
-				]
-			}
-		}
-	],
-	"item": [
-		{
-			"name": "Auth",
-			"item": [
-				{
-					"name": "Login as Supervisor",
-					"event": [
-						{
-							"listen": "test",
-							"script": {
-								"type": "text/javascript",
-								"exec": [
-									"if(pm.response.code===200){var d=pm.response.json();if(d.data&&d.data.token){pm.environment.set('supervisor_token',d.data.token);pm.environment.set('auth_token',d.data.token);}}"
-								]
-							}
-						}
-					],
-					"request": {
-						"auth": {
-							"type": "noauth"
-						},
-						"method": "POST",
-						"header": [
-							{
-								"key": "Content-Type",
-								"value": "application/json"
-							}
-						],
-						"body": {
-							"mode": "raw",
-							"raw": "{\n    \"identifier\": \"supervisor@example.com\",\n    \"password\": \"password\",\n    \"service_token\": \"{{service_token}}\",\n    \"service_name\": \"maham-expo\"\n}"
-						},
-						"url": {
-							"raw": "{{auth_url}}/v1/auth/login",
-							"host": [
-								"{{auth_url}}"
-							],
-							"path": [
-								"v1",
-								"auth",
-								"login"
-							]
-						}
-					}
-				}
-			]
-		},
-		{
-			"name": "Dashboard & Stats",
-			"item": [
-				{
-					"name": "Dashboard",
-					"request": {
-						"method": "GET",
-						"url": {
-							"raw": "{{expo_url}}/v1/manage/dashboard",
-							"host": [
-								"{{expo_url}}"
-							],
-							"path": [
-								"v1",
-								"manage",
-								"dashboard"
-							]
-						}
-					}
-				},
-				{
-					"name": "Statistics",
-					"request": {
-						"method": "GET",
-						"url": {
-							"raw": "{{expo_url}}/v1/manage/statistics",
-							"host": [
-								"{{expo_url}}"
-							],
-							"path": [
-								"v1",
-								"manage",
-								"statistics"
-							]
-						}
-					}
-				}
-			]
-		},
-		{
-			"name": "Events",
-			"item": [
-				{
-					"name": "List Events",
-					"request": {
-						"method": "GET",
-						"url": {
-							"raw": "{{expo_url}}/v1/manage/events",
-							"host": [
-								"{{expo_url}}"
-							],
-							"path": [
-								"v1",
-								"manage",
-								"events"
-							]
-						}
-					}
-				},
-				{
-					"name": "Show Event",
-					"request": {
-						"method": "GET",
-						"url": {
-							"raw": "{{expo_url}}/v1/manage/events/{event_id}",
-							"host": [
-								"{{expo_url}}"
-							],
-							"path": [
-								"v1",
-								"manage",
-								"events",
-								"{event_id}"
-							]
-						}
-					}
-				},
-				{
-					"name": "Event Sections",
-					"request": {
-						"method": "GET",
-						"url": {
-							"raw": "{{expo_url}}/v1/manage/events/{event_id}/sections",
-							"host": [
-								"{{expo_url}}"
-							],
-							"path": [
-								"v1",
-								"manage",
-								"events",
-								"{event_id}",
-								"sections"
-							]
-						}
-					}
-				},
-				{
-					"name": "Event Spaces",
-					"request": {
-						"method": "GET",
-						"url": {
-							"raw": "{{expo_url}}/v1/manage/events/{event_id}/spaces",
-							"host": [
-								"{{expo_url}}"
-							],
-							"path": [
-								"v1",
-								"manage",
-								"events",
-								"{event_id}",
-								"spaces"
-							]
-						}
-					}
-				}
-			]
-		},
-		{
-			"name": "Sections",
-			"item": [
-				{
-					"name": "Show Section",
-					"request": {
-						"method": "GET",
-						"url": {
-							"raw": "{{expo_url}}/v1/manage/sections/{section_id}",
-							"host": [
-								"{{expo_url}}"
-							],
-							"path": [
-								"v1",
-								"manage",
-								"sections",
-								"{section_id}"
-							]
-						}
-					}
-				}
-			]
-		},
-		{
-			"name": "Spaces",
-			"item": [
-				{
-					"name": "Show Space",
-					"request": {
-						"method": "GET",
-						"url": {
-							"raw": "{{expo_url}}/v1/manage/spaces/{space_id}",
-							"host": [
-								"{{expo_url}}"
-							],
-							"path": [
-								"v1",
-								"manage",
-								"spaces",
-								"{space_id}"
-							]
-						}
-					}
-				}
-			]
-		},
-		{
-			"name": "Services",
-			"item": [
-				{
-					"name": "List Services",
-					"request": {
-						"method": "GET",
-						"url": {
-							"raw": "{{expo_url}}/v1/manage/services",
-							"host": [
-								"{{expo_url}}"
-							],
-							"path": [
-								"v1",
-								"manage",
-								"services"
-							]
-						}
-					}
-				},
-				{
-					"name": "Show Service",
-					"request": {
-						"method": "GET",
-						"url": {
-							"raw": "{{expo_url}}/v1/manage/services/{service_id}",
-							"host": [
-								"{{expo_url}}"
-							],
-							"path": [
-								"v1",
-								"manage",
-								"services",
-								"{service_id}"
-							]
-						}
-					}
-				}
-			]
-		},
-		{
-			"name": "Profiles",
-			"item": [
-				{
-					"name": "List Profiles",
-					"request": {
-						"method": "GET",
-						"url": {
-							"raw": "{{expo_url}}/v1/manage/profiles",
-							"host": [
-								"{{expo_url}}"
-							],
-							"path": [
-								"v1",
-								"manage",
-								"profiles"
-							]
-						}
-					}
-				},
-				{
-					"name": "Show Profile",
-					"request": {
-						"method": "GET",
-						"url": {
-							"raw": "{{expo_url}}/v1/manage/profiles/{profile_id}",
-							"host": [
-								"{{expo_url}}"
-							],
-							"path": [
-								"v1",
-								"manage",
-								"profiles",
-								"{profile_id}"
-							]
-						}
-					}
-				},
-				{
-					"name": "Approve Profile",
-					"request": {
-						"method": "PUT",
-						"url": {
-							"raw": "{{expo_url}}/v1/manage/profiles/{profile_id}/approve",
-							"host": [
-								"{{expo_url}}"
-							],
-							"path": [
-								"v1",
-								"manage",
-								"profiles",
-								"{profile_id}",
-								"approve"
-							]
-						}
-					}
-				},
-				{
-					"name": "Reject Profile",
-					"request": {
-						"method": "PUT",
-						"url": {
-							"raw": "{{expo_url}}/v1/manage/profiles/{profile_id}/reject",
-							"host": [
-								"{{expo_url}}"
-							],
-							"path": [
-								"v1",
-								"manage",
-								"profiles",
-								"{profile_id}",
-								"reject"
-							]
-						},
-						"header": [
-							{
-								"key": "Content-Type",
-								"value": "application/json"
-							}
-						],
-						"body": {
-							"mode": "raw",
-							"raw": "{\n    \"reason\": \"Incomplete documentation\"\n}"
-						}
-					}
-				}
-			]
-		},
-		{
-			"name": "Visit Requests",
-			"item": [
-				{
-					"name": "List",
-					"request": {
-						"method": "GET",
-						"url": {
-							"raw": "{{expo_url}}/v1/manage/visit-requests",
-							"host": [
-								"{{expo_url}}"
-							],
-							"path": [
-								"v1",
-								"manage",
-								"visit-requests"
-							]
-						}
-					}
-				},
-				{
-					"name": "Show",
-					"request": {
-						"method": "GET",
-						"url": {
-							"raw": "{{expo_url}}/v1/manage/visit-requests/{visit_request_id}",
-							"host": [
-								"{{expo_url}}"
-							],
-							"path": [
-								"v1",
-								"manage",
-								"visit-requests",
-								"{visit_request_id}"
-							]
-						}
-					}
-				},
-				{
-					"name": "Approve",
-					"request": {
-						"method": "PUT",
-						"url": {
-							"raw": "{{expo_url}}/v1/manage/visit-requests/{visit_request_id}/approve",
-							"host": [
-								"{{expo_url}}"
-							],
-							"path": [
-								"v1",
-								"manage",
-								"visit-requests",
-								"{visit_request_id}",
-								"approve"
-							]
-						}
-					}
-				},
-				{
-					"name": "Reject",
-					"request": {
-						"method": "PUT",
-						"url": {
-							"raw": "{{expo_url}}/v1/manage/visit-requests/{visit_request_id}/reject",
-							"host": [
-								"{{expo_url}}"
-							],
-							"path": [
-								"v1",
-								"manage",
-								"visit-requests",
-								"{visit_request_id}",
-								"reject"
-							]
-						},
-						"header": [
-							{
-								"key": "Content-Type",
-								"value": "application/json"
-							}
-						],
-						"body": {
-							"mode": "raw",
-							"raw": "{\n    \"reason\": \"Schedule conflict\"\n}"
-						}
-					}
-				}
-			]
-		},
-		{
-			"name": "Rental Requests",
-			"item": [
-				{
-					"name": "List",
-					"request": {
-						"method": "GET",
-						"url": {
-							"raw": "{{expo_url}}/v1/manage/rental-requests",
-							"host": [
-								"{{expo_url}}"
-							],
-							"path": [
-								"v1",
-								"manage",
-								"rental-requests"
-							]
-						}
-					}
-				},
-				{
-					"name": "Show",
-					"request": {
-						"method": "GET",
-						"url": {
-							"raw": "{{expo_url}}/v1/manage/rental-requests/{rental_request_id}",
-							"host": [
-								"{{expo_url}}"
-							],
-							"path": [
-								"v1",
-								"manage",
-								"rental-requests",
-								"{rental_request_id}"
-							]
-						}
-					}
-				},
-				{
-					"name": "Approve",
-					"request": {
-						"method": "PUT",
-						"url": {
-							"raw": "{{expo_url}}/v1/manage/rental-requests/{rental_request_id}/approve",
-							"host": [
-								"{{expo_url}}"
-							],
-							"path": [
-								"v1",
-								"manage",
-								"rental-requests",
-								"{rental_request_id}",
-								"approve"
-							]
-						}
-					}
-				},
-				{
-					"name": "Reject",
-					"request": {
-						"method": "PUT",
-						"url": {
-							"raw": "{{expo_url}}/v1/manage/rental-requests/{rental_request_id}/reject",
-							"host": [
-								"{{expo_url}}"
-							],
-							"path": [
-								"v1",
-								"manage",
-								"rental-requests",
-								"{rental_request_id}",
-								"reject"
-							]
-						},
-						"header": [
-							{
-								"key": "Content-Type",
-								"value": "application/json"
-							}
-						],
-						"body": {
-							"mode": "raw",
-							"raw": "{\n    \"reason\": \"Space unavailable\"\n}"
-						}
-					}
-				},
-				{
-					"name": "Record Payment",
-					"request": {
-						"method": "POST",
-						"url": {
-							"raw": "{{expo_url}}/v1/manage/rental-requests/{rental_request_id}/payment",
-							"host": [
-								"{{expo_url}}"
-							],
-							"path": [
-								"v1",
-								"manage",
-								"rental-requests",
-								"{rental_request_id}",
-								"payment"
-							]
-						},
-						"header": [
-							{
-								"key": "Content-Type",
-								"value": "application/json"
-							}
-						],
-						"body": {
-							"mode": "raw",
-							"raw": "{\n    \"amount\": 5000,\n    \"payment_method\": \"bank_transfer\",\n    \"reference_number\": \"PAY-001\",\n    \"notes\": \"Full payment received\"\n}"
-						}
-					}
-				}
-			]
-		},
-		{
-			"name": "Rental Contracts",
-			"item": [
-				{
-					"name": "List",
-					"request": {
-						"method": "GET",
-						"url": {
-							"raw": "{{expo_url}}/v1/manage/rental-contracts",
-							"host": [
-								"{{expo_url}}"
-							],
-							"path": [
-								"v1",
-								"manage",
-								"rental-contracts"
-							]
-						}
-					}
-				},
-				{
-					"name": "Show",
-					"request": {
-						"method": "GET",
-						"url": {
-							"raw": "{{expo_url}}/v1/manage/rental-contracts/{rental_contract_id}",
-							"host": [
-								"{{expo_url}}"
-							],
-							"path": [
-								"v1",
-								"manage",
-								"rental-contracts",
-								"{rental_contract_id}"
-							]
-						}
-					}
-				},
-				{
-					"name": "Approve",
-					"request": {
-						"method": "PUT",
-						"url": {
-							"raw": "{{expo_url}}/v1/manage/rental-contracts/{rental_contract_id}/approve",
-							"host": [
-								"{{expo_url}}"
-							],
-							"path": [
-								"v1",
-								"manage",
-								"rental-contracts",
-								"{rental_contract_id}",
-								"approve"
-							]
-						}
-					}
-				},
-				{
-					"name": "Reject",
-					"request": {
-						"method": "PUT",
-						"url": {
-							"raw": "{{expo_url}}/v1/manage/rental-contracts/{rental_contract_id}/reject",
-							"host": [
-								"{{expo_url}}"
-							],
-							"path": [
-								"v1",
-								"manage",
-								"rental-contracts",
-								"{rental_contract_id}",
-								"reject"
-							]
-						},
-						"header": [
-							{
-								"key": "Content-Type",
-								"value": "application/json"
-							}
-						],
-						"body": {
-							"mode": "raw",
-							"raw": "{\n    \"reason\": \"Terms need revision\"\n}"
-						}
-					}
-				}
-			]
-		},
-		{
-			"name": "Sponsors",
-			"item": [
-				{
-					"name": "List Sponsors",
-					"request": {
-						"method": "GET",
-						"url": {
-							"raw": "{{expo_url}}/v1/manage/sponsors",
-							"host": [
-								"{{expo_url}}"
-							],
-							"path": [
-								"v1",
-								"manage",
-								"sponsors"
-							]
-						}
-					}
-				},
-				{
-					"name": "Show Sponsor",
-					"request": {
-						"method": "GET",
-						"url": {
-							"raw": "{{expo_url}}/v1/manage/sponsors/{sponsor_id}",
-							"host": [
-								"{{expo_url}}"
-							],
-							"path": [
-								"v1",
-								"manage",
-								"sponsors",
-								"{sponsor_id}"
-							]
-						}
-					}
-				}
-			]
-		},
-		{
-			"name": "Sponsor Contracts",
-			"item": [
-				{
-					"name": "List",
-					"request": {
-						"method": "GET",
-						"url": {
-							"raw": "{{expo_url}}/v1/manage/sponsor-contracts",
-							"host": [
-								"{{expo_url}}"
-							],
-							"path": [
-								"v1",
-								"manage",
-								"sponsor-contracts"
-							]
-						}
-					}
-				},
-				{
-					"name": "Show",
-					"request": {
-						"method": "GET",
-						"url": {
-							"raw": "{{expo_url}}/v1/manage/sponsor-contracts/{sponsor_contract_id}",
-							"host": [
-								"{{expo_url}}"
-							],
-							"path": [
-								"v1",
-								"manage",
-								"sponsor-contracts",
-								"{sponsor_contract_id}"
-							]
-						}
-					}
-				},
-				{
-					"name": "Approve",
-					"request": {
-						"method": "PUT",
-						"url": {
-							"raw": "{{expo_url}}/v1/manage/sponsor-contracts/{sponsor_contract_id}/approve",
-							"host": [
-								"{{expo_url}}"
-							],
-							"path": [
-								"v1",
-								"manage",
-								"sponsor-contracts",
-								"{sponsor_contract_id}",
-								"approve"
-							]
-						}
-					}
-				},
-				{
-					"name": "Reject",
-					"request": {
-						"method": "PUT",
-						"url": {
-							"raw": "{{expo_url}}/v1/manage/sponsor-contracts/{sponsor_contract_id}/reject",
-							"host": [
-								"{{expo_url}}"
-							],
-							"path": [
-								"v1",
-								"manage",
-								"sponsor-contracts",
-								"{sponsor_contract_id}",
-								"reject"
-							]
-						},
-						"header": [
-							{
-								"key": "Content-Type",
-								"value": "application/json"
-							}
-						],
-						"body": {
-							"mode": "raw",
-							"raw": "{\n    \"reason\": \"Budget not approved\"\n}"
-						}
-					}
-				}
-			]
-		},
-		{
-			"name": "Support Tickets",
-			"item": [
-				{
-					"name": "List",
-					"request": {
-						"method": "GET",
-						"url": {
-							"raw": "{{expo_url}}/v1/manage/support-tickets",
-							"host": [
-								"{{expo_url}}"
-							],
-							"path": [
-								"v1",
-								"manage",
-								"support-tickets"
-							]
-						}
-					}
-				},
-				{
-					"name": "Show",
-					"request": {
-						"method": "GET",
-						"url": {
-							"raw": "{{expo_url}}/v1/manage/support-tickets/{support_ticket_id}",
-							"host": [
-								"{{expo_url}}"
-							],
-							"path": [
-								"v1",
-								"manage",
-								"support-tickets",
-								"{support_ticket_id}"
-							]
-						}
-					}
-				},
-				{
-					"name": "Reply",
-					"request": {
-						"method": "POST",
-						"url": {
-							"raw": "{{expo_url}}/v1/manage/support-tickets/{support_ticket_id}/reply",
-							"host": [
-								"{{expo_url}}"
-							],
-							"path": [
-								"v1",
-								"manage",
-								"support-tickets",
-								"{support_ticket_id}",
-								"reply"
-							]
-						},
-						"header": [
-							{
-								"key": "Content-Type",
-								"value": "application/json"
-							}
-						],
-						"body": {
-							"mode": "raw",
-							"raw": "{\n    \"message\": \"We are looking into this\"\n}"
-						}
-					}
-				},
-				{
-					"name": "Resolve",
-					"request": {
-						"method": "PUT",
-						"url": {
-							"raw": "{{expo_url}}/v1/manage/support-tickets/{support_ticket_id}/resolve",
-							"host": [
-								"{{expo_url}}"
-							],
-							"path": [
-								"v1",
-								"manage",
-								"support-tickets",
-								"{support_ticket_id}",
-								"resolve"
-							]
-						}
-					}
-				}
-			]
-		},
-		{
-			"name": "My Profile",
-			"item": [
-				{
-					"name": "Get Profile",
-					"request": {
-						"method": "GET",
-						"url": {
-							"raw": "{{expo_url}}/v1/profile",
-							"host": [
-								"{{expo_url}}"
-							],
-							"path": [
-								"v1",
-								"profile"
-							]
-						}
-					}
-				},
-				{
-					"name": "Create Profile",
-					"request": {
-						"method": "POST",
-						"url": {
-							"raw": "{{expo_url}}/v1/profile",
-							"host": [
-								"{{expo_url}}"
-							],
-							"path": [
-								"v1",
-								"profile"
-							]
-						},
-						"header": [
-							{
-								"key": "Content-Type",
-								"value": "application/json"
-							}
-						],
-						"body": {
-							"mode": "raw",
-							"raw": "{\n    \"company_name\": \"Supervisor Office\",\n    \"contact_phone\": \"+966500000030\",\n    \"business_type\": \"individual\"\n}"
-						}
-					}
-				},
-				{
-					"name": "Update Profile",
-					"request": {
-						"method": "PUT",
-						"url": {
-							"raw": "{{expo_url}}/v1/profile",
-							"host": [
-								"{{expo_url}}"
-							],
-							"path": [
-								"v1",
-								"profile"
-							]
-						},
-						"header": [
-							{
-								"key": "Content-Type",
-								"value": "application/json"
-							}
-						],
-						"body": {
-							"mode": "raw",
-							"raw": "{\n    \"company_name\": \"Updated\"\n}"
-						}
-					}
-				}
-			]
-		},
-		{
-			"name": "My Notifications",
-			"item": [
-				{
-					"name": "List",
-					"request": {
-						"method": "GET",
-						"url": {
-							"raw": "{{expo_url}}/v1/notifications",
-							"host": [
-								"{{expo_url}}"
-							],
-							"path": [
-								"v1",
-								"notifications"
-							]
-						}
-					}
-				},
-				{
-					"name": "Unread Count",
-					"request": {
-						"method": "GET",
-						"url": {
-							"raw": "{{expo_url}}/v1/notifications/unread-count",
-							"host": [
-								"{{expo_url}}"
-							],
-							"path": [
-								"v1",
-								"notifications",
-								"unread-count"
-							]
-						}
-					}
-				},
-				{
-					"name": "Mark Read",
-					"request": {
-						"method": "PUT",
-						"url": {
-							"raw": "{{expo_url}}/v1/notifications/{notification_id}/read",
-							"host": [
-								"{{expo_url}}"
-							],
-							"path": [
-								"v1",
-								"notifications",
-								"{notification_id}",
-								"read"
-							]
-						}
-					}
-				},
-				{
-					"name": "Mark All Read",
-					"request": {
-						"method": "PUT",
-						"url": {
-							"raw": "{{expo_url}}/v1/notifications/read-all",
-							"host": [
-								"{{expo_url}}"
-							],
-							"path": [
-								"v1",
-								"notifications",
-								"read-all"
-							]
-						}
-					}
-				}
-			]
-		}
-	]
+  "info": {
+    "_postman_id": "supervisor-collection-001",
+    "name": "Maham Expo - Supervisor",
+    "description": "Supervisor collection — read-only management with approval powers.\n\nIncludes:\n- /v1/manage/ — Read-only views + approve/reject actions\n- Profiles, Users, Visit/Rental Requests, Sponsors, Support Tickets, Ratings\n\n**Headers (auto-added via pre-request):**\n- Accept: application/json\n- Accept-Language: {{language}}\n- X-Platform: {{platform}}",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "auth": {
+    "type": "bearer",
+    "bearer": [{ "key": "token", "value": "{{supervisor_token}}", "type": "string" }]
+  },
+  "event": [
+    {
+      "listen": "prerequest",
+      "script": {
+        "type": "text/javascript",
+        "exec": [
+          "pm.request.headers.add({ key: 'Accept', value: 'application/json' });",
+          "pm.request.headers.add({ key: 'Accept-Language', value: pm.environment.get('language') || 'ar' });",
+          "pm.request.headers.add({ key: 'X-Platform', value: pm.environment.get('platform') || 'web' });"
+        ]
+      }
+    }
+  ],
+  "variable": [],
+  "item": [
+    {
+      "name": "🔐 Auth",
+      "item": [
+        {
+          "name": "Login as Supervisor",
+          "event": [{ "listen": "test", "script": { "type": "text/javascript", "exec": ["var jsonData = pm.response.json();", "if (jsonData.data && jsonData.data.access_token) {", "    pm.environment.set('supervisor_token', jsonData.data.access_token);", "    pm.environment.set('auth_token', jsonData.data.access_token);", "}", "if (jsonData.data && jsonData.data.user) {", "    pm.environment.set('user_id', jsonData.data.user.id);", "}"] } }],
+          "request": {
+            "auth": { "type": "noauth" },
+            "method": "POST",
+            "header": [],
+            "body": { "mode": "raw", "raw": "{\n    \"identifier\": \"supervisor@example.com\",\n    \"password\": \"password\",\n    \"service_token\": \"{{service_token}}\",\n    \"service_name\": \"maham-expo\"\n}", "options": { "raw": { "language": "json" } } },
+            "url": { "raw": "{{auth_url}}/v1/auth/login", "host": ["{{auth_url}}"], "path": ["v1", "auth", "login"] },
+            "description": "Login as Supervisor. Saves `supervisor_token` and `auth_token`."
+          }
+        }
+      ]
+    },
+    {
+      "name": "📊 Dashboard & Statistics",
+      "description": "Read-only dashboard and statistics.\n\n**Permission:** dashboard.view",
+      "item": [
+        { "name": "Dashboard", "request": { "method": "GET", "header": [], "url": { "raw": "{{expo_url}}/v1/manage/dashboard", "host": ["{{expo_url}}"], "path": ["v1", "manage", "dashboard"] } } },
+        { "name": "Statistics", "request": { "method": "GET", "header": [], "url": { "raw": "{{expo_url}}/v1/manage/statistics", "host": ["{{expo_url}}"], "path": ["v1", "manage", "statistics"] } } }
+      ]
+    },
+    {
+      "name": "🎪 Events (Read-Only)",
+      "description": "View events.\n\n**Permission:** events.view",
+      "item": [
+        { "name": "List Events", "request": { "method": "GET", "header": [], "url": { "raw": "{{expo_url}}/v1/manage/events", "host": ["{{expo_url}}"], "path": ["v1", "manage", "events"], "query": [{ "key": "search", "value": "", "disabled": true }, { "key": "status", "value": "", "disabled": true }, { "key": "city_id", "value": "", "disabled": true }, { "key": "category_id", "value": "", "disabled": true }, { "key": "sort_by", "value": "created_at", "disabled": true }, { "key": "sort_order", "value": "desc", "disabled": true }, { "key": "per_page", "value": "15", "disabled": true }] } } },
+        { "name": "Show Event", "request": { "method": "GET", "header": [], "url": { "raw": "{{expo_url}}/v1/manage/events/{{event_id}}", "host": ["{{expo_url}}"], "path": ["v1", "manage", "events", "{{event_id}}"] } } }
+      ]
+    },
+    {
+      "name": "👥 Profiles",
+      "description": "View and approve/reject profiles.\n\n**Permissions:** profiles.view, profiles.approve",
+      "item": [
+        { "name": "List Profiles", "request": { "method": "GET", "header": [], "url": { "raw": "{{expo_url}}/v1/manage/profiles", "host": ["{{expo_url}}"], "path": ["v1", "manage", "profiles"], "query": [{ "key": "search", "value": "", "disabled": true }, { "key": "status", "value": "", "disabled": true }, { "key": "sort_by", "value": "created_at", "disabled": true }, { "key": "sort_order", "value": "desc", "disabled": true }, { "key": "per_page", "value": "15", "disabled": true }] } } },
+        { "name": "Show Profile", "request": { "method": "GET", "header": [], "url": { "raw": "{{expo_url}}/v1/manage/profiles/{{profile_id}}", "host": ["{{expo_url}}"], "path": ["v1", "manage", "profiles", "{{profile_id}}"] } } },
+        { "name": "Approve Profile", "request": { "method": "PUT", "header": [], "url": { "raw": "{{expo_url}}/v1/manage/profiles/{{profile_id}}/approve", "host": ["{{expo_url}}"], "path": ["v1", "manage", "profiles", "{{profile_id}}", "approve"] }, "description": "**Permission:** profiles.approve" } },
+        { "name": "Reject Profile", "request": { "method": "PUT", "header": [], "body": { "mode": "raw", "raw": "{\n    \"reason\": \"Incomplete documents\"\n}", "options": { "raw": { "language": "json" } } }, "url": { "raw": "{{expo_url}}/v1/manage/profiles/{{profile_id}}/reject", "host": ["{{expo_url}}"], "path": ["v1", "manage", "profiles", "{{profile_id}}", "reject"] }, "description": "**Permission:** profiles.approve\n\n**Optional:** reason" } }
+      ]
+    },
+    {
+      "name": "👤 Users Management",
+      "description": "View and moderate users.\n\n**Permissions:** users.view, users.approve, users.suspend",
+      "item": [
+        { "name": "List Users", "request": { "method": "GET", "header": [], "url": { "raw": "{{expo_url}}/v1/manage/users", "host": ["{{expo_url}}"], "path": ["v1", "manage", "users"], "query": [{ "key": "search", "value": "", "disabled": true }, { "key": "role", "value": "", "disabled": true }, { "key": "status", "value": "", "disabled": true }, { "key": "sort_by", "value": "created_at", "disabled": true }, { "key": "sort_order", "value": "desc", "disabled": true }, { "key": "per_page", "value": "15", "disabled": true }] } } },
+        { "name": "Show User", "request": { "method": "GET", "header": [], "url": { "raw": "{{expo_url}}/v1/manage/users/{{user_id}}", "host": ["{{expo_url}}"], "path": ["v1", "manage", "users", "{{user_id}}"] } } },
+        { "name": "Approve User", "request": { "method": "PUT", "header": [], "url": { "raw": "{{expo_url}}/v1/manage/users/{{user_id}}/approve", "host": ["{{expo_url}}"], "path": ["v1", "manage", "users", "{{user_id}}", "approve"] } } },
+        { "name": "Reject User", "request": { "method": "PUT", "header": [], "body": { "mode": "raw", "raw": "{\n    \"reason\": \"Invalid information\"\n}", "options": { "raw": { "language": "json" } } }, "url": { "raw": "{{expo_url}}/v1/manage/users/{{user_id}}/reject", "host": ["{{expo_url}}"], "path": ["v1", "manage", "users", "{{user_id}}", "reject"] } } },
+        { "name": "Suspend User", "request": { "method": "PUT", "header": [], "body": { "mode": "raw", "raw": "{\n    \"reason\": \"Policy violation\"\n}", "options": { "raw": { "language": "json" } } }, "url": { "raw": "{{expo_url}}/v1/manage/users/{{user_id}}/suspend", "host": ["{{expo_url}}"], "path": ["v1", "manage", "users", "{{user_id}}", "suspend"] } } }
+      ]
+    },
+    {
+      "name": "📋 Visit Requests",
+      "description": "View and approve/reject visit requests.\n\n**Permissions:** visit-requests.view-all, visit-requests.approve",
+      "item": [
+        { "name": "List All Visit Requests", "request": { "method": "GET", "header": [], "url": { "raw": "{{expo_url}}/v1/manage/visit-requests", "host": ["{{expo_url}}"], "path": ["v1", "manage", "visit-requests"], "query": [{ "key": "status", "value": "", "disabled": true }, { "key": "event_id", "value": "", "disabled": true }, { "key": "from_date", "value": "", "disabled": true }, { "key": "to_date", "value": "", "disabled": true }, { "key": "search", "value": "", "disabled": true }, { "key": "sort_by", "value": "created_at", "disabled": true }, { "key": "sort_order", "value": "desc", "disabled": true }, { "key": "per_page", "value": "15", "disabled": true }] } } },
+        { "name": "Show Visit Request", "request": { "method": "GET", "header": [], "url": { "raw": "{{expo_url}}/v1/manage/visit-requests/{{visit_request_id}}", "host": ["{{expo_url}}"], "path": ["v1", "manage", "visit-requests", "{{visit_request_id}}"] } } },
+        { "name": "Approve Visit Request", "request": { "method": "PUT", "header": [], "url": { "raw": "{{expo_url}}/v1/manage/visit-requests/{{visit_request_id}}/approve", "host": ["{{expo_url}}"], "path": ["v1", "manage", "visit-requests", "{{visit_request_id}}", "approve"] } } },
+        { "name": "Reject Visit Request", "request": { "method": "PUT", "header": [], "body": { "mode": "raw", "raw": "{\n    \"reason\": \"Date conflict\"\n}", "options": { "raw": { "language": "json" } } }, "url": { "raw": "{{expo_url}}/v1/manage/visit-requests/{{visit_request_id}}/reject", "host": ["{{expo_url}}"], "path": ["v1", "manage", "visit-requests", "{{visit_request_id}}", "reject"] } } }
+      ]
+    },
+    {
+      "name": "🏠 Rental Requests",
+      "description": "View and approve/reject rental requests.\n\n**Permissions:** rental-requests.view-all, rental-requests.approve",
+      "item": [
+        { "name": "List All Rental Requests", "request": { "method": "GET", "header": [], "url": { "raw": "{{expo_url}}/v1/manage/rental-requests", "host": ["{{expo_url}}"], "path": ["v1", "manage", "rental-requests"], "query": [{ "key": "status", "value": "", "disabled": true }, { "key": "payment_status", "value": "", "disabled": true }, { "key": "event_id", "value": "", "disabled": true }, { "key": "space_id", "value": "", "disabled": true }, { "key": "from_date", "value": "", "disabled": true }, { "key": "to_date", "value": "", "disabled": true }, { "key": "search", "value": "", "disabled": true }, { "key": "sort_by", "value": "created_at", "disabled": true }, { "key": "sort_order", "value": "desc", "disabled": true }, { "key": "per_page", "value": "15", "disabled": true }] } } },
+        { "name": "Show Rental Request", "request": { "method": "GET", "header": [], "url": { "raw": "{{expo_url}}/v1/manage/rental-requests/{{rental_request_id}}", "host": ["{{expo_url}}"], "path": ["v1", "manage", "rental-requests", "{{rental_request_id}}"] } } },
+        { "name": "Approve Rental Request", "request": { "method": "PUT", "header": [], "url": { "raw": "{{expo_url}}/v1/manage/rental-requests/{{rental_request_id}}/approve", "host": ["{{expo_url}}"], "path": ["v1", "manage", "rental-requests", "{{rental_request_id}}", "approve"] } } },
+        { "name": "Reject Rental Request", "request": { "method": "PUT", "header": [], "body": { "mode": "raw", "raw": "{\n    \"reason\": \"Payment not verified\"\n}", "options": { "raw": { "language": "json" } } }, "url": { "raw": "{{expo_url}}/v1/manage/rental-requests/{{rental_request_id}}/reject", "host": ["{{expo_url}}"], "path": ["v1", "manage", "rental-requests", "{{rental_request_id}}", "reject"] } } }
+      ]
+    },
+    {
+      "name": "📄 Rental Contracts",
+      "description": "View and approve/reject rental contracts.\n\n**Permissions:** rental-contracts.view-all, rental-contracts.approve",
+      "item": [
+        { "name": "List All Contracts", "request": { "method": "GET", "header": [], "url": { "raw": "{{expo_url}}/v1/manage/rental-contracts", "host": ["{{expo_url}}"], "path": ["v1", "manage", "rental-contracts"], "query": [{ "key": "status", "value": "", "disabled": true }, { "key": "per_page", "value": "15", "disabled": true }] } } },
+        { "name": "Show Contract", "request": { "method": "GET", "header": [], "url": { "raw": "{{expo_url}}/v1/manage/rental-contracts/{{rental_contract_id}}", "host": ["{{expo_url}}"], "path": ["v1", "manage", "rental-contracts", "{{rental_contract_id}}"] } } },
+        { "name": "Approve Contract", "request": { "method": "PUT", "header": [], "url": { "raw": "{{expo_url}}/v1/manage/rental-contracts/{{rental_contract_id}}/approve", "host": ["{{expo_url}}"], "path": ["v1", "manage", "rental-contracts", "{{rental_contract_id}}", "approve"] } } },
+        { "name": "Reject Contract", "request": { "method": "PUT", "header": [], "body": { "mode": "raw", "raw": "{\n    \"reason\": \"Terms not met\"\n}", "options": { "raw": { "language": "json" } } }, "url": { "raw": "{{expo_url}}/v1/manage/rental-contracts/{{rental_contract_id}}/reject", "host": ["{{expo_url}}"], "path": ["v1", "manage", "rental-contracts", "{{rental_contract_id}}", "reject"] } } }
+      ]
+    },
+    {
+      "name": "🤝 Sponsors",
+      "description": "View and moderate sponsors.\n\n**Permissions:** sponsors.view-all, sponsors.approve, sponsors.suspend",
+      "item": [
+        { "name": "List All Sponsors", "request": { "method": "GET", "header": [], "url": { "raw": "{{expo_url}}/v1/manage/sponsors", "host": ["{{expo_url}}"], "path": ["v1", "manage", "sponsors"], "query": [{ "key": "event_id", "value": "", "disabled": true }, { "key": "status", "value": "", "disabled": true }, { "key": "search", "value": "", "disabled": true }, { "key": "sort_by", "value": "created_at", "disabled": true }, { "key": "sort_order", "value": "desc", "disabled": true }, { "key": "per_page", "value": "15", "disabled": true }] } } },
+        { "name": "Show Sponsor", "request": { "method": "GET", "header": [], "url": { "raw": "{{expo_url}}/v1/manage/sponsors/{{sponsor_id}}", "host": ["{{expo_url}}"], "path": ["v1", "manage", "sponsors", "{{sponsor_id}}"] } } },
+        { "name": "Approve Sponsor", "request": { "method": "PUT", "header": [], "url": { "raw": "{{expo_url}}/v1/manage/sponsors/{{sponsor_id}}/approve", "host": ["{{expo_url}}"], "path": ["v1", "manage", "sponsors", "{{sponsor_id}}", "approve"] } } },
+        { "name": "Suspend Sponsor", "request": { "method": "PUT", "header": [], "body": { "mode": "raw", "raw": "{\n    \"reason\": \"Violation of terms\"\n}", "options": { "raw": { "language": "json" } } }, "url": { "raw": "{{expo_url}}/v1/manage/sponsors/{{sponsor_id}}/suspend", "host": ["{{expo_url}}"], "path": ["v1", "manage", "sponsors", "{{sponsor_id}}", "suspend"] } } }
+      ]
+    },
+    {
+      "name": "📋 Sponsor Contracts",
+      "description": "View and approve/reject sponsor contracts.\n\n**Permissions:** sponsor-contracts.view-all, sponsor-contracts.approve",
+      "item": [
+        { "name": "List All Contracts", "request": { "method": "GET", "header": [], "url": { "raw": "{{expo_url}}/v1/manage/sponsor-contracts", "host": ["{{expo_url}}"], "path": ["v1", "manage", "sponsor-contracts"], "query": [{ "key": "status", "value": "", "disabled": true }, { "key": "per_page", "value": "15", "disabled": true }] } } },
+        { "name": "Show Contract", "request": { "method": "GET", "header": [], "url": { "raw": "{{expo_url}}/v1/manage/sponsor-contracts/{{sponsor_contract_id}}", "host": ["{{expo_url}}"], "path": ["v1", "manage", "sponsor-contracts", "{{sponsor_contract_id}}"] } } },
+        { "name": "Approve Contract", "request": { "method": "PUT", "header": [], "url": { "raw": "{{expo_url}}/v1/manage/sponsor-contracts/{{sponsor_contract_id}}/approve", "host": ["{{expo_url}}"], "path": ["v1", "manage", "sponsor-contracts", "{{sponsor_contract_id}}", "approve"] } } },
+        { "name": "Reject Contract", "request": { "method": "PUT", "header": [], "body": { "mode": "raw", "raw": "{\n    \"reason\": \"Missing documentation\"\n}", "options": { "raw": { "language": "json" } } }, "url": { "raw": "{{expo_url}}/v1/manage/sponsor-contracts/{{sponsor_contract_id}}/reject", "host": ["{{expo_url}}"], "path": ["v1", "manage", "sponsor-contracts", "{{sponsor_contract_id}}", "reject"] } } }
+      ]
+    },
+    {
+      "name": "⭐ Ratings",
+      "description": "View and moderate ratings.\n\n**Permissions:** ratings.view-all, ratings.approve",
+      "item": [
+        { "name": "List All Ratings", "request": { "method": "GET", "header": [], "url": { "raw": "{{expo_url}}/v1/manage/ratings", "host": ["{{expo_url}}"], "path": ["v1", "manage", "ratings"], "query": [{ "key": "rateable_type", "value": "", "disabled": true }, { "key": "rateable_id", "value": "", "disabled": true }, { "key": "is_approved", "value": "", "disabled": true }, { "key": "min_rating", "value": "", "disabled": true }, { "key": "search", "value": "", "disabled": true }, { "key": "sort_by", "value": "created_at", "disabled": true }, { "key": "sort_order", "value": "desc", "disabled": true }, { "key": "per_page", "value": "15", "disabled": true }] } } },
+        { "name": "Show Rating", "request": { "method": "GET", "header": [], "url": { "raw": "{{expo_url}}/v1/manage/ratings/{{rating_id}}", "host": ["{{expo_url}}"], "path": ["v1", "manage", "ratings", "{{rating_id}}"] } } },
+        { "name": "Approve Rating", "request": { "method": "PUT", "header": [], "url": { "raw": "{{expo_url}}/v1/manage/ratings/{{rating_id}}/approve", "host": ["{{expo_url}}"], "path": ["v1", "manage", "ratings", "{{rating_id}}", "approve"] } } },
+        { "name": "Reject Rating", "request": { "method": "PUT", "header": [], "body": { "mode": "raw", "raw": "{\n    \"reason\": \"Inappropriate content\"\n}", "options": { "raw": { "language": "json" } } }, "url": { "raw": "{{expo_url}}/v1/manage/ratings/{{rating_id}}/reject", "host": ["{{expo_url}}"], "path": ["v1", "manage", "ratings", "{{rating_id}}", "reject"] } } }
+      ]
+    },
+    {
+      "name": "🎫 Support Tickets",
+      "description": "Full support ticket management.\n\n**Permissions:** support-tickets.view-all, support-tickets.assign, support-tickets.reply, support-tickets.resolve, support-tickets.close",
+      "item": [
+        { "name": "List All Tickets", "request": { "method": "GET", "header": [], "url": { "raw": "{{expo_url}}/v1/manage/support-tickets", "host": ["{{expo_url}}"], "path": ["v1", "manage", "support-tickets"], "query": [{ "key": "status", "value": "", "disabled": true }, { "key": "category", "value": "", "disabled": true }, { "key": "priority", "value": "", "disabled": true }, { "key": "assigned_to", "value": "", "disabled": true }, { "key": "unassigned", "value": "", "disabled": true }, { "key": "user_id", "value": "", "disabled": true }, { "key": "search", "value": "", "disabled": true }, { "key": "sort_by", "value": "created_at", "disabled": true }, { "key": "sort_order", "value": "desc", "disabled": true }, { "key": "per_page", "value": "15", "disabled": true }] } } },
+        { "name": "Show Ticket", "request": { "method": "GET", "header": [], "url": { "raw": "{{expo_url}}/v1/manage/support-tickets/{{support_ticket_id}}", "host": ["{{expo_url}}"], "path": ["v1", "manage", "support-tickets", "{{support_ticket_id}}"] } } },
+        { "name": "Assign Ticket", "request": { "method": "PUT", "header": [], "body": { "mode": "raw", "raw": "{\n    \"assigned_to\": \"{{user_id}}\"\n}", "options": { "raw": { "language": "json" } } }, "url": { "raw": "{{expo_url}}/v1/manage/support-tickets/{{support_ticket_id}}/assign", "host": ["{{expo_url}}"], "path": ["v1", "manage", "support-tickets", "{{support_ticket_id}}", "assign"] } } },
+        { "name": "Reply to Ticket", "request": { "method": "POST", "header": [], "body": { "mode": "raw", "raw": "{\n    \"message\": \"We are looking into this\"\n}", "options": { "raw": { "language": "json" } } }, "url": { "raw": "{{expo_url}}/v1/manage/support-tickets/{{support_ticket_id}}/reply", "host": ["{{expo_url}}"], "path": ["v1", "manage", "support-tickets", "{{support_ticket_id}}", "reply"] } } },
+        { "name": "Resolve Ticket", "request": { "method": "PUT", "header": [], "url": { "raw": "{{expo_url}}/v1/manage/support-tickets/{{support_ticket_id}}/resolve", "host": ["{{expo_url}}"], "path": ["v1", "manage", "support-tickets", "{{support_ticket_id}}", "resolve"] } } },
+        { "name": "Close Ticket", "request": { "method": "PUT", "header": [], "url": { "raw": "{{expo_url}}/v1/manage/support-tickets/{{support_ticket_id}}/close", "host": ["{{expo_url}}"], "path": ["v1", "manage", "support-tickets", "{{support_ticket_id}}", "close"] } } }
+      ]
+    },
+    {
+      "name": "📈 Analytics",
+      "description": "View analytics.\n\n**Permission:** reports.view",
+      "item": [
+        { "name": "Analytics Overview", "request": { "method": "GET", "header": [], "url": { "raw": "{{expo_url}}/v1/manage/analytics", "host": ["{{expo_url}}"], "path": ["v1", "manage", "analytics"], "query": [{ "key": "period", "value": "month", "disabled": true }, { "key": "platform", "value": "", "disabled": true }] } } },
+        { "name": "Views Analytics", "request": { "method": "GET", "header": [], "url": { "raw": "{{expo_url}}/v1/manage/analytics/views", "host": ["{{expo_url}}"], "path": ["v1", "manage", "analytics", "views"], "query": [{ "key": "period", "value": "month", "disabled": true }, { "key": "platform", "value": "", "disabled": true }] } } },
+        { "name": "Actions Analytics", "request": { "method": "GET", "header": [], "url": { "raw": "{{expo_url}}/v1/manage/analytics/actions", "host": ["{{expo_url}}"], "path": ["v1", "manage", "analytics", "actions"], "query": [{ "key": "period", "value": "month", "disabled": true }, { "key": "action", "value": "", "disabled": true }] } } },
+        { "name": "Users Analytics", "request": { "method": "GET", "header": [], "url": { "raw": "{{expo_url}}/v1/manage/analytics/users", "host": ["{{expo_url}}"], "path": ["v1", "manage", "analytics", "users"], "query": [{ "key": "period", "value": "month", "disabled": true }] } } }
+      ]
+    }
+  ]
 }
