@@ -14,8 +14,10 @@ echo ">> Railway PORT: $RAILWAY_PORT"
 # Create .env file from environment variables if not exists
 if [ ! -f .env ]; then
     echo ">> Creating .env file from environment variables..."
-    env | grep -E '^(APP_|DB_|REDIS_|QUEUE_|CACHE_|LOG_|JWT_|SERVICE_|TRUSTED_|MAIL_|SESSION_)' > .env 2>/dev/null || true
-    grep -q "^APP_KEY=" .env 2>/dev/null || echo "APP_KEY=" >> .env
+    env | grep -E '^(APP_|DB_|REDIS_|QUEUE_|CACHE_|LOG_|JWT_|SERVICE_|TRUSTED_|MAIL_|SESSION_|BCRYPT_|FILESYSTEM_)' | while IFS='=' read -r key value; do
+        echo "${key}=\"${value}\""
+    done > .env 2>/dev/null || true
+    grep -q "^APP_KEY=" .env 2>/dev/null || echo 'APP_KEY=""' >> .env
 fi
 
 # Ensure storage directories exist
@@ -69,11 +71,13 @@ if [ "$ROLE_COUNT" = "0" ] || [ -z "$ROLE_COUNT" ]; then
 fi
 
 # Production cache optimization
-echo ">> Caching configuration..."
-php artisan config:cache --no-interaction 2>&1 || true
+# DO NOT cache config — we rely on environment variables at runtime
+echo ">> Caching routes and views..."
+php artisan config:clear --no-interaction 2>&1 || true
 php artisan route:cache --no-interaction 2>&1 || true
 php artisan view:cache --no-interaction 2>&1 || true
 php artisan event:cache --no-interaction 2>&1 || true
+echo ">> Config cache SKIPPED (using env vars at runtime)"
 
 # Storage link
 php artisan storage:link --force --no-interaction 2>/dev/null || true

@@ -225,9 +225,17 @@ trait HasRolesAndPermissions
             return $this->computeAllPermissions();
         }
 
-        return Cache::remember($cacheKey, $ttl, function () {
+        try {
+            return Cache::remember($cacheKey, $ttl, function () {
+                return $this->computeAllPermissions();
+            });
+        } catch (\Throwable $e) {
+            \Illuminate\Support\Facades\Log::warning('Cache unavailable for permissions, computing directly', [
+                'user_id' => $this->id,
+                'error' => $e->getMessage(),
+            ]);
             return $this->computeAllPermissions();
-        });
+        }
     }
 
     protected function computeAllPermissions(): Collection
@@ -304,8 +312,12 @@ trait HasRolesAndPermissions
 
     protected function clearPermissionCache(): void
     {
-        $cacheKey = config('auth-service.cache.prefix', 'auth_') . 'user_permissions_' . $this->id;
-        Cache::forget($cacheKey);
+        try {
+            $cacheKey = config('auth-service.cache.prefix', 'auth_') . 'user_permissions_' . $this->id;
+            Cache::forget($cacheKey);
+        } catch (\Throwable $e) {
+            // Cache unavailable — permission cache will expire naturally
+        }
     }
 
     /* ========================================
