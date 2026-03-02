@@ -83,8 +83,8 @@ services:
       test: ["CMD", "curl", "-f", "http://localhost/api/health"]
       interval: 30s
       timeout: 10s
-      retries: 3
-      start_period: 60s
+      retries: 5
+      start_period: 180s
 
   mysql:
     image: mysql:8.0

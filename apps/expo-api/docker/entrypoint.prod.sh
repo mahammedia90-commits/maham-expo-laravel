@@ -35,16 +35,16 @@ while ! mysqladmin ping -h"${DB_HOST:-expo-mysql}" -P"${DB_PORT:-3306}" --silent
 done
 echo ">> MySQL check completed!"
 
-# Wait for Auth Service to be ready
+# Wait for Auth Service to be ready (non-blocking - don't prevent startup)
 if [ -n "$AUTH_SERVICE_URL" ]; then
-    echo ">> Waiting for Auth Service at ${AUTH_SERVICE_URL}..."
-    auth_retries=30
+    echo ">> Checking Auth Service at ${AUTH_SERVICE_URL}..."
+    auth_retries=10
     auth_count=0
-    while ! php -r "echo @file_get_contents('${AUTH_SERVICE_URL}/api/health') ? 'ok' : 'fail';" 2>/dev/null | grep -q 'ok'; do
+    while ! curl -sf --max-time 3 "${AUTH_SERVICE_URL}/api/health" > /dev/null 2>&1; do
         auth_count=$((auth_count + 1))
         if [ $auth_count -ge $auth_retries ]; then
-            echo ">> WARNING: Auth Service not ready after ${auth_retries} attempts"
-            echo ">> Continuing anyway..."
+            echo ">> WARNING: Auth Service not ready yet - will retry at runtime"
+            echo ">> Expo API will start anyway (auth requests will retry)"
             break
         fi
         echo ">> Waiting for Auth Service... ($auth_count/$auth_retries)"

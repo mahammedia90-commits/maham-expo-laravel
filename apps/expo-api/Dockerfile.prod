@@ -42,6 +42,9 @@ FROM base AS production
 
 COPY --from=build /var/www/html /var/www/html
 
+# PHP-FPM production config (controls worker count & memory)
+COPY docker/php-fpm-prod.conf /usr/local/etc/php-fpm.d/www.conf
+
 # Nginx config
 COPY docker/nginx.conf /etc/nginx/sites-available/default
 RUN rm -f /etc/nginx/sites-enabled/default && \
