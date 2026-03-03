@@ -82,8 +82,6 @@ if [ ! -f "$ENV_FILE" ]; then
     EXPO_DB_PASS=$(openssl rand -hex 16)
     EXPO_ROOT_PASS=$(openssl rand -hex 16)
     JWT=$(openssl rand -hex 32)
-    SVC_TOKEN=$(openssl rand -hex 32)
-
     cat > "$ENV_FILE" <<EOF
 # Auto-generated on $(date)
 AUTH_APP_URL=https://auth-service-api.mahamexpo.sa
@@ -98,7 +96,6 @@ EXPO_DB_PASSWORD=$EXPO_DB_PASS
 EXPO_MYSQL_ROOT_PASSWORD=$EXPO_ROOT_PASS
 REDIS_PASSWORD=
 JWT_SECRET=$JWT
-SERVICE_TOKEN=$SVC_TOKEN
 TRUSTED_SERVICE_IPS=172.0.0.0/8,10.0.0.0/8,192.168.0.0/16
 EOF
 
@@ -107,7 +104,6 @@ EOF
     echo "   AUTH_DB_PASSWORD=$AUTH_DB_PASS"
     echo "   EXPO_DB_PASSWORD=$EXPO_DB_PASS"
     echo "   JWT_SECRET=$JWT"
-    echo "   SERVICE_TOKEN=$SVC_TOKEN"
 else
     echo -e "${YELLOW}>> .env already exists, skipping...${NC}"
 fi
