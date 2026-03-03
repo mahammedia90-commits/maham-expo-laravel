@@ -18,9 +18,6 @@ use Illuminate\Support\Facades\Route;
 // Health Check (controller-based so route:cache works in production)
 Route::get('/health', HealthController::class);
 
-// TEMPORARY diagnostic route — remove after debugging
-Route::get('/diagnose', [HealthController::class, 'diagnose']);
-
 Route::prefix('v1')->group(function () {
 
 /* 
