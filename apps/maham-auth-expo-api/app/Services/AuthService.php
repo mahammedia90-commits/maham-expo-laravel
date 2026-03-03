@@ -3,7 +3,6 @@
 namespace App\Services;
 
 use App\Models\User;
-use App\Models\Service;
 use App\Mail\PasswordResetMail; 
 use App\Mail\EmailVerificationMail; 
 use App\Models\RefreshToken; 
@@ -42,7 +41,7 @@ class AuthService
     /**
      * تسجيل الدخول
      */
-    public function login(array $credentials, string $ip = null, ?Service $service = null): array
+    public function login(array $credentials, string $ip = null): array
     {
         $identifier = $credentials['identifier'];
         $identifierType = $credentials['identifier_type'] ?? 'email';
@@ -84,20 +83,6 @@ class AuthService
             ];
         }
 
-        // التحقق من أن المستخدم لديه صلاحية استخدام الخدمة
-        if ($service && !$service->canUserAccess($user)) {
-            $this->auditService->log('login_blocked', $user, [
-                'ip' => $ip,
-                'reason' => 'User role not allowed for this service',
-                'service' => $service->name,
-            ]);
-
-            return [
-                'success' => false,
-                'message' => 'ليس لديك صلاحية للدخول إلى هذه الخدمة',
-            ];
-        }
-
         // توليد التوكن
         $token = $this->generateToken($user);
 
@@ -107,7 +92,6 @@ class AuthService
         // تسجيل الحدث
         $this->auditService->log('login', $user, [
             'ip' => $ip,
-            'service' => $service?->name,
         ]);
 
         return [

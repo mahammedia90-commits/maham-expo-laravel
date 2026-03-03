@@ -40,11 +40,6 @@
 			"description": "JWT access token"
 		},
 		{
-			"key": "service_token",
-			"value": "",
-			"description": "Service-to-service token"
-		},
-		{
 			"key": "user_id",
 			"value": "",
 			"description": "Current user ID"
@@ -60,7 +55,7 @@
 			"description": "Permission ID for permission operations"
 		},
 		{
-			"key": "service_token_id",
+			"key": "service_id",
 			"value": "",
 			"description": "Service record ID for service operations"
 		},
@@ -166,7 +161,7 @@
 						],
 						"body": {
 							"mode": "raw",
-							"raw": "{\n\t\"identifier\": \"john@example.com\",\n\t\"password\": \"password123\",\n\t\"service_token\": \"{{service_token}}\",\n\t\"service_name\": \"maham-expo\"\n}",
+							"raw": "{\n\t\"identifier\": \"john@example.com\",\n\t\"password\": \"password123\"\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -178,7 +173,7 @@
 							"host": ["{{auth_url}}"],
 							"path": ["v1", "auth", "login"]
 						},
-						"description": "Login with email or phone. Rate limited to 10 requests per minute.\n\n**Authentication:** None required\n\n**Required fields:**\n- `identifier` (string) — Email or phone number\n- `password` (string) — Account password\n\n**Optional fields:**\n- `service_token` (string) — Service token for S2S context\n- `service_name` (string) — Name of the calling service\n\n**Test script:** Automatically saves `access_token` to `auth_token` and `user.id` to `user_id` environment variables."
+						"description": "Login with email or phone. Rate limited to 10 requests per minute.\n\n**Authentication:** None required\n\n**Required fields:**\n- `identifier` (string) — Email or phone number\n- `password` (string) — Account password\n\n**Test script:** Automatically saves `access_token` to `auth_token` and `user.id` to `user_id` environment variables."
 					},
 					"response": []
 				},
@@ -472,7 +467,7 @@
 		},
 		{
 			"name": "🔌 Service (S2S)",
-			"description": "Service-to-service (S2S) endpoints. These use the X-Service-Token header instead of Bearer token authentication.",
+			"description": "Service-to-service (S2S) endpoints. Internal Docker network — no authentication required.",
 			"item": [
 				{
 					"name": "Verify User Token",
@@ -485,11 +480,6 @@
 							{
 								"key": "Content-Type",
 								"value": "application/json"
-							},
-							{
-								"key": "X-Service-Token",
-								"value": "{{service_token}}",
-								"description": "Service-to-service authentication token"
 							}
 						],
 						"body": {
@@ -506,7 +496,7 @@
 							"host": ["{{auth_url}}"],
 							"path": ["v1", "service", "verify-token"]
 						},
-						"description": "Verify a user's JWT token via service-to-service call.\n\n**Authentication:** X-Service-Token header (no Bearer token)\n\n**Required fields:**\n- `token` (string) — The user's JWT token to verify\n\n**Notes:** This is a S2S endpoint. Auth is handled via the X-Service-Token header, not Bearer token."
+						"description": "Verify a user's JWT token via service-to-service call.\n\n**Authentication:** None (internal Docker network)\n\n**Required fields:**\n- `token` (string) — The user's JWT token to verify"
 					},
 					"response": []
 				},
@@ -521,11 +511,6 @@
 							{
 								"key": "Content-Type",
 								"value": "application/json"
-							},
-							{
-								"key": "X-Service-Token",
-								"value": "{{service_token}}",
-								"description": "Service-to-service authentication token"
 							}
 						],
 						"body": {
@@ -542,7 +527,7 @@
 							"host": ["{{auth_url}}"],
 							"path": ["v1", "service", "check-permission"]
 						},
-						"description": "Check if a user has a specific permission via service-to-service call.\n\n**Authentication:** X-Service-Token header (no Bearer token)\n\n**Required fields:**\n- `token` (string) — The user's JWT token\n- `permission` (string) — Permission name to check\n\n**Notes:** This is a S2S endpoint. Auth is handled via the X-Service-Token header, not Bearer token."
+						"description": "Check if a user has a specific permission via service-to-service call.\n\n**Authentication:** None (internal Docker network)\n\n**Required fields:**\n- `token` (string) — The user's JWT token\n- `permission` (string) — Permission name to check"
 					},
 					"response": []
 				},
@@ -557,11 +542,6 @@
 							{
 								"key": "Content-Type",
 								"value": "application/json"
-							},
-							{
-								"key": "X-Service-Token",
-								"value": "{{service_token}}",
-								"description": "Service-to-service authentication token"
 							}
 						],
 						"body": {
@@ -578,7 +558,7 @@
 							"host": ["{{auth_url}}"],
 							"path": ["v1", "service", "user-info"]
 						},
-						"description": "Get user information from a JWT token via service-to-service call.\n\n**Authentication:** X-Service-Token header (no Bearer token)\n\n**Required fields:**\n- `token` (string) — The user's JWT token\n\n**Notes:** This is a S2S endpoint. Auth is handled via the X-Service-Token header, not Bearer token."
+						"description": "Get user information from a JWT token via service-to-service call.\n\n**Authentication:** None (internal Docker network)\n\n**Required fields:**\n- `token` (string) — The user's JWT token"
 					},
 					"response": []
 				}
@@ -1268,11 +1248,11 @@
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "{{auth_url}}/v1/services/{{service_token_id}}",
+							"raw": "{{auth_url}}/v1/services/{{service_id}}",
 							"host": ["{{auth_url}}"],
-							"path": ["v1", "services", "{{service_token_id}}"]
+							"path": ["v1", "services", "{{service_id}}"]
 						},
-						"description": "Get details of a specific service.\n\n**Authentication:** Bearer token required\n\n**Permission:** `services.view`\n\n**Path parameters:**\n- `service_token_id` — The service record's ID"
+						"description": "Get details of a specific service.\n\n**Authentication:** Bearer token required\n\n**Permission:** `services.view`\n\n**Path parameters:**\n- `service_id` — The service record's ID"
 					},
 					"response": []
 				},
@@ -1296,11 +1276,11 @@
 							}
 						},
 						"url": {
-							"raw": "{{auth_url}}/v1/services/{{service_token_id}}",
+							"raw": "{{auth_url}}/v1/services/{{service_id}}",
 							"host": ["{{auth_url}}"],
-							"path": ["v1", "services", "{{service_token_id}}"]
+							"path": ["v1", "services", "{{service_id}}"]
 						},
-						"description": "Update a specific service.\n\n**Authentication:** Bearer token required\n\n**Permission:** `services.update`\n\n**Path parameters:**\n- `service_token_id` — The service record's ID\n\n**Optional fields:**\n- `name` (string) — Updated service name\n- `description` (string) — Updated description\n- `is_active` (boolean) — Enable or disable the service\n- `roles` (array of strings) — Updated roles this service can access"
+						"description": "Update a specific service.\n\n**Authentication:** Bearer token required\n\n**Permission:** `services.update`\n\n**Path parameters:**\n- `service_id` — The service record's ID\n\n**Optional fields:**\n- `name` (string) — Updated service name\n- `description` (string) — Updated description\n- `is_active` (boolean) — Enable or disable the service\n- `roles` (array of strings) — Updated roles this service can access"
 					},
 					"response": []
 				},
@@ -1310,11 +1290,11 @@
 						"method": "DELETE",
 						"header": [],
 						"url": {
-							"raw": "{{auth_url}}/v1/services/{{service_token_id}}",
+							"raw": "{{auth_url}}/v1/services/{{service_id}}",
 							"host": ["{{auth_url}}"],
-							"path": ["v1", "services", "{{service_token_id}}"]
+							"path": ["v1", "services", "{{service_id}}"]
 						},
-						"description": "Delete a specific service.\n\n**Authentication:** Bearer token required\n\n**Permission:** `services.delete`\n\n**Path parameters:**\n- `service_token_id` — The service record's ID"
+						"description": "Delete a specific service.\n\n**Authentication:** Bearer token required\n\n**Permission:** `services.delete`\n\n**Path parameters:**\n- `service_id` — The service record's ID"
 					},
 					"response": []
 				},
@@ -1324,11 +1304,11 @@
 						"method": "POST",
 						"header": [],
 						"url": {
-							"raw": "{{auth_url}}/v1/services/{{service_token_id}}/regenerate-token",
+							"raw": "{{auth_url}}/v1/services/{{service_id}}/regenerate-token",
 							"host": ["{{auth_url}}"],
-							"path": ["v1", "services", "{{service_token_id}}", "regenerate-token"]
+							"path": ["v1", "services", "{{service_id}}", "regenerate-token"]
 						},
-						"description": "Regenerate the service token for a specific service. The old token will be invalidated.\n\n**Authentication:** Bearer token required\n\n**Permission:** `services.update`\n\n**Path parameters:**\n- `service_token_id` — The service record's ID"
+						"description": "Regenerate the service token for a specific service. The old token will be invalidated.\n\n**Authentication:** Bearer token required\n\n**Permission:** `services.update`\n\n**Path parameters:**\n- `service_id` — The service record's ID"
 					},
 					"response": []
 				},
@@ -1338,11 +1318,11 @@
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "{{auth_url}}/v1/services/{{service_token_id}}/roles",
+							"raw": "{{auth_url}}/v1/services/{{service_id}}/roles",
 							"host": ["{{auth_url}}"],
-							"path": ["v1", "services", "{{service_token_id}}", "roles"]
+							"path": ["v1", "services", "{{service_id}}", "roles"]
 						},
-						"description": "Get all roles assigned to a specific service.\n\n**Authentication:** Bearer token required\n\n**Permission:** `services.view`\n\n**Path parameters:**\n- `service_token_id` — The service record's ID"
+						"description": "Get all roles assigned to a specific service.\n\n**Authentication:** Bearer token required\n\n**Permission:** `services.view`\n\n**Path parameters:**\n- `service_id` — The service record's ID"
 					},
 					"response": []
 				},
@@ -1366,11 +1346,11 @@
 							}
 						},
 						"url": {
-							"raw": "{{auth_url}}/v1/services/{{service_token_id}}/roles",
+							"raw": "{{auth_url}}/v1/services/{{service_id}}/roles",
 							"host": ["{{auth_url}}"],
-							"path": ["v1", "services", "{{service_token_id}}", "roles"]
+							"path": ["v1", "services", "{{service_id}}", "roles"]
 						},
-						"description": "Assign additional roles to a specific service.\n\n**Authentication:** Bearer token required\n\n**Permission:** `services.update`\n\n**Path parameters:**\n- `service_token_id` — The service record's ID\n\n**Required fields:**\n- `roles` (array of strings) — Role names to assign"
+						"description": "Assign additional roles to a specific service.\n\n**Authentication:** Bearer token required\n\n**Permission:** `services.update`\n\n**Path parameters:**\n- `service_id` — The service record's ID\n\n**Required fields:**\n- `roles` (array of strings) — Role names to assign"
 					},
 					"response": []
 				},
@@ -1394,11 +1374,11 @@
 							}
 						},
 						"url": {
-							"raw": "{{auth_url}}/v1/services/{{service_token_id}}/roles",
+							"raw": "{{auth_url}}/v1/services/{{service_id}}/roles",
 							"host": ["{{auth_url}}"],
-							"path": ["v1", "services", "{{service_token_id}}", "roles"]
+							"path": ["v1", "services", "{{service_id}}", "roles"]
 						},
-						"description": "Sync (replace) all roles for a specific service. Roles not in the provided list will be removed.\n\n**Authentication:** Bearer token required\n\n**Permission:** `services.update`\n\n**Path parameters:**\n- `service_token_id` — The service record's ID\n\n**Required fields:**\n- `roles` (array of strings) — Complete list of role names to sync"
+						"description": "Sync (replace) all roles for a specific service. Roles not in the provided list will be removed.\n\n**Authentication:** Bearer token required\n\n**Permission:** `services.update`\n\n**Path parameters:**\n- `service_id` — The service record's ID\n\n**Required fields:**\n- `roles` (array of strings) — Complete list of role names to sync"
 					},
 					"response": []
 				},
@@ -1422,11 +1402,11 @@
 							}
 						},
 						"url": {
-							"raw": "{{auth_url}}/v1/services/{{service_token_id}}/roles",
+							"raw": "{{auth_url}}/v1/services/{{service_id}}/roles",
 							"host": ["{{auth_url}}"],
-							"path": ["v1", "services", "{{service_token_id}}", "roles"]
+							"path": ["v1", "services", "{{service_id}}", "roles"]
 						},
-						"description": "Remove specific roles from a service.\n\n**Authentication:** Bearer token required\n\n**Permission:** `services.update`\n\n**Path parameters:**\n- `service_token_id` — The service record's ID\n\n**Required fields:**\n- `roles` (array of strings) — Role names to remove"
+						"description": "Remove specific roles from a service.\n\n**Authentication:** Bearer token required\n\n**Permission:** `services.update`\n\n**Path parameters:**\n- `service_id` — The service record's ID\n\n**Required fields:**\n- `roles` (array of strings) — Role names to remove"
 					},
 					"response": []
 				}

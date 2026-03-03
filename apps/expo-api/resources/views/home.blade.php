@@ -1996,7 +1996,6 @@
                         $requiredVars = [
                             ['APP_KEY', 'base64:xxxxx', 'مفتاح التشفير الرئيسي للتطبيق', 'php artisan key:generate --show'],
                             ['DB_PASSWORD', '-', 'كلمة سر قاعدة البيانات MySQL', ''],
-                            ['AUTH_SERVICE_TOKEN', '-', 'توكن الاتصال بخدمة المصادقة (S2S)', 'openssl rand -hex 32'],
                         ];
                     @endphp
                     @foreach($requiredVars as $v)

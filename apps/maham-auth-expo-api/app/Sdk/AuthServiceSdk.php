@@ -14,21 +14,19 @@ use Illuminate\Support\Facades\Cache;
  * composer require your-org/auth-sdk
  * 
  * Usage:
- * $authSdk = new AuthServiceSdk(config('services.auth.url'), config('services.auth.token'));
+ * $authSdk = new AuthServiceSdk(config('services.auth.url'));
  * $user = $authSdk->verifyToken($token);
  */
 class AuthServiceSdk
 {
     protected string $baseUrl;
-    protected string $serviceToken;
     protected int $timeout = 5;
     protected bool $cacheEnabled = true;
     protected int $cacheTtl = 300; // 5 minutes
 
-    public function __construct(string $baseUrl, string $serviceToken)
+    public function __construct(string $baseUrl)
     {
         $this->baseUrl = rtrim($baseUrl, '/');
-        $this->serviceToken = $serviceToken;
     }
 
     /**
@@ -149,7 +147,6 @@ class AuthServiceSdk
     {
         try {
             $response = Http::withHeaders([
-                'X-Service-Token' => $this->serviceToken,
                 'Accept' => 'application/json',
             ])
             ->timeout($this->timeout)
@@ -180,8 +177,7 @@ class AuthServiceSdkMiddleware
     public function __construct()
     {
         $this->authSdk = new AuthServiceSdk(
-            config('services.auth.url'),
-            config('services.auth.token')
+            config('services.auth.url')
         );
     }
 

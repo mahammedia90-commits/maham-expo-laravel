@@ -16,8 +16,6 @@ class LoginRequest extends FormRequest
         return [
             'identifier' => ['required', 'string'],
             'password' => ['required', 'string'],
-            'service_token' => ['nullable', 'string'],
-            'service_name' => ['nullable', 'string'],
         ];
     }
 

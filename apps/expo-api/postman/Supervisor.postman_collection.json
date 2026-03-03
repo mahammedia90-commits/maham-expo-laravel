@@ -34,7 +34,7 @@
             "auth": { "type": "noauth" },
             "method": "POST",
             "header": [],
-            "body": { "mode": "raw", "raw": "{\n    \"identifier\": \"supervisor@example.com\",\n    \"password\": \"password\",\n    \"service_token\": \"{{service_token}}\",\n    \"service_name\": \"maham-expo\"\n}", "options": { "raw": { "language": "json" } } },
+            "body": { "mode": "raw", "raw": "{\n    \"identifier\": \"supervisor@example.com\",\n    \"password\": \"password\",\n}", "options": { "raw": { "language": "json" } } },
             "url": { "raw": "{{auth_url}}/v1/auth/login", "host": ["{{auth_url}}"], "path": ["v1", "auth", "login"] },
             "description": "Login as Supervisor. Saves `supervisor_token` and `auth_token`."
           }

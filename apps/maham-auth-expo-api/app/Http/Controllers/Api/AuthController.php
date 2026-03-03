@@ -10,7 +10,6 @@ use App\Http\Requests\ResetPasswordRequest;
 use App\Http\Requests\ChangePasswordRequest;
 use App\Http\Requests\UpdateProfileRequest;
 use App\Models\User;
-use App\Models\Service;
 use App\Services\AuthService;
 use App\Services\AuditService;
 use App\Support\ApiErrorCode;
@@ -60,31 +59,7 @@ class AuthController extends Controller
             'password' => $request->input('password'),
         ];
 
-        // التحقق من الخدمة إذا تم تمرير service_token أو service_name
-        $service = null;
-        if ($request->has('service_token')) {
-            $service = Service::validateToken($request->input('service_token'));
-            if (!$service) {
-                return response()->json([
-                    'success' => false,
-                    'code' => ApiErrorCode::SERVICE_TOKEN_INVALID,
-                    'message' => 'توكن الخدمة غير صالح',
-                ], 401);
-            }
-        } elseif ($request->has('service_name')) {
-            $service = Service::where('name', $request->input('service_name'))
-                ->where('status', 'active')
-                ->first();
-            if (!$service) {
-                return response()->json([
-                    'success' => false,
-                    'code' => ApiErrorCode::SERVICE_TOKEN_INVALID,
-                    'message' => 'الخدمة غير موجودة أو غير نشطة',
-                ], 401);
-            }
-        }
-
-        $result = $this->authService->login($credentials, $request->ip(), $service);
+        $result = $this->authService->login($credentials, $request->ip());
 
         if (!$result['success']) {
             return response()->json([

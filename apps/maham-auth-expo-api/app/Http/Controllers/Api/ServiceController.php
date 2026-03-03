@@ -288,7 +288,8 @@ class ServiceController extends Controller
 
     /* ========================================
      * Service-to-Service Endpoints
-     * هذه الـ endpoints للاستخدام من الخدمات الأخرى
+     * هذه الـ endpoints للاستخدام الداخلي بين الخدمات (Docker network)
+     * لا تحتاج مصادقة — الحماية عبر الشبكة الداخلية
      * ======================================== */
 
     /**
@@ -297,38 +298,6 @@ class ServiceController extends Controller
   
     public function verifyUserToken(Request $request): JsonResponse
     {
-        $serviceToken = $request->header('X-Service-Token');
-
-        // التحقق من config token أولاً (للتطوير)
-        $configToken = config('auth-service.service_token');
-        $isConfigToken = $serviceToken && $serviceToken === $configToken;
-        $service = null;
-
-        if (!$isConfigToken) {
-            $service = Service::validateToken($serviceToken);
-
-            if (!$service) {
-                return response()->json([
-                    'success' => false,
-                    'message' => 'خدمة غير موثقة',
-                ], 401);
-            }
-
-            // التحقق من IP
-            if (!$service->isIpAllowed($request->ip())) {
-                $service->logUsage('verify_token', [
-                    'ip_address' => $request->ip(),
-                    'success' => false,
-                    'error' => 'IP not allowed',
-                ]);
-
-                return response()->json([
-                    'success' => false,
-                    'message' => 'IP غير مسموح',
-                ], 403);
-            }
-        } 
-
         $userToken = $request->input('token');
 
         try {
@@ -337,15 +306,6 @@ class ServiceController extends Controller
 
             if (!$user || !$user->isActive()) {
                 throw new \Exception('User not found or inactive');
-            }
-
-            // Log only if using database service
-            if ($service) {
-                $service->logUsage('verify_token', [
-                    'user_id' => $user->id,
-                    'ip_address' => $request->ip(),
-                    'success' => true,
-                ]);
             }
 
             return response()->json([
@@ -365,15 +325,6 @@ class ServiceController extends Controller
                 ]
             ]);
         } catch (\Exception $e) {
-            // Log only if using database service
-            if ($service) {
-                $service->logUsage('verify_token', [
-                    'ip_address' => $request->ip(),
-                    'success' => false,
-                    'error' => $e->getMessage(),
-                ]);
-            }
-
             return response()->json([
                 'success' => false,
                 'message' => 'توكن غير صالح',
@@ -387,36 +338,10 @@ class ServiceController extends Controller
    
     public function checkUserPermission(Request $request): JsonResponse
     {
-        $serviceToken = $request->header('X-Service-Token');
-
-        // التحقق من config token أولاً
-        $configToken = config('auth-service.service_token');
-        $isConfigToken = $serviceToken && $serviceToken === $configToken;
-        $service = null;
-
-        if (!$isConfigToken) {
-            $service = Service::validateToken($serviceToken);
-
-            if (!$service) {
-                return response()->json([
-                    'success' => false,
-                    'message' => 'خدمة غير موثقة',
-                ], 401);
-            }
-        }
-
         $request->validate([
             'user_id' => 'required|uuid',
             'permission' => 'required|string',
         ]);
-
-        // التحقق من أن الخدمة مسموح لها بفحص هذه الصلاحية (فقط للخدمات المسجلة)
-        if ($service && !$service->canCheckPermission($request->permission)) {
-            return response()->json([
-                'success' => false,
-                'message' => 'الخدمة غير مصرح لها بفحص هذه الصلاحية',
-            ], 403);
-        }
 
         $user = User::find($request->user_id);
 
@@ -428,20 +353,6 @@ class ServiceController extends Controller
         }
 
         $hasPermission = $user->hasPermissionTo($request->permission);
-
-        if ($service) {
-            $service->logUsage('check_permission', [
-                'user_id' => $user->id,
-                'ip_address' => $request->ip(),
-                'request' => [
-                    'permission' => $request->permission,
-                ],
-                'response' => [
-                    'has_permission' => $hasPermission,
-                ],
-                'success' => true,
-            ]);
-        }
 
         return response()->json([
             'success' => true,
@@ -459,24 +370,6 @@ class ServiceController extends Controller
     
     public function getUserInfo(Request $request): JsonResponse
     {
-        $serviceToken = $request->header('X-Service-Token');
-
-        // التحقق من config token أولاً
-        $configToken = config('auth-service.service_token');
-        $isConfigToken = $serviceToken && $serviceToken === $configToken;
-        $service = null;
-
-        if (!$isConfigToken) {
-            $service = Service::validateToken($serviceToken);
-
-            if (!$service) {
-                return response()->json([
-                    'success' => false,
-                    'message' => 'خدمة غير موثقة',
-                ], 401);
-            }
-        }
-
         $request->validate([
             'user_id' => 'required|uuid',
         ]);
@@ -488,14 +381,6 @@ class ServiceController extends Controller
                 'success' => false,
                 'message' => 'المستخدم غير موجود',
             ], 404);
-        }
-
-        if ($service) {
-            $service->logUsage('get_user', [
-                'user_id' => $user->id,
-                'ip_address' => $request->ip(),
-                'success' => true,
-            ]);
         }
 
         return response()->json([
@@ -510,29 +395,5 @@ class ServiceController extends Controller
                 'permissions' => $user->getAllPermissions()->toArray(),
             ]
         ]);
-    }
-
-    /**
-     * Helper: التحقق من طلب الخدمة
-     */
-    protected function validateServiceRequest(Request $request): ?Service
-    {
-        $serviceToken = $request->header('X-Service-Token');
-
-        if (!$serviceToken) {
-            return null;
-        }
-
-        $service = Service::validateToken($serviceToken);
-
-        if (!$service) {
-            return null;
-        }
-
-        if (!$service->isIpAllowed($request->ip())) {
-            return null;
-        }
-
-        return $service;
     }
 }

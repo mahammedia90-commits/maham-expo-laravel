@@ -117,8 +117,6 @@ class ApiErrorCode
     public const SERVICE_DELETION_FAILED = 'service_deletion_failed';
     public const SERVICE_DISABLED = 'service_disabled';
     public const SERVICE_SUSPENDED = 'service_suspended';
-    public const SERVICE_TOKEN_INVALID = 'service_token_invalid';
-    public const SERVICE_TOKEN_REQUIRED = 'service_token_required';
     public const SERVICE_IP_NOT_ALLOWED = 'service_ip_not_allowed';
     public const SERVICE_PERMISSION_DENIED = 'service_permission_denied';
     public const SERVICE_COMMUNICATION_FAILED = 'service_communication_failed';
@@ -219,8 +217,6 @@ class ApiErrorCode
             self::TOKEN_MALFORMED,
             self::TOKEN_SIGNATURE_INVALID,
             self::INVALID_PASSWORD,
-            self::SERVICE_TOKEN_INVALID,
-            self::SERVICE_TOKEN_REQUIRED,
             self::OTP_INVALID,
             self::OTP_EXPIRED,
             self::PASSWORD_RESET_TOKEN_INVALID,
@@ -465,8 +461,6 @@ class ApiErrorCode
                 self::SERVICE_DELETION_FAILED,
                 self::SERVICE_DISABLED,
                 self::SERVICE_SUSPENDED,
-                self::SERVICE_TOKEN_INVALID,
-                self::SERVICE_TOKEN_REQUIRED,
                 self::SERVICE_IP_NOT_ALLOWED,
                 self::SERVICE_PERMISSION_DENIED,
                 self::SERVICE_COMMUNICATION_FAILED,

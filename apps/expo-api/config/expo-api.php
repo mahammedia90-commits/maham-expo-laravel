@@ -17,7 +17,6 @@ return [
     */
     'auth_service' => [
         'url' => env('AUTH_SERVICE_URL', 'http://localhost:8001'),
-        'token' => env('AUTH_SERVICE_TOKEN', env('SERVICE_TOKEN')),
         'timeout' => env('AUTH_SERVICE_TIMEOUT', 5),
         'cache_ttl' => env('AUTH_SERVICE_CACHE_TTL', 300), // 5 minutes
     ],

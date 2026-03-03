@@ -92,8 +92,8 @@ Route::prefix('auth')->group(function () {
 
 /*
 |--------------------------------------------------------------------------
-| Service-to-Service Routes
-| يتم التحقق عبر X-Service-Token header
+| Service-to-Service Routes (Internal Docker Network)
+| هذه المسارات للاستخدام الداخلي بين الخدمات فقط
 |--------------------------------------------------------------------------
 */
 Route::prefix('service')->group(function () {

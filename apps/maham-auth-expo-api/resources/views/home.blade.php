@@ -276,16 +276,6 @@
                             <span class="text-[10px] text-rose-400 font-bold">required</span>
                             <span class="text-xs text-gray-500">string - كلمة المرور</span>
                         </div>
-                        <div class="flex items-start gap-2">
-                            <code class="text-xs bg-white/5 px-2 py-0.5 rounded text-indigo-300 font-mono">service_token</code>
-                            <span class="text-[10px] text-gray-500 font-bold">optional</span>
-                            <span class="text-xs text-gray-500">string - توكن الخدمة</span>
-                        </div>
-                        <div class="flex items-start gap-2">
-                            <code class="text-xs bg-white/5 px-2 py-0.5 rounded text-indigo-300 font-mono">service_name</code>
-                            <span class="text-[10px] text-gray-500 font-bold">optional</span>
-                            <span class="text-xs text-gray-500">string - اسم الخدمة (بديل عن التوكن)</span>
-                        </div>
                     </div>
                     <div class="mt-4 p-3 bg-amber-500/5 border border-amber-500/10 rounded-lg">
                         <p class="text-xs text-amber-400/80"><span class="font-bold">ملاحظة:</span> إذا الخدمة عندها أدوار محددة، لازم يكون عند المستخدم واحد من هالأدوار عشان يقدر يسجل دخول.</p>
@@ -672,7 +662,7 @@
             <div class="px-6 py-4 border-b border-white/5 flex items-center gap-3">
                 <svg class="w-4 h-4 text-cyan-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 9l3 3-3 3m5 0h3M5 20h14a2 2 0 002-2V6a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"/></svg>
                 <h4 class="font-bold text-cyan-400">Service-to-Service (S2S)</h4>
-                <span class="text-xs text-gray-600">تستخدم X-Service-Token في الـ Header</span>
+                <span class="text-xs text-gray-600">محمية عبر الشبكة الداخلية فقط</span>
             </div>
             <div class="grid md:grid-cols-3 divide-y md:divide-y-0 md:divide-x md:divide-x-reverse divide-white/5">
                 <div class="p-5">
@@ -785,7 +775,6 @@
                 </div>
                 <pre class="p-5 text-sm overflow-x-auto" dir="ltr"><code class="text-gray-300" id="code-s2s"><span class="cmd">curl</span> <span class="flag">-X</span> POST <span class="url">http://localhost:8001/api/v1/service/verify-token</span> \
   <span class="flag">-H</span> <span class="str">"Content-Type: application/json"</span> \
-  <span class="flag">-H</span> <span class="str">"X-Service-Token: your-service-token"</span> \
   <span class="flag">-d</span> <span class="str">'{
     "token": "user-jwt-token-here"
   }'</span></code></pre>
@@ -883,7 +872,7 @@
                         <span class="w-6 h-6 bg-cyan-500/20 rounded-full flex items-center justify-center text-xs text-cyan-400 font-bold shrink-0 mt-0.5">2</span>
                         <div>
                             <div class="text-sm font-semibold text-white/80">إرسال الطلب</div>
-                            <div class="text-xs text-gray-500">إرفاق <code class="text-cyan-300/60">X-Service-Token</code> في كل طلب</div>
+                            <div class="text-xs text-gray-500">الطلبات تمر عبر الشبكة الداخلية بدون مصادقة</div>
                         </div>
                     </div>
                     <div class="flex items-start gap-3">
@@ -990,7 +979,6 @@
                             ['APP_KEY', 'base64:xxxxx', 'مفتاح التشفير الرئيسي للتطبيق', 'php artisan key:generate --show'],
                             ['DB_PASSWORD', '-', 'كلمة سر قاعدة البيانات MySQL', ''],
                             ['JWT_SECRET', '-', 'المفتاح السري لتوقيع JWT tokens', 'openssl rand -hex 32'],
-                            ['SERVICE_TOKEN', '-', 'توكن التواصل بين الخدمات (S2S)', 'openssl rand -hex 32'],
                         ];
                     @endphp
                     @foreach($requiredVars as $v)

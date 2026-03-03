@@ -9,7 +9,6 @@ use Illuminate\Support\Facades\Log;
 class AuthServiceClient
 {
     protected string $baseUrl;
-    protected ?string $serviceToken;
     protected int $timeout;
     protected bool $cacheEnabled;
     protected int $cacheTtl;
@@ -17,7 +16,6 @@ class AuthServiceClient
     public function __construct()
     {
         $this->baseUrl = rtrim(config('expo-api.auth_service.url'), '/');
-        $this->serviceToken = config('expo-api.auth_service.token');
         $this->timeout = config('expo-api.auth_service.timeout', 5);
         $this->cacheEnabled = config('expo-api.cache.enabled', true);
         $this->cacheTtl = config('expo-api.auth_service.cache_ttl', 300);
@@ -232,7 +230,6 @@ class AuthServiceClient
     {
         try {
             $response = Http::withHeaders([
-                'X-Service-Token' => $this->serviceToken,
                 'Accept' => 'application/json',
                 'Accept-Language' => app()->getLocale(),
             ])

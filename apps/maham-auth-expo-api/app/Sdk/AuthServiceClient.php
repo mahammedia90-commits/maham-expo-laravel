@@ -14,7 +14,6 @@ use Illuminate\Support\Facades\Cache;
  * 1. Copy this file to your project
  * 2. Add to your .env:
  *    AUTH_SERVICE_URL=http://localhost:8001
- *    AUTH_SERVICE_TOKEN=your_service_token
  * 
  * Usage:
  * $authService = new AuthServiceClient();
@@ -23,15 +22,13 @@ use Illuminate\Support\Facades\Cache;
 class AuthServiceClient
 {
     protected string $baseUrl;
-    protected string $serviceToken;
     protected int $timeout = 10;
     protected bool $cacheEnabled = true;
     protected int $cacheTtl = 300; // 5 minutes
 
-    public function __construct(?string $baseUrl = null, ?string $serviceToken = null)
+    public function __construct(?string $baseUrl = null)
     {
         $this->baseUrl = $baseUrl ?? config('services.auth.url', 'http://localhost:8001');
-        $this->serviceToken = $serviceToken ?? config('services.auth.token', '');
     }
 
     /**
@@ -106,7 +103,6 @@ class AuthServiceClient
         try {
             $response = Http::timeout($this->timeout)
                 ->withHeaders([
-                    'X-Service-Token' => $this->serviceToken,
                     'Accept' => 'application/json',
                 ])
                 ->$method($this->baseUrl . $endpoint, $data);

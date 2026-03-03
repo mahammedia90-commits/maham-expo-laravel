@@ -267,7 +267,6 @@
                                 <tr class="border-b"><td class="p-4"><code class="bg-gray-100 px-2 py-1 rounded text-sm">Accept</code></td><td class="p-4"><code class="text-sm">application/json</code></td><td class="p-4"><span class="text-red-500 font-bold">✓</span></td><td class="p-4 text-sm text-gray-600" data-ar="نوع المحتوى المطلوب" data-en="Expected response format">نوع المحتوى المطلوب</td></tr>
                                 <tr class="border-b"><td class="p-4"><code class="bg-gray-100 px-2 py-1 rounded text-sm">Authorization</code></td><td class="p-4"><code class="text-sm">Bearer {token}</code></td><td class="p-4"><span class="text-yellow-600 text-sm" data-ar="للمحمية" data-en="Protected">للمحمية</span></td><td class="p-4 text-sm text-gray-600" data-ar="توكن JWT للطلبات المحمية" data-en="JWT token for protected routes">توكن JWT للمحمية</td></tr>
                                 <tr class="border-b"><td class="p-4"><code class="bg-gray-100 px-2 py-1 rounded text-sm">Accept-Language</code></td><td class="p-4"><code class="text-sm">ar</code> | <code class="text-sm">en</code></td><td class="p-4"><span class="text-gray-400 text-sm" data-ar="اختياري" data-en="Optional">اختياري</span></td><td class="p-4 text-sm text-gray-600" data-ar="لغة الردود (الافتراضي: en)" data-en="Response language (default: en)">لغة الردود</td></tr>
-                                <tr><td class="p-4"><code class="bg-gray-100 px-2 py-1 rounded text-sm">X-Service-Token</code></td><td class="p-4"><code class="text-sm">{service_token}</code></td><td class="p-4"><span class="text-purple-600 text-sm" data-ar="للخدمات" data-en="S2S only">للخدمات</span></td><td class="p-4 text-sm text-gray-600" data-ar="توكن الخدمة (S2S فقط)" data-en="Service token (S2S only)">توكن S2S</td></tr>
                             </tbody>
                         </table>
                     </div>
@@ -287,7 +286,7 @@
                         </div>
                         <div class="bg-white border border-gray-200 rounded-xl p-5">
                             <h4 class="font-semibold mb-2" data-ar="تواصل بين الخدمات" data-en="Service-to-Service">تواصل بين الخدمات</h4>
-                            <div class="code-block"><pre><code>X-Service-Token: your-service-token</code></pre></div>
+                            <div class="code-block"><pre><code>Internal Docker Network (no auth needed)</code></pre></div>
                         </div>
                     </div>
 
@@ -952,8 +951,8 @@
                 <section id="s2s" class="mb-20">
                     <h2 class="text-3xl font-bold mb-4" data-ar="تواصل بين الخدمات (S2S)" data-en="Service-to-Service (S2S)">تواصل بين الخدمات (S2S)</h2>
                     <div class="bg-purple-50 border border-purple-200 rounded-xl p-5 mb-6">
-                        <h4 class="font-bold text-purple-800 mb-2" data-ar="يتطلب هيدر X-Service-Token بدلاً من JWT" data-en="Requires X-Service-Token header instead of JWT">يتطلب X-Service-Token بدلاً من JWT</h4>
-                        <code class="text-purple-600">X-Service-Token: your-service-token</code>
+                        <h4 class="font-bold text-purple-800 mb-2" data-ar="محمية عبر الشبكة الداخلية فقط" data-en="Protected via internal Docker network only">محمية عبر الشبكة الداخلية فقط</h4>
+                        <code class="text-purple-600">No authentication required — internal Docker network</code>
                     </div>
 
                     <div class="overflow-x-auto bg-white rounded-xl border border-gray-200 mb-8">

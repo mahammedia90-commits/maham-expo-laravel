@@ -53,7 +53,6 @@ services:
       MAIL_FROM_NAME: "${MAIL_FROM_NAME:-MahamAuth}"
 
       # Service
-      SERVICE_TOKEN: ${SERVICE_TOKEN}
       TRUSTED_SERVICE_IPS: ${TRUSTED_SERVICE_IPS:-}
 
       # Logging
