@@ -126,8 +126,8 @@ php artisan view:clear 2>/dev/null || true
 echo ">> Running migrations..."
 php artisan migrate --force --no-interaction 2>&1 || echo ">> Migration warning (might already be up to date)"
 
-# Seed only if needed (check if categories table has data)
-CATEGORY_COUNT=$(php artisan tinker --execute="echo \App\Models\Category::count();" 2>/dev/null | tail -1 || echo "0")
+# Seed only if needed (lightweight check — no artisan tinker overhead)
+CATEGORY_COUNT=$(php -r "try { \$p = new PDO('mysql:host=${DB_HOST:-expo-mysql};port=${DB_PORT:-3306};dbname=${DB_DATABASE:-expo_service}', '${DB_USERNAME:-expo_user}', '${DB_PASSWORD:-password123}'); echo \$p->query('SELECT COUNT(*) FROM categories')->fetchColumn(); } catch(Exception \$e) { echo '0'; }" 2>/dev/null || echo "0")
 if [ "$CATEGORY_COUNT" = "0" ] || [ -z "$CATEGORY_COUNT" ]; then
     echo ">> Running seeders (first time)..."
     php artisan db:seed --force --no-interaction 2>&1 || echo ">> Seeding warning"

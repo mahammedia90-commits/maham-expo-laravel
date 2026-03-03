@@ -114,12 +114,15 @@ return [
     // ================== SUPPORT TICKET ==================
     'support_ticket' => [
         'not_found' => 'Support ticket not found',
+        'list_fetched' => 'Support tickets retrieved successfully',
+        'fetched' => 'Support ticket retrieved successfully',
         'created' => 'Support ticket created successfully',
         'reply_added' => 'Reply added successfully',
         'assigned' => 'Ticket assigned successfully',
         'resolved' => 'Ticket resolved successfully',
         'closed' => 'Ticket closed',
         'reopened' => 'Ticket reopened',
+        'ticket_closed' => 'This ticket is closed and cannot receive replies',
         'already_closed' => 'Ticket is already closed',
     ],
 

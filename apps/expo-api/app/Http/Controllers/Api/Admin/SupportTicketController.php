@@ -109,7 +109,7 @@ class SupportTicketController extends Controller
 
         $reply = TicketReply::create([
             'ticket_id'      => $ticket->id,
-            'user_id'        => $request->user()->id,
+            'user_id'        => $request->input('auth_user_id'),
             'message'        => $request->message,
             'message_ar'     => $request->message_ar ?? $request->message,
             'is_staff_reply' => true,
@@ -157,7 +157,7 @@ class SupportTicketController extends Controller
             );
         }
 
-        $ticket->resolve($request->user()->id);
+        $ticket->resolve($request->input('auth_user_id'));
 
         return ApiResponse::success($ticket, __('messages.support_ticket.resolved'));
     }

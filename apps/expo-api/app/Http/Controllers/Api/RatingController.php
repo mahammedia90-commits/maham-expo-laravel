@@ -74,7 +74,7 @@ class RatingController extends Controller
             'rental_request_id'    => 'nullable|uuid|exists:rental_requests,id',
         ]);
 
-        $userId = $request->user()->id;
+        $userId = $request->input('auth_user_id');
         $modelClass = $request->rateable_type === 'space' ? Space::class : Event::class;
 
         // التحقق من عدم وجود تقييم سابق
@@ -117,7 +117,7 @@ class RatingController extends Controller
     public function update(Request $request, string $id): JsonResponse
     {
         $rating = Rating::where('id', $id)
-            ->where('user_id', $request->user()->id)
+            ->where('user_id', $request->input('auth_user_id'))
             ->first();
 
         if (! $rating) {
@@ -158,7 +158,7 @@ class RatingController extends Controller
     public function destroy(Request $request, string $id): JsonResponse
     {
         $rating = Rating::where('id', $id)
-            ->where('user_id', $request->user()->id)
+            ->where('user_id', $request->input('auth_user_id'))
             ->first();
 
         if (! $rating) {

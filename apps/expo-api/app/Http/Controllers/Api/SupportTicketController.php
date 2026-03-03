@@ -17,7 +17,7 @@ class SupportTicketController extends Controller
      */
     public function index(Request $request): JsonResponse
     {
-        $tickets = SupportTicket::forUser($request->user()->id)
+        $tickets = SupportTicket::forUser($request->input('auth_user_id'))
             ->when($request->status, fn ($q) => $q->where('status', $request->status))
             ->when($request->category, fn ($q) => $q->ofCategory($request->category))
             ->orderByDesc('created_at')
@@ -43,7 +43,7 @@ class SupportTicketController extends Controller
         ]);
 
         $ticket = SupportTicket::create([
-            'user_id'        => $request->user()->id,
+            'user_id'        => $request->input('auth_user_id'),
             'subject'        => $request->subject,
             'subject_ar'     => $request->subject_ar ?? $request->subject,
             'description'    => $request->description,
@@ -63,7 +63,7 @@ class SupportTicketController extends Controller
     public function show(Request $request, string $id): JsonResponse
     {
         $ticket = SupportTicket::with('replies.user:id,name')
-            ->forUser($request->user()->id)
+            ->forUser($request->input('auth_user_id'))
             ->find($id);
 
         if (! $ticket) {
@@ -82,7 +82,7 @@ class SupportTicketController extends Controller
      */
     public function reply(Request $request, string $id): JsonResponse
     {
-        $ticket = SupportTicket::forUser($request->user()->id)->find($id);
+        $ticket = SupportTicket::forUser($request->input('auth_user_id'))->find($id);
 
         if (! $ticket) {
             return ApiResponse::error(
@@ -109,7 +109,7 @@ class SupportTicketController extends Controller
 
         $reply = TicketReply::create([
             'ticket_id'     => $ticket->id,
-            'user_id'       => $request->user()->id,
+            'user_id'       => $request->input('auth_user_id'),
             'message'       => $request->message,
             'message_ar'    => $request->message_ar ?? $request->message,
             'is_staff_reply' => false,
@@ -129,7 +129,7 @@ class SupportTicketController extends Controller
      */
     public function close(Request $request, string $id): JsonResponse
     {
-        $ticket = SupportTicket::forUser($request->user()->id)->find($id);
+        $ticket = SupportTicket::forUser($request->input('auth_user_id'))->find($id);
 
         if (! $ticket) {
             return ApiResponse::error(
@@ -157,7 +157,7 @@ class SupportTicketController extends Controller
      */
     public function reopen(Request $request, string $id): JsonResponse
     {
-        $ticket = SupportTicket::forUser($request->user()->id)->find($id);
+        $ticket = SupportTicket::forUser($request->input('auth_user_id'))->find($id);
 
         if (! $ticket) {
             return ApiResponse::error(

@@ -119,9 +119,9 @@ fi
 echo ">> Running migrations..."
 php artisan migrate --force --no-interaction 2>&1 || echo ">> Migration warning (might already be up to date)"
 
-# Seed only if needed (check if roles table is empty)
+# Seed only if needed (lightweight check — no artisan tinker overhead)
 echo ">> Checking if seeding is needed..."
-ROLE_COUNT=$(php artisan tinker --execute="echo \App\Models\Role::count();" 2>/dev/null | tail -1 || echo "0")
+ROLE_COUNT=$(php -r "try { \$p = new PDO('mysql:host=${DB_HOST:-mysql};port=${DB_PORT:-3306};dbname=${DB_DATABASE:-auth_service}', '${DB_USERNAME:-auth_user}', '${DB_PASSWORD:-password123}'); echo \$p->query('SELECT COUNT(*) FROM roles')->fetchColumn(); } catch(Exception \$e) { echo '0'; }" 2>/dev/null || echo "0")
 if [ "$ROLE_COUNT" = "0" ] || [ -z "$ROLE_COUNT" ]; then
     echo ">> Running seeders..."
     php artisan db:seed --force --no-interaction 2>/dev/null || echo ">> Seeding skipped"

@@ -16,7 +16,7 @@ class NotificationPreferenceController extends Controller
      */
     public function show(Request $request): JsonResponse
     {
-        $preferences = NotificationPreference::getOrCreateForUser($request->user()->id);
+        $preferences = NotificationPreference::getOrCreateForUser($request->input('auth_user_id'));
 
         return ApiResponse::success($preferences, __('messages.notification.preferences_updated'));
     }
@@ -40,7 +40,7 @@ class NotificationPreferenceController extends Controller
             'notify_ratings'              => 'boolean',
         ]);
 
-        $preferences = NotificationPreference::getOrCreateForUser($request->user()->id);
+        $preferences = NotificationPreference::getOrCreateForUser($request->input('auth_user_id'));
 
         $preferences->update($request->only([
             'email_enabled', 'push_enabled', 'in_app_enabled',
