@@ -57,9 +57,14 @@ fi
 echo ">> Running migrations..."
 php artisan migrate --force --no-interaction 2>&1 || echo ">> Migration warning (may already be up to date)"
 
-# Seed
-echo ">> Running seeders..."
-php artisan db:seed --force --no-interaction 2>/dev/null || echo ">> Seeding skipped (might already be seeded)"
+# Seed only if needed (check if categories table has data)
+CATEGORY_COUNT=$(php artisan tinker --execute="echo \App\Models\Category::count();" 2>/dev/null || echo "0")
+if [ "$CATEGORY_COUNT" = "0" ] || [ -z "$CATEGORY_COUNT" ]; then
+    echo ">> Running seeders (first time)..."
+    php artisan db:seed --force --no-interaction 2>&1 || echo ">> Seeding warning"
+else
+    echo ">> Seeders skipped (data already exists: $CATEGORY_COUNT categories)"
+fi
 
 # Production cache optimization
 # DO NOT cache config - we rely on environment variables at runtime

@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\Api\AuthController;
 use App\Http\Controllers\Api\DashboardController;
+use App\Http\Controllers\Api\HealthController;
 use App\Http\Controllers\Api\UserController;
 use App\Http\Controllers\Api\RoleController;
 use App\Http\Controllers\Api\PermissionController;
@@ -14,65 +15,8 @@ use Illuminate\Support\Facades\Route;
 |--------------------------------------------------------------------------
 */
 
-// Health Check with diagnostics
-Route::get('/health', function () {
-    $status = 'ok';
-    $checks = [];
-
-    // Database check
-    try {
-        \Illuminate\Support\Facades\DB::connection()->getPdo();
-        $checks['database'] = 'connected';
-    } catch (\Throwable $e) {
-        $checks['database'] = 'error: ' . $e->getMessage();
-        $status = 'degraded';
-    }
-
-    // Redis check
-    $cacheDriver = config('cache.default');
-    if ($cacheDriver === 'redis' || config('queue.default') === 'redis') {
-        try {
-            \Illuminate\Support\Facades\Redis::ping();
-            $checks['redis'] = 'connected';
-        } catch (\Throwable $e) {
-            $checks['redis'] = 'unavailable: ' . $e->getMessage();
-            $status = 'degraded';
-        }
-    } else {
-        $checks['redis'] = 'not configured as primary driver';
-    }
-
-    // Cache driver check
-    try {
-        \Illuminate\Support\Facades\Cache::put('health_test', true, 5);
-        $checks['cache'] = 'working (' . $cacheDriver . ')';
-    } catch (\Throwable $e) {
-        $checks['cache'] = 'error: ' . $e->getMessage();
-        $status = 'degraded';
-    }
-
-    // JWT check
-    $checks['jwt'] = !empty(config('jwt.secret')) ? 'configured' : 'MISSING JWT_SECRET';
-    if ($checks['jwt'] !== 'configured') {
-        $status = 'degraded';
-    }
-
-    // ALWAYS return 200 — Coolify/Docker treats 503 as "unhealthy" and restarts the container
-    // Use the 'status' field in JSON body to indicate degraded state instead
-    return response()->json([
-        'status' => $status,
-        'service' => config('auth-service.service_name'),
-        'version' => config('auth-service.service_version'),
-        'timestamp' => now()->toISOString(),
-        'checks' => $checks,
-        'drivers' => [
-            'cache' => $cacheDriver,
-            'queue' => config('queue.default'),
-            'session' => config('session.driver'),
-        ],
-        'php_version' => PHP_VERSION,
-    ], 200);
-});
+// Health Check (controller-based so route:cache works in production)
+Route::get('/health', HealthController::class);
 
 Route::prefix('v1')->group(function () {
 
