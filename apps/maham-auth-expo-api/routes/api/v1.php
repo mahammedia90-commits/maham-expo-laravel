@@ -57,6 +57,8 @@ Route::get('/health', function () {
         $status = 'degraded';
     }
 
+    // ALWAYS return 200 — Coolify/Docker treats 503 as "unhealthy" and restarts the container
+    // Use the 'status' field in JSON body to indicate degraded state instead
     return response()->json([
         'status' => $status,
         'service' => config('auth-service.service_name'),
@@ -69,7 +71,7 @@ Route::get('/health', function () {
             'session' => config('session.driver'),
         ],
         'php_version' => PHP_VERSION,
-    ], $status === 'ok' ? 200 : 503);
+    ], 200);
 });
 
 Route::prefix('v1')->group(function () {

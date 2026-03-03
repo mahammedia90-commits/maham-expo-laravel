@@ -19,7 +19,7 @@ fi
 # Ensure storage directories exist
 mkdir -p storage/logs storage/framework/cache/data storage/framework/sessions storage/framework/views bootstrap/cache
 
-# Wait for MySQL
+# Wait for MySQL (check port AND credentials)
 echo ">> Waiting for MySQL at ${DB_HOST:-expo-mysql}:${DB_PORT:-3306}..."
 max_retries=60
 count=0
@@ -32,6 +32,31 @@ while ! mysqladmin ping -h"${DB_HOST:-expo-mysql}" -P"${DB_PORT:-3306}" --silent
     fi
     echo ">> Waiting for MySQL... ($count/$max_retries)"
     sleep 2
+done
+
+# Verify MySQL credentials actually work
+echo ">> Verifying MySQL credentials..."
+mysql_auth_retries=10
+mysql_auth_count=0
+while [ $mysql_auth_count -lt $mysql_auth_retries ]; do
+    if php -r "try { new PDO('mysql:host=${DB_HOST:-expo-mysql};port=${DB_PORT:-3306};dbname=${DB_DATABASE:-expo_service}', '${DB_USERNAME:-expo_user}', '${DB_PASSWORD:-password123}'); echo 'OK'; } catch(Exception \$e) { echo \$e->getMessage(); exit(1); }" 2>/dev/null; then
+        echo ">> MySQL credentials verified!"
+        break
+    else
+        mysql_auth_count=$((mysql_auth_count + 1))
+        if [ $mysql_auth_count -ge $mysql_auth_retries ]; then
+            echo ">> !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!"
+            echo ">> CRITICAL: MySQL Access Denied!"
+            echo ">> DB_HOST=${DB_HOST:-expo-mysql}"
+            echo ">> DB_DATABASE=${DB_DATABASE:-expo_service}"
+            echo ">> DB_USERNAME=${DB_USERNAME:-expo_user}"
+            echo ">> DB_PASSWORD is set: $([ -n \"${DB_PASSWORD}\" ] && echo 'YES' || echo 'NO')"
+            echo ">> FIX: Check DB_PASSWORD in Coolify matches MYSQL_PASSWORD"
+            echo ">> !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!"
+        fi
+        echo ">> MySQL auth retry... ($mysql_auth_count/$mysql_auth_retries)"
+        sleep 3
+    fi
 done
 echo ">> MySQL check completed!"
 

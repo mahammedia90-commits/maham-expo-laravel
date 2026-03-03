@@ -23,19 +23,44 @@ mkdir -p storage/logs storage/framework/cache/data storage/framework/sessions st
 chown -R www-data:www-data /var/www/html/storage /var/www/html/bootstrap/cache 2>/dev/null || true
 chmod -R 775 /var/www/html/storage /var/www/html/bootstrap/cache
 
-# Wait for MySQL
+# Wait for MySQL (check port AND credentials)
 echo ">> Waiting for MySQL at ${DB_HOST:-mysql}:${DB_PORT:-3306}..."
 max_retries=30
 count=0
 while ! nc -z "${DB_HOST:-mysql}" "${DB_PORT:-3306}" 2>/dev/null; do
     count=$((count + 1))
     if [ $count -ge $max_retries ]; then
-        echo ">> WARNING: MySQL not available after ${max_retries} attempts"
+        echo ">> WARNING: MySQL port not available after ${max_retries} attempts"
         echo ">> Continuing anyway..."
         break
     fi
-    echo ">> Waiting for MySQL... ($count/$max_retries)"
+    echo ">> Waiting for MySQL port... ($count/$max_retries)"
     sleep 2
+done
+
+# Now verify MySQL credentials actually work
+echo ">> Verifying MySQL credentials..."
+mysql_auth_retries=10
+mysql_auth_count=0
+while [ $mysql_auth_count -lt $mysql_auth_retries ]; do
+    if php -r "try { new PDO('mysql:host=${DB_HOST:-mysql};port=${DB_PORT:-3306};dbname=${DB_DATABASE:-auth_service}', '${DB_USERNAME:-auth_user}', '${DB_PASSWORD:-password123}'); echo 'OK'; } catch(Exception \$e) { echo \$e->getMessage(); exit(1); }" 2>/dev/null; then
+        echo ">> MySQL credentials verified!"
+        break
+    else
+        mysql_auth_count=$((mysql_auth_count + 1))
+        if [ $mysql_auth_count -ge $mysql_auth_retries ]; then
+            echo ">> !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!"
+            echo ">> CRITICAL: MySQL Access Denied!"
+            echo ">> DB_HOST=${DB_HOST:-mysql}"
+            echo ">> DB_DATABASE=${DB_DATABASE:-auth_service}"
+            echo ">> DB_USERNAME=${DB_USERNAME:-auth_user}"
+            echo ">> DB_PASSWORD is set: $([ -n \"${DB_PASSWORD}\" ] && echo 'YES' || echo 'NO')"
+            echo ">> FIX: Check DB_PASSWORD in Coolify matches MYSQL_PASSWORD"
+            echo ">> !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!"
+        fi
+        echo ">> MySQL auth retry... ($mysql_auth_count/$mysql_auth_retries)"
+        sleep 3
+    fi
 done
 echo ">> MySQL check completed!"
 

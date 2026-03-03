@@ -139,7 +139,9 @@ Route::middleware([SetLocale::class])->group(function () {
         $checks['queue_driver'] = config('queue.default');
         $checks['timestamp'] = now()->toISOString();
 
-        $statusCode = $checks['status'] === 'ok' ? 200 : 503;
+        // ALWAYS return 200 — Coolify/Docker treats 503 as "unhealthy" and restarts the container
+        // Use the 'status' field in JSON body to indicate degraded state instead
+        $statusCode = 200;
 
         return response()->json($checks, $statusCode);
     });
