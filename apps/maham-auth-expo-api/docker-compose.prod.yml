@@ -77,10 +77,10 @@ services:
     deploy:
       resources:
         limits:
-          memory: 1024M
-          cpus: "1.0"
+          memory: 2048M
+          cpus: "1.5"
         reservations:
-          memory: 512M
+          memory: 1024M
 
   mysql:
     image: mysql:8.0
@@ -103,15 +103,15 @@ services:
     deploy:
       resources:
         limits:
-          memory: 768M
-          cpus: "0.75"
+          memory: 1536M
+          cpus: "1.0"
         reservations:
-          memory: 384M
+          memory: 768M
     
   redis:
     image: redis:7-alpine
     restart: unless-stopped
-    command: ["redis-server", "--appendonly", "yes", "--requirepass", "${REDIS_PASSWORD:-maham_redis_2024}", "--maxmemory", "192mb", "--maxmemory-policy", "allkeys-lru"]
+    command: ["redis-server", "--appendonly", "yes", "--requirepass", "${REDIS_PASSWORD:-maham_redis_2024}", "--maxmemory", "384mb", "--maxmemory-policy", "allkeys-lru"]
     # command: ["redis-server", "--appendonly", "yes"]
     volumes:
       - redis_data:/data
@@ -126,10 +126,10 @@ services:
     deploy:
       resources:
         limits:
-          memory: 384M
-          cpus: "0.25"
+          memory: 512M
+          cpus: "0.5"
         reservations:
-          memory: 128M
+          memory: 256M
 
 networks:
   maham-network:

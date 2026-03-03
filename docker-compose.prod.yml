@@ -99,10 +99,10 @@ services:
     deploy:
       resources:
         limits:
-          memory: 1024M
-          cpus: "1.0"
+          memory: 2048M
+          cpus: "1.5"
         reservations:
-          memory: 512M
+          memory: 1024M
 
   # ============================================
   # Expo API Service
@@ -203,10 +203,10 @@ services:
     deploy:
       resources:
         limits:
-          memory: 1536M
-          cpus: "1.5"
+          memory: 3072M
+          cpus: "2.0"
         reservations:
-          memory: 768M
+          memory: 1536M
 
   # ============================================
   # Auth MySQL
@@ -228,7 +228,7 @@ services:
       --default-authentication-plugin=mysql_native_password
       --character-set-server=utf8mb4
       --collation-server=utf8mb4_unicode_ci
-      --innodb-buffer-pool-size=512M
+      --innodb-buffer-pool-size=1G
       --max-connections=200
       --slow-query-log=1
       --long-query-time=2
@@ -241,10 +241,10 @@ services:
     deploy:
       resources:
         limits:
-          memory: 768M
-          cpus: "0.75"
+          memory: 1536M
+          cpus: "1.0"
         reservations:
-          memory: 384M
+          memory: 768M
 
   # ============================================
   # Expo MySQL
@@ -266,7 +266,7 @@ services:
       --default-authentication-plugin=mysql_native_password
       --character-set-server=utf8mb4
       --collation-server=utf8mb4_unicode_ci
-      --innodb-buffer-pool-size=512M
+      --innodb-buffer-pool-size=1536M
       --max-connections=200
       --slow-query-log=1
       --long-query-time=2
@@ -279,10 +279,10 @@ services:
     deploy:
       resources:
         limits:
-          memory: 1024M
-          cpus: "0.75"
+          memory: 2048M
+          cpus: "1.0"
         reservations:
-          memory: 512M
+          memory: 1024M
 
   # ============================================
   # Auth Redis
@@ -291,7 +291,7 @@ services:
     image: redis:7-alpine
     container_name: auth-redis
     restart: always
-    command: redis-server --maxmemory 256mb --maxmemory-policy allkeys-lru --appendonly yes
+    command: redis-server --maxmemory 384mb --maxmemory-policy allkeys-lru --appendonly yes
     volumes:
       - auth-redis-data:/data
     networks:
@@ -304,10 +304,10 @@ services:
     deploy:
       resources:
         limits:
-          memory: 384M
-          cpus: "0.25"
+          memory: 512M
+          cpus: "0.5"
         reservations:
-          memory: 128M
+          memory: 256M
 
   # ============================================
   # Expo Redis
@@ -316,7 +316,7 @@ services:
     image: redis:7-alpine
     container_name: expo-redis
     restart: always
-    command: redis-server --maxmemory 256mb --maxmemory-policy allkeys-lru --appendonly yes
+    command: redis-server --maxmemory 384mb --maxmemory-policy allkeys-lru --appendonly yes
     volumes:
       - expo-redis-data:/data
     networks:
@@ -329,10 +329,10 @@ services:
     deploy:
       resources:
         limits:
-          memory: 384M
-          cpus: "0.25"
+          memory: 512M
+          cpus: "0.5"
         reservations:
-          memory: 128M
+          memory: 256M
 
 networks:
   maham-network:
