@@ -102,7 +102,6 @@ php artisan cache:clear 2>/dev/null || true
 php artisan route:clear 2>/dev/null || true
 php artisan view:clear 2>/dev/null || true
 php artisan event:clear 2>/dev/null || true
-rm -rf bootstrap/cache/*.php 2>/dev/null || true
 
 # Generate APP_KEY if missing
 if [ -z "$APP_KEY" ] || [ "$APP_KEY" = "" ]; then
@@ -130,16 +129,17 @@ fi
 
 # DO NOT cache config - we rely on environment variables at runtime
 # Only cache routes for performance
-echo ">> Caching routes..."
+echo ">> Caching routes and views..."
 php artisan route:cache --no-interaction 2>&1 || echo ">> Route cache warning"
+php artisan view:cache --no-interaction 2>&1 || echo ">> View cache warning"
 echo ">> Config cache SKIPPED (using env vars at runtime)"
 
 # Storage link
 php artisan storage:link --force --no-interaction 2>/dev/null || true
 
 # Final permissions
-chown -R www-data:www-data /var/www/html/storage /var/www/html/bootstrap/cache
-chmod -R 775 /var/www/html/storage /var/www/html/bootstrap/cache
+chown -R www-data:www-data /var/www/html/storage /var/www/html/bootstrap/cache 2>/dev/null || true
+chmod -R 775 /var/www/html/storage /var/www/html/bootstrap/cache 2>/dev/null || true
 
 echo "========================================="
 echo "  Auth Service Ready! (Production)"
