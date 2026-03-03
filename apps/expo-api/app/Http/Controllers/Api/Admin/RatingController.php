@@ -16,7 +16,7 @@ class RatingController extends Controller
      */
     public function index(Request $request): JsonResponse
     {
-        $query = Rating::with(['user:id,name', 'rateable'])
+        $query = Rating::with(['rateable'])
             ->when($request->rateable_type, fn ($q) => $q->where('rateable_type', $request->rateable_type))
             ->when($request->rateable_id, fn ($q) => $q->where('rateable_id', $request->rateable_id))
             ->when($request->is_approved !== null, fn ($q) => $q->where('is_approved', (bool) $request->is_approved))
@@ -37,7 +37,7 @@ class RatingController extends Controller
      */
     public function show(string $id): JsonResponse
     {
-        $rating = Rating::with(['user:id,name,email', 'rateable'])->find($id);
+        $rating = Rating::with(['rateable'])->find($id);
 
         if (! $rating) {
             return ApiResponse::error(

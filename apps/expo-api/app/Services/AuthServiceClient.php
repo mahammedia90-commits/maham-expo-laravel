@@ -234,7 +234,7 @@ class AuthServiceClient
                 'Accept-Language' => app()->getLocale(),
             ])
             ->timeout($this->timeout)
-            ->$method($this->baseUrl . '/api' . $endpoint, $data);
+            ->$method($this->baseUrl . '/api/v1' . $endpoint, $data);
 
             return $response->json() ?? [
                 'success' => false,

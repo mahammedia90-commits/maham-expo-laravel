@@ -17,7 +17,7 @@ class SupportTicketController extends Controller
      */
     public function index(Request $request): JsonResponse
     {
-        $tickets = SupportTicket::with('user:id,name,email')
+        $tickets = SupportTicket::query()
             ->when($request->status, fn ($q) => $q->where('status', $request->status))
             ->when($request->category, fn ($q) => $q->ofCategory($request->category))
             ->when($request->priority, fn ($q) => $q->ofPriority($request->priority))
@@ -37,9 +37,7 @@ class SupportTicketController extends Controller
     public function show(string $id): JsonResponse
     {
         $ticket = SupportTicket::with([
-            'user:id,name,email',
-            'replies.user:id,name',
-            'assignedTo:id,name',
+            'replies',
         ])->find($id);
 
         if (! $ticket) {
