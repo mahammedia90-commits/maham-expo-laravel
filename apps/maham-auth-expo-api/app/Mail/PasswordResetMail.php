@@ -10,22 +10,22 @@ class PasswordResetMail extends Mailable
 {
     use Queueable, SerializesModels;
 
-    public $link;
+    public string $code;
+    public string $userName;
 
-    /**
-     * Create a new message instance.
-     */
-    public function __construct($link)
+    public function __construct(string $code, string $userName = '')
     {
-        $this->link = $link; 
+        $this->code = $code;
+        $this->userName = $userName;
     }
 
-    /**
-     * Build the message.
-     */ 
     public function build()
     {
-        return $this->subject('Reset Your Password')
-            ->view('emails.password-reset');
+        return $this->subject('إعادة تعيين كلمة المرور - معام اكسبو')
+            ->view('emails.password-reset', [
+                'code' => $this->code,
+                'userName' => $this->userName,
+                'greeting' => 'مرحباً',
+            ]);
     }
 }
