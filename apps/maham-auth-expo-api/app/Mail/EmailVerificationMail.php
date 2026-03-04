@@ -10,22 +10,22 @@ class EmailVerificationMail extends Mailable
 {
     use Queueable, SerializesModels;
 
-    public $code; 
+    public string $code;
+    public string $userName;
 
-    /**
-     * Create a new message instance.
-     */
-    public function __construct($code)
+    public function __construct(string $code, string $userName = '')
     {
-        $this->code = $code; 
-    } 
+        $this->code = $code;
+        $this->userName = $userName;
+    }
 
-    /**
-     * Build the message.
-     */ 
     public function build()
     {
-        return $this->subject('Verify Your Email')
-            ->view('emails.email-verification');
+        return $this->subject('تأكيد البريد الإلكتروني - معام اكسبو')
+            ->view('emails.email-verification', [
+                'code' => $this->code,
+                'userName' => $this->userName,
+                'greeting' => 'مرحباً',
+            ]);
     }
 }
