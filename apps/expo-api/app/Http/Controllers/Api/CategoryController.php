@@ -7,24 +7,23 @@ use App\Http\Resources\CategoryResource;
 use App\Models\Category;
 use App\Support\ApiResponse;
 use Illuminate\Http\JsonResponse;
+use Illuminate\Http\Request;
 
 class CategoryController extends Controller
 {
     /**
      * Get all active categories
      */
-    public function index(): JsonResponse
+    public function index(Request $request): JsonResponse
     {
         $categories = Category::active()
             ->ordered()
             ->withCount(['events' => function ($query) {
                 $query->published();
             }])
-            ->get();
+            ->paginate($request->input('per_page', 15));
 
-        return ApiResponse::success(
-            CategoryResource::collection($categories)
-        );
+        return ApiResponse::paginated($categories);
     }
 
     /**

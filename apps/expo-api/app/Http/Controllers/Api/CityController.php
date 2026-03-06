@@ -7,24 +7,23 @@ use App\Http\Resources\CityResource;
 use App\Models\City;
 use App\Support\ApiResponse;
 use Illuminate\Http\JsonResponse;
+use Illuminate\Http\Request;
 
 class CityController extends Controller
 {
     /**
      * Get all active cities
      */
-    public function index(): JsonResponse
+    public function index(Request $request): JsonResponse
     {
         $cities = City::active()
             ->ordered()
             ->withCount(['events' => function ($query) {
                 $query->published();
             }])
-            ->get();
+            ->paginate($request->input('per_page', 15));
 
-        return ApiResponse::success(
-            CityResource::collection($cities)
-        );
+        return ApiResponse::paginated($cities);
     }
 
     /**

@@ -7,20 +7,19 @@ use App\Http\Resources\ServiceResource;
 use App\Models\Service;
 use App\Support\ApiResponse;
 use Illuminate\Http\JsonResponse;
+use Illuminate\Http\Request;
 
 class ServiceController extends Controller
 {
     /**
      * Get all active services (public)
      */
-    public function index(): JsonResponse
+    public function index(Request $request): JsonResponse
     {
         $services = Service::active()
             ->ordered()
-            ->get();
+            ->paginate($request->input('per_page', 15));
 
-        return ApiResponse::success(
-            ServiceResource::collection($services)
-        );
+        return ApiResponse::paginated($services);
     }
 }
