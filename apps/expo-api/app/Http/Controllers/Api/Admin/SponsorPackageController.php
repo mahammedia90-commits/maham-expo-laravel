@@ -33,9 +33,9 @@ class SponsorPackageController extends Controller
             $query->where('is_active', $request->boolean('is_active'));
         }
 
-        $packages = $query->ordered()->get();
+        $packages = $query->ordered()->paginate($request->input('per_page', 15));
 
-        return ApiResponse::success($packages);
+        return ApiResponse::paginated($packages);
     }
 
     /**

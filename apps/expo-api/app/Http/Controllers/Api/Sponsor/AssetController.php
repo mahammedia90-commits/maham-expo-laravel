@@ -37,9 +37,9 @@ class AssetController extends Controller
             }
         }
 
-        $assets = $query->ordered()->get();
+        $assets = $query->ordered()->paginate($request->input('per_page', 15));
 
-        return ApiResponse::success($assets);
+        return ApiResponse::paginated($assets);
     }
 
     /**

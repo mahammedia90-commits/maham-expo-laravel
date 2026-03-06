@@ -51,11 +51,9 @@ class SpaceController extends Controller
             'status', 'floor_number', 'created_at',
         ], 'location_code', 'asc');
 
-        $spaces = $query->get();
+        $spaces = $query->paginate($request->input('per_page', 15));
 
-        return ApiResponse::success(
-            SpaceListResource::collection($spaces)
-        );
+        return ApiResponse::paginated($spaces);
     }
 
     /**

@@ -26,11 +26,9 @@ class SectionController extends Controller
             $query->where('is_active', $request->boolean('is_active'));
         }
 
-        $sections = $query->ordered()->get();
+        $sections = $query->ordered()->paginate($request->input('per_page', 15));
 
-        return ApiResponse::success(
-            SectionResource::collection($sections)
-        );
+        return ApiResponse::paginated($sections);
     }
 
     /**

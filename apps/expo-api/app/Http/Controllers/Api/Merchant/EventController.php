@@ -117,9 +117,9 @@ class EventController extends Controller
             ->withCount(['spaces as available_spaces_count' => function ($q) {
                 $q->where('status', 'available');
             }])
-            ->get();
+            ->paginate($request->input('per_page', 15));
 
-        return ApiResponse::success($sections);
+        return ApiResponse::paginated($sections);
     }
 
     /**

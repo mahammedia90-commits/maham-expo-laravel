@@ -35,9 +35,9 @@ class ExposureController extends Controller
         $endDate = $request->input('end_date', now()->toDateString());
         $query->inDateRange($startDate, $endDate);
 
-        $data = $query->orderBy('date', 'desc')->get();
+        $data = $query->orderBy('date', 'desc')->paginate($request->input('per_page', 15));
 
-        return ApiResponse::success($data);
+        return ApiResponse::paginated($data);
     }
 
     /**

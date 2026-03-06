@@ -30,9 +30,9 @@ class SponsorBenefitController extends Controller
             $query->where('status', $status);
         }
 
-        $benefits = $query->orderBy('created_at', 'desc')->get();
+        $benefits = $query->orderBy('created_at', 'desc')->paginate($request->input('per_page', 15));
 
-        return ApiResponse::success($benefits);
+        return ApiResponse::paginated($benefits);
     }
 
     /**

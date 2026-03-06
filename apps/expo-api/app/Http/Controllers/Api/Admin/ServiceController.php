@@ -36,11 +36,9 @@ class ServiceController extends Controller
             });
         }
 
-        $services = $query->ordered()->get();
+        $services = $query->ordered()->paginate($request->input('per_page', 15));
 
-        return ApiResponse::success(
-            ServiceResource::collection($services)
-        );
+        return ApiResponse::paginated($services);
     }
 
     /**

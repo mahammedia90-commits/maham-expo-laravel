@@ -145,7 +145,7 @@ class EventController extends Controller
     /**
      * Get event sections with spaces count
      */
-    public function sections(Event $event): JsonResponse
+    public function sections(Request $request, Event $event): JsonResponse
     {
         if ($event->status->value !== 'published') {
             return ApiResponse::notFound(
@@ -157,11 +157,9 @@ class EventController extends Controller
         $sections = $event->sections()
             ->active()
             ->ordered()
-            ->get();
+            ->paginate($request->input('per_page', 15));
 
-        return ApiResponse::success(
-            SectionResource::collection($sections)
-        );
+        return ApiResponse::paginated($sections);
     }
 
     /**
@@ -248,10 +246,8 @@ class EventController extends Controller
             return ApiResponse::success($grouped);
         }
 
-        $spaces = $query->get();
+        $spaces = $query->paginate($request->input('per_page', 15));
 
-        return ApiResponse::success(
-            SpaceListResource::collection($spaces)
-        );
+        return ApiResponse::paginated($spaces);
     }
 }
