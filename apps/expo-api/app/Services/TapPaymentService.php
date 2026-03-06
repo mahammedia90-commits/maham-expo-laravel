@@ -23,14 +23,68 @@ class TapPaymentService
     }
 
     /**
-     * Create a charge on Tap and return the payment URL
+     * Create a token from card details
      */
-    public function createCharge(Payment $payment, array $customer = []): array
+    public function createToken(array $cardData): array
+    {
+        try {
+            $payload = [
+                'card' => [
+                    'number' => $cardData['card_number'],
+                    'exp_month' => (int) $cardData['exp_month'],
+                    'exp_year' => (int) $cardData['exp_year'],
+                    'cvc' => (int) $cardData['cvc'],
+                    'name' => $cardData['card_holder_name'],
+                ],
+            ];
+
+            $response = Http::withHeaders([
+                'Authorization' => 'Bearer ' . $this->secretKey,
+                'Content-Type' => 'application/json',
+                'Accept' => 'application/json',
+            ])->post($this->baseUrl . '/tokens/', $payload);
+
+            $data = $response->json();
+
+            if ($response->successful() && isset($data['id'])) {
+                return [
+                    'success' => true,
+                    'token_id' => $data['id'],
+                    'card' => [
+                        'brand' => $data['card']['brand'] ?? null,
+                        'last_four' => $data['card']['last_four'] ?? null,
+                        'first_six' => $data['card']['first_six'] ?? null,
+                    ],
+                ];
+            }
+
+            Log::error('Tap token creation failed', ['response' => $data]);
+
+            return [
+                'success' => false,
+                'message' => $data['errors'][0]['description'] ?? 'فشل التحقق من بيانات البطاقة',
+                'error_code' => $data['errors'][0]['code'] ?? 'UNKNOWN',
+            ];
+        } catch (\Exception $e) {
+            Log::error('Tap token exception', ['error' => $e->getMessage()]);
+
+            return [
+                'success' => false,
+                'message' => 'خطأ في الاتصال ببوابة الدفع',
+            ];
+        }
+    }
+
+    /**
+     * Create a charge using a token (direct card payment from backend)
+     */
+    public function createCharge(Payment $payment, string $tokenId, array $customer = []): array
     {
         try {
             $payload = [
                 'amount' => (float) $payment->amount,
                 'currency' => $payment->currency ?? $this->currency,
+                'customer_initiated' => true,
                 'threeDSecure' => $this->threeDSecure,
                 'save_card' => false,
                 'description' => "Payment {$payment->payment_number}",
@@ -56,7 +110,7 @@ class TapPaymentService
                     ],
                 ],
                 'source' => [
-                    'id' => 'src_all',
+                    'id' => $tokenId,
                 ],
                 'redirect' => [
                     'url' => config('tap.redirect_url') . '?payment_id=' . $payment->id,
@@ -75,19 +129,41 @@ class TapPaymentService
             $data = $response->json();
 
             if ($response->successful() && isset($data['id'])) {
+                $status = strtolower($data['status'] ?? Payment::STATUS_INITIATED);
+                $transactionUrl = $data['transaction']['url'] ?? null;
+                $requiresRedirect = in_array($status, ['initiated', 'pending']) && $transactionUrl;
+
                 // Update payment with Tap charge data
                 $payment->update([
                     'charge_id' => $data['id'],
-                    'status' => strtolower($data['status'] ?? Payment::STATUS_INITIATED),
-                    'transaction_url' => $data['transaction']['url'] ?? null,
+                    'status' => $status,
+                    'payment_method' => $data['source']['payment_method'] ?? null,
+                    'source' => $data['source']['type'] ?? null,
+                    'gateway_reference' => $data['reference']['gateway'] ?? null,
+                    'payment_reference' => $data['reference']['payment'] ?? null,
+                    'track_id' => $data['reference']['track'] ?? null,
+                    'transaction_url' => $transactionUrl,
                     'tap_response' => $data,
+                    'paid_at' => $status === 'captured' ? now() : null,
                 ]);
+
+                // If captured directly (no 3D Secure needed)
+                if ($status === 'captured') {
+                    $this->updatePayableStatus($payment);
+                }
 
                 return [
                     'success' => true,
                     'charge_id' => $data['id'],
-                    'transaction_url' => $data['transaction']['url'] ?? null,
-                    'status' => $data['status'] ?? 'INITIATED',
+                    'status' => strtoupper($status),
+                    'requires_redirect' => $requiresRedirect,
+                    'transaction_url' => $requiresRedirect ? $transactionUrl : null,
+                    'receipt' => !$requiresRedirect ? [
+                        'gateway_reference' => $data['reference']['gateway'] ?? null,
+                        'payment_method' => $data['source']['payment_method'] ?? null,
+                        'card_brand' => $data['source']['payment_type'] ?? null,
+                        'card_last_four' => $data['card']['last_four'] ?? null,
+                    ] : null,
                 ];
             }
 
@@ -118,6 +194,36 @@ class TapPaymentService
                 'message' => 'خطأ في الاتصال ببوابة الدفع',
             ];
         }
+    }
+
+    /**
+     * Full direct payment flow: create token from card + create charge
+     */
+    public function processDirectPayment(Payment $payment, array $cardData, array $customer = []): array
+    {
+        // Step 1: Create token from card details
+        $tokenResult = $this->createToken($cardData);
+
+        if (!$tokenResult['success']) {
+            $payment->update([
+                'status' => Payment::STATUS_FAILED,
+                'error_code' => $tokenResult['error_code'] ?? 'TOKEN_FAILED',
+                'error_message' => $tokenResult['message'],
+            ]);
+
+            return $tokenResult;
+        }
+
+        // Step 2: Create charge using the token
+        $chargeResult = $this->createCharge($payment, $tokenResult['token_id'], $customer);
+
+        // Add card info to the result
+        if ($chargeResult['success'] && isset($tokenResult['card'])) {
+            $chargeResult['card_brand'] = $tokenResult['card']['brand'] ?? null;
+            $chargeResult['card_last_four'] = $tokenResult['card']['last_four'] ?? null;
+        }
+
+        return $chargeResult;
     }
 
     /**

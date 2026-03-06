@@ -55,13 +55,20 @@ class PaymentGatewayController extends Controller
     }
 
     /**
-     * Initiate payment for an invoice
+     * Initiate payment for an invoice (direct card payment)
      */
     public function payInvoice(Request $request): JsonResponse
     {
         $request->validate([
             'invoice_id' => ['required', 'uuid'],
             'amount' => ['nullable', 'numeric', 'min:0.01'],
+            // Card details
+            'card_number' => ['required', 'string', 'min:13', 'max:19'],
+            'card_holder_name' => ['required', 'string', 'max:255'],
+            'exp_month' => ['required', 'integer', 'min:1', 'max:12'],
+            'exp_year' => ['required', 'integer', 'min:' . date('Y')],
+            'cvc' => ['required', 'string', 'min:3', 'max:4'],
+            // Customer info (optional)
             'first_name' => ['nullable', 'string', 'max:100'],
             'last_name' => ['nullable', 'string', 'max:100'],
             'email' => ['nullable', 'email', 'max:255'],
@@ -111,8 +118,14 @@ class PaymentGatewayController extends Controller
             'three_d_secure' => config('tap.three_d_secure', true),
         ]);
 
-        // Create Tap charge
-        $result = $this->tapService->createCharge($payment, [
+        // Process direct payment (token + charge)
+        $result = $this->tapService->processDirectPayment($payment, [
+            'card_number' => $request->input('card_number'),
+            'card_holder_name' => $request->input('card_holder_name'),
+            'exp_month' => $request->input('exp_month'),
+            'exp_year' => $request->input('exp_year'),
+            'cvc' => $request->input('cvc'),
+        ], [
             'first_name' => $request->input('first_name', 'Customer'),
             'last_name' => $request->input('last_name', ''),
             'email' => $request->input('email', ''),
@@ -122,20 +135,42 @@ class PaymentGatewayController extends Controller
 
         if (!$result['success']) {
             return ApiResponse::error(
-                $result['message'] ?? 'فشل إنشاء عملية الدفع',
+                $result['message'] ?? 'فشل عملية الدفع',
                 ApiErrorCode::INTERNAL_SERVER_ERROR,
-                500
+                422
             );
         }
 
-        return ApiResponse::success([
+        $payment->refresh();
+
+        $responseData = [
             'payment_id' => $payment->id,
             'payment_number' => $payment->payment_number,
             'charge_id' => $result['charge_id'],
-            'transaction_url' => $result['transaction_url'],
+            'status' => $result['status'],
             'amount' => $payment->amount,
             'currency' => $payment->currency,
-        ], 'تم إنشاء عملية الدفع بنجاح');
+            'paid_at' => $payment->paid_at,
+        ];
+
+        // If 3D Secure redirect is needed
+        if (!empty($result['requires_redirect'])) {
+            $responseData['requires_redirect'] = true;
+            $responseData['transaction_url'] = $result['transaction_url'];
+
+            return ApiResponse::success($responseData, 'يتطلب التحقق من البطاقة عبر 3D Secure');
+        }
+
+        // Direct capture — payment completed
+        if ($result['status'] === 'CAPTURED') {
+            $responseData['card_brand'] = $result['card_brand'] ?? null;
+            $responseData['card_last_four'] = $result['card_last_four'] ?? null;
+            $responseData['receipt'] = $result['receipt'] ?? null;
+
+            return ApiResponse::success($responseData, 'تمت عملية الدفع بنجاح');
+        }
+
+        return ApiResponse::success($responseData, 'تم إرسال عملية الدفع');
     }
 
     /**
