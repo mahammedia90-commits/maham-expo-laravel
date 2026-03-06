@@ -85,9 +85,9 @@ services:
       FILESYSTEM_DISK: local
     depends_on:
       auth-mysql:
-        condition: service_healthy
+        condition: service_started
       auth-redis:
-        condition: service_healthy
+        condition: service_started
     networks:
       - maham-network
     healthcheck:
@@ -187,9 +187,9 @@ services:
       FILESYSTEM_DISK: local
     depends_on:
       expo-mysql:
-        condition: service_healthy
+        condition: service_started
       expo-redis:
-        condition: service_healthy
+        condition: service_started
       auth-service:
         condition: service_started
     networks:
@@ -233,11 +233,11 @@ services:
       --slow-query-log=1
       --long-query-time=2
     healthcheck:
-      test: ["CMD", "mysqladmin", "ping", "-h", "localhost", "-u", "root", "-p${AUTH_MYSQL_ROOT_PASSWORD}"]
-      interval: 10s
+      test: ["CMD", "mysqladmin", "ping", "-h", "localhost"]
+      interval: 30s
       timeout: 10s
-      retries: 10
-      start_period: 120s
+      retries: 5
+      start_period: 60s
     deploy:
       resources:
         limits:
@@ -271,11 +271,11 @@ services:
       --slow-query-log=1
       --long-query-time=2
     healthcheck:
-      test: ["CMD", "mysqladmin", "ping", "-h", "localhost", "-u", "root", "-p${EXPO_MYSQL_ROOT_PASSWORD}"]
-      interval: 10s
+      test: ["CMD", "mysqladmin", "ping", "-h", "localhost"]
+      interval: 30s
       timeout: 10s
-      retries: 10
-      start_period: 120s
+      retries: 5
+      start_period: 60s
     deploy:
       resources:
         limits:
