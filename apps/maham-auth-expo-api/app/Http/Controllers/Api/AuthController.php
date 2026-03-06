@@ -371,4 +371,65 @@ class AuthController extends Controller
             'message' => $result['message'],
         ]);
     }
+
+    /**
+     * إرسال رمز التحقق من الهاتف عبر SMS أو WhatsApp
+     */
+    public function sendPhoneOtp(Request $request): JsonResponse
+    {
+        $request->validate([
+            'phone' => 'required|string|max:20',
+            'channel' => 'nullable|string|in:sms,whatsapp',
+        ]);
+
+        $result = $this->authService->sendPhoneOtp(
+            auth()->user(),
+            $request->phone,
+            $request->input('channel', 'sms')
+        );
+
+        if (!$result['success']) {
+            return response()->json([
+                'success' => false,
+                'message' => $result['message'],
+            ], 400);
+        }
+
+        return response()->json([
+            'success' => true,
+            'message' => $result['message'],
+            'data' => [
+                'channel' => $result['channel'] ?? 'sms',
+            ],
+        ]);
+    }
+
+    /**
+     * التحقق من رمز الهاتف
+     */
+    public function verifyPhoneOtp(Request $request): JsonResponse
+    {
+        $request->validate([
+            'phone' => 'required|string|max:20',
+            'code' => 'required|string|min:4|max:8',
+        ]);
+
+        $result = $this->authService->verifyPhoneOtp(
+            auth()->user(),
+            $request->phone,
+            $request->code
+        );
+
+        if (!$result['success']) {
+            return response()->json([
+                'success' => false,
+                'message' => $result['message'],
+            ], 400);
+        }
+
+        return response()->json([
+            'success' => true,
+            'message' => $result['message'],
+        ]);
+    }
 }

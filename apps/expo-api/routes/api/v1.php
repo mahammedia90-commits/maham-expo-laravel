@@ -67,6 +67,9 @@ use App\Http\Controllers\Api\SuperAdmin\SettingController as ManageSettingContro
 // Unified User Dashboard
 use App\Http\Controllers\Api\My\DashboardController as MyDashboardController;
 
+use App\Http\Controllers\Api\PaymentGatewayController;
+use App\Http\Controllers\Api\Webhook\TapWebhookController;
+
 use App\Http\Controllers\Api\TrackingController;
 use App\Http\Controllers\Api\My\ActivityController as MyActivityController;
 use App\Http\Controllers\Api\Admin\AnalyticsController as AdminAnalyticsController;
@@ -166,6 +169,11 @@ Route::middleware([SetLocale::class])->group(function () {
             Route::post('/action', [TrackingController::class, 'action']);
         });
 
+        // ==================== WEBHOOK ROUTES (No Auth) ====================
+        Route::prefix('webhooks')->group(function () {
+            Route::post('/tap', [TapWebhookController::class, 'handle']);
+        });
+
         // ==================== AUTHENTICATED ROUTES ====================
 
         Route::middleware([AuthServiceMiddleware::class])->group(function () {
@@ -242,6 +250,18 @@ Route::middleware([SetLocale::class])->group(function () {
                 Route::get('/', [InvoiceController::class, 'index'])
                     ->middleware(CheckPermission::class . ':invoices.view');
                 Route::get('/{invoice}', [InvoiceController::class, 'show'])
+                    ->middleware(CheckPermission::class . ':invoices.view');
+            });
+
+            // Payment Gateway (Tap)
+            Route::prefix('payments')->group(function () {
+                Route::get('/', [PaymentGatewayController::class, 'index'])
+                    ->middleware(CheckPermission::class . ':invoices.view');
+                Route::get('/{payment}', [PaymentGatewayController::class, 'show'])
+                    ->middleware(CheckPermission::class . ':invoices.view');
+                Route::post('/pay-invoice', [PaymentGatewayController::class, 'payInvoice'])
+                    ->middleware(CheckPermission::class . ':invoices.view');
+                Route::get('/{payment}/status', [PaymentGatewayController::class, 'checkStatus'])
                     ->middleware(CheckPermission::class . ':invoices.view');
             });
 

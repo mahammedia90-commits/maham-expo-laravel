@@ -3,9 +3,10 @@
 namespace App\Services;
 
 use App\Models\User;
-use App\Mail\PasswordResetMail; 
-use App\Mail\EmailVerificationMail; 
-use App\Models\RefreshToken; 
+use App\Mail\PasswordResetMail;
+use App\Mail\EmailVerificationMail;
+use App\Models\RefreshToken;
+use App\Services\TwilioService;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Mail;
@@ -16,7 +17,8 @@ use Tymon\JWTAuth\Facades\JWTAuth;
 class AuthService
 {
     public function __construct(
-        protected AuditService $auditService
+        protected AuditService $auditService,
+        protected TwilioService $twilioService
     ) {}
 
     /**
@@ -407,5 +409,80 @@ class AuthService
             'success' => true,
             'message' => __('messages.auth.email_verified'),
         ];
+    }
+
+    /**
+     * Send phone OTP via SMS or WhatsApp
+     */
+    public function sendPhoneOtp(User $user, string $phone, string $channel = 'sms'): array
+    {
+        // Normalize phone to E.164 format
+        $phone = $this->normalizePhone($phone);
+
+        $result = $this->twilioService->sendOtp($phone, $channel);
+
+        if ($result['success']) {
+            $this->auditService->log('phone_otp_sent', $user, [
+                'ip' => request()->ip(),
+                'channel' => $channel,
+            ]);
+        }
+
+        return $result;
+    }
+
+    /**
+     * Verify phone OTP code
+     */
+    public function verifyPhoneOtp(User $user, string $phone, string $code): array
+    {
+        $phone = $this->normalizePhone($phone);
+
+        $result = $this->twilioService->verifyOtp($phone, $code);
+
+        if ($result['success'] && $result['valid']) {
+            // Mark phone as verified
+            $user->update([
+                'phone' => $phone,
+                'phone_verified_at' => now(),
+            ]);
+
+            $this->auditService->log('phone_verified', $user, [
+                'ip' => request()->ip(),
+            ]);
+
+            return [
+                'success' => true,
+                'message' => 'تم التحقق من رقم الهاتف بنجاح',
+            ];
+        }
+
+        return $result;
+    }
+
+    /**
+     * Normalize phone number to E.164 format
+     */
+    protected function normalizePhone(string $phone): string
+    {
+        // Remove spaces and dashes
+        $phone = preg_replace('/[\s\-]/', '', $phone);
+
+        // If starts with 05 (Saudi local), convert to +966
+        if (preg_match('/^05\d{8}$/', $phone)) {
+            $phone = '+966' . substr($phone, 1);
+        }
+
+        // If starts with 966 without +, add +
+        if (preg_match('/^966\d{9}$/', $phone)) {
+            $phone = '+' . $phone;
+        }
+
+        // If doesn't start with +, add +
+        if (!str_starts_with($phone, '+')) {
+            $phone = '+' . $phone;
+        }
+
+        return $phone;
     }
 }

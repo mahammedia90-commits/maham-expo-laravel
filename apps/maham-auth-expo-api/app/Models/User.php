@@ -19,6 +19,7 @@ class User extends Authenticatable implements JWTSubject
         'email',
         'password',
         'phone',
+        'phone_verified_at',
         'avatar',
         'metadata',
         'status',
@@ -35,6 +36,7 @@ class User extends Authenticatable implements JWTSubject
     {
         return [
             'email_verified_at' => 'datetime',
+            'phone_verified_at' => 'datetime',
             'last_login_at' => 'datetime',
             'password' => 'hashed',
             'metadata' => 'array',
@@ -134,6 +136,8 @@ class User extends Authenticatable implements JWTSubject
             'phone' => $this->phone,
             'avatar' => $this->avatar,
             'status' => $this->status,
+            'email_verified' => $this->hasVerifiedEmail(),
+            'phone_verified' => $this->phone_verified_at !== null,
             'roles' => $this->roles->pluck('name')->toArray(),
             'permissions' => $this->getAllPermissions()->toArray(),
             'last_login_at' => $this->last_login_at?->toISOString(),

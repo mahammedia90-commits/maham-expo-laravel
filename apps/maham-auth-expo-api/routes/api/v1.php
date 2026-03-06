@@ -70,6 +70,10 @@ Route::middleware('auth:api')->group(function () {
         // Email Verification
         Route::post('/email/send-verification', [AuthController::class, 'sendEmailVerification']);
         Route::post('/email/verify', [AuthController::class, 'verifyEmail']);
+
+        // Phone OTP Verification (SMS / WhatsApp)
+        Route::post('/phone/send-otp', [AuthController::class, 'sendPhoneOtp']);
+        Route::post('/phone/verify-otp', [AuthController::class, 'verifyPhoneOtp']);
     });
 
     // Internal token verification
