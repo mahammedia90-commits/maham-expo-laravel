@@ -99,10 +99,10 @@ services:
     deploy:
       resources:
         limits:
-          memory: 2048M
-          cpus: "1.5"
+          memory: 512M
+          cpus: "1.0"
         reservations:
-          memory: 1024M
+          memory: 256M
 
   # ============================================
   # Expo API Service
@@ -203,10 +203,10 @@ services:
     deploy:
       resources:
         limits:
-          memory: 3072M
-          cpus: "2.0"
+          memory: 768M
+          cpus: "1.0"
         reservations:
-          memory: 1536M
+          memory: 384M
 
   # ============================================
   # Auth MySQL
@@ -228,23 +228,23 @@ services:
       --default-authentication-plugin=mysql_native_password
       --character-set-server=utf8mb4
       --collation-server=utf8mb4_unicode_ci
-      --innodb-buffer-pool-size=1G
+      --innodb-buffer-pool-size=256M
       --max-connections=200
       --slow-query-log=1
       --long-query-time=2
     healthcheck:
-      test: ["CMD", "mysqladmin", "ping", "-h", "localhost"]
+      test: ["CMD", "mysqladmin", "ping", "-h", "localhost", "-u", "root", "-p${AUTH_MYSQL_ROOT_PASSWORD}"]
       interval: 10s
-      timeout: 5s
-      retries: 5
-      start_period: 30s
+      timeout: 10s
+      retries: 10
+      start_period: 120s
     deploy:
       resources:
         limits:
-          memory: 1536M
-          cpus: "1.0"
-        reservations:
           memory: 768M
+          cpus: "0.5"
+        reservations:
+          memory: 384M
 
   # ============================================
   # Expo MySQL
@@ -266,23 +266,23 @@ services:
       --default-authentication-plugin=mysql_native_password
       --character-set-server=utf8mb4
       --collation-server=utf8mb4_unicode_ci
-      --innodb-buffer-pool-size=1536M
+      --innodb-buffer-pool-size=256M
       --max-connections=200
       --slow-query-log=1
       --long-query-time=2
     healthcheck:
-      test: ["CMD", "mysqladmin", "ping", "-h", "localhost"]
+      test: ["CMD", "mysqladmin", "ping", "-h", "localhost", "-u", "root", "-p${EXPO_MYSQL_ROOT_PASSWORD}"]
       interval: 10s
-      timeout: 5s
-      retries: 5
-      start_period: 30s
+      timeout: 10s
+      retries: 10
+      start_period: 120s
     deploy:
       resources:
         limits:
-          memory: 2048M
-          cpus: "1.0"
+          memory: 768M
+          cpus: "0.5"
         reservations:
-          memory: 1024M
+          memory: 384M
 
   # ============================================
   # Auth Redis
@@ -291,7 +291,7 @@ services:
     image: redis:7-alpine
     container_name: auth-redis
     restart: always
-    command: redis-server --maxmemory 384mb --maxmemory-policy allkeys-lru --appendonly yes
+    command: redis-server --maxmemory 128mb --maxmemory-policy allkeys-lru --appendonly yes
     volumes:
       - auth-redis-data:/data
     networks:
@@ -304,10 +304,10 @@ services:
     deploy:
       resources:
         limits:
-          memory: 512M
-          cpus: "0.5"
+          memory: 192M
+          cpus: "0.25"
         reservations:
-          memory: 256M
+          memory: 64M
 
   # ============================================
   # Expo Redis
@@ -316,7 +316,7 @@ services:
     image: redis:7-alpine
     container_name: expo-redis
     restart: always
-    command: redis-server --maxmemory 384mb --maxmemory-policy allkeys-lru --appendonly yes
+    command: redis-server --maxmemory 128mb --maxmemory-policy allkeys-lru --appendonly yes
     volumes:
       - expo-redis-data:/data
     networks:
@@ -329,10 +329,10 @@ services:
     deploy:
       resources:
         limits:
-          memory: 512M
-          cpus: "0.5"
+          memory: 192M
+          cpus: "0.25"
         reservations:
-          memory: 256M
+          memory: 64M
 
 networks:
   maham-network:
