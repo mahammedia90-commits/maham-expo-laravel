@@ -54,7 +54,7 @@ class ActivityController extends Controller
 
         $activities = $query->paginate($request->input('per_page', 20));
 
-        return ApiResponse::success($activities);
+        return ApiResponse::paginated($activities);
     }
 
     /**

@@ -160,7 +160,7 @@ class AnalyticsController extends Controller
             ->orderByDesc('created_at')
             ->paginate($request->input('per_page', 25));
 
-        return ApiResponse::success($activities);
+        return ApiResponse::paginated($activities);
     }
 
     /**

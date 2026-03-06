@@ -55,7 +55,7 @@ class UserController extends Controller
 
         $profiles = $query->paginate($request->input('per_page', 15));
 
-        return ApiResponse::success($profiles);
+        return ApiResponse::paginated($profiles);
     }
 
     /**

@@ -35,17 +35,11 @@ class NotificationController extends Controller
         // Get unread count
         $unreadCount = Notification::forUser($userId)->unread()->count();
 
-        return response()->json([
-            'success' => true,
-            'data' => NotificationResource::collection($notifications->items()),
-            'meta' => [
-                'current_page' => $notifications->currentPage(),
-                'last_page' => $notifications->lastPage(),
-                'per_page' => $notifications->perPage(),
-                'total' => $notifications->total(),
-                'unread_count' => $unreadCount,
-            ],
-        ]);
+        $response = ApiResponse::paginated($notifications);
+        $data = $response->getData(true);
+        $data['pagination']['unread_count'] = $unreadCount;
+
+        return response()->json($data);
     }
 
     /**

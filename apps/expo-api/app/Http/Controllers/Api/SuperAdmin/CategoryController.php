@@ -41,7 +41,7 @@ class CategoryController extends Controller
 
         $categories = $query->paginate($request->input('per_page', 15));
 
-        return ApiResponse::success($categories);
+        return ApiResponse::paginated($categories);
     }
 
     /**

@@ -60,7 +60,7 @@ class VisitRequestController extends Controller
 
         $requests = $query->latest()->paginate($request->input('per_page', 15));
 
-        return ApiResponse::success($requests);
+        return ApiResponse::paginated($requests);
     }
 
     /**

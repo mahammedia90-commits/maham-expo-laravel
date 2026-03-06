@@ -49,7 +49,7 @@ class PaymentController extends Controller
         $payments = $query->orderByDesc('first_payment_at')
             ->paginate($request->input('per_page', 15));
 
-        return ApiResponse::success($payments);
+        return ApiResponse::paginated($payments);
     }
 
     /**

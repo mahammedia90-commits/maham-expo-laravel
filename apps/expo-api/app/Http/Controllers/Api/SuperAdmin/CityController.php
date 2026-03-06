@@ -43,7 +43,7 @@ class CityController extends Controller
 
         $cities = $query->paginate($request->input('per_page', 15));
 
-        return ApiResponse::success($cities);
+        return ApiResponse::paginated($cities);
     }
 
     /**

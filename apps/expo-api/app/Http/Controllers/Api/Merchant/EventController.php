@@ -66,7 +66,7 @@ class EventController extends Controller
 
         $events = $query->paginate($request->input('per_page', 15));
 
-        return ApiResponse::success($events);
+        return ApiResponse::paginated($events);
     }
 
     /**
@@ -176,6 +176,6 @@ class EventController extends Controller
 
         $spaces = $query->paginate($request->input('per_page', 15));
 
-        return ApiResponse::success($spaces);
+        return ApiResponse::paginated($spaces);
     }
 }
