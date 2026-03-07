@@ -43,7 +43,9 @@
       "Bash(identify /tmp/maham-pdf/hires-1.png)",
       "Bash(/opt/homebrew/bin/pdftoppm -png -r 250 -x 0 -y 0 -W 800 -H 2000 \"/Users/atif/Downloads/تصميم الايميلات.pdf\" /tmp/maham-pdf/crop1)",
       "Bash(/opt/homebrew/bin/pdfinfo \"/Users/atif/Downloads/تصميم الايميلات.pdf\")",
-      "Bash(/opt/homebrew/bin/pdftotext \"/Users/atif/Downloads/تصميم الايميلات.pdf\" -)"
+      "Bash(/opt/homebrew/bin/pdftotext \"/Users/atif/Downloads/تصميم الايميلات.pdf\" -)",
+      "Bash(npx create-next-app@latest dashboard --typescript --tailwind --eslint --app --src-dir --import-alias \"@/*\" --no-turbopack --use-npm)",
+      "Bash(npm install next-themes next-intl axios zustand lucide-react recharts clsx date-fns)"
     ]
   }
 }
