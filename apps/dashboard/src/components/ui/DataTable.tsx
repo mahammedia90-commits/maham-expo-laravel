@@ -4,15 +4,17 @@ import { ReactNode } from 'react';
 import { cn } from '@/lib/utils';
 import { ChevronLeft, ChevronRight } from 'lucide-react';
 
-export interface Column<T> {
+export interface Column<T = Record<string, unknown>> {
   key: string;
   header: string;
-  render?: (item: T) => ReactNode;
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  render?: (item: T & any) => ReactNode;
   className?: string;
 }
 
-interface DataTableProps<T> {
-  columns: Column<T>[];
+interface DataTableProps<T = Record<string, unknown>> {
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  columns: Column<any>[];
   data: T[];
   loading?: boolean;
   pagination?: {

@@ -99,7 +99,7 @@ const navItems: NavItem[] = [
   { label: 'Settings', labelAr: 'الإعدادات', href: '/dashboard/settings', icon: Settings },
 ];
 
-export default function Sidebar() {
+export default function Sidebar({ mobileOpen, onMobileClose }: { mobileOpen?: boolean; onMobileClose?: () => void }) {
   const pathname = usePathname();
   const [collapsed, setCollapsed] = useState(false);
   const [openGroups, setOpenGroups] = useState<string[]>(['Management', 'Users & Profiles']);
@@ -131,7 +131,9 @@ export default function Sidebar() {
         'border-e border-white/10 dark:border-white/10 border-gray-200/60',
         'bg-white/80 dark:bg-gray-950/80',
         'backdrop-blur-2xl backdrop-saturate-150',
-        collapsed ? 'w-20' : 'w-72'
+        collapsed ? 'w-20' : 'w-72',
+        'hidden lg:flex',
+        mobileOpen && '!flex'
       )}
     >
       {/* Logo */}

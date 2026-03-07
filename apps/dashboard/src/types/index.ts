@@ -144,9 +144,14 @@ export interface Banner {
   title: string;
   title_ar: string;
   image: string;
+  image_url: string;
   url: string;
+  link_url: string;
   is_active: boolean;
   sort_order: number;
+  position: string;
+  starts_at: string | null;
+  ends_at: string | null;
 }
 
 export interface Page {
@@ -184,11 +189,50 @@ export interface Notification {
 
 export interface RentalContract {
   id: string;
+  contract_number: string;
   status: string;
   start_date: string;
   end_date: string;
   total_amount: number;
+  monthly_rent: number;
+  deposit_amount: number;
   created_at: string;
+  tenant?: { id: string; name: string };
+  space?: { id: string; name: string; name_ar: string };
+}
+
+export interface SupportTicket {
+  id: string;
+  subject: string;
+  subject_ar: string;
+  category: string;
+  priority: string;
+  status: string;
+  created_at: string;
+  user?: { id: string; name: string; email: string };
+}
+
+export interface Invoice {
+  id: string;
+  invoice_number: string;
+  total_amount: number;
+  paid_amount: number;
+  status: string;
+  due_date: string;
+  created_at: string;
+  user?: { id: string; name: string };
+}
+
+export interface Payment {
+  id: string;
+  amount: number;
+  payment_method: string;
+  transaction_id: string;
+  status: string;
+  card_last_four: string;
+  card_brand: string;
+  created_at: string;
+  user?: { id: string; name: string };
 }
 
 export interface Settings {

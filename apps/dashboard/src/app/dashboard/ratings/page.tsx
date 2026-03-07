@@ -1,0 +1,134 @@
+'use client';
+
+import { useState, useEffect } from 'react';
+import GlassCard from '@/components/ui/GlassCard';
+import DataTable, { Column } from '@/components/ui/DataTable';
+import StatusBadge from '@/components/ui/StatusBadge';
+import { expoApi } from '@/lib/api';
+import { Rating } from '@/types';
+import { formatDate } from '@/lib/utils';
+import { Star, CheckCircle, XCircle, Trash2, Filter } from 'lucide-react';
+
+export default function RatingsPage() {
+  const [ratings, setRatings] = useState<Rating[]>([]);
+  const [loading, setLoading] = useState(true);
+  const [locale, setLocale] = useState('ar');
+  const [pagination, setPagination] = useState({ current_page: 1, last_page: 1, total: 0, per_page: 15 });
+  const [statusFilter, setStatusFilter] = useState('');
+
+  const isRtl = locale === 'ar';
+
+  useEffect(() => { setLocale(localStorage.getItem('locale') || 'ar'); }, []);
+  useEffect(() => { fetchRatings(); }, [pagination.current_page, statusFilter]);
+
+  const fetchRatings = async () => {
+    setLoading(true);
+    try {
+      const params: Record<string, string | number> = { page: pagination.current_page, per_page: pagination.per_page };
+      if (statusFilter) params.status = statusFilter;
+      const res = await expoApi.get('/manage/ratings', { params });
+      setRatings(res.data.data || []);
+      if (res.data.pagination) setPagination(res.data.pagination);
+    } catch { setRatings([]); } finally { setLoading(false); }
+  };
+
+  const handleAction = async (id: string, action: string) => {
+    try { await expoApi.put(`/manage/ratings/${id}/${action}`); fetchRatings(); } catch { /* silent */ }
+  };
+
+  const handleDelete = async (id: string) => {
+    if (!confirm(isRtl ? 'هل أنت متأكد من الحذف؟' : 'Are you sure?')) return;
+    try { await expoApi.delete(`/manage/ratings/${id}`); fetchRatings(); } catch { /* silent */ }
+  };
+
+  const renderStars = (rating: number) => (
+    <div className="flex items-center gap-0.5">
+      {[1, 2, 3, 4, 5].map((s) => (
+        <Star key={s} className={`w-4 h-4 ${s <= rating ? 'fill-amber-400 text-amber-400' : 'text-gray-300 dark:text-gray-600'}`} />
+      ))}
+      <span className="ms-1 text-sm font-medium text-gray-600 dark:text-gray-300">{rating}</span>
+    </div>
+  );
+
+  const columns: Column<Rating>[] = [
+    {
+      key: 'user',
+      header: isRtl ? 'المستخدم' : 'User',
+      render: (item) => (
+        <div className="flex items-center gap-3">
+          <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-amber-500/20 to-yellow-500/20 flex items-center justify-center">
+            <span className="text-amber-500 font-bold text-sm">{item.user?.name?.charAt(0) || '?'}</span>
+          </div>
+          <span className="font-medium text-gray-900 dark:text-white">{item.user?.name || '-'}</span>
+        </div>
+      ),
+    },
+    {
+      key: 'overall_rating',
+      header: isRtl ? 'التقييم' : 'Rating',
+      render: (item) => renderStars(item.overall_rating),
+    },
+    {
+      key: 'type',
+      header: isRtl ? 'النوع' : 'Type',
+      render: (item) => <span className="text-sm capitalize text-gray-600 dark:text-gray-300">{item.type}</span>,
+    },
+    {
+      key: 'comment',
+      header: isRtl ? 'التعليق' : 'Comment',
+      render: (item) => (
+        <p className="text-sm text-gray-600 dark:text-gray-300 max-w-xs truncate">
+          {isRtl ? item.comment_ar : item.comment}
+        </p>
+      ),
+    },
+    {
+      key: 'status',
+      header: isRtl ? 'الحالة' : 'Status',
+      render: (item) => <StatusBadge status={item.status} />,
+    },
+    {
+      key: 'actions',
+      header: isRtl ? 'الإجراءات' : 'Actions',
+      render: (item) => (
+        <div className="flex items-center gap-1">
+          {item.status === 'pending' && (
+            <>
+              <button onClick={(e) => { e.stopPropagation(); handleAction(item.id, 'approve'); }}
+                className="p-2 rounded-lg hover:bg-emerald-500/10 text-emerald-500 transition-colors"><CheckCircle className="w-4 h-4" /></button>
+              <button onClick={(e) => { e.stopPropagation(); handleAction(item.id, 'reject'); }}
+                className="p-2 rounded-lg hover:bg-red-500/10 text-red-500 transition-colors"><XCircle className="w-4 h-4" /></button>
+            </>
+          )}
+          <button onClick={(e) => { e.stopPropagation(); handleDelete(item.id); }}
+            className="p-2 rounded-lg hover:bg-red-500/10 text-red-500 transition-colors"><Trash2 className="w-4 h-4" /></button>
+        </div>
+      ),
+    },
+  ];
+
+  return (
+    <div className="space-y-6">
+      <div>
+        <h1 className="text-2xl font-bold text-gray-900 dark:text-white">{isRtl ? 'التقييمات' : 'Ratings'}</h1>
+        <p className="text-sm text-gray-500 dark:text-gray-400 mt-1">{isRtl ? 'إدارة تقييمات المستخدمين' : 'Manage user ratings & reviews'}</p>
+      </div>
+
+      <GlassCard>
+        <div className="flex flex-wrap items-center gap-4">
+          <Filter className="w-4 h-4 text-gray-400" />
+          <select value={statusFilter} onChange={(e) => { setStatusFilter(e.target.value); setPagination(p => ({ ...p, current_page: 1 })); }}
+            className="px-3 py-2 rounded-xl border border-white/10 dark:border-white/10 border-gray-200/60 bg-white/50 dark:bg-white/5 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500/30 transition-all">
+            <option value="">{isRtl ? 'جميع الحالات' : 'All Statuses'}</option>
+            <option value="pending">{isRtl ? 'بانتظار المراجعة' : 'Pending'}</option>
+            <option value="approved">{isRtl ? 'معتمد' : 'Approved'}</option>
+            <option value="rejected">{isRtl ? 'مرفوض' : 'Rejected'}</option>
+          </select>
+        </div>
+      </GlassCard>
+
+      <DataTable columns={columns} data={ratings as unknown as Record<string, unknown>[]} loading={loading} pagination={pagination}
+        onPageChange={(page) => setPagination(p => ({ ...p, current_page: page }))} emptyMessage={isRtl ? 'لا توجد تقييمات' : 'No ratings found'} />
+    </div>
+  );
+}

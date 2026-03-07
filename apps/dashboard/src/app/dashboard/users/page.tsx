@@ -114,7 +114,7 @@ export default function UsersPage() {
       header: isRtl ? 'الأدوار' : 'Roles',
       render: (item) => (
         <div className="flex flex-wrap gap-1">
-          {(item.roles || []).map((role) => (
+          {(item.roles || []).map((role: string) => (
             <span
               key={role}
               className="inline-flex items-center px-2 py-0.5 rounded-md bg-indigo-500/10 text-indigo-600 dark:text-indigo-400 text-xs font-medium"

@@ -17,7 +17,7 @@ import {
 } from 'lucide-react';
 import { cn } from '@/lib/utils';
 
-export default function Navbar() {
+export default function Navbar({ onMenuToggle }: { onMenuToggle?: () => void }) {
   const { theme, setTheme } = useTheme();
   const { user, logout } = useAuthStore();
   const router = useRouter();
@@ -53,7 +53,7 @@ export default function Navbar() {
       <div className="flex items-center justify-between h-16 px-6">
         {/* Mobile Menu Toggle */}
         <button
-          onClick={() => setShowMobileMenu(!showMobileMenu)}
+          onClick={onMenuToggle}
           className="lg:hidden p-2 rounded-xl hover:bg-white/50 dark:hover:bg-white/5 transition-colors"
         >
           {showMobileMenu ? <X className="w-5 h-5" /> : <Menu className="w-5 h-5" />}
