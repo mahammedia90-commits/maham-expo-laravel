@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Support\ApiResponse;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Artisan;
 use Illuminate\Support\Facades\Cache;
 
 /**
@@ -30,6 +31,11 @@ class SettingController extends Controller
         'max_rental_requests_per_merchant' => 5,
         'default_currency' => 'SAR',
         'timezone' => 'Asia/Riyadh',
+
+        // ── CORS Settings ──
+        'cors_allowed_origins' => '*',           // * أو روابط مفصولة بفاصلة
+        'cors_supports_credentials' => false,
+        'cors_max_age' => 86400,
     ];
 
     /**
@@ -76,6 +82,11 @@ class SettingController extends Controller
             'settings.max_rental_requests_per_merchant' => 'sometimes|integer|min:1|max:50',
             'settings.default_currency' => 'sometimes|string|max:10',
             'settings.timezone' => 'sometimes|string|max:50',
+
+            // CORS
+            'settings.cors_allowed_origins' => 'sometimes|string|max:2000',
+            'settings.cors_supports_credentials' => 'sometimes|boolean',
+            'settings.cors_max_age' => 'sometimes|integer|min:0|max:604800',
         ]);
 
         $currentSettings = $this->getSettings();
@@ -86,6 +97,16 @@ class SettingController extends Controller
         // Persist to JSON file as backup
         $settingsPath = storage_path('app/settings.json');
         file_put_contents($settingsPath, json_encode($updatedSettings, JSON_PRETTY_PRINT));
+
+        // Sync CORS settings to bootstrap cache (for config:cache compatibility)
+        $this->syncCorsBootstrapCache($updatedSettings);
+
+        // Rebuild config cache so CORS changes take effect immediately
+        try {
+            Artisan::call('config:cache');
+        } catch (\Throwable $e) {
+            // Ignore — cache will be rebuilt on next request
+        }
 
         return ApiResponse::success(
             data: $updatedSettings,
@@ -108,5 +129,25 @@ class SettingController extends Controller
 
             return $this->defaults;
         });
+    }
+
+    /**
+     * Save CORS-related settings to a bootstrap cache file
+     * so config/cors.php can read them during config:cache
+     */
+    private function syncCorsBootstrapCache(array $settings): void
+    {
+        $corsKeys = ['cors_allowed_origins', 'cors_supports_credentials', 'cors_max_age'];
+        $corsSettings = [];
+
+        foreach ($corsKeys as $key) {
+            if (isset($settings[$key])) {
+                $corsSettings[$key] = $settings[$key];
+            }
+        }
+
+        $cachePath = base_path('bootstrap/cache/system_settings.php');
+        $content = '<?php return ' . var_export($corsSettings, true) . ';' . PHP_EOL;
+        file_put_contents($cachePath, $content);
     }
 }
