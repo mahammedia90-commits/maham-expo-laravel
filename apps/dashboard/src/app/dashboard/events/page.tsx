@@ -26,7 +26,7 @@ export default function EventsPage() {
 
   useEffect(() => {
     fetchEvents();
-  }, [pagination.current_page, statusFilter, categoryFilter]);
+  }, [pagination.current_page, statusFilter, categoryFilter, searchQuery]);
 
   const fetchEvents = async () => {
     setLoading(true);
@@ -34,6 +34,7 @@ export default function EventsPage() {
       const params: Record<string, string | number> = { page: pagination.current_page, per_page: pagination.per_page };
       if (statusFilter) params.status = statusFilter;
       if (categoryFilter) params.category_id = categoryFilter;
+      if (searchQuery) params.search = searchQuery;
       const res = await expoApi.get('/manage/events', { params });
       setEvents(res.data.data || []);
       if (res.data.pagination) {

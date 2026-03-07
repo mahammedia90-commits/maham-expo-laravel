@@ -101,7 +101,7 @@ export default function LoginPage() {
 
     try {
       const response = await authApi.post<ApiResponse<{ user: typeof import('@/stores/auth').useAuthStore extends () => infer S ? S extends { user: infer U } ? U : never : never; token: string }>>('/auth/login', {
-        email: emailOrPhone,
+        identifier: emailOrPhone,
         password,
         remember_me: rememberMe,
       });

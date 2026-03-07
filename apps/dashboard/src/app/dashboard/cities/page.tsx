@@ -25,12 +25,13 @@ export default function CitiesPage() {
 
   useEffect(() => {
     fetchCities();
-  }, [pagination.current_page]);
+  }, [pagination.current_page, searchQuery]);
 
   const fetchCities = async () => {
     setLoading(true);
     try {
       const params: Record<string, string | number> = { page: pagination.current_page, per_page: pagination.per_page };
+      if (searchQuery) params.search = searchQuery;
       const res = await expoApi.get('/manage/cities', { params });
       setCities(res.data.data || []);
       if (res.data.pagination) {

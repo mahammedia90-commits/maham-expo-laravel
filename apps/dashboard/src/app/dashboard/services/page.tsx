@@ -34,12 +34,13 @@ export default function ServicesPage() {
 
   useEffect(() => {
     fetchServices();
-  }, [pagination.current_page]);
+  }, [pagination.current_page, searchQuery]);
 
   const fetchServices = async () => {
     setLoading(true);
     try {
       const params: Record<string, string | number> = { page: pagination.current_page, per_page: pagination.per_page };
+      if (searchQuery) params.search = searchQuery;
       const res = await expoApi.get('/manage/services', { params });
       setServices(res.data.data || []);
       if (res.data.pagination) {

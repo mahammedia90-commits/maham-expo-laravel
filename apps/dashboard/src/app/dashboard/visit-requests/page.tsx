@@ -25,13 +25,14 @@ export default function VisitRequestsPage() {
 
   useEffect(() => {
     fetchRequests();
-  }, [pagination.current_page, statusFilter]);
+  }, [pagination.current_page, statusFilter, searchQuery]);
 
   const fetchRequests = async () => {
     setLoading(true);
     try {
       const params: Record<string, string | number> = { page: pagination.current_page, per_page: pagination.per_page };
       if (statusFilter) params.status = statusFilter;
+      if (searchQuery) params.search = searchQuery;
       const res = await expoApi.get('/manage/visit-requests', { params });
       setRequests(res.data.data || []);
       if (res.data.pagination) {

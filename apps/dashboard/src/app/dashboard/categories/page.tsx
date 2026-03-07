@@ -26,12 +26,13 @@ export default function CategoriesPage() {
 
   useEffect(() => {
     fetchCategories();
-  }, [pagination.current_page]);
+  }, [pagination.current_page, searchQuery]);
 
   const fetchCategories = async () => {
     setLoading(true);
     try {
       const params: Record<string, string | number> = { page: pagination.current_page, per_page: pagination.per_page };
+      if (searchQuery) params.search = searchQuery;
       const res = await expoApi.get('/manage/categories', { params });
       setCategories(res.data.data || []);
       if (res.data.pagination) {

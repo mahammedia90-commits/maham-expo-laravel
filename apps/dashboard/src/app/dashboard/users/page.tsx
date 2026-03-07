@@ -35,13 +35,14 @@ export default function UsersPage() {
 
   useEffect(() => {
     fetchUsers();
-  }, [pagination.current_page, statusFilter]);
+  }, [pagination.current_page, statusFilter, searchQuery]);
 
   const fetchUsers = async () => {
     setLoading(true);
     try {
       const params: Record<string, string | number> = { page: pagination.current_page, per_page: pagination.per_page };
       if (statusFilter) params.status = statusFilter;
+      if (searchQuery) params.search = searchQuery;
       const res = await authApi.get('/users', { params });
       setUsers(res.data.data || []);
       if (res.data.pagination) {

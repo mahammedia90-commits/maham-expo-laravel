@@ -35,13 +35,14 @@ export default function ProfilesPage() {
 
   useEffect(() => {
     fetchProfiles();
-  }, [pagination.current_page, statusFilter]);
+  }, [pagination.current_page, statusFilter, searchQuery]);
 
   const fetchProfiles = async () => {
     setLoading(true);
     try {
       const params: Record<string, string | number> = { page: pagination.current_page, per_page: pagination.per_page };
       if (statusFilter) params.status = statusFilter;
+      if (searchQuery) params.search = searchQuery;
       const res = await expoApi.get('/manage/profiles', { params });
       setProfiles(res.data.data || []);
       if (res.data.pagination) {

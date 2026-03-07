@@ -30,6 +30,7 @@ import {
 } from 'recharts';
 import StatsCard from '@/components/ui/StatsCard';
 import GlassCard from '@/components/ui/GlassCard';
+import { expoApi } from '@/lib/api';
 import { cn } from '@/lib/utils';
 
 // ── Translations ──────────────────────────────────────────────────────────────
@@ -178,12 +179,28 @@ function CustomTooltip({
 export default function DashboardPage() {
   const [locale, setLocale] = useState<string>('ar');
   const [mounted, setMounted] = useState(false);
+  const [stats, setStats] = useState<{
+    overview: { total_revenue: number; total_spaces: number; total_visit_requests: number; total_rental_requests: number };
+    spaces: { total: number; by_status: { status: string; count: number; percentage: number }[] };
+    revenue: { total: number; by_payment_status: { status: string; count: number; amount: number; percentage: number }[] };
+    visit_requests: { total: number; pending: number; approved: number };
+    rental_requests: { total: number; pending: number; approved: number };
+    recent_activity: { latest_visit_requests: number; latest_rental_requests: number; latest_profiles_pending: number };
+  } | null>(null);
 
   useEffect(() => {
     const stored = localStorage.getItem('locale') || 'ar';
     setLocale(stored);
     setMounted(true);
   }, []);
+
+  useEffect(() => {
+    if (mounted) {
+      expoApi.get('/manage/dashboard').then(res => {
+        if (res.data?.data) setStats(res.data.data);
+      }).catch(() => {});
+    }
+  }, [mounted]);
 
   if (!mounted) {
     return (
@@ -245,28 +262,28 @@ export default function DashboardPage() {
       <div className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-4 gap-5">
         <StatsCard
           title={labels.totalEvents}
-          value={24}
+          value={stats?.overview?.total_rental_requests ?? 0}
           icon={Calendar}
           color="blue"
           trend={{ value: 12, isPositive: true }}
         />
         <StatsCard
           title={labels.totalUsers}
-          value="1,240"
+          value={stats?.overview?.total_visit_requests ?? 0}
           icon={Users}
           color="purple"
           trend={{ value: 8, isPositive: true }}
         />
         <StatsCard
           title={labels.totalRevenue}
-          value="SAR 458K"
+          value={`SAR ${((stats?.overview?.total_revenue ?? 0) / 1000).toFixed(0)}K`}
           icon={DollarSign}
           color="emerald"
           trend={{ value: 23, isPositive: true }}
         />
         <StatsCard
           title={labels.activeSpaces}
-          value={156}
+          value={stats?.overview?.total_spaces ?? 0}
           icon={MapPin}
           color="amber"
           trend={{ value: 5, isPositive: true }}
@@ -277,28 +294,28 @@ export default function DashboardPage() {
       <div className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-4 gap-5">
         <StatsCard
           title={labels.pendingRequests}
-          value={18}
+          value={(stats?.rental_requests?.pending ?? 0) + (stats?.visit_requests?.pending ?? 0)}
           icon={ClipboardList}
           color="rose"
           trend={{ value: 3, isPositive: false }}
         />
         <StatsCard
           title={labels.occupancyRate}
-          value="78%"
+          value={`${stats?.spaces?.by_status?.find(s => s.status === 'rented')?.percentage ?? 0}%`}
           icon={TrendingUp}
           color="indigo"
           trend={{ value: 6, isPositive: true }}
         />
         <StatsCard
           title={labels.todaysVisitors}
-          value={342}
+          value={stats?.recent_activity?.latest_visit_requests ?? 0}
           icon={Eye}
           color="blue"
           trend={{ value: 15, isPositive: true }}
         />
         <StatsCard
           title={labels.openTickets}
-          value={7}
+          value={stats?.recent_activity?.latest_profiles_pending ?? 0}
           icon={MessageSquare}
           color="amber"
           trend={{ value: 2, isPositive: false }}

@@ -39,7 +39,7 @@ export default function PaymentsPage() {
     try {
       const params: Record<string, string | number> = { page: pagination.current_page, per_page: pagination.per_page };
       if (statusFilter) params.status = statusFilter;
-      const res = await expoApi.get('/manage/invoices', { params });
+      const res = await expoApi.get('/payments', { params });
       setPayments(res.data.data || []);
       if (res.data.pagination) setPagination(res.data.pagination);
     } catch { setPayments([]); } finally { setLoading(false); }
