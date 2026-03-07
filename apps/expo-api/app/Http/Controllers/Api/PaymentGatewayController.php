@@ -59,6 +59,15 @@ class PaymentGatewayController extends Controller
      */
     public function payInvoice(Request $request): JsonResponse
     {
+        // Check if payment gateway is enabled from dashboard
+        if (!config('tap.enabled', true)) {
+            return ApiResponse::error(
+                'بوابة الدفع معطلة حالياً',
+                ApiErrorCode::VALIDATION_FAILED,
+                422
+            );
+        }
+
         $request->validate([
             'invoice_id' => ['required', 'uuid'],
             'amount' => ['nullable', 'numeric', 'min:0.01'],

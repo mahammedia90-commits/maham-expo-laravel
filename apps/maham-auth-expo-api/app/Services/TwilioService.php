@@ -34,6 +34,14 @@ class TwilioService
      */
     public function sendOtp(string $phoneNumber, string $channel = null): array
     {
+        // Check if SMS/OTP is enabled from dashboard
+        if (!config('twilio.enabled', true)) {
+            return [
+                'success' => false,
+                'message' => 'خدمة الرسائل النصية معطلة حالياً',
+            ];
+        }
+
         $channel = $channel ?? $this->defaultChannel;
 
         // Rate limiting

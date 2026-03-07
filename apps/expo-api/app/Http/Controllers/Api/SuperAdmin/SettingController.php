@@ -8,6 +8,8 @@ use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Artisan;
 use Illuminate\Support\Facades\Cache;
+use Illuminate\Support\Facades\Http;
+use Illuminate\Support\Facades\Log;
 
 /**
  * SuperAdmin Setting Controller
@@ -36,6 +38,18 @@ class SettingController extends Controller
         'cors_allowed_origins' => '*',           // * أو روابط مفصولة بفاصلة
         'cors_supports_credentials' => false,
         'cors_max_age' => 86400,
+
+        // ── Payment Gateway Settings (غير سرية) ──
+        'payment_enabled' => true,
+        'payment_gateway_mode' => 'test',        // test أو live
+        'payment_default_currency' => 'SAR',
+        'payment_3d_secure' => true,
+
+        // ── SMS/OTP Settings (غير سرية) ──
+        'sms_enabled' => true,
+        'sms_default_channel' => 'sms',          // sms أو whatsapp
+        'sms_max_attempts_per_hour' => 5,
+        'sms_code_length' => 6,
     ];
 
     /**
@@ -87,6 +101,18 @@ class SettingController extends Controller
             'settings.cors_allowed_origins' => 'sometimes|string|max:2000',
             'settings.cors_supports_credentials' => 'sometimes|boolean',
             'settings.cors_max_age' => 'sometimes|integer|min:0|max:604800',
+
+            // Payment Gateway
+            'settings.payment_enabled' => 'sometimes|boolean',
+            'settings.payment_gateway_mode' => 'sometimes|string|in:test,live',
+            'settings.payment_default_currency' => 'sometimes|string|max:10',
+            'settings.payment_3d_secure' => 'sometimes|boolean',
+
+            // SMS/OTP
+            'settings.sms_enabled' => 'sometimes|boolean',
+            'settings.sms_default_channel' => 'sometimes|string|in:sms,whatsapp',
+            'settings.sms_max_attempts_per_hour' => 'sometimes|integer|min:1|max:20',
+            'settings.sms_code_length' => 'sometimes|integer|min:4|max:8',
         ]);
 
         $currentSettings = $this->getSettings();
@@ -98,15 +124,18 @@ class SettingController extends Controller
         $settingsPath = storage_path('app/settings.json');
         file_put_contents($settingsPath, json_encode($updatedSettings, JSON_PRETTY_PRINT));
 
-        // Sync CORS settings to bootstrap cache (for config:cache compatibility)
-        $this->syncCorsBootstrapCache($updatedSettings);
+        // Sync all service settings to bootstrap cache (for config:cache compatibility)
+        $this->syncBootstrapCache($updatedSettings);
 
-        // Rebuild config cache so CORS changes take effect immediately
+        // Rebuild config cache so changes take effect immediately
         try {
             Artisan::call('config:cache');
         } catch (\Throwable $e) {
             // Ignore — cache will be rebuilt on next request
         }
+
+        // Push SMS settings to auth-service (non-blocking)
+        $this->syncAuthServiceSettings($updatedSettings);
 
         return ApiResponse::success(
             data: $updatedSettings,
@@ -132,22 +161,59 @@ class SettingController extends Controller
     }
 
     /**
-     * Save CORS-related settings to a bootstrap cache file
-     * so config/cors.php can read them during config:cache
+     * Save service settings to bootstrap cache file
+     * so config/cors.php, config/tap.php can read them during config:cache
      */
-    private function syncCorsBootstrapCache(array $settings): void
+    private function syncBootstrapCache(array $settings): void
     {
-        $corsKeys = ['cors_allowed_origins', 'cors_supports_credentials', 'cors_max_age'];
-        $corsSettings = [];
+        $syncKeys = [
+            // CORS
+            'cors_allowed_origins', 'cors_supports_credentials', 'cors_max_age',
+            // Payment
+            'payment_enabled', 'payment_gateway_mode', 'payment_default_currency', 'payment_3d_secure',
+            // SMS
+            'sms_enabled', 'sms_default_channel', 'sms_max_attempts_per_hour', 'sms_code_length',
+        ];
 
-        foreach ($corsKeys as $key) {
+        $cached = [];
+        foreach ($syncKeys as $key) {
             if (isset($settings[$key])) {
-                $corsSettings[$key] = $settings[$key];
+                $cached[$key] = $settings[$key];
             }
         }
 
         $cachePath = base_path('bootstrap/cache/system_settings.php');
-        $content = '<?php return ' . var_export($corsSettings, true) . ';' . PHP_EOL;
+        $content = '<?php return ' . var_export($cached, true) . ';' . PHP_EOL;
         file_put_contents($cachePath, $content);
+    }
+
+    /**
+     * Push SMS/OTP settings to auth-service (internal Docker network)
+     */
+    private function syncAuthServiceSettings(array $settings): void
+    {
+        $smsKeys = ['sms_enabled', 'sms_default_channel', 'sms_max_attempts_per_hour', 'sms_code_length'];
+        $smsSettings = [];
+
+        foreach ($smsKeys as $key) {
+            if (isset($settings[$key])) {
+                $smsSettings[$key] = $settings[$key];
+            }
+        }
+
+        if (empty($smsSettings)) {
+            return;
+        }
+
+        try {
+            $authUrl = rtrim(config('expo-api.auth_service.url'), '/');
+            Http::timeout(5)->post($authUrl . '/api/v1/service/sync-settings', [
+                'settings' => $smsSettings,
+            ]);
+        } catch (\Throwable $e) {
+            Log::warning('Failed to sync settings to auth-service', [
+                'error' => $e->getMessage(),
+            ]);
+        }
     }
 }

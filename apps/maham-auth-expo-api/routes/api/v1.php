@@ -3,6 +3,7 @@
 use App\Http\Controllers\Api\AuthController;
 use App\Http\Controllers\Api\DashboardController;
 use App\Http\Controllers\Api\HealthController;
+use App\Http\Controllers\Api\InternalSettingController;
 use App\Http\Controllers\Api\UserController;
 use App\Http\Controllers\Api\RoleController;
 use App\Http\Controllers\Api\PermissionController;
@@ -44,6 +45,7 @@ Route::prefix('service')->group(function () {
     Route::post('/verify-token', [ServiceController::class, 'verifyUserToken']);
     Route::post('/check-permission', [ServiceController::class, 'checkUserPermission']);
     Route::post('/user-info', [ServiceController::class, 'getUserInfo']);
+    Route::post('/sync-settings', [InternalSettingController::class, 'syncSettings']);
 });
 
 /*
