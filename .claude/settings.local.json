@@ -45,7 +45,21 @@
       "Bash(/opt/homebrew/bin/pdfinfo \"/Users/atif/Downloads/تصميم الايميلات.pdf\")",
       "Bash(/opt/homebrew/bin/pdftotext \"/Users/atif/Downloads/تصميم الايميلات.pdf\" -)",
       "Bash(npx create-next-app@latest dashboard --typescript --tailwind --eslint --app --src-dir --import-alias \"@/*\" --no-turbopack --use-npm)",
-      "Bash(npm install next-themes next-intl axios zustand lucide-react recharts clsx date-fns)"
+      "Bash(npm install next-themes next-intl axios zustand lucide-react recharts clsx date-fns)",
+      "Bash(npm install)",
+      "Bash(npx next build)",
+      "Bash(source ~/.nvm/nvm.sh)",
+      "Bash(nvm ls)",
+      "Bash(export NVM_DIR=\"/Users/atif/Library/Application Support/Herd/config/nvm\")",
+      "Bash(source \"$NVM_DIR/nvm.sh\")",
+      "Bash(nvm use 22)",
+      "Bash(export PATH=\"/Users/atif/Library/Application Support/Herd/config/nvm/versions/node/v22.12.0/bin:$PATH\")",
+      "Bash(PATH=\"/Users/atif/Library/Application Support/Herd/config/nvm/versions/node/v22.12.0/bin:/usr/bin:/bin:/usr/sbin:/sbin:/opt/homebrew/bin\")",
+      "Bash(PATH=\"/Users/atif/Library/Application Support/Herd/config/nvm/versions/node/v22.12.0/bin:/usr/bin:/bin:/usr/sbin:/sbin:/opt/homebrew/bin\" npm install)",
+      "Bash(PATH=\"/Users/atif/Library/Application Support/Herd/config/nvm/versions/node/v22.12.0/bin:/usr/bin:/bin:/usr/sbin:/sbin:/opt/homebrew/bin\" npx next build)",
+      "Bash(export PATH=\"/Users/atif/Library/Application Support/Herd/config/nvm/versions/node/v22.12.0/bin:/usr/bin:/bin:/usr/sbin:/sbin:/opt/homebrew/bin:/usr/local/bin\")",
+      "Bash(npx next dev --port 3001)",
+      "Bash(source /Users/atif/.zshrc)"
     ]
   }
 }
