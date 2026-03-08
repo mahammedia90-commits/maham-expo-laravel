@@ -21,19 +21,33 @@ function createApiClient(baseURL: string) {
     (response) => response,
     async (error: AxiosError) => {
       const originalRequest = error.config as InternalAxiosRequestConfig & { _retry?: boolean };
+      const errorCode = (error.response?.data as Record<string, string>)?.error_code;
+      
       if (
         error.response?.status === 401 &&
-        (error.response?.data as Record<string, string>)?.error_code === 'token_expired' &&
-        !originalRequest._retry
+        !originalRequest._retry &&
+        errorCode !== 'invalid_credentials'
       ) {
         originalRequest._retry = true;
-        try {
-          const refreshRes = await authApi.post('/auth/refresh');
-          const newToken = refreshRes.data.data.token;
-          useAuthStore.getState().setToken(newToken);
-          originalRequest.headers.Authorization = `Bearer ${newToken}`;
-          return client(originalRequest);
-        } catch {
+        const currentToken = useAuthStore.getState().token;
+        
+        if (currentToken) {
+          try {
+            const refreshClient = axios.create({ baseURL: AUTH_BASE });
+            const refreshRes = await refreshClient.post('/auth/refresh', {}, {
+              headers: { Authorization: `Bearer ${currentToken}` }
+            });
+            const newToken = refreshRes.data.data.token;
+            useAuthStore.getState().setToken(newToken);
+            originalRequest.headers.Authorization = `Bearer ${newToken}`;
+            return client(originalRequest);
+          } catch {
+            useAuthStore.getState().logout();
+            if (typeof window !== 'undefined') {
+              window.location.href = '/login';
+            }
+          }
+        } else {
           useAuthStore.getState().logout();
           if (typeof window !== 'undefined') {
             window.location.href = '/login';

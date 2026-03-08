@@ -5,9 +5,22 @@ namespace App\Http\Resources;
 use App\Models\Favorite;
 use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\JsonResource;
+use Illuminate\Support\Facades\Storage;
 
 class EventResource extends JsonResource
 {
+    protected function toStorageUrl(?string $path): ?string
+    {
+        if (!$path) return null;
+        if (str_starts_with($path, 'http')) return $path;
+        return Storage::disk('public')->url($path);
+    }
+
+    protected function toStorageUrls(?array $paths): array
+    {
+        return array_map(fn($p) => $this->toStorageUrl($p), $paths ?? []);
+    }
+
     public function toArray(Request $request): array
     {
         $userId = $request->input('auth_user_id');
@@ -29,15 +42,18 @@ class EventResource extends JsonResource
             'end_date' => $this->end_date->format('Y-m-d'),
             'opening_time' => $this->opening_time?->format('H:i'),
             'closing_time' => $this->closing_time?->format('H:i'),
-            'images' => $this->images ?? [],
-            'images_360' => $this->images_360 ?? [],
-            'main_image' => $this->main_image,
+            'images' => $this->toStorageUrls($this->images),
+            'images_360' => $this->toStorageUrls($this->images_360),
+            'main_image' => $this->toStorageUrl($this->main_image),
             'features' => $this->localized_features ?? [],
             'organizer' => [
                 'name' => $this->organizer_name,
                 'phone' => $this->organizer_phone,
                 'email' => $this->organizer_email,
             ],
+            'organizer_name' => $this->organizer_name,
+            'organizer_phone' => $this->organizer_phone,
+            'organizer_email' => $this->organizer_email,
             'website' => $this->website,
             'status' => $this->status->value,
             'status_label' => app()->getLocale() === 'ar' ? $this->status->label() : $this->status->labelEn(),

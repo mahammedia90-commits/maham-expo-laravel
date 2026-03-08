@@ -4,9 +4,17 @@ namespace App\Http\Resources;
 
 use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\JsonResource;
+use Illuminate\Support\Facades\Storage;
 
 class BusinessProfileResource extends JsonResource
 {
+    protected function toStorageUrl(?string $path): ?string
+    {
+        if (!$path) return null;
+        if (str_starts_with($path, 'http')) return $path;
+        return Storage::disk('public')->url($path);
+    }
+
     public function toArray(Request $request): array
     {
         // Sensitive documents only visible to profile owner or admin
@@ -19,10 +27,10 @@ class BusinessProfileResource extends JsonResource
             'company_name_en' => $this->company_name,
             'company_name_ar' => $this->company_name_ar,
             'commercial_registration_number' => $this->when($isOwnerOrAdmin, $this->commercial_registration_number),
-            'commercial_registration_image' => $this->when($isOwnerOrAdmin, $this->commercial_registration_image),
-            'national_id_image' => $this->when($isOwnerOrAdmin, $this->national_id_image),
-            'company_logo' => $this->company_logo,
-            'avatar' => $this->avatar,
+            'commercial_registration_image' => $this->when($isOwnerOrAdmin, fn() => $this->toStorageUrl($this->commercial_registration_image)),
+            'national_id_image' => $this->when($isOwnerOrAdmin, fn() => $this->toStorageUrl($this->national_id_image)),
+            'company_logo' => $this->toStorageUrl($this->company_logo),
+            'avatar' => $this->toStorageUrl($this->avatar),
             'company_address' => $this->localized_company_address,
             'contact_phone' => $this->contact_phone,
             'contact_email' => $this->contact_email,

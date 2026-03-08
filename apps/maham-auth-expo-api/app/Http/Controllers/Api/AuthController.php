@@ -15,6 +15,7 @@ use App\Services\AuditService;
 use App\Support\ApiErrorCode;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
+use Tymon\JWTAuth\Facades\JWTAuth;
 use OpenApi\Attributes as OA;
 
 class AuthController extends Controller
@@ -98,20 +99,46 @@ class AuthController extends Controller
 
     /**
      * تجديد التوكن
+     * This route is outside auth:api middleware so expired tokens
+     * (within refresh_ttl window) can still be refreshed.
      */
    
-    public function refresh(): JsonResponse
+    public function refresh(Request $request): JsonResponse
     {
-        $token = $this->authService->refreshToken();
+        $token = $request->bearerToken();
+        
+        if (!$token) {
+            return response()->json([
+                'success' => false,
+                'message' => 'التوكن مطلوب',
+                'error_code' => 'token_required',
+            ], 401);
+        }
 
-        return response()->json([
-            'success' => true,
-            'data' => [
-                'token' => $token,
-                'token_type' => 'bearer',
-                'expires_in' => config('jwt.ttl') * 60,
-            ]
-        ]);
+        try {
+            $newToken = JWTAuth::setToken($token)->refresh();
+
+            return response()->json([
+                'success' => true,
+                'data' => [
+                    'token' => $newToken,
+                    'token_type' => 'bearer',
+                    'expires_in' => config('jwt.ttl') * 60,
+                ]
+            ]);
+        } catch (\Tymon\JWTAuth\Exceptions\TokenExpiredException $e) {
+            return response()->json([
+                'success' => false,
+                'message' => 'انتهت صلاحية التوكن ولا يمكن تجديده',
+                'error_code' => 'token_expired',
+            ], 401);
+        } catch (\Tymon\JWTAuth\Exceptions\JWTException $e) {
+            return response()->json([
+                'success' => false,
+                'message' => 'التوكن غير صالح',
+                'error_code' => 'token_invalid',
+            ], 401);
+        }
     }
 
     /**
