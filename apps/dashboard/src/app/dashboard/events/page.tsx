@@ -1,13 +1,57 @@
 'use client';
 
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import GlassCard from '@/components/ui/GlassCard';
 import DataTable, { Column } from '@/components/ui/DataTable';
 import StatusBadge from '@/components/ui/StatusBadge';
 import { expoApi } from '@/lib/api';
 import { formatDate } from '@/lib/utils';
 import { Event } from '@/types';
-import { Plus, Search, Filter, Calendar, Eye, Edit, Trash2 } from 'lucide-react';
+import { Plus, Search, Filter, Calendar, Eye, Edit, Trash2, Upload, X, ImageIcon } from 'lucide-react';
+
+interface EventFormData {
+  name: string;
+  name_ar: string;
+  description: string;
+  description_ar: string;
+  category_id: string;
+  city_id: string;
+  address: string;
+  address_ar: string;
+  start_date: string;
+  end_date: string;
+  opening_time: string;
+  closing_time: string;
+  status: string;
+  is_featured: boolean;
+  expected_visitors: number;
+  organizer_name: string;
+  organizer_phone: string;
+  organizer_email: string;
+  website: string;
+}
+
+const defaultFormData: EventFormData = {
+  name: '',
+  name_ar: '',
+  description: '',
+  description_ar: '',
+  category_id: '',
+  city_id: '',
+  address: '',
+  address_ar: '',
+  start_date: '',
+  end_date: '',
+  opening_time: '09:00',
+  closing_time: '22:00',
+  status: 'draft',
+  is_featured: false,
+  expected_visitors: 0,
+  organizer_name: '',
+  organizer_phone: '',
+  organizer_email: '',
+  website: '',
+};
 
 export default function EventsPage() {
   const [events, setEvents] = useState<Event[]>([]);
@@ -17,16 +61,43 @@ export default function EventsPage() {
   const [statusFilter, setStatusFilter] = useState('');
   const [categoryFilter, setCategoryFilter] = useState('');
   const [searchQuery, setSearchQuery] = useState('');
+  const [showModal, setShowModal] = useState(false);
+  const [editingEvent, setEditingEvent] = useState<Event | null>(null);
+  const [formData, setFormData] = useState<EventFormData>(defaultFormData);
+  const [imageFiles, setImageFiles] = useState<File[]>([]);
+  const [imagePreviews, setImagePreviews] = useState<string[]>([]);
+  const [existingImages, setExistingImages] = useState<string[]>([]);
+  const [categories, setCategories] = useState<{ id: string; name: string; name_ar: string }[]>([]);
+  const [cities, setCities] = useState<{ id: string; name: string; name_ar: string }[]>([]);
+  const [submitting, setSubmitting] = useState(false);
+  const [errors, setErrors] = useState<Record<string, string[]>>({});
+  const fileInputRef = useRef<HTMLInputElement>(null);
 
   const isRtl = locale === 'ar';
 
   useEffect(() => {
     setLocale(localStorage.getItem('locale') || 'ar');
+    fetchCategories();
+    fetchCities();
   }, []);
 
   useEffect(() => {
     fetchEvents();
   }, [pagination.current_page, statusFilter, categoryFilter, searchQuery]);
+
+  const fetchCategories = async () => {
+    try {
+      const res = await expoApi.get('/categories');
+      setCategories(res.data.data || []);
+    } catch { /* silent */ }
+  };
+
+  const fetchCities = async () => {
+    try {
+      const res = await expoApi.get('/cities');
+      setCities(res.data.data || []);
+    } catch { /* silent */ }
+  };
 
   const fetchEvents = async () => {
     setLoading(true);
@@ -47,14 +118,122 @@ export default function EventsPage() {
     }
   };
 
+  const handleCreate = () => {
+    setEditingEvent(null);
+    setFormData(defaultFormData);
+    setImageFiles([]);
+    setImagePreviews([]);
+    setExistingImages([]);
+    setErrors({});
+    setShowModal(true);
+  };
+
+  const handleEdit = async (event: Event) => {
+    setEditingEvent(event);
+    setFormData({
+      name: event.name || '',
+      name_ar: event.name_ar || '',
+      description: event.description || '',
+      description_ar: event.description_ar || '',
+      category_id: event.category?.id || '',
+      city_id: event.city?.id || '',
+      address: event.address || '',
+      address_ar: event.address_ar || '',
+      start_date: event.start_date || '',
+      end_date: event.end_date || '',
+      opening_time: event.opening_time || '09:00',
+      closing_time: event.closing_time || '22:00',
+      status: event.status || 'draft',
+      is_featured: event.is_featured || false,
+      expected_visitors: event.expected_visitors || 0,
+      organizer_name: '',
+      organizer_phone: '',
+      organizer_email: '',
+      website: '',
+    });
+    setImageFiles([]);
+    setImagePreviews([]);
+    setExistingImages(event.images || []);
+    setErrors({});
+    setShowModal(true);
+  };
+
+  const handleImageSelect = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const files = Array.from(e.target.files || []);
+    if (files.length === 0) return;
+
+    setImageFiles(prev => [...prev, ...files]);
+
+    files.forEach(file => {
+      const reader = new FileReader();
+      reader.onload = (ev) => {
+        setImagePreviews(prev => [...prev, ev.target?.result as string]);
+      };
+      reader.readAsDataURL(file);
+    });
+
+    if (fileInputRef.current) fileInputRef.current.value = '';
+  };
+
+  const removeNewImage = (index: number) => {
+    setImageFiles(prev => prev.filter((_, i) => i !== index));
+    setImagePreviews(prev => prev.filter((_, i) => i !== index));
+  };
+
+  const removeExistingImage = (index: number) => {
+    setExistingImages(prev => prev.filter((_, i) => i !== index));
+  };
+
+  const handleSubmit = async () => {
+    setSubmitting(true);
+    setErrors({});
+    try {
+      const fd = new FormData();
+      Object.entries(formData).forEach(([key, value]) => {
+        if (value !== '' && value !== null && value !== undefined) {
+          fd.append(key, String(value));
+        }
+      });
+
+      imageFiles.forEach((file) => {
+        fd.append('images[]', file);
+      });
+
+      if (editingEvent && existingImages.length > 0) {
+        existingImages.forEach((url) => {
+          fd.append('existing_images[]', url);
+        });
+      }
+
+      if (editingEvent) {
+        fd.append('_method', 'PUT');
+        await expoApi.post(`/manage/events/${editingEvent.id}`, fd, {
+          headers: { 'Content-Type': 'multipart/form-data' },
+        });
+      } else {
+        await expoApi.post('/manage/events', fd, {
+          headers: { 'Content-Type': 'multipart/form-data' },
+        });
+      }
+
+      setShowModal(false);
+      fetchEvents();
+    } catch (err: unknown) {
+      const error = err as { response?: { data?: { errors?: Record<string, string[]>; message?: string } } };
+      if (error.response?.data?.errors) {
+        setErrors(error.response.data.errors);
+      }
+    } finally {
+      setSubmitting(false);
+    }
+  };
+
   const handleDelete = async (id: string) => {
     if (!confirm(isRtl ? 'هل أنت متأكد من الحذف؟' : 'Are you sure you want to delete?')) return;
     try {
       await expoApi.delete(`/manage/events/${id}`);
       fetchEvents();
-    } catch {
-      // handle error silently
-    }
+    } catch { /* silent */ }
   };
 
   const columns: Column<Event>[] = [
@@ -63,8 +242,12 @@ export default function EventsPage() {
       header: isRtl ? 'الاسم' : 'Name',
       render: (item) => (
         <div className="flex items-center gap-3">
-          <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-blue-500/20 to-purple-500/20 flex items-center justify-center">
-            <Calendar className="w-5 h-5 text-blue-500" />
+          <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-blue-500/20 to-purple-500/20 flex items-center justify-center overflow-hidden">
+            {item.images && item.images[0] ? (
+              <img src={item.images[0]} alt="" className="w-full h-full object-cover" />
+            ) : (
+              <Calendar className="w-5 h-5 text-blue-500" />
+            )}
           </div>
           <div>
             <p className="font-medium text-gray-900 dark:text-white">{isRtl ? item.name_ar : item.name}</p>
@@ -99,12 +282,12 @@ export default function EventsPage() {
     {
       key: 'start_date',
       header: isRtl ? 'تاريخ البدء' : 'Start Date',
-      render: (item) => <span className="text-sm">{formatDate(item.start_date, locale)}</span>,
+      render: (item) => <span className="text-sm">{item.start_date ? formatDate(item.start_date, locale) : '-'}</span>,
     },
     {
       key: 'end_date',
       header: isRtl ? 'تاريخ الانتهاء' : 'End Date',
-      render: (item) => <span className="text-sm">{formatDate(item.end_date, locale)}</span>,
+      render: (item) => <span className="text-sm">{item.end_date ? formatDate(item.end_date, locale) : '-'}</span>,
     },
     {
       key: 'spaces',
@@ -131,7 +314,7 @@ export default function EventsPage() {
       render: (item) => (
         <div className="flex items-center gap-1">
           <button
-            onClick={(e) => { e.stopPropagation(); window.location.href = `/dashboard/events/${item.id}`; }}
+            onClick={(e) => { e.stopPropagation(); handleEdit(item); }}
             className="p-2 rounded-lg hover:bg-blue-500/10 text-blue-500 transition-colors"
             title={isRtl ? 'تعديل' : 'Edit'}
           >
@@ -149,6 +332,9 @@ export default function EventsPage() {
     },
   ];
 
+  const inputClass = "w-full px-4 py-2 rounded-xl border border-white/10 dark:border-white/10 border-gray-200/60 bg-white/50 dark:bg-white/5 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500/30 transition-all";
+  const labelClass = "block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1";
+
   return (
     <div className="space-y-6">
       {/* Header */}
@@ -162,7 +348,7 @@ export default function EventsPage() {
           </p>
         </div>
         <button
-          onClick={() => window.location.href = '/dashboard/events/create'}
+          onClick={handleCreate}
           className="flex items-center gap-2 px-4 py-2.5 rounded-xl bg-gradient-to-r from-blue-500 to-purple-600 text-white text-sm font-medium shadow-lg shadow-blue-500/25 hover:shadow-xl hover:shadow-blue-500/30 transition-all duration-300 hover:scale-[1.02]"
         >
           <Plus className="w-4 h-4" />
@@ -202,6 +388,9 @@ export default function EventsPage() {
               className="px-3 py-2 rounded-xl border border-white/10 dark:border-white/10 border-gray-200/60 bg-white/50 dark:bg-white/5 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500/30 transition-all text-gray-700 dark:text-gray-300"
             >
               <option value="">{isRtl ? 'جميع التصنيفات' : 'All Categories'}</option>
+              {categories.map(cat => (
+                <option key={cat.id} value={cat.id}>{isRtl ? cat.name_ar : cat.name}</option>
+              ))}
             </select>
           </div>
         </div>
@@ -216,6 +405,236 @@ export default function EventsPage() {
         onPageChange={(page) => setPagination((prev) => ({ ...prev, current_page: page }))}
         emptyMessage={isRtl ? 'لا توجد فعاليات' : 'No events found'}
       />
+
+      {/* Create/Edit Modal */}
+      {showModal && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center">
+          <div className="fixed inset-0 bg-black/50 backdrop-blur-sm" onClick={() => setShowModal(false)} />
+          <div className="relative w-full max-w-4xl mx-4 max-h-[90vh] overflow-y-auto rounded-2xl border border-white/10 dark:border-white/10 border-gray-200/60 bg-white/95 dark:bg-gray-900/95 backdrop-blur-2xl shadow-2xl p-6">
+            <div className="flex items-center justify-between mb-6">
+              <h2 className="text-lg font-bold text-gray-900 dark:text-white">
+                {editingEvent ? (isRtl ? 'تعديل الفعالية' : 'Edit Event') : (isRtl ? 'إنشاء فعالية جديدة' : 'Create New Event')}
+              </h2>
+              <button onClick={() => setShowModal(false)} className="p-2 rounded-lg hover:bg-gray-100 dark:hover:bg-white/10 transition-colors">
+                <X className="w-5 h-5 text-gray-500" />
+              </button>
+            </div>
+
+            <div className="space-y-6">
+              {/* Names */}
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                <div>
+                  <label className={labelClass}>Event Name (EN) *</label>
+                  <input type="text" value={formData.name} onChange={(e) => setFormData({ ...formData, name: e.target.value })} className={inputClass} />
+                  {errors.name && <p className="text-xs text-red-500 mt-1">{errors.name[0]}</p>}
+                </div>
+                <div>
+                  <label className={labelClass}>اسم الفعالية (AR) *</label>
+                  <input type="text" value={formData.name_ar} onChange={(e) => setFormData({ ...formData, name_ar: e.target.value })} className={inputClass} dir="rtl" />
+                  {errors.name_ar && <p className="text-xs text-red-500 mt-1">{errors.name_ar[0]}</p>}
+                </div>
+              </div>
+
+              {/* Descriptions */}
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                <div>
+                  <label className={labelClass}>Description (EN)</label>
+                  <textarea value={formData.description} onChange={(e) => setFormData({ ...formData, description: e.target.value })} rows={3} className={inputClass} />
+                </div>
+                <div>
+                  <label className={labelClass}>الوصف (AR)</label>
+                  <textarea value={formData.description_ar} onChange={(e) => setFormData({ ...formData, description_ar: e.target.value })} rows={3} className={inputClass} dir="rtl" />
+                </div>
+              </div>
+
+              {/* Category & City */}
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                <div>
+                  <label className={labelClass}>{isRtl ? 'التصنيف' : 'Category'} *</label>
+                  <select value={formData.category_id} onChange={(e) => setFormData({ ...formData, category_id: e.target.value })} className={inputClass}>
+                    <option value="">{isRtl ? 'اختر التصنيف' : 'Select Category'}</option>
+                    {categories.map(cat => (
+                      <option key={cat.id} value={cat.id}>{isRtl ? cat.name_ar : cat.name}</option>
+                    ))}
+                  </select>
+                  {errors.category_id && <p className="text-xs text-red-500 mt-1">{errors.category_id[0]}</p>}
+                </div>
+                <div>
+                  <label className={labelClass}>{isRtl ? 'المدينة' : 'City'} *</label>
+                  <select value={formData.city_id} onChange={(e) => setFormData({ ...formData, city_id: e.target.value })} className={inputClass}>
+                    <option value="">{isRtl ? 'اختر المدينة' : 'Select City'}</option>
+                    {cities.map(city => (
+                      <option key={city.id} value={city.id}>{isRtl ? city.name_ar : city.name}</option>
+                    ))}
+                  </select>
+                  {errors.city_id && <p className="text-xs text-red-500 mt-1">{errors.city_id[0]}</p>}
+                </div>
+              </div>
+
+              {/* Address */}
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                <div>
+                  <label className={labelClass}>Address (EN)</label>
+                  <input type="text" value={formData.address} onChange={(e) => setFormData({ ...formData, address: e.target.value })} className={inputClass} />
+                </div>
+                <div>
+                  <label className={labelClass}>العنوان (AR)</label>
+                  <input type="text" value={formData.address_ar} onChange={(e) => setFormData({ ...formData, address_ar: e.target.value })} className={inputClass} dir="rtl" />
+                </div>
+              </div>
+
+              {/* Dates & Times */}
+              <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
+                <div>
+                  <label className={labelClass}>{isRtl ? 'تاريخ البدء' : 'Start Date'} *</label>
+                  <input type="date" value={formData.start_date} onChange={(e) => setFormData({ ...formData, start_date: e.target.value })} className={inputClass} />
+                  {errors.start_date && <p className="text-xs text-red-500 mt-1">{errors.start_date[0]}</p>}
+                </div>
+                <div>
+                  <label className={labelClass}>{isRtl ? 'تاريخ الانتهاء' : 'End Date'} *</label>
+                  <input type="date" value={formData.end_date} onChange={(e) => setFormData({ ...formData, end_date: e.target.value })} className={inputClass} />
+                  {errors.end_date && <p className="text-xs text-red-500 mt-1">{errors.end_date[0]}</p>}
+                </div>
+                <div>
+                  <label className={labelClass}>{isRtl ? 'وقت الافتتاح' : 'Opening Time'}</label>
+                  <input type="time" value={formData.opening_time} onChange={(e) => setFormData({ ...formData, opening_time: e.target.value })} className={inputClass} />
+                </div>
+                <div>
+                  <label className={labelClass}>{isRtl ? 'وقت الإغلاق' : 'Closing Time'}</label>
+                  <input type="time" value={formData.closing_time} onChange={(e) => setFormData({ ...formData, closing_time: e.target.value })} className={inputClass} />
+                </div>
+              </div>
+
+              {/* Status & Featured */}
+              <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+                <div>
+                  <label className={labelClass}>{isRtl ? 'الحالة' : 'Status'}</label>
+                  <select value={formData.status} onChange={(e) => setFormData({ ...formData, status: e.target.value })} className={inputClass}>
+                    <option value="draft">{isRtl ? 'مسودة' : 'Draft'}</option>
+                    <option value="published">{isRtl ? 'منشور' : 'Published'}</option>
+                  </select>
+                </div>
+                <div>
+                  <label className={labelClass}>{isRtl ? 'الزوار المتوقعين' : 'Expected Visitors'}</label>
+                  <input type="number" value={formData.expected_visitors} onChange={(e) => setFormData({ ...formData, expected_visitors: parseInt(e.target.value) || 0 })} className={inputClass} />
+                </div>
+                <div className="flex items-end pb-1">
+                  <label className="relative inline-flex items-center cursor-pointer">
+                    <input type="checkbox" checked={formData.is_featured} onChange={(e) => setFormData({ ...formData, is_featured: e.target.checked })} className="sr-only peer" />
+                    <div className="w-11 h-6 bg-gray-200 peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-blue-500/25 rounded-full peer dark:bg-gray-700 peer-checked:after:translate-x-full rtl:peer-checked:after:-translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:start-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-blue-500" />
+                    <span className="ms-2 text-sm text-gray-700 dark:text-gray-300">{isRtl ? 'مميز' : 'Featured'}</span>
+                  </label>
+                </div>
+              </div>
+
+              {/* Organizer Info */}
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                <div>
+                  <label className={labelClass}>{isRtl ? 'اسم المنظم' : 'Organizer Name'}</label>
+                  <input type="text" value={formData.organizer_name} onChange={(e) => setFormData({ ...formData, organizer_name: e.target.value })} className={inputClass} />
+                </div>
+                <div>
+                  <label className={labelClass}>{isRtl ? 'هاتف المنظم' : 'Organizer Phone'}</label>
+                  <input type="text" value={formData.organizer_phone} onChange={(e) => setFormData({ ...formData, organizer_phone: e.target.value })} className={inputClass} placeholder="+966..." />
+                </div>
+                <div>
+                  <label className={labelClass}>{isRtl ? 'بريد المنظم' : 'Organizer Email'}</label>
+                  <input type="email" value={formData.organizer_email} onChange={(e) => setFormData({ ...formData, organizer_email: e.target.value })} className={inputClass} />
+                </div>
+                <div>
+                  <label className={labelClass}>{isRtl ? 'الموقع الإلكتروني' : 'Website'}</label>
+                  <input type="url" value={formData.website} onChange={(e) => setFormData({ ...formData, website: e.target.value })} className={inputClass} placeholder="https://..." />
+                </div>
+              </div>
+
+              {/* Images Upload */}
+              <div>
+                <label className={labelClass}>{isRtl ? 'صور الفعالية' : 'Event Images'}</label>
+                <div className="space-y-3">
+                  {/* Existing images (editing) */}
+                  {existingImages.length > 0 && (
+                    <div className="flex flex-wrap gap-3">
+                      {existingImages.map((url, idx) => (
+                        <div key={`existing-${idx}`} className="relative w-24 h-24 rounded-xl overflow-hidden border border-gray-200/60 dark:border-white/10 group">
+                          <img src={url} alt="" className="w-full h-full object-cover" />
+                          <button
+                            type="button"
+                            onClick={() => removeExistingImage(idx)}
+                            className="absolute top-1 end-1 p-1 rounded-full bg-red-500 text-white opacity-0 group-hover:opacity-100 transition-opacity"
+                          >
+                            <X className="w-3 h-3" />
+                          </button>
+                        </div>
+                      ))}
+                    </div>
+                  )}
+
+                  {/* New image previews */}
+                  {imagePreviews.length > 0 && (
+                    <div className="flex flex-wrap gap-3">
+                      {imagePreviews.map((src, idx) => (
+                        <div key={`new-${idx}`} className="relative w-24 h-24 rounded-xl overflow-hidden border border-blue-300/60 dark:border-blue-500/30 group">
+                          <img src={src} alt="" className="w-full h-full object-cover" />
+                          <button
+                            type="button"
+                            onClick={() => removeNewImage(idx)}
+                            className="absolute top-1 end-1 p-1 rounded-full bg-red-500 text-white opacity-0 group-hover:opacity-100 transition-opacity"
+                          >
+                            <X className="w-3 h-3" />
+                          </button>
+                          <div className="absolute bottom-0 inset-x-0 bg-blue-500/80 text-white text-[10px] text-center py-0.5">
+                            {isRtl ? 'جديد' : 'New'}
+                          </div>
+                        </div>
+                      ))}
+                    </div>
+                  )}
+
+                  {/* Upload area */}
+                  <div
+                    onClick={() => fileInputRef.current?.click()}
+                    className="flex flex-col items-center justify-center gap-2 p-6 border-2 border-dashed border-gray-300/60 dark:border-white/10 rounded-xl cursor-pointer hover:border-blue-400/60 hover:bg-blue-50/30 dark:hover:bg-blue-500/5 transition-all"
+                  >
+                    <div className="w-12 h-12 rounded-full bg-blue-500/10 flex items-center justify-center">
+                      <Upload className="w-6 h-6 text-blue-500" />
+                    </div>
+                    <p className="text-sm text-gray-500">{isRtl ? 'اضغط لاختيار الصور' : 'Click to select images'}</p>
+                    <p className="text-xs text-gray-400">{isRtl ? 'PNG, JPG, WEBP (أقصى 5 ميجا)' : 'PNG, JPG, WEBP (max 5MB each)'}</p>
+                  </div>
+                  <input
+                    ref={fileInputRef}
+                    type="file"
+                    multiple
+                    accept="image/*"
+                    onChange={handleImageSelect}
+                    className="hidden"
+                  />
+                  {errors.images && <p className="text-xs text-red-500 mt-1">{errors.images[0]}</p>}
+                </div>
+              </div>
+            </div>
+
+            {/* Footer */}
+            <div className="flex items-center justify-end gap-3 mt-6 pt-4 border-t border-gray-200/60 dark:border-white/10">
+              <button onClick={() => setShowModal(false)} className="px-4 py-2 rounded-xl text-sm font-medium text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-white/5">
+                {isRtl ? 'إلغاء' : 'Cancel'}
+              </button>
+              <button
+                onClick={handleSubmit}
+                disabled={submitting}
+                className="px-6 py-2 rounded-xl bg-gradient-to-r from-blue-500 to-purple-600 text-white text-sm font-medium shadow-lg shadow-blue-500/25 hover:shadow-xl transition-all duration-300 disabled:opacity-50"
+              >
+                {submitting
+                  ? (isRtl ? 'جاري الحفظ...' : 'Saving...')
+                  : editingEvent
+                    ? (isRtl ? 'تحديث' : 'Update')
+                    : (isRtl ? 'إنشاء' : 'Create')
+                }
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
     </div>
   );
 }

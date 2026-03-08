@@ -1,17 +1,22 @@
 'use client';
 
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import GlassCard from '@/components/ui/GlassCard';
 import { expoApi } from '@/lib/api';
-import { Settings as SettingsType } from '@/types';
-import { Settings as SettingsIcon, Save, Globe, CreditCard, MessageSquare, Bell, Shield, Palette } from 'lucide-react';
+import { Settings as SettingsIcon, Save, Globe, CreditCard, MessageSquare, Bell, Shield, Palette, Upload, X } from 'lucide-react';
 
 export default function SettingsPage() {
   const [locale, setLocale] = useState('ar');
-  const [settings, setSettings] = useState<Partial<SettingsType>>({});
+  const [settings, setSettings] = useState<Record<string, string | number | boolean>>({});
   const [loading, setLoading] = useState(true);
   const [saving, setSaving] = useState(false);
   const [activeTab, setActiveTab] = useState('general');
+  const [logoFile, setLogoFile] = useState<File | null>(null);
+  const [logoPreview, setLogoPreview] = useState<string>('');
+  const [faviconFile, setFaviconFile] = useState<File | null>(null);
+  const [faviconPreview, setFaviconPreview] = useState<string>('');
+  const logoInputRef = useRef<HTMLInputElement>(null);
+  const faviconInputRef = useRef<HTMLInputElement>(null);
 
   const isRtl = locale === 'ar';
 
@@ -29,12 +34,48 @@ export default function SettingsPage() {
   const handleSave = async () => {
     setSaving(true);
     try {
-      await expoApi.put('/manage/settings', settings);
+      if (logoFile || faviconFile) {
+        const fd = new FormData();
+        Object.entries(settings).forEach(([key, value]) => {
+          if (value !== null && value !== undefined) {
+            fd.append(`settings[${key}]`, String(value));
+          }
+        });
+        if (logoFile) fd.append('logo', logoFile);
+        if (faviconFile) fd.append('favicon', faviconFile);
+        fd.append('_method', 'PUT');
+        await expoApi.post('/manage/settings', fd, {
+          headers: { 'Content-Type': 'multipart/form-data' },
+        });
+      } else {
+        await expoApi.put('/manage/settings', { settings });
+      }
+      setLogoFile(null);
+      setFaviconFile(null);
+      setLogoPreview('');
+      setFaviconPreview('');
+      fetchSettings();
     } catch { /* silent */ } finally { setSaving(false); }
   };
 
   const updateSetting = (key: string, value: string | number | boolean) => {
     setSettings(prev => ({ ...prev, [key]: value }));
+  };
+
+  const handleFileSelect = (type: 'logo' | 'favicon', e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    if (!file) return;
+    const reader = new FileReader();
+    reader.onload = (ev) => {
+      if (type === 'logo') {
+        setLogoFile(file);
+        setLogoPreview(ev.target?.result as string);
+      } else {
+        setFaviconFile(file);
+        setFaviconPreview(ev.target?.result as string);
+      }
+    };
+    reader.readAsDataURL(file);
   };
 
   const tabs = [
@@ -49,7 +90,7 @@ export default function SettingsPage() {
   const InputField = ({ label, settingKey, type = 'text', placeholder = '' }: { label: string; settingKey: string; type?: string; placeholder?: string }) => (
     <div>
       <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">{label}</label>
-      <input type={type} value={String((settings as Record<string, string | number | boolean>)[settingKey] ?? '')}
+      <input type={type} value={String(settings[settingKey] ?? '')}
         onChange={(e) => updateSetting(settingKey, type === 'number' ? parseFloat(e.target.value) || 0 : e.target.value)}
         placeholder={placeholder}
         className="w-full px-4 py-2.5 rounded-xl border border-white/10 dark:border-white/10 border-gray-200/60 bg-white/50 dark:bg-white/5 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500/30 transition-all" />
@@ -63,12 +104,57 @@ export default function SettingsPage() {
         {description && <p className="text-xs text-gray-500 mt-0.5">{description}</p>}
       </div>
       <label className="relative inline-flex items-center cursor-pointer">
-        <input type="checkbox" checked={!!(settings as Record<string, string | number | boolean>)[settingKey]}
+        <input type="checkbox" checked={!!settings[settingKey]}
           onChange={(e) => updateSetting(settingKey, e.target.checked)} className="sr-only peer" />
         <div className="w-11 h-6 bg-gray-200 peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-blue-500/25 rounded-full peer dark:bg-gray-700 peer-checked:after:translate-x-full rtl:peer-checked:after:-translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:start-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-blue-500"></div>
       </label>
     </div>
   );
+
+  const ImageUploadField = ({ label, type, file, preview, existingUrl, inputRef }: {
+    label: string;
+    type: 'logo' | 'favicon';
+    file: File | null;
+    preview: string;
+    existingUrl: string;
+    inputRef: React.RefObject<HTMLInputElement | null>;
+  }) => {
+    const displayImage = preview || existingUrl;
+    return (
+      <div>
+        <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">{label}</label>
+        <div className="flex items-center gap-4">
+          {displayImage ? (
+            <div className="relative group">
+              <div className={`${type === 'favicon' ? 'w-12 h-12' : 'w-32 h-16'} rounded-xl overflow-hidden border border-gray-200/60 dark:border-white/10 bg-white/50 dark:bg-white/5 flex items-center justify-center`}>
+                <img src={displayImage} alt="" className="max-w-full max-h-full object-contain p-1" />
+              </div>
+              <button
+                type="button"
+                onClick={() => {
+                  if (type === 'logo') { setLogoFile(null); setLogoPreview(''); updateSetting('logo_url', ''); }
+                  else { setFaviconFile(null); setFaviconPreview(''); updateSetting('favicon_url', ''); }
+                }}
+                className="absolute -top-2 -end-2 p-1 rounded-full bg-red-500 text-white opacity-0 group-hover:opacity-100 transition-opacity shadow"
+              >
+                <X className="w-3 h-3" />
+              </button>
+            </div>
+          ) : null}
+          <button
+            type="button"
+            onClick={() => inputRef.current?.click()}
+            className="flex items-center gap-2 px-4 py-2.5 rounded-xl border border-dashed border-gray-300/60 dark:border-white/10 hover:border-blue-400/60 hover:bg-blue-50/30 dark:hover:bg-blue-500/5 transition-all text-sm text-gray-600 dark:text-gray-400"
+          >
+            <Upload className="w-4 h-4" />
+            {displayImage ? (isRtl ? 'تغيير' : 'Change') : (isRtl ? 'رفع' : 'Upload')}
+          </button>
+          <input ref={inputRef} type="file" accept="image/*" onChange={(e) => handleFileSelect(type, e)} className="hidden" />
+          {file && <span className="text-xs text-blue-500">{file.name}</span>}
+        </div>
+      </div>
+    );
+  };
 
   if (loading) {
     return (
@@ -189,9 +275,23 @@ export default function SettingsPage() {
               {activeTab === 'appearance' && (
                 <>
                   <h3 className="text-lg font-semibold text-gray-900 dark:text-white">{isRtl ? 'إعدادات المظهر' : 'Appearance Settings'}</h3>
-                  <div className="space-y-4">
-                    <InputField label={isRtl ? 'رابط الشعار' : 'Logo URL'} settingKey="logo_url" />
-                    <InputField label={isRtl ? 'رابط أيقونة الموقع' : 'Favicon URL'} settingKey="favicon_url" />
+                  <div className="space-y-6">
+                    <ImageUploadField
+                      label={isRtl ? 'شعار المنصة' : 'Platform Logo'}
+                      type="logo"
+                      file={logoFile}
+                      preview={logoPreview}
+                      existingUrl={String(settings.logo_url || '')}
+                      inputRef={logoInputRef}
+                    />
+                    <ImageUploadField
+                      label={isRtl ? 'أيقونة الموقع (Favicon)' : 'Favicon'}
+                      type="favicon"
+                      file={faviconFile}
+                      preview={faviconPreview}
+                      existingUrl={String(settings.favicon_url || '')}
+                      inputRef={faviconInputRef}
+                    />
                     <InputField label={isRtl ? 'اللون الرئيسي' : 'Primary Color'} settingKey="primary_color" placeholder="#3b82f6" />
                     <ToggleField label={isRtl ? 'الوضع الداكن افتراضي' : 'Default Dark Mode'} settingKey="default_dark_mode" />
                     <ToggleField label={isRtl ? 'إظهار شعار التذييل' : 'Show Footer Logo'} settingKey="show_footer_logo" />
