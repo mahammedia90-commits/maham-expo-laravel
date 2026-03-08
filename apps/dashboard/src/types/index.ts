@@ -13,10 +13,19 @@ export interface Event {
   opening_time: string;
   closing_time: string;
   images: string[];
+  images_360?: string[];
+  features?: string;
+  features_ar?: string;
+  organizer_name?: string;
+  organizer_phone?: string;
+  organizer_email?: string;
+  website?: string;
+  latitude?: number | string;
+  longitude?: number | string;
   status: 'draft' | 'published' | 'ended' | 'cancelled';
   is_featured: boolean;
   views_count: number;
-  expected_visitors: number;
+  expected_visitors?: number;
   available_spaces_count: number;
   total_spaces_count: number;
   min_price: number;
@@ -35,6 +44,7 @@ export interface Space {
   price_per_day: number;
   price_total: number;
   images: string[];
+  images_360?: string[];
   amenities: string[];
   amenities_ar: string[];
   status: 'available' | 'reserved' | 'rented' | 'unavailable';
@@ -121,10 +131,21 @@ export interface VisitRequest {
 
 export interface Sponsor {
   id: string;
+  event_id?: string;
+  event?: { id: string; name: string; name_ar: string };
   name: string;
   name_ar: string;
+  company_name?: string;
+  company_name_ar?: string;
+  description?: string;
+  description_ar?: string;
+  logo?: string;
+  contact_person?: string;
+  contact_email?: string;
+  contact_phone?: string;
+  website?: string;
   status: string;
-  tier: string;
+  tier?: string;
   created_at: string;
 }
 
@@ -144,14 +165,19 @@ export interface Banner {
   title: string;
   title_ar: string;
   image: string;
+  image_ar?: string;
   image_url: string;
   url: string;
   link_url: string;
+  description?: string;
+  description_ar?: string;
   is_active: boolean;
   sort_order: number;
   position: string;
-  starts_at: string | null;
-  ends_at: string | null;
+  start_date?: string | null;
+  end_date?: string | null;
+  starts_at?: string | null;
+  ends_at?: string | null;
 }
 
 export interface Page {

@@ -24,7 +24,7 @@ export default function ServicesPage() {
   const [searchQuery, setSearchQuery] = useState('');
   const [showModal, setShowModal] = useState(false);
   const [editingService, setEditingService] = useState<Service | null>(null);
-  const [formData, setFormData] = useState({ name: '', name_ar: '', description: '', description_ar: '' });
+  const [formData, setFormData] = useState({ name: '', name_ar: '', description: '', description_ar: '', icon: '', is_active: true, sort_order: 0 });
 
   const isRtl = locale === 'ar';
 
@@ -55,7 +55,7 @@ export default function ServicesPage() {
 
   const handleCreate = () => {
     setEditingService(null);
-    setFormData({ name: '', name_ar: '', description: '', description_ar: '' });
+    setFormData({ name: '', name_ar: '', description: '', description_ar: '', icon: '', is_active: true, sort_order: 0 });
     setShowModal(true);
   };
 
@@ -66,6 +66,9 @@ export default function ServicesPage() {
       name_ar: service.name_ar || '',
       description: service.description || '',
       description_ar: service.description_ar || '',
+      icon: (service as unknown as Record<string, string>).icon || '',
+      is_active: service.is_active ?? true,
+      sort_order: (service as unknown as Record<string, number>).sort_order || 0,
     });
     setShowModal(true);
   };
@@ -248,6 +251,43 @@ export default function ServicesPage() {
                   className="w-full px-4 py-2 rounded-xl border border-white/10 dark:border-white/10 border-gray-200/60 bg-white/50 dark:bg-white/5 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500/30 transition-all resize-none"
                   dir="rtl"
                 />
+              </div>
+              <div className="grid grid-cols-3 gap-4">
+                <div>
+                  <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
+                    {isRtl ? 'الأيقونة' : 'Icon'}
+                  </label>
+                  <input
+                    type="text"
+                    value={formData.icon}
+                    onChange={(e) => setFormData({ ...formData, icon: e.target.value })}
+                    placeholder="e.g. wifi, power"
+                    className="w-full px-4 py-2 rounded-xl border border-white/10 dark:border-white/10 border-gray-200/60 bg-white/50 dark:bg-white/5 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500/30 transition-all"
+                  />
+                </div>
+                <div>
+                  <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
+                    {isRtl ? 'الترتيب' : 'Sort Order'}
+                  </label>
+                  <input
+                    type="number"
+                    value={formData.sort_order}
+                    onChange={(e) => setFormData({ ...formData, sort_order: parseInt(e.target.value) || 0 })}
+                    className="w-full px-4 py-2 rounded-xl border border-white/10 dark:border-white/10 border-gray-200/60 bg-white/50 dark:bg-white/5 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500/30 transition-all"
+                  />
+                </div>
+                <div className="flex items-center gap-3 pt-6">
+                  <label className="relative inline-flex items-center cursor-pointer">
+                    <input
+                      type="checkbox"
+                      checked={formData.is_active}
+                      onChange={(e) => setFormData({ ...formData, is_active: e.target.checked })}
+                      className="sr-only peer"
+                    />
+                    <div className="w-11 h-6 bg-gray-200 peer-focus:outline-none rounded-full peer dark:bg-gray-700 peer-checked:after:translate-x-full rtl:peer-checked:after:-translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:start-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-blue-500"></div>
+                  </label>
+                  <span className="text-sm text-gray-700 dark:text-gray-300">{isRtl ? 'نشط' : 'Active'}</span>
+                </div>
               </div>
             </div>
             <div className="flex items-center justify-end gap-3 mt-6 pt-4 border-t border-gray-200/60 dark:border-white/10">

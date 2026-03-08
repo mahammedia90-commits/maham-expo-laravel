@@ -24,7 +24,6 @@ interface EventFormData {
   closing_time: string;
   status: string;
   is_featured: boolean;
-  expected_visitors: number;
   organizer_name: string;
   organizer_phone: string;
   organizer_email: string;
@@ -46,7 +45,6 @@ const defaultFormData: EventFormData = {
   closing_time: '22:00',
   status: 'draft',
   is_featured: false,
-  expected_visitors: 0,
   organizer_name: '',
   organizer_phone: '',
   organizer_email: '',
@@ -67,11 +65,15 @@ export default function EventsPage() {
   const [imageFiles, setImageFiles] = useState<File[]>([]);
   const [imagePreviews, setImagePreviews] = useState<string[]>([]);
   const [existingImages, setExistingImages] = useState<string[]>([]);
+  const [image360Files, setImage360Files] = useState<File[]>([]);
+  const [image360Previews, setImage360Previews] = useState<string[]>([]);
+  const [existingImages360, setExistingImages360] = useState<string[]>([]);
   const [categories, setCategories] = useState<{ id: string; name: string; name_ar: string }[]>([]);
   const [cities, setCities] = useState<{ id: string; name: string; name_ar: string }[]>([]);
   const [submitting, setSubmitting] = useState(false);
   const [errors, setErrors] = useState<Record<string, string[]>>({});
   const fileInputRef = useRef<HTMLInputElement>(null);
+  const file360InputRef = useRef<HTMLInputElement>(null);
 
   const isRtl = locale === 'ar';
 
@@ -124,6 +126,9 @@ export default function EventsPage() {
     setImageFiles([]);
     setImagePreviews([]);
     setExistingImages([]);
+    setImage360Files([]);
+    setImage360Previews([]);
+    setExistingImages360([]);
     setErrors({});
     setShowModal(true);
   };
@@ -145,15 +150,17 @@ export default function EventsPage() {
       closing_time: event.closing_time || '22:00',
       status: event.status || 'draft',
       is_featured: event.is_featured || false,
-      expected_visitors: event.expected_visitors || 0,
-      organizer_name: '',
-      organizer_phone: '',
-      organizer_email: '',
-      website: '',
+      organizer_name: event.organizer_name || '',
+      organizer_phone: event.organizer_phone || '',
+      organizer_email: event.organizer_email || '',
+      website: event.website || '',
     });
     setImageFiles([]);
     setImagePreviews([]);
     setExistingImages(event.images || []);
+    setImage360Files([]);
+    setImage360Previews([]);
+    setExistingImages360(event.images_360 || []);
     setErrors({});
     setShowModal(true);
   };
@@ -184,6 +191,29 @@ export default function EventsPage() {
     setExistingImages(prev => prev.filter((_, i) => i !== index));
   };
 
+  const handle360ImageSelect = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const files = Array.from(e.target.files || []);
+    if (files.length === 0) return;
+    setImage360Files(prev => [...prev, ...files]);
+    files.forEach(file => {
+      const reader = new FileReader();
+      reader.onload = (ev) => {
+        setImage360Previews(prev => [...prev, ev.target?.result as string]);
+      };
+      reader.readAsDataURL(file);
+    });
+    if (file360InputRef.current) file360InputRef.current.value = '';
+  };
+
+  const removeNew360Image = (index: number) => {
+    setImage360Files(prev => prev.filter((_, i) => i !== index));
+    setImage360Previews(prev => prev.filter((_, i) => i !== index));
+  };
+
+  const removeExisting360Image = (index: number) => {
+    setExistingImages360(prev => prev.filter((_, i) => i !== index));
+  };
+
   const handleSubmit = async () => {
     setSubmitting(true);
     setErrors({});
@@ -191,7 +221,11 @@ export default function EventsPage() {
       const fd = new FormData();
       Object.entries(formData).forEach(([key, value]) => {
         if (value !== '' && value !== null && value !== undefined) {
-          fd.append(key, String(value));
+          if (key === 'is_featured') {
+            fd.append(key, value ? '1' : '0');
+          } else {
+            fd.append(key, String(value));
+          }
         }
       });
 
@@ -199,9 +233,19 @@ export default function EventsPage() {
         fd.append('images[]', file);
       });
 
+      image360Files.forEach((file) => {
+        fd.append('images_360[]', file);
+      });
+
       if (editingEvent && existingImages.length > 0) {
         existingImages.forEach((url) => {
           fd.append('existing_images[]', url);
+        });
+      }
+
+      if (editingEvent && existingImages360.length > 0) {
+        existingImages360.forEach((url) => {
+          fd.append('existing_images_360[]', url);
         });
       }
 
@@ -506,17 +550,13 @@ export default function EventsPage() {
               </div>
 
               {/* Status & Featured */}
-              <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                 <div>
                   <label className={labelClass}>{isRtl ? 'الحالة' : 'Status'}</label>
                   <select value={formData.status} onChange={(e) => setFormData({ ...formData, status: e.target.value })} className={inputClass}>
                     <option value="draft">{isRtl ? 'مسودة' : 'Draft'}</option>
                     <option value="published">{isRtl ? 'منشور' : 'Published'}</option>
                   </select>
-                </div>
-                <div>
-                  <label className={labelClass}>{isRtl ? 'الزوار المتوقعين' : 'Expected Visitors'}</label>
-                  <input type="number" value={formData.expected_visitors} onChange={(e) => setFormData({ ...formData, expected_visitors: parseInt(e.target.value) || 0 })} className={inputClass} />
                 </div>
                 <div className="flex items-end pb-1">
                   <label className="relative inline-flex items-center cursor-pointer">
@@ -610,6 +650,43 @@ export default function EventsPage() {
                     className="hidden"
                   />
                   {errors.images && <p className="text-xs text-red-500 mt-1">{errors.images[0]}</p>}
+                </div>
+              </div>
+
+              {/* 360° Images Upload */}
+              <div>
+                <label className={labelClass}>{isRtl ? 'صور 360°' : '360° Images'}</label>
+                <div className="space-y-3">
+                  {existingImages360.length > 0 && (
+                    <div className="flex flex-wrap gap-3">
+                      {existingImages360.map((url, idx) => (
+                        <div key={`existing360-${idx}`} className="relative w-24 h-24 rounded-xl overflow-hidden border border-gray-200/60 dark:border-white/10 group">
+                          <img src={url} alt="" className="w-full h-full object-cover" />
+                          <button type="button" onClick={() => removeExisting360Image(idx)} className="absolute top-1 end-1 p-1 rounded-full bg-red-500 text-white opacity-0 group-hover:opacity-100 transition-opacity"><X className="w-3 h-3" /></button>
+                        </div>
+                      ))}
+                    </div>
+                  )}
+                  {image360Previews.length > 0 && (
+                    <div className="flex flex-wrap gap-3">
+                      {image360Previews.map((src, idx) => (
+                        <div key={`new360-${idx}`} className="relative w-24 h-24 rounded-xl overflow-hidden border border-purple-300/60 dark:border-purple-500/30 group">
+                          <img src={src} alt="" className="w-full h-full object-cover" />
+                          <button type="button" onClick={() => removeNew360Image(idx)} className="absolute top-1 end-1 p-1 rounded-full bg-red-500 text-white opacity-0 group-hover:opacity-100 transition-opacity"><X className="w-3 h-3" /></button>
+                          <div className="absolute bottom-0 inset-x-0 bg-purple-500/80 text-white text-[10px] text-center py-0.5">360°</div>
+                        </div>
+                      ))}
+                    </div>
+                  )}
+                  <div onClick={() => file360InputRef.current?.click()} className="flex flex-col items-center justify-center gap-2 p-6 border-2 border-dashed border-gray-300/60 dark:border-white/10 rounded-xl cursor-pointer hover:border-purple-400/60 hover:bg-purple-50/30 dark:hover:bg-purple-500/5 transition-all">
+                    <div className="w-12 h-12 rounded-full bg-purple-500/10 flex items-center justify-center">
+                      <Upload className="w-6 h-6 text-purple-500" />
+                    </div>
+                    <p className="text-sm text-gray-500">{isRtl ? 'اضغط لاختيار صور 360°' : 'Click to select 360° images'}</p>
+                    <p className="text-xs text-gray-400">{isRtl ? 'PNG, JPG, WEBP (أقصى 10 ميجا)' : 'PNG, JPG, WEBP (max 10MB each)'}</p>
+                  </div>
+                  <input ref={file360InputRef} type="file" multiple accept="image/*" onChange={handle360ImageSelect} className="hidden" />
+                  {errors.images_360 && <p className="text-xs text-red-500 mt-1">{errors.images_360[0]}</p>}
                 </div>
               </div>
             </div>

@@ -26,6 +26,9 @@ export default function SponsorAssetsPage() {
   const [loading, setLoading] = useState(true);
   const [locale, setLocale] = useState('ar');
   const [pagination, setPagination] = useState({ current_page: 1, last_page: 1, total: 0, per_page: 15 });
+  const [showRejectModal, setShowRejectModal] = useState(false);
+  const [rejectingId, setRejectingId] = useState('');
+  const [rejectionReason, setRejectionReason] = useState('');
 
   const isRtl = locale === 'ar';
 
@@ -41,8 +44,23 @@ export default function SponsorAssetsPage() {
     } catch { setAssets([]); } finally { setLoading(false); }
   };
 
-  const handleAction = async (id: string, action: string) => {
-    try { await expoApi.put(`/manage/sponsor-assets/${id}/${action}`); fetchAssets(); } catch { /* silent */ }
+  const handleApprove = async (id: string) => {
+    try { await expoApi.put(`/manage/sponsor-assets/${id}/approve`); fetchAssets(); } catch { /* silent */ }
+  };
+
+  const handleRejectClick = (id: string) => {
+    setRejectingId(id);
+    setRejectionReason('');
+    setShowRejectModal(true);
+  };
+
+  const handleRejectSubmit = async () => {
+    if (!rejectionReason.trim()) return;
+    try {
+      await expoApi.put(`/manage/sponsor-assets/${rejectingId}/reject`, { rejection_reason: rejectionReason });
+      setShowRejectModal(false);
+      fetchAssets();
+    } catch { /* silent */ }
   };
 
   const typeIcons: Record<string, string> = {
@@ -99,9 +117,9 @@ export default function SponsorAssetsPage() {
           )}
           {item.status === 'pending_review' && (
             <>
-              <button onClick={(e) => { e.stopPropagation(); handleAction(item.id, 'approve'); }}
+              <button onClick={(e) => { e.stopPropagation(); handleApprove(item.id); }}
                 className="p-2 rounded-lg hover:bg-emerald-500/10 text-emerald-500 transition-colors"><CheckCircle className="w-4 h-4" /></button>
-              <button onClick={(e) => { e.stopPropagation(); handleAction(item.id, 'reject'); }}
+              <button onClick={(e) => { e.stopPropagation(); handleRejectClick(item.id); }}
                 className="p-2 rounded-lg hover:bg-red-500/10 text-red-500 transition-colors"><XCircle className="w-4 h-4" /></button>
             </>
           )}
@@ -118,6 +136,36 @@ export default function SponsorAssetsPage() {
       </div>
       <DataTable columns={columns} data={assets as unknown as Record<string, unknown>[]} loading={loading} pagination={pagination}
         onPageChange={(page) => setPagination(p => ({ ...p, current_page: page }))} emptyMessage={isRtl ? 'لا توجد أصول' : 'No assets found'} />
+
+      {/* Rejection Reason Modal */}
+      {showRejectModal && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center">
+          <div className="fixed inset-0 bg-black/50 backdrop-blur-sm" onClick={() => setShowRejectModal(false)} />
+          <div className="relative w-full max-w-md mx-4 rounded-2xl border border-white/10 dark:border-white/10 border-gray-200/60 bg-white/95 dark:bg-gray-900/95 backdrop-blur-2xl shadow-2xl p-6">
+            <h2 className="text-lg font-bold text-gray-900 dark:text-white mb-4">
+              {isRtl ? 'سبب الرفض' : 'Rejection Reason'}
+            </h2>
+            <textarea
+              value={rejectionReason}
+              onChange={(e) => setRejectionReason(e.target.value)}
+              rows={4}
+              placeholder={isRtl ? 'اكتب سبب الرفض...' : 'Enter rejection reason...'}
+              className="w-full px-4 py-2 rounded-xl border border-white/10 dark:border-white/10 border-gray-200/60 bg-white/50 dark:bg-white/5 text-sm focus:outline-none focus:ring-2 focus:ring-red-500/30 transition-all resize-none"
+              dir={isRtl ? 'rtl' : 'ltr'}
+            />
+            <div className="flex items-center justify-end gap-3 mt-4">
+              <button onClick={() => setShowRejectModal(false)}
+                className="px-4 py-2 rounded-xl text-sm font-medium text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-white/5 transition-colors">
+                {isRtl ? 'إلغاء' : 'Cancel'}
+              </button>
+              <button onClick={handleRejectSubmit} disabled={!rejectionReason.trim()}
+                className="px-6 py-2 rounded-xl bg-gradient-to-r from-red-500 to-rose-600 text-white text-sm font-medium shadow-lg shadow-red-500/25 hover:shadow-xl transition-all duration-300 disabled:opacity-50">
+                {isRtl ? 'رفض' : 'Reject'}
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
     </div>
   );
 }

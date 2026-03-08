@@ -1,12 +1,11 @@
 'use client';
 
-import { useState, useEffect, useRef } from 'react';
-import GlassCard from '@/components/ui/GlassCard';
+import { useState, useEffect } from 'react';
 import DataTable, { Column } from '@/components/ui/DataTable';
 import { expoApi } from '@/lib/api';
 import { Banner } from '@/types';
 import { formatDate } from '@/lib/utils';
-import { Plus, Edit, Trash2, Image as ImageIcon, ExternalLink, Check, X, Upload } from 'lucide-react';
+import { Plus, Edit, Trash2, Image as ImageIcon, ExternalLink, Check, X, Link } from 'lucide-react';
 
 export default function BannersPage() {
   const [banners, setBanners] = useState<Banner[]>([]);
@@ -15,13 +14,12 @@ export default function BannersPage() {
   const [pagination, setPagination] = useState({ current_page: 1, last_page: 1, total: 0, per_page: 15 });
   const [showModal, setShowModal] = useState(false);
   const [editingBanner, setEditingBanner] = useState<Banner | null>(null);
-  const [formData, setFormData] = useState({ title: '', title_ar: '', link_url: '', position: 'home_top', sort_order: 0, is_active: true, starts_at: '', ends_at: '' });
-  const [imageFile, setImageFile] = useState<File | null>(null);
-  const [imagePreview, setImagePreview] = useState<string>('');
-  const [existingImage, setExistingImage] = useState<string>('');
+  const [formData, setFormData] = useState({
+    title: '', title_ar: '', image: '', image_ar: '', link_url: '', position: 'home_top',
+    sort_order: 0, is_active: true, start_date: '', end_date: '', description: '', description_ar: '',
+  });
   const [submitting, setSubmitting] = useState(false);
   const [errors, setErrors] = useState<Record<string, string[]>>({});
-  const fileInputRef = useRef<HTMLInputElement>(null);
 
   const isRtl = locale === 'ar';
 
@@ -39,70 +37,64 @@ export default function BannersPage() {
 
   const handleCreate = () => {
     setEditingBanner(null);
-    setFormData({ title: '', title_ar: '', link_url: '', position: 'home_top', sort_order: 0, is_active: true, starts_at: '', ends_at: '' });
-    setImageFile(null);
-    setImagePreview('');
-    setExistingImage('');
+    setFormData({
+      title: '', title_ar: '', image: '', image_ar: '', link_url: '', position: 'home_top',
+      sort_order: 0, is_active: true, start_date: '', end_date: '', description: '', description_ar: '',
+    });
     setErrors({});
     setShowModal(true);
   };
 
   const handleEdit = (banner: Banner) => {
     setEditingBanner(banner);
-    setFormData({ title: banner.title, title_ar: banner.title_ar, link_url: banner.link_url || banner.url || '', position: banner.position, sort_order: banner.sort_order, is_active: banner.is_active, starts_at: banner.starts_at || '', ends_at: banner.ends_at || '' });
-    setImageFile(null);
-    setImagePreview('');
-    setExistingImage(banner.image_url || banner.image || '');
+    setFormData({
+      title: banner.title || '',
+      title_ar: banner.title_ar || '',
+      image: banner.image || banner.image_url || '',
+      image_ar: banner.image_ar || '',
+      link_url: banner.link_url || banner.url || '',
+      position: banner.position || 'home_top',
+      sort_order: banner.sort_order || 0,
+      is_active: banner.is_active ?? true,
+      start_date: banner.start_date || banner.starts_at || '',
+      end_date: banner.end_date || banner.ends_at || '',
+      description: banner.description || '',
+      description_ar: banner.description_ar || '',
+    });
     setErrors({});
     setShowModal(true);
-  };
-
-  const handleImageSelect = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const file = e.target.files?.[0];
-    if (!file) return;
-    setImageFile(file);
-    const reader = new FileReader();
-    reader.onload = (ev) => setImagePreview(ev.target?.result as string);
-    reader.readAsDataURL(file);
-    setExistingImage('');
-    if (fileInputRef.current) fileInputRef.current.value = '';
   };
 
   const handleSubmit = async () => {
     setSubmitting(true);
     setErrors({});
     try {
-      const fd = new FormData();
-      fd.append('title', formData.title);
-      fd.append('title_ar', formData.title_ar);
-      fd.append('link_url', formData.link_url);
-      fd.append('position', formData.position);
-      fd.append('sort_order', String(formData.sort_order));
-      fd.append('is_active', formData.is_active ? '1' : '0');
-      if (formData.starts_at) fd.append('starts_at', formData.starts_at);
-      if (formData.ends_at) fd.append('ends_at', formData.ends_at);
-
-      if (imageFile) {
-        fd.append('image', imageFile);
-      }
+      // API expects JSON with image as a string URL (not file upload)
+      const payload: Record<string, unknown> = {
+        title: formData.title,
+        title_ar: formData.title_ar,
+        image: formData.image,
+        position: formData.position,
+        is_active: formData.is_active,
+        sort_order: formData.sort_order,
+      };
+      if (formData.image_ar) payload.image_ar = formData.image_ar;
+      if (formData.description) payload.description = formData.description;
+      if (formData.description_ar) payload.description_ar = formData.description_ar;
+      if (formData.link_url) payload.link_url = formData.link_url;
+      if (formData.start_date) payload.start_date = formData.start_date;
+      if (formData.end_date) payload.end_date = formData.end_date;
 
       if (editingBanner) {
-        fd.append('_method', 'PUT');
-        await expoApi.post(`/manage/banners/${editingBanner.id}`, fd, {
-          headers: { 'Content-Type': 'multipart/form-data' },
-        });
+        await expoApi.put(`/manage/banners/${editingBanner.id}`, payload);
       } else {
-        await expoApi.post('/manage/banners', fd, {
-          headers: { 'Content-Type': 'multipart/form-data' },
-        });
+        await expoApi.post('/manage/banners', payload);
       }
       setShowModal(false);
       fetchBanners();
     } catch (err: unknown) {
       const error = err as { response?: { data?: { errors?: Record<string, string[]> } } };
-      if (error.response?.data?.errors) {
-        setErrors(error.response.data.errors);
-      }
+      if (error.response?.data?.errors) setErrors(error.response.data.errors);
     } finally {
       setSubmitting(false);
     }
@@ -143,23 +135,12 @@ export default function BannersPage() {
     {
       key: 'position',
       header: isRtl ? 'الموضع' : 'Position',
-      render: (item) => <span className="px-2.5 py-1 rounded-lg bg-blue-500/10 text-blue-500 text-xs font-medium">{item.position.replace(/_/g, ' ')}</span>,
+      render: (item) => <span className="px-2.5 py-1 rounded-lg bg-blue-500/10 text-blue-500 text-xs font-medium">{item.position?.replace(/_/g, ' ')}</span>,
     },
     {
       key: 'sort_order',
       header: isRtl ? 'الترتيب' : 'Order',
       render: (item) => <span className="text-sm font-mono text-gray-500">{item.sort_order}</span>,
-    },
-    {
-      key: 'period',
-      header: isRtl ? 'الفترة' : 'Period',
-      render: (item) => (
-        <div className="text-xs text-gray-500">
-          {item.starts_at && <div>{formatDate(item.starts_at, locale)}</div>}
-          {item.ends_at && <div>→ {formatDate(item.ends_at, locale)}</div>}
-          {!item.starts_at && !item.ends_at && '-'}
-        </div>
-      ),
     },
     {
       key: 'is_active',
@@ -215,46 +196,48 @@ export default function BannersPage() {
             <div className="space-y-4">
               <div className="grid grid-cols-2 gap-4">
                 <div>
-                  <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Title (EN)</label>
+                  <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Title (EN) *</label>
                   <input type="text" value={formData.title} onChange={(e) => setFormData({ ...formData, title: e.target.value })} className={inputClass} />
                   {errors.title && <p className="text-xs text-red-500 mt-1">{errors.title[0]}</p>}
                 </div>
                 <div>
-                  <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">العنوان (AR)</label>
+                  <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">العنوان (AR) *</label>
                   <input type="text" value={formData.title_ar} onChange={(e) => setFormData({ ...formData, title_ar: e.target.value })} className={inputClass} dir="rtl" />
                   {errors.title_ar && <p className="text-xs text-red-500 mt-1">{errors.title_ar[0]}</p>}
                 </div>
               </div>
 
-              {/* Image Upload */}
+              {/* Image URL — API expects a string URL, not file upload */}
               <div>
-                <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">{isRtl ? 'صورة البانر' : 'Banner Image'} *</label>
-                {(imagePreview || existingImage) ? (
-                  <div className="relative w-full h-40 rounded-xl overflow-hidden border border-gray-200/60 dark:border-white/10 group">
-                    <img src={imagePreview || existingImage} alt="" className="w-full h-full object-cover" />
-                    <div className="absolute inset-0 bg-black/40 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center gap-2">
-                      <button type="button" onClick={() => fileInputRef.current?.click()} className="px-3 py-1.5 rounded-lg bg-white/90 text-gray-900 text-xs font-medium hover:bg-white transition-colors">
-                        {isRtl ? 'تغيير' : 'Change'}
-                      </button>
-                      <button type="button" onClick={() => { setImageFile(null); setImagePreview(''); setExistingImage(''); }} className="px-3 py-1.5 rounded-lg bg-red-500/90 text-white text-xs font-medium hover:bg-red-500 transition-colors">
-                        {isRtl ? 'حذف' : 'Remove'}
-                      </button>
-                    </div>
-                  </div>
-                ) : (
-                  <div
-                    onClick={() => fileInputRef.current?.click()}
-                    className="flex flex-col items-center justify-center gap-2 p-8 border-2 border-dashed border-gray-300/60 dark:border-white/10 rounded-xl cursor-pointer hover:border-pink-400/60 hover:bg-pink-50/30 dark:hover:bg-pink-500/5 transition-all"
-                  >
-                    <div className="w-12 h-12 rounded-full bg-pink-500/10 flex items-center justify-center">
-                      <Upload className="w-6 h-6 text-pink-500" />
-                    </div>
-                    <p className="text-sm text-gray-500">{isRtl ? 'اضغط لاختيار صورة البانر' : 'Click to upload banner image'}</p>
-                    <p className="text-xs text-gray-400">{isRtl ? 'PNG, JPG, WEBP (أقصى 5 ميجا)' : 'PNG, JPG, WEBP (max 5MB)'}</p>
+                <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
+                  <span className="flex items-center gap-1"><Link className="w-3.5 h-3.5" /> {isRtl ? 'رابط صورة البانر' : 'Banner Image URL'} *</span>
+                </label>
+                <input type="url" value={formData.image} onChange={(e) => setFormData({ ...formData, image: e.target.value })} className={inputClass}
+                  placeholder="https://example.com/banner.jpg" />
+                {formData.image && (
+                  <div className="mt-2 w-full h-32 rounded-xl overflow-hidden border border-gray-200/60 dark:border-white/10">
+                    <img src={formData.image} alt="Preview" className="w-full h-full object-cover"
+                      onError={(e) => { (e.target as HTMLImageElement).style.display = 'none'; }} />
                   </div>
                 )}
-                <input ref={fileInputRef} type="file" accept="image/*" onChange={handleImageSelect} className="hidden" />
                 {errors.image && <p className="text-xs text-red-500 mt-1">{errors.image[0]}</p>}
+              </div>
+
+              <div>
+                <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">{isRtl ? 'رابط الصورة العربية' : 'Arabic Image URL'}</label>
+                <input type="url" value={formData.image_ar} onChange={(e) => setFormData({ ...formData, image_ar: e.target.value })} className={inputClass}
+                  placeholder="https://example.com/banner-ar.jpg" />
+              </div>
+
+              <div className="grid grid-cols-2 gap-4">
+                <div>
+                  <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">{isRtl ? 'الوصف (EN)' : 'Description (EN)'}</label>
+                  <input type="text" value={formData.description} onChange={(e) => setFormData({ ...formData, description: e.target.value })} className={inputClass} />
+                </div>
+                <div>
+                  <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">{isRtl ? 'الوصف (AR)' : 'Description (AR)'}</label>
+                  <input type="text" value={formData.description_ar} onChange={(e) => setFormData({ ...formData, description_ar: e.target.value })} className={inputClass} dir="rtl" />
+                </div>
               </div>
 
               <div>
@@ -263,10 +246,11 @@ export default function BannersPage() {
               </div>
               <div className="grid grid-cols-3 gap-4">
                 <div>
-                  <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">{isRtl ? 'الموضع' : 'Position'}</label>
+                  <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">{isRtl ? 'الموضع' : 'Position'} *</label>
                   <select value={formData.position} onChange={(e) => setFormData({ ...formData, position: e.target.value })} className={inputClass}>
                     {positions.map(p => <option key={p} value={p}>{p.replace(/_/g, ' ')}</option>)}
                   </select>
+                  {errors.position && <p className="text-xs text-red-500 mt-1">{errors.position[0]}</p>}
                 </div>
                 <div>
                   <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">{isRtl ? 'الترتيب' : 'Sort Order'}</label>
@@ -283,11 +267,11 @@ export default function BannersPage() {
               <div className="grid grid-cols-2 gap-4">
                 <div>
                   <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">{isRtl ? 'تاريخ البدء' : 'Start Date'}</label>
-                  <input type="datetime-local" value={formData.starts_at} onChange={(e) => setFormData({ ...formData, starts_at: e.target.value })} className={inputClass} />
+                  <input type="date" value={formData.start_date} onChange={(e) => setFormData({ ...formData, start_date: e.target.value })} className={inputClass} />
                 </div>
                 <div>
                   <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">{isRtl ? 'تاريخ الانتهاء' : 'End Date'}</label>
-                  <input type="datetime-local" value={formData.ends_at} onChange={(e) => setFormData({ ...formData, ends_at: e.target.value })} className={inputClass} />
+                  <input type="date" value={formData.end_date} onChange={(e) => setFormData({ ...formData, end_date: e.target.value })} className={inputClass} />
                 </div>
               </div>
             </div>
