@@ -84,11 +84,11 @@ class SettingController extends Controller
     {
         $validated = $request->validate([
             'settings' => 'required|array',
-            'settings.site_name' => 'sometimes|string|max:255',
-            'settings.site_name_ar' => 'sometimes|string|max:255',
-            'settings.contact_email' => 'sometimes|email|max:255',
-            'settings.contact_phone' => 'sometimes|string|max:20',
-            'settings.support_email' => 'sometimes|email|max:255',
+            'settings.site_name' => 'sometimes|nullable|string|max:255',
+            'settings.site_name_ar' => 'sometimes|nullable|string|max:255',
+            'settings.contact_email' => 'sometimes|nullable|email|max:255',
+            'settings.contact_phone' => 'sometimes|nullable|string|max:20',
+            'settings.support_email' => 'sometimes|nullable|email|max:255',
             'settings.maintenance_mode' => 'sometimes|boolean',
             'settings.allow_registration' => 'sometimes|boolean',
             'settings.auto_approve_profiles' => 'sometimes|boolean',

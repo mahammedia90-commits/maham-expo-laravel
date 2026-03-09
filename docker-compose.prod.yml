@@ -78,6 +78,11 @@ services:
       MAIL_FROM_ADDRESS: ${MAIL_FROM_ADDRESS:-noreply@mahamexpo.sa}
       MAIL_FROM_NAME: "Maham Auth"
 
+      # --- Twilio Verify (OTP/SMS) ---
+      TWILIO_ACCOUNT_SID: ${TWILIO_ACCOUNT_SID:-}
+      TWILIO_AUTH_TOKEN: ${TWILIO_AUTH_TOKEN:-}
+      TWILIO_VERIFY_SERVICE_SID: ${TWILIO_VERIFY_SERVICE_SID:-}
+
       # --- Hashing ---
       BCRYPT_ROUNDS: 12
 

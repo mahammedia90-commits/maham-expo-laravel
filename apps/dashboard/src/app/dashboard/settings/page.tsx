@@ -30,13 +30,20 @@ export default function SettingsPage() {
     setSaving(true);
     setSaveMessage('');
     try {
-      await expoApi.put('/manage/settings', { settings });
+      // Clean settings: convert empty strings to null for optional fields
+      const cleanSettings: Record<string, string | number | boolean | null> = {};
+      for (const [key, value] of Object.entries(settings)) {
+        cleanSettings[key] = value === '' ? null : value;
+      }
+      await expoApi.put('/manage/settings', { settings: cleanSettings });
       setSaveMessage(isRtl ? 'تم الحفظ بنجاح' : 'Settings saved successfully');
       fetchSettings();
       setTimeout(() => setSaveMessage(''), 3000);
-    } catch {
-      setSaveMessage(isRtl ? 'حدث خطأ أثناء الحفظ' : 'Error saving settings');
-      setTimeout(() => setSaveMessage(''), 3000);
+    } catch (err: unknown) {
+      const error = err as { response?: { data?: { message?: string; errors?: Record<string, string[]> } } };
+      const msg = error?.response?.data?.message || (isRtl ? 'حدث خطأ أثناء الحفظ' : 'Error saving settings');
+      setSaveMessage(msg);
+      setTimeout(() => setSaveMessage(''), 5000);
     } finally { setSaving(false); }
   };
 
