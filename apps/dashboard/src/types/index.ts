@@ -106,13 +106,16 @@ export interface SupportTicket {
 
 export interface RentalRequest {
   id: string;
+  request_number: string;
   space_id: string;
   start_date: string;
   end_date: string;
   status: string;
+  status_label: string;
   notes: string;
+  total_price: number;
   created_at: string;
-  user?: { id: string; name: string };
+  business_profile?: { id: string; company_name: string; company_name_ar?: string };
   space?: { id: string; name: string; name_ar: string };
 }
 
@@ -151,13 +154,16 @@ export interface Sponsor {
 
 export interface Rating {
   id: string;
+  user_id: string;
+  rateable_type: string;
+  rateable_id: string;
+  type: string | { value: string };
   overall_rating: number;
   comment: string;
   comment_ar: string;
-  status: string;
-  type: string;
+  is_approved: boolean;
   created_at: string;
-  user?: { id: string; name: string };
+  rateable?: { id: string; name?: string; name_ar?: string };
 }
 
 export interface Banner {

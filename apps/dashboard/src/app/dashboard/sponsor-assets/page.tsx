@@ -5,19 +5,21 @@ import DataTable, { Column } from '@/components/ui/DataTable';
 import StatusBadge from '@/components/ui/StatusBadge';
 import { expoApi } from '@/lib/api';
 import { formatDate } from '@/lib/utils';
-import { Plus, Edit, Trash2, Image, CheckCircle, XCircle, Eye } from 'lucide-react';
+import { Image, CheckCircle, XCircle, Eye } from 'lucide-react';
 
 interface SponsorAsset {
   id: string;
-  sponsor?: { company_name: string };
-  benefit?: { name: string; name_ar: string };
-  type: string;
-  file_url: string;
+  sponsor?: { id: string; company_name?: string; name?: string };
+  event?: { id: string; name?: string; name_ar?: string };
+  type: string | { value: string };
+  file_path: string;
   file_name: string;
-  status: string;
-  review_notes: string | null;
-  submitted_at: string;
-  reviewed_at: string | null;
+  file_size: number;
+  mime_type: string;
+  is_approved: boolean;
+  rejection_reason: string | null;
+  approved_at: string | null;
+  sort_order: number;
   created_at: string;
 }
 
@@ -63,6 +65,21 @@ export default function SponsorAssetsPage() {
     } catch { /* silent */ }
   };
 
+  const getAssetStatus = (item: SponsorAsset): string => {
+    if (item.is_approved) return 'approved';
+    if (item.rejection_reason) return 'rejected';
+    return 'pending';
+  };
+
+  const isPending = (item: SponsorAsset): boolean => {
+    return !item.is_approved && !item.rejection_reason;
+  };
+
+  const getTypeValue = (type: string | { value: string }): string => {
+    if (typeof type === 'object' && type !== null) return type.value || '-';
+    return type || '-';
+  };
+
   const typeIcons: Record<string, string> = {
     logo: 'from-blue-500/20 to-blue-600/20',
     banner: 'from-pink-500/20 to-pink-600/20',
@@ -74,48 +91,51 @@ export default function SponsorAssetsPage() {
     {
       key: 'file_name',
       header: isRtl ? 'الملف' : 'File',
-      render: (item) => (
-        <div className="flex items-center gap-3">
-          <div className={`w-10 h-10 rounded-xl bg-gradient-to-br ${typeIcons[item.type] || 'from-gray-500/20 to-gray-600/20'} flex items-center justify-center`}>
-            <Image className="w-5 h-5 text-gray-500" />
+      render: (item) => {
+        const typeVal = getTypeValue(item.type);
+        return (
+          <div className="flex items-center gap-3">
+            <div className={`w-10 h-10 rounded-xl bg-gradient-to-br ${typeIcons[typeVal] || 'from-gray-500/20 to-gray-600/20'} flex items-center justify-center`}>
+              <Image className="w-5 h-5 text-gray-500" />
+            </div>
+            <div>
+              <span className="font-medium text-gray-900 dark:text-white text-sm truncate max-w-[200px] block">{item.file_name || '-'}</span>
+              <p className="text-xs text-gray-500">{item.sponsor?.company_name || item.sponsor?.name || '-'}</p>
+            </div>
           </div>
-          <div>
-            <span className="font-medium text-gray-900 dark:text-white text-sm truncate max-w-[200px] block">{item.file_name}</span>
-            <p className="text-xs text-gray-500">{item.sponsor?.company_name || '-'}</p>
-          </div>
-        </div>
-      ),
+        );
+      },
     },
     {
       key: 'type',
       header: isRtl ? 'النوع' : 'Type',
-      render: (item) => <span className="px-2.5 py-1 rounded-lg bg-blue-500/10 text-blue-500 text-xs font-medium capitalize">{item.type}</span>,
+      render: (item) => <span className="px-2.5 py-1 rounded-lg bg-blue-500/10 text-blue-500 text-xs font-medium capitalize">{getTypeValue(item.type)}</span>,
     },
     {
-      key: 'benefit',
-      header: isRtl ? 'الميزة' : 'Benefit',
-      render: (item) => <span className="text-sm text-gray-600 dark:text-gray-300">{isRtl ? item.benefit?.name_ar : item.benefit?.name}</span>,
+      key: 'event',
+      header: isRtl ? 'الحدث' : 'Event',
+      render: (item) => <span className="text-sm text-gray-600 dark:text-gray-300">{isRtl ? item.event?.name_ar : item.event?.name || '-'}</span>,
     },
     {
-      key: 'submitted_at',
-      header: isRtl ? 'تاريخ التقديم' : 'Submitted',
-      render: (item) => <span className="text-sm text-gray-500">{item.submitted_at ? formatDate(item.submitted_at, locale) : '-'}</span>,
+      key: 'created_at',
+      header: isRtl ? 'تاريخ الرفع' : 'Uploaded',
+      render: (item) => <span className="text-sm text-gray-500">{item.created_at ? formatDate(item.created_at, locale) : '-'}</span>,
     },
     {
-      key: 'status',
+      key: 'is_approved',
       header: isRtl ? 'الحالة' : 'Status',
-      render: (item) => <StatusBadge status={item.status} />,
+      render: (item) => <StatusBadge status={getAssetStatus(item)} />,
     },
     {
       key: 'actions',
       header: isRtl ? 'الإجراءات' : 'Actions',
       render: (item) => (
         <div className="flex items-center gap-1">
-          {item.file_url && (
-            <a href={item.file_url} target="_blank" rel="noopener noreferrer"
+          {item.file_path && (
+            <a href={item.file_path} target="_blank" rel="noopener noreferrer"
               className="p-2 rounded-lg hover:bg-blue-500/10 text-blue-500 transition-colors"><Eye className="w-4 h-4" /></a>
           )}
-          {item.status === 'pending_review' && (
+          {isPending(item) && (
             <>
               <button onClick={(e) => { e.stopPropagation(); handleApprove(item.id); }}
                 className="p-2 rounded-lg hover:bg-emerald-500/10 text-emerald-500 transition-colors"><CheckCircle className="w-4 h-4" /></button>

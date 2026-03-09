@@ -5,27 +5,38 @@ import GlassCard from '@/components/ui/GlassCard';
 import DataTable, { Column } from '@/components/ui/DataTable';
 import StatusBadge from '@/components/ui/StatusBadge';
 import { expoApi } from '@/lib/api';
-import { Rating } from '@/types';
 import { formatDate } from '@/lib/utils';
 import { Star, CheckCircle, XCircle, Trash2, Filter } from 'lucide-react';
 
+interface RatingItem {
+  id: string;
+  user_id: string;
+  overall_rating: number;
+  type: string | { value: string };
+  comment: string;
+  comment_ar: string;
+  is_approved: boolean;
+  rateable?: { id: string; name?: string; name_ar?: string };
+  created_at: string;
+}
+
 export default function RatingsPage() {
-  const [ratings, setRatings] = useState<Rating[]>([]);
+  const [ratings, setRatings] = useState<RatingItem[]>([]);
   const [loading, setLoading] = useState(true);
   const [locale, setLocale] = useState('ar');
   const [pagination, setPagination] = useState({ current_page: 1, last_page: 1, total: 0, per_page: 15 });
-  const [statusFilter, setStatusFilter] = useState('');
+  const [approvalFilter, setApprovalFilter] = useState('');
 
   const isRtl = locale === 'ar';
 
   useEffect(() => { setLocale(localStorage.getItem('locale') || 'ar'); }, []);
-  useEffect(() => { fetchRatings(); }, [pagination.current_page, statusFilter]);
+  useEffect(() => { fetchRatings(); }, [pagination.current_page, approvalFilter]);
 
   const fetchRatings = async () => {
     setLoading(true);
     try {
       const params: Record<string, string | number> = { page: pagination.current_page, per_page: pagination.per_page };
-      if (statusFilter) params.status = statusFilter;
+      if (approvalFilter !== '') params.is_approved = approvalFilter;
       const res = await expoApi.get('/manage/ratings', { params });
       setRatings(res.data.data || []);
       if (res.data.pagination) setPagination(res.data.pagination);
@@ -41,6 +52,15 @@ export default function RatingsPage() {
     try { await expoApi.delete(`/manage/ratings/${id}`); fetchRatings(); } catch { /* silent */ }
   };
 
+  const getApprovalStatus = (item: RatingItem): string => {
+    return item.is_approved ? 'approved' : 'pending';
+  };
+
+  const getTypeLabel = (type: string | { value: string }): string => {
+    if (typeof type === 'object' && type !== null) return type.value || '-';
+    return type || '-';
+  };
+
   const renderStars = (rating: number) => (
     <div className="flex items-center gap-0.5">
       {[1, 2, 3, 4, 5].map((s) => (
@@ -50,16 +70,16 @@ export default function RatingsPage() {
     </div>
   );
 
-  const columns: Column<Rating>[] = [
+  const columns: Column<RatingItem>[] = [
     {
-      key: 'user',
+      key: 'user_id',
       header: isRtl ? 'المستخدم' : 'User',
       render: (item) => (
         <div className="flex items-center gap-3">
           <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-amber-500/20 to-yellow-500/20 flex items-center justify-center">
-            <span className="text-amber-500 font-bold text-sm">{item.user?.name?.charAt(0) || '?'}</span>
+            <Star className="w-5 h-5 text-amber-500" />
           </div>
-          <span className="font-medium text-gray-900 dark:text-white">{item.user?.name || '-'}</span>
+          <span className="font-medium text-gray-900 dark:text-white text-sm">{item.user_id?.slice(0, 8) || '-'}</span>
         </div>
       ),
     },
@@ -71,37 +91,48 @@ export default function RatingsPage() {
     {
       key: 'type',
       header: isRtl ? 'النوع' : 'Type',
-      render: (item) => <span className="text-sm capitalize text-gray-600 dark:text-gray-300">{item.type}</span>,
+      render: (item) => <span className="text-sm capitalize text-gray-600 dark:text-gray-300">{getTypeLabel(item.type)}</span>,
     },
     {
       key: 'comment',
       header: isRtl ? 'التعليق' : 'Comment',
       render: (item) => (
         <p className="text-sm text-gray-600 dark:text-gray-300 max-w-xs truncate">
-          {isRtl ? item.comment_ar : item.comment}
+          {isRtl ? (item.comment_ar || item.comment) : (item.comment || item.comment_ar) || '-'}
         </p>
       ),
     },
     {
-      key: 'status',
+      key: 'is_approved',
       header: isRtl ? 'الحالة' : 'Status',
-      render: (item) => <StatusBadge status={item.status} />,
+      render: (item) => <StatusBadge status={getApprovalStatus(item)} />,
+    },
+    {
+      key: 'created_at',
+      header: isRtl ? 'التاريخ' : 'Date',
+      render: (item) => <span className="text-sm text-gray-500">{item.created_at ? formatDate(item.created_at, locale) : '-'}</span>,
     },
     {
       key: 'actions',
       header: isRtl ? 'الإجراءات' : 'Actions',
       render: (item) => (
         <div className="flex items-center gap-1">
-          {item.status === 'pending' && (
+          {!item.is_approved && (
             <>
               <button onClick={(e) => { e.stopPropagation(); handleAction(item.id, 'approve'); }}
-                className="p-2 rounded-lg hover:bg-emerald-500/10 text-emerald-500 transition-colors"><CheckCircle className="w-4 h-4" /></button>
+                className="p-2 rounded-lg hover:bg-emerald-500/10 text-emerald-500 transition-colors" title={isRtl ? 'اعتماد' : 'Approve'}>
+                <CheckCircle className="w-4 h-4" />
+              </button>
               <button onClick={(e) => { e.stopPropagation(); handleAction(item.id, 'reject'); }}
-                className="p-2 rounded-lg hover:bg-red-500/10 text-red-500 transition-colors"><XCircle className="w-4 h-4" /></button>
+                className="p-2 rounded-lg hover:bg-red-500/10 text-red-500 transition-colors" title={isRtl ? 'رفض' : 'Reject'}>
+                <XCircle className="w-4 h-4" />
+              </button>
             </>
           )}
           <button onClick={(e) => { e.stopPropagation(); handleDelete(item.id); }}
-            className="p-2 rounded-lg hover:bg-red-500/10 text-red-500 transition-colors"><Trash2 className="w-4 h-4" /></button>
+            className="p-2 rounded-lg hover:bg-red-500/10 text-red-500 transition-colors" title={isRtl ? 'حذف' : 'Delete'}>
+            <Trash2 className="w-4 h-4" />
+          </button>
         </div>
       ),
     },
@@ -117,12 +148,11 @@ export default function RatingsPage() {
       <GlassCard>
         <div className="flex flex-wrap items-center gap-4">
           <Filter className="w-4 h-4 text-gray-400" />
-          <select value={statusFilter} onChange={(e) => { setStatusFilter(e.target.value); setPagination(p => ({ ...p, current_page: 1 })); }}
+          <select value={approvalFilter} onChange={(e) => { setApprovalFilter(e.target.value); setPagination(p => ({ ...p, current_page: 1 })); }}
             className="px-3 py-2 rounded-xl border border-white/10 dark:border-white/10 border-gray-200/60 bg-white/50 dark:bg-white/5 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500/30 transition-all">
             <option value="">{isRtl ? 'جميع الحالات' : 'All Statuses'}</option>
-            <option value="pending">{isRtl ? 'بانتظار المراجعة' : 'Pending'}</option>
-            <option value="approved">{isRtl ? 'معتمد' : 'Approved'}</option>
-            <option value="rejected">{isRtl ? 'مرفوض' : 'Rejected'}</option>
+            <option value="0">{isRtl ? 'بانتظار المراجعة' : 'Pending'}</option>
+            <option value="1">{isRtl ? 'معتمد' : 'Approved'}</option>
           </select>
         </div>
       </GlassCard>

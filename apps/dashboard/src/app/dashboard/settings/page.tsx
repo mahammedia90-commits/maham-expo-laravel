@@ -1,9 +1,9 @@
 'use client';
 
-import { useState, useEffect, useRef } from 'react';
+import { useState, useEffect } from 'react';
 import GlassCard from '@/components/ui/GlassCard';
 import { expoApi } from '@/lib/api';
-import { Settings as SettingsIcon, Save, Globe, CreditCard, MessageSquare, Bell, Shield, Palette, Upload, X } from 'lucide-react';
+import { Settings as SettingsIcon, Save, Globe, CreditCard, MessageSquare, Shield } from 'lucide-react';
 
 export default function SettingsPage() {
   const [locale, setLocale] = useState('ar');
@@ -11,12 +11,7 @@ export default function SettingsPage() {
   const [loading, setLoading] = useState(true);
   const [saving, setSaving] = useState(false);
   const [activeTab, setActiveTab] = useState('general');
-  const [logoFile, setLogoFile] = useState<File | null>(null);
-  const [logoPreview, setLogoPreview] = useState<string>('');
-  const [faviconFile, setFaviconFile] = useState<File | null>(null);
-  const [faviconPreview, setFaviconPreview] = useState<string>('');
-  const logoInputRef = useRef<HTMLInputElement>(null);
-  const faviconInputRef = useRef<HTMLInputElement>(null);
+  const [saveMessage, setSaveMessage] = useState('');
 
   const isRtl = locale === 'ar';
 
@@ -33,58 +28,27 @@ export default function SettingsPage() {
 
   const handleSave = async () => {
     setSaving(true);
+    setSaveMessage('');
     try {
-      if (logoFile || faviconFile) {
-        const fd = new FormData();
-        Object.entries(settings).forEach(([key, value]) => {
-          if (value !== null && value !== undefined) {
-            fd.append(`settings[${key}]`, String(value));
-          }
-        });
-        if (logoFile) fd.append('logo', logoFile);
-        if (faviconFile) fd.append('favicon', faviconFile);
-        fd.append('_method', 'PUT');
-        await expoApi.post('/manage/settings', fd, {
-          headers: { 'Content-Type': 'multipart/form-data' },
-        });
-      } else {
-        await expoApi.put('/manage/settings', { settings });
-      }
-      setLogoFile(null);
-      setFaviconFile(null);
-      setLogoPreview('');
-      setFaviconPreview('');
+      await expoApi.put('/manage/settings', { settings });
+      setSaveMessage(isRtl ? 'تم الحفظ بنجاح' : 'Settings saved successfully');
       fetchSettings();
-    } catch { /* silent */ } finally { setSaving(false); }
+      setTimeout(() => setSaveMessage(''), 3000);
+    } catch {
+      setSaveMessage(isRtl ? 'حدث خطأ أثناء الحفظ' : 'Error saving settings');
+      setTimeout(() => setSaveMessage(''), 3000);
+    } finally { setSaving(false); }
   };
 
   const updateSetting = (key: string, value: string | number | boolean) => {
     setSettings(prev => ({ ...prev, [key]: value }));
   };
 
-  const handleFileSelect = (type: 'logo' | 'favicon', e: React.ChangeEvent<HTMLInputElement>) => {
-    const file = e.target.files?.[0];
-    if (!file) return;
-    const reader = new FileReader();
-    reader.onload = (ev) => {
-      if (type === 'logo') {
-        setLogoFile(file);
-        setLogoPreview(ev.target?.result as string);
-      } else {
-        setFaviconFile(file);
-        setFaviconPreview(ev.target?.result as string);
-      }
-    };
-    reader.readAsDataURL(file);
-  };
-
   const tabs = [
     { id: 'general', label: isRtl ? 'عام' : 'General', icon: Globe },
     { id: 'payment', label: isRtl ? 'الدفع' : 'Payment', icon: CreditCard },
     { id: 'sms', label: isRtl ? 'الرسائل' : 'SMS', icon: MessageSquare },
-    { id: 'notifications', label: isRtl ? 'الإشعارات' : 'Notifications', icon: Bell },
     { id: 'security', label: isRtl ? 'الأمان' : 'Security', icon: Shield },
-    { id: 'appearance', label: isRtl ? 'المظهر' : 'Appearance', icon: Palette },
   ];
 
   const InputField = ({ label, settingKey, type = 'text', placeholder = '' }: { label: string; settingKey: string; type?: string; placeholder?: string }) => (
@@ -111,50 +75,16 @@ export default function SettingsPage() {
     </div>
   );
 
-  const ImageUploadField = ({ label, type, file, preview, existingUrl, inputRef }: {
-    label: string;
-    type: 'logo' | 'favicon';
-    file: File | null;
-    preview: string;
-    existingUrl: string;
-    inputRef: React.RefObject<HTMLInputElement | null>;
-  }) => {
-    const displayImage = preview || existingUrl;
-    return (
-      <div>
-        <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">{label}</label>
-        <div className="flex items-center gap-4">
-          {displayImage ? (
-            <div className="relative group">
-              <div className={`${type === 'favicon' ? 'w-12 h-12' : 'w-32 h-16'} rounded-xl overflow-hidden border border-gray-200/60 dark:border-white/10 bg-white/50 dark:bg-white/5 flex items-center justify-center`}>
-                <img src={displayImage} alt="" className="max-w-full max-h-full object-contain p-1" />
-              </div>
-              <button
-                type="button"
-                onClick={() => {
-                  if (type === 'logo') { setLogoFile(null); setLogoPreview(''); updateSetting('logo_url', ''); }
-                  else { setFaviconFile(null); setFaviconPreview(''); updateSetting('favicon_url', ''); }
-                }}
-                className="absolute -top-2 -end-2 p-1 rounded-full bg-red-500 text-white opacity-0 group-hover:opacity-100 transition-opacity shadow"
-              >
-                <X className="w-3 h-3" />
-              </button>
-            </div>
-          ) : null}
-          <button
-            type="button"
-            onClick={() => inputRef.current?.click()}
-            className="flex items-center gap-2 px-4 py-2.5 rounded-xl border border-dashed border-gray-300/60 dark:border-white/10 hover:border-blue-400/60 hover:bg-blue-50/30 dark:hover:bg-blue-500/5 transition-all text-sm text-gray-600 dark:text-gray-400"
-          >
-            <Upload className="w-4 h-4" />
-            {displayImage ? (isRtl ? 'تغيير' : 'Change') : (isRtl ? 'رفع' : 'Upload')}
-          </button>
-          <input ref={inputRef} type="file" accept="image/*" onChange={(e) => handleFileSelect(type, e)} className="hidden" />
-          {file && <span className="text-xs text-blue-500">{file.name}</span>}
-        </div>
-      </div>
-    );
-  };
+  const SelectField = ({ label, settingKey, options }: { label: string; settingKey: string; options: { value: string; label: string }[] }) => (
+    <div>
+      <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">{label}</label>
+      <select value={String(settings[settingKey] ?? '')}
+        onChange={(e) => updateSetting(settingKey, e.target.value)}
+        className="w-full px-4 py-2.5 rounded-xl border border-white/10 dark:border-white/10 border-gray-200/60 bg-white/50 dark:bg-white/5 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500/30 transition-all">
+        {options.map(o => <option key={o.value} value={o.value}>{o.label}</option>)}
+      </select>
+    </div>
+  );
 
   if (loading) {
     return (
@@ -175,10 +105,17 @@ export default function SettingsPage() {
           </h1>
           <p className="text-sm text-gray-500 dark:text-gray-400 mt-1">{isRtl ? 'إدارة إعدادات المنصة' : 'Manage platform settings'}</p>
         </div>
-        <button onClick={handleSave} disabled={saving}
-          className="flex items-center gap-2 px-6 py-2.5 rounded-xl bg-gradient-to-r from-blue-500 to-cyan-600 text-white text-sm font-medium shadow-lg shadow-blue-500/25 hover:shadow-xl transition-all duration-300 hover:scale-[1.02] disabled:opacity-50">
-          <Save className="w-4 h-4" />{saving ? (isRtl ? 'جاري الحفظ...' : 'Saving...') : (isRtl ? 'حفظ الإعدادات' : 'Save Settings')}
-        </button>
+        <div className="flex items-center gap-3">
+          {saveMessage && (
+            <span className={`text-sm font-medium ${saveMessage.includes('خطأ') || saveMessage.includes('Error') ? 'text-red-500' : 'text-emerald-500'}`}>
+              {saveMessage}
+            </span>
+          )}
+          <button onClick={handleSave} disabled={saving}
+            className="flex items-center gap-2 px-6 py-2.5 rounded-xl bg-gradient-to-r from-blue-500 to-cyan-600 text-white text-sm font-medium shadow-lg shadow-blue-500/25 hover:shadow-xl transition-all duration-300 hover:scale-[1.02] disabled:opacity-50">
+            <Save className="w-4 h-4" />{saving ? (isRtl ? 'جاري الحفظ...' : 'Saving...') : (isRtl ? 'حفظ الإعدادات' : 'Save Settings')}
+          </button>
+        </div>
       </div>
 
       <div className="flex flex-col lg:flex-row gap-6">
@@ -209,12 +146,20 @@ export default function SettingsPage() {
                 <>
                   <h3 className="text-lg font-semibold text-gray-900 dark:text-white">{isRtl ? 'الإعدادات العامة' : 'General Settings'}</h3>
                   <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                    <InputField label={isRtl ? 'اسم المنصة (EN)' : 'Platform Name (EN)'} settingKey="platform_name" />
-                    <InputField label={isRtl ? 'اسم المنصة (AR)' : 'Platform Name (AR)'} settingKey="platform_name_ar" />
-                    <InputField label={isRtl ? 'البريد الإلكتروني' : 'Support Email'} settingKey="support_email" type="email" />
-                    <InputField label={isRtl ? 'رقم الهاتف' : 'Support Phone'} settingKey="support_phone" />
+                    <InputField label={isRtl ? 'اسم الموقع (EN)' : 'Site Name (EN)'} settingKey="site_name" />
+                    <InputField label={isRtl ? 'اسم الموقع (AR)' : 'Site Name (AR)'} settingKey="site_name_ar" />
+                    <InputField label={isRtl ? 'البريد الإلكتروني للتواصل' : 'Contact Email'} settingKey="contact_email" type="email" />
+                    <InputField label={isRtl ? 'هاتف التواصل' : 'Contact Phone'} settingKey="contact_phone" />
+                    <InputField label={isRtl ? 'بريد الدعم' : 'Support Email'} settingKey="support_email" type="email" />
                     <InputField label={isRtl ? 'العملة الافتراضية' : 'Default Currency'} settingKey="default_currency" placeholder="SAR" />
                     <InputField label={isRtl ? 'المنطقة الزمنية' : 'Timezone'} settingKey="timezone" placeholder="Asia/Riyadh" />
+                    <InputField label={isRtl ? 'الحد الأقصى لطلبات الزيارة يومياً' : 'Max Visit Requests/Day'} settingKey="max_visit_requests_per_day" type="number" />
+                    <InputField label={isRtl ? 'الحد الأقصى لطلبات التأجير لكل تاجر' : 'Max Rental Requests/Merchant'} settingKey="max_rental_requests_per_merchant" type="number" />
+                  </div>
+                  <div className="mt-4 space-y-2">
+                    <ToggleField label={isRtl ? 'وضع الصيانة' : 'Maintenance Mode'} settingKey="maintenance_mode" description={isRtl ? 'تعطيل الوصول العام للموقع' : 'Disable public access to the site'} />
+                    <ToggleField label={isRtl ? 'السماح بالتسجيل' : 'Allow Registration'} settingKey="allow_registration" description={isRtl ? 'السماح للمستخدمين الجدد بالتسجيل' : 'Allow new users to register'} />
+                    <ToggleField label={isRtl ? 'الموافقة التلقائية على الملفات التجارية' : 'Auto Approve Profiles'} settingKey="auto_approve_profiles" description={isRtl ? 'قبول الملفات التجارية تلقائياً' : 'Automatically approve business profiles'} />
                   </div>
                 </>
               )}
@@ -223,11 +168,11 @@ export default function SettingsPage() {
                 <>
                   <h3 className="text-lg font-semibold text-gray-900 dark:text-white">{isRtl ? 'إعدادات الدفع' : 'Payment Settings'}</h3>
                   <div className="space-y-4">
-                    <ToggleField label={isRtl ? 'تفعيل بوابة Tap' : 'Enable Tap Gateway'} settingKey="tap_enabled" description={isRtl ? 'بوابة الدفع الرئيسية' : 'Primary payment gateway'} />
-                    <InputField label={isRtl ? 'مفتاح Tap السري' : 'Tap Secret Key'} settingKey="tap_secret_key" type="password" />
-                    <InputField label={isRtl ? 'مفتاح Tap العام' : 'Tap Public Key'} settingKey="tap_public_key" />
-                    <ToggleField label={isRtl ? 'وضع الاختبار' : 'Sandbox Mode'} settingKey="payment_sandbox" description={isRtl ? 'استخدام بيئة الاختبار' : 'Use test environment'} />
-                    <InputField label={isRtl ? 'نسبة الضريبة %' : 'Tax Rate %'} settingKey="tax_rate" type="number" />
+                    <ToggleField label={isRtl ? 'تفعيل الدفع' : 'Enable Payment'} settingKey="payment_enabled" description={isRtl ? 'تفعيل أو تعطيل بوابة الدفع' : 'Enable or disable the payment gateway'} />
+                    <SelectField label={isRtl ? 'وضع بوابة الدفع' : 'Payment Gateway Mode'} settingKey="payment_gateway_mode"
+                      options={[{ value: 'test', label: isRtl ? 'اختبار' : 'Test' }, { value: 'live', label: isRtl ? 'مباشر' : 'Live' }]} />
+                    <InputField label={isRtl ? 'عملة الدفع الافتراضية' : 'Payment Default Currency'} settingKey="payment_default_currency" placeholder="SAR" />
+                    <ToggleField label={isRtl ? 'الأمان ثلاثي الأبعاد (3D Secure)' : '3D Secure'} settingKey="payment_3d_secure" description={isRtl ? 'طلب تحقق إضافي من البطاقة' : 'Require additional card verification'} />
                   </div>
                 </>
               )}
@@ -236,25 +181,11 @@ export default function SettingsPage() {
                 <>
                   <h3 className="text-lg font-semibold text-gray-900 dark:text-white">{isRtl ? 'إعدادات الرسائل' : 'SMS Settings'}</h3>
                   <div className="space-y-4">
-                    <ToggleField label={isRtl ? 'تفعيل Twilio' : 'Enable Twilio SMS'} settingKey="twilio_enabled" />
-                    <InputField label="Twilio Account SID" settingKey="twilio_sid" />
-                    <InputField label="Twilio Auth Token" settingKey="twilio_auth_token" type="password" />
-                    <InputField label={isRtl ? 'رقم المرسل' : 'Twilio From Number'} settingKey="twilio_from" placeholder="+966..." />
-                    <InputField label={isRtl ? 'مدة OTP (ثواني)' : 'OTP Expiry (seconds)'} settingKey="otp_expiry" type="number" />
-                  </div>
-                </>
-              )}
-
-              {activeTab === 'notifications' && (
-                <>
-                  <h3 className="text-lg font-semibold text-gray-900 dark:text-white">{isRtl ? 'إعدادات الإشعارات' : 'Notification Settings'}</h3>
-                  <div className="space-y-2">
-                    <ToggleField label={isRtl ? 'إشعارات البريد الإلكتروني' : 'Email Notifications'} settingKey="email_notifications" />
-                    <ToggleField label={isRtl ? 'إشعارات SMS' : 'SMS Notifications'} settingKey="sms_notifications" />
-                    <ToggleField label={isRtl ? 'إشعارات الدفع' : 'Push Notifications'} settingKey="push_notifications" />
-                    <ToggleField label={isRtl ? 'إشعارات الطلبات الجديدة' : 'New Request Notifications'} settingKey="notify_new_requests" />
-                    <ToggleField label={isRtl ? 'إشعارات الدفع' : 'Payment Notifications'} settingKey="notify_payments" />
-                    <ToggleField label={isRtl ? 'إشعارات التقييمات' : 'Rating Notifications'} settingKey="notify_ratings" />
+                    <ToggleField label={isRtl ? 'تفعيل الرسائل' : 'Enable SMS'} settingKey="sms_enabled" description={isRtl ? 'تفعيل خدمة الرسائل القصيرة' : 'Enable SMS messaging service'} />
+                    <SelectField label={isRtl ? 'القناة الافتراضية' : 'Default Channel'} settingKey="sms_default_channel"
+                      options={[{ value: 'sms', label: 'SMS' }, { value: 'whatsapp', label: 'WhatsApp' }]} />
+                    <InputField label={isRtl ? 'الحد الأقصى للمحاولات في الساعة' : 'Max Attempts Per Hour'} settingKey="sms_max_attempts_per_hour" type="number" />
+                    <InputField label={isRtl ? 'طول رمز التحقق' : 'OTP Code Length'} settingKey="sms_code_length" type="number" />
                   </div>
                 </>
               )}
@@ -263,38 +194,9 @@ export default function SettingsPage() {
                 <>
                   <h3 className="text-lg font-semibold text-gray-900 dark:text-white">{isRtl ? 'إعدادات الأمان' : 'Security Settings'}</h3>
                   <div className="space-y-4">
-                    <ToggleField label={isRtl ? 'التحقق بخطوتين' : 'Two-Factor Authentication'} settingKey="two_factor_enabled" />
-                    <InputField label={isRtl ? 'مدة انتهاء الجلسة (دقائق)' : 'Session Timeout (minutes)'} settingKey="session_timeout" type="number" />
-                    <InputField label={isRtl ? 'الحد الأقصى لمحاولات تسجيل الدخول' : 'Max Login Attempts'} settingKey="max_login_attempts" type="number" />
-                    <ToggleField label={isRtl ? 'فرض كلمة مرور قوية' : 'Enforce Strong Passwords'} settingKey="strong_passwords" />
-                    <InputField label={isRtl ? 'النطاقات المسموحة (CORS)' : 'Allowed Origins (CORS)'} settingKey="cors_origins" placeholder="https://dashboard.mahamexpo.sa" />
-                  </div>
-                </>
-              )}
-
-              {activeTab === 'appearance' && (
-                <>
-                  <h3 className="text-lg font-semibold text-gray-900 dark:text-white">{isRtl ? 'إعدادات المظهر' : 'Appearance Settings'}</h3>
-                  <div className="space-y-6">
-                    <ImageUploadField
-                      label={isRtl ? 'شعار المنصة' : 'Platform Logo'}
-                      type="logo"
-                      file={logoFile}
-                      preview={logoPreview}
-                      existingUrl={String(settings.logo_url || '')}
-                      inputRef={logoInputRef}
-                    />
-                    <ImageUploadField
-                      label={isRtl ? 'أيقونة الموقع (Favicon)' : 'Favicon'}
-                      type="favicon"
-                      file={faviconFile}
-                      preview={faviconPreview}
-                      existingUrl={String(settings.favicon_url || '')}
-                      inputRef={faviconInputRef}
-                    />
-                    <InputField label={isRtl ? 'اللون الرئيسي' : 'Primary Color'} settingKey="primary_color" placeholder="#3b82f6" />
-                    <ToggleField label={isRtl ? 'الوضع الداكن افتراضي' : 'Default Dark Mode'} settingKey="default_dark_mode" />
-                    <ToggleField label={isRtl ? 'إظهار شعار التذييل' : 'Show Footer Logo'} settingKey="show_footer_logo" />
+                    <InputField label={isRtl ? 'النطاقات المسموحة (CORS)' : 'Allowed Origins (CORS)'} settingKey="cors_allowed_origins" placeholder="*" />
+                    <ToggleField label={isRtl ? 'دعم بيانات الاعتماد (CORS)' : 'CORS Supports Credentials'} settingKey="cors_supports_credentials" />
+                    <InputField label={isRtl ? 'مدة صلاحية CORS (ثواني)' : 'CORS Max Age (seconds)'} settingKey="cors_max_age" type="number" />
                   </div>
                 </>
               )}

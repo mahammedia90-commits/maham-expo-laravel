@@ -4,19 +4,19 @@ import { useState, useEffect } from 'react';
 import DataTable, { Column } from '@/components/ui/DataTable';
 import StatusBadge from '@/components/ui/StatusBadge';
 import { expoApi } from '@/lib/api';
-import { Plus, Edit, Trash2, Gift, CheckCircle } from 'lucide-react';
+import { Plus, Edit, Gift, CheckCircle } from 'lucide-react';
 
 interface SponsorBenefit {
   id: string;
-  package?: { name: string; name_ar: string };
-  name: string;
-  name_ar: string;
+  sponsor_contract_id: string;
+  contract?: { id: string; sponsor?: { id: string; company_name?: string; name?: string } };
+  benefit_type: string | { value: string };
   description: string;
   description_ar: string;
-  type: string;
   quantity: number;
   delivered_quantity: number;
-  status: string;
+  status: string | { value: string };
+  delivery_notes: string | null;
   created_at: string;
 }
 
@@ -27,7 +27,9 @@ export default function SponsorBenefitsPage() {
   const [pagination, setPagination] = useState({ current_page: 1, last_page: 1, total: 0, per_page: 15 });
   const [showModal, setShowModal] = useState(false);
   const [editingBenefit, setEditingBenefit] = useState<SponsorBenefit | null>(null);
-  const [formData, setFormData] = useState({ name: '', name_ar: '', description: '', description_ar: '', type: 'booth', quantity: 1, package_id: '' });
+  const [formData, setFormData] = useState({
+    description: '', description_ar: '', benefit_type: 'booth', quantity: 1, sponsor_contract_id: ''
+  });
 
   const isRtl = locale === 'ar';
 
@@ -43,29 +45,43 @@ export default function SponsorBenefitsPage() {
     } catch { setBenefits([]); } finally { setLoading(false); }
   };
 
+  const getEnumValue = (val: string | { value: string } | undefined): string => {
+    if (!val) return '-';
+    if (typeof val === 'object' && val !== null) return val.value || '-';
+    return val;
+  };
+
   const handleCreate = () => {
     setEditingBenefit(null);
-    setFormData({ name: '', name_ar: '', description: '', description_ar: '', type: 'booth', quantity: 1, package_id: '' });
+    setFormData({ description: '', description_ar: '', benefit_type: 'booth', quantity: 1, sponsor_contract_id: '' });
     setShowModal(true);
   };
 
   const handleEdit = (b: SponsorBenefit) => {
     setEditingBenefit(b);
-    setFormData({ name: b.name, name_ar: b.name_ar, description: b.description, description_ar: b.description_ar, type: b.type, quantity: b.quantity, package_id: '' });
+    setFormData({
+      description: b.description || '',
+      description_ar: b.description_ar || '',
+      benefit_type: getEnumValue(b.benefit_type),
+      quantity: b.quantity,
+      sponsor_contract_id: b.sponsor_contract_id || '',
+    });
     setShowModal(true);
   };
 
   const handleSubmit = async () => {
     try {
-      if (editingBenefit) await expoApi.put(`/manage/sponsor-benefits/${editingBenefit.id}`, formData);
-      else await expoApi.post('/manage/sponsor-benefits', formData);
+      if (editingBenefit) {
+        await expoApi.put(`/manage/sponsor-benefits/${editingBenefit.id}`, {
+          description: formData.description,
+          description_ar: formData.description_ar,
+          quantity: formData.quantity,
+        });
+      } else {
+        await expoApi.post('/manage/sponsor-benefits', formData);
+      }
       setShowModal(false); fetchBenefits();
     } catch { /* silent */ }
-  };
-
-  const handleDelete = async (id: string) => {
-    if (!confirm(isRtl ? 'هل أنت متأكد من الحذف؟' : 'Are you sure?')) return;
-    try { await expoApi.delete(`/manage/sponsor-benefits/${id}`); fetchBenefits(); } catch { /* silent */ }
   };
 
   const handleDeliver = async (id: string) => {
@@ -76,7 +92,7 @@ export default function SponsorBenefitsPage() {
 
   const columns: Column<SponsorBenefit>[] = [
     {
-      key: 'name',
+      key: 'description',
       header: isRtl ? 'الميزة' : 'Benefit',
       render: (item) => (
         <div className="flex items-center gap-3">
@@ -84,16 +100,22 @@ export default function SponsorBenefitsPage() {
             <Gift className="w-5 h-5 text-emerald-500" />
           </div>
           <div>
-            <span className="font-medium text-gray-900 dark:text-white">{isRtl ? item.name_ar : item.name}</span>
-            <p className="text-xs text-gray-500">{item.package?.name || '-'}</p>
+            <span className="font-medium text-gray-900 dark:text-white">
+              {isRtl ? (item.description_ar || item.description) : (item.description || item.description_ar) || '-'}
+            </span>
+            <p className="text-xs text-gray-500">{item.contract?.sponsor?.company_name || item.contract?.sponsor?.name || '-'}</p>
           </div>
         </div>
       ),
     },
     {
-      key: 'type',
+      key: 'benefit_type',
       header: isRtl ? 'النوع' : 'Type',
-      render: (item) => <span className="px-2.5 py-1 rounded-lg bg-teal-500/10 text-teal-500 text-xs font-medium capitalize">{item.type.replace(/_/g, ' ')}</span>,
+      render: (item) => (
+        <span className="px-2.5 py-1 rounded-lg bg-teal-500/10 text-teal-500 text-xs font-medium capitalize">
+          {getEnumValue(item.benefit_type).replace(/_/g, ' ')}
+        </span>
+      ),
     },
     {
       key: 'delivery',
@@ -101,7 +123,8 @@ export default function SponsorBenefitsPage() {
       render: (item) => (
         <div className="flex items-center gap-2">
           <div className="flex-1 h-2 rounded-full bg-gray-200 dark:bg-gray-700 max-w-[80px]">
-            <div className="h-full rounded-full bg-gradient-to-r from-emerald-500 to-teal-500" style={{ width: `${Math.min(100, (item.delivered_quantity / item.quantity) * 100)}%` }} />
+            <div className="h-full rounded-full bg-gradient-to-r from-emerald-500 to-teal-500"
+              style={{ width: `${item.quantity > 0 ? Math.min(100, (item.delivered_quantity / item.quantity) * 100) : 0}%` }} />
           </div>
           <span className="text-xs text-gray-500">{item.delivered_quantity}/{item.quantity}</span>
         </div>
@@ -110,7 +133,7 @@ export default function SponsorBenefitsPage() {
     {
       key: 'status',
       header: isRtl ? 'الحالة' : 'Status',
-      render: (item) => <StatusBadge status={item.status} />,
+      render: (item) => <StatusBadge status={getEnumValue(item.status)} />,
     },
     {
       key: 'actions',
@@ -125,8 +148,6 @@ export default function SponsorBenefitsPage() {
           )}
           <button onClick={(e) => { e.stopPropagation(); handleEdit(item); }}
             className="p-2 rounded-lg hover:bg-blue-500/10 text-blue-500 transition-colors"><Edit className="w-4 h-4" /></button>
-          <button onClick={(e) => { e.stopPropagation(); handleDelete(item.id); }}
-            className="p-2 rounded-lg hover:bg-red-500/10 text-red-500 transition-colors"><Trash2 className="w-4 h-4" /></button>
         </div>
       ),
     },
@@ -156,23 +177,20 @@ export default function SponsorBenefitsPage() {
               {editingBenefit ? (isRtl ? 'تعديل الميزة' : 'Edit Benefit') : (isRtl ? 'إضافة ميزة جديدة' : 'Add Benefit')}
             </h2>
             <div className="space-y-4">
-              <div className="grid grid-cols-2 gap-4">
+              {!editingBenefit && (
                 <div>
-                  <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Name (EN)</label>
-                  <input type="text" value={formData.name} onChange={(e) => setFormData({ ...formData, name: e.target.value })}
+                  <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">{isRtl ? 'معرّف عقد الرعاية' : 'Sponsor Contract ID'}</label>
+                  <input type="text" value={formData.sponsor_contract_id} onChange={(e) => setFormData({ ...formData, sponsor_contract_id: e.target.value })}
+                    placeholder={isRtl ? 'أدخل معرّف العقد' : 'Enter contract UUID'}
                     className="w-full px-4 py-2 rounded-xl border border-white/10 dark:border-white/10 border-gray-200/60 bg-white/50 dark:bg-white/5 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500/30" />
                 </div>
-                <div>
-                  <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">الاسم (AR)</label>
-                  <input type="text" value={formData.name_ar} onChange={(e) => setFormData({ ...formData, name_ar: e.target.value })}
-                    className="w-full px-4 py-2 rounded-xl border border-white/10 dark:border-white/10 border-gray-200/60 bg-white/50 dark:bg-white/5 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500/30" dir="rtl" />
-                </div>
-              </div>
+              )}
               <div className="grid grid-cols-2 gap-4">
                 <div>
                   <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">{isRtl ? 'النوع' : 'Type'}</label>
-                  <select value={formData.type} onChange={(e) => setFormData({ ...formData, type: e.target.value })}
-                    className="w-full px-4 py-2 rounded-xl border border-white/10 dark:border-white/10 border-gray-200/60 bg-white/50 dark:bg-white/5 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500/30">
+                  <select value={formData.benefit_type} onChange={(e) => setFormData({ ...formData, benefit_type: e.target.value })}
+                    disabled={!!editingBenefit}
+                    className="w-full px-4 py-2 rounded-xl border border-white/10 dark:border-white/10 border-gray-200/60 bg-white/50 dark:bg-white/5 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500/30 disabled:opacity-50">
                     {benefitTypes.map(t => <option key={t} value={t}>{t.replace(/_/g, ' ')}</option>)}
                   </select>
                 </div>

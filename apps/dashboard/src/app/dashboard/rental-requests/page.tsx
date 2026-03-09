@@ -6,11 +6,28 @@ import DataTable, { Column } from '@/components/ui/DataTable';
 import StatusBadge from '@/components/ui/StatusBadge';
 import { expoApi } from '@/lib/api';
 import { formatDate } from '@/lib/utils';
-import { RentalRequest } from '@/types';
 import { Search, Filter, ClipboardList, Eye, CheckCircle, XCircle } from 'lucide-react';
 
+interface RentalRequestItem {
+  id: string;
+  request_number: string;
+  space?: { id: string; name: string; name_ar?: string };
+  business_profile?: { id: string; company_name?: string; company_name_ar?: string };
+  start_date: string;
+  end_date: string;
+  total_price: number;
+  paid_amount: number;
+  remaining_amount: number;
+  status: string;
+  status_label: string;
+  payment_status: string;
+  payment_status_label: string;
+  notes: string;
+  created_at: string;
+}
+
 export default function RentalRequestsPage() {
-  const [requests, setRequests] = useState<RentalRequest[]>([]);
+  const [requests, setRequests] = useState<RentalRequestItem[]>([]);
   const [loading, setLoading] = useState(true);
   const [locale, setLocale] = useState('ar');
   const [pagination, setPagination] = useState({ current_page: 1, last_page: 1, total: 0, per_page: 15 });
@@ -47,7 +64,7 @@ export default function RentalRequestsPage() {
 
   const handleApprove = async (id: string) => {
     try {
-      await expoApi.post(`/manage/rental-requests/${id}/approve`);
+      await expoApi.put(`/manage/rental-requests/${id}/approve`);
       fetchRequests();
     } catch {
       // handle error silently
@@ -57,31 +74,40 @@ export default function RentalRequestsPage() {
   const handleReject = async (id: string) => {
     if (!confirm(isRtl ? 'هل أنت متأكد من الرفض؟' : 'Are you sure you want to reject?')) return;
     try {
-      await expoApi.post(`/manage/rental-requests/${id}/reject`);
+      await expoApi.put(`/manage/rental-requests/${id}/reject`, { reason: isRtl ? 'مرفوض من الإدارة' : 'Rejected by admin' });
       fetchRequests();
     } catch {
       // handle error silently
     }
   };
 
-  const columns: Column<RentalRequest>[] = [
+  const safeDateFormat = (dateStr: string | null | undefined, loc: string): string => {
+    if (!dateStr) return '-';
+    try { return formatDate(dateStr, loc); } catch { return dateStr; }
+  };
+
+  const columns: Column<RentalRequestItem>[] = [
     {
-      key: 'id',
+      key: 'request_number',
       header: '#',
       render: (item) => (
         <div className="flex items-center gap-3">
           <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-orange-500/20 to-red-500/20 flex items-center justify-center">
             <ClipboardList className="w-5 h-5 text-orange-500" />
           </div>
-          <span className="text-sm font-mono text-gray-500">#{item.id?.slice(-6)}</span>
+          <span className="text-sm font-mono text-gray-500">{item.request_number || `#${item.id?.slice(-6)}`}</span>
         </div>
       ),
     },
     {
-      key: 'user',
-      header: isRtl ? 'المستخدم' : 'User',
+      key: 'business_profile',
+      header: isRtl ? 'التاجر' : 'Merchant',
       render: (item) => (
-        <span className="text-sm text-gray-700 dark:text-gray-300">{item.user?.name || '-'}</span>
+        <span className="text-sm text-gray-700 dark:text-gray-300">
+          {isRtl
+            ? item.business_profile?.company_name_ar || item.business_profile?.company_name || '-'
+            : item.business_profile?.company_name || '-'}
+        </span>
       ),
     },
     {
@@ -98,21 +124,30 @@ export default function RentalRequestsPage() {
       header: isRtl ? 'التواريخ' : 'Dates',
       render: (item) => (
         <div className="text-sm">
-          <p className="text-gray-700 dark:text-gray-300">{formatDate(item.start_date, locale)}</p>
-          <p className="text-xs text-gray-500">{isRtl ? 'إلى' : 'to'} {formatDate(item.end_date, locale)}</p>
+          <p className="text-gray-700 dark:text-gray-300">{safeDateFormat(item.start_date, locale)}</p>
+          <p className="text-xs text-gray-500">{isRtl ? 'إلى' : 'to'} {safeDateFormat(item.end_date, locale)}</p>
         </div>
+      ),
+    },
+    {
+      key: 'total_price',
+      header: isRtl ? 'المبلغ' : 'Amount',
+      render: (item) => (
+        <span className="text-sm font-medium text-gray-900 dark:text-white">
+          {item.total_price ? `${item.total_price} SAR` : '-'}
+        </span>
       ),
     },
     {
       key: 'status',
       header: isRtl ? 'الحالة' : 'Status',
-      render: (item) => <StatusBadge status={item.status} />,
+      render: (item) => <StatusBadge status={item.status} label={item.status_label} />,
     },
     {
       key: 'created_at',
       header: isRtl ? 'تاريخ الطلب' : 'Requested',
       render: (item) => (
-        <span className="text-sm text-gray-500">{item.created_at ? formatDate(item.created_at, locale) : '-'}</span>
+        <span className="text-sm text-gray-500">{safeDateFormat(item.created_at, locale)}</span>
       ),
     },
     {
