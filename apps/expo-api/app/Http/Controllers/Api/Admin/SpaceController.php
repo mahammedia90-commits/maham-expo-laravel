@@ -65,6 +65,7 @@ class SpaceController extends Controller
     {
         $data = $request->validated();
         $data['event_id'] = $event->id;
+        $data['status'] = $data['status'] ?? 'available';
 
         // Remove services from data (handled separately)
         $services = $data['services'] ?? null;
