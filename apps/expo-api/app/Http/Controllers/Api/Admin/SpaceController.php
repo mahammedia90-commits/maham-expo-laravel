@@ -53,6 +53,8 @@ class SpaceController extends Controller
 
         $spaces = $query->paginate($request->input('per_page', 15));
 
+        $spaces->getCollection()->transform(fn($space) => new SpaceListResource($space));
+
         return ApiResponse::paginated($spaces);
     }
 

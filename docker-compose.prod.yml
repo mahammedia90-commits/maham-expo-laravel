@@ -185,6 +185,10 @@ services:
       MAIL_FROM_ADDRESS: ${MAIL_FROM_ADDRESS:-noreply@mahamexpo.sa}
       MAIL_FROM_NAME: "Maham Expo"
 
+      # --- Tap Payment Gateway ---
+      TAP_SECRET_KEY: ${TAP_SECRET_KEY:-}
+      TAP_PUBLIC_KEY: ${TAP_PUBLIC_KEY:-}
+
       # --- Hashing ---
       BCRYPT_ROUNDS: 12
 

@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Api\Investor;
 
 use App\Enums\SpaceStatus;
 use App\Http\Controllers\Controller;
+use App\Http\Resources\SpaceListResource;
 use App\Models\Event;
 use App\Models\Space;
 use App\Support\ApiErrorCode;
@@ -57,6 +58,8 @@ class SpaceController extends Controller
         }
 
         $spaces = $query->paginate($request->input('per_page', 15));
+
+        $spaces->getCollection()->transform(fn($space) => new SpaceListResource($space));
 
         return ApiResponse::paginated($spaces);
     }
