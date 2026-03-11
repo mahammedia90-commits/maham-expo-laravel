@@ -467,7 +467,7 @@
 		},
 		{
 			"name": "🔌 Service (S2S)",
-			"description": "Service-to-service (S2S) internal endpoints. These are used internally between services on the Docker network.",
+			"description": "Service-to-service (S2S) endpoints. Internal Docker network — no authentication required.",
 			"item": [
 				{
 					"name": "Verify User Token",
@@ -527,7 +527,7 @@
 							"host": ["{{auth_url}}"],
 							"path": ["v1", "service", "check-permission"]
 						},
-						"description": "Check if a user has a specific permission via service-to-service call.\n\n**Authentication:** None (internal Docker network)\n\n**Required fields:**\n- `user_id` (uuid) — The user's ID\n- `permission` (string) — Permission name to check"
+						"description": "Check if a user has a specific permission via service-to-service call.\n\n**Authentication:** None (internal Docker network)\n\n**Required fields:**\n- `token` (string) — The user's JWT token\n- `permission` (string) — Permission name to check"
 					},
 					"response": []
 				},
@@ -546,7 +546,7 @@
 						],
 						"body": {
 							"mode": "raw",
-							"raw": "{\n\t\"user_id\": \"{{user_id}}\"\n}",
+							"raw": "{\n\t\"token\": \"{{auth_token}}\"\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -558,7 +558,7 @@
 							"host": ["{{auth_url}}"],
 							"path": ["v1", "service", "user-info"]
 						},
-						"description": "Get user information via service-to-service call.\n\n**Authentication:** None (internal Docker network)\n\n**Required fields:**\n- `user_id` (uuid) — The user's ID"
+						"description": "Get user information from a JWT token via service-to-service call.\n\n**Authentication:** None (internal Docker network)\n\n**Required fields:**\n- `token` (string) — The user's JWT token"
 					},
 					"response": []
 				}

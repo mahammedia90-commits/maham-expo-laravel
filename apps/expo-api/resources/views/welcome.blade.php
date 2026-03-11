@@ -168,6 +168,7 @@
                         <li><a href="#postman" class="sidebar-link block py-2 px-3 text-sm text-gray-600 rounded-lg" data-ar="مجموعات Postman" data-en="Postman Collections">📦 Postman</a></li>
                         <li><a href="#errors" class="sidebar-link block py-2 px-3 text-sm text-gray-600 rounded-lg" data-ar="رموز الحالة" data-en="Status Codes">رموز الحالة</a></li>
                         <li><a href="#error-codes" class="sidebar-link block py-2 px-3 text-sm text-gray-600 rounded-lg" data-ar="رموز الأخطاء" data-en="Error Codes">رموز الأخطاء</a></li>
+                        <li><a href="#webhooks" class="sidebar-link block py-2 px-3 text-sm text-gray-600 rounded-lg" data-ar="الويب هوك" data-en="Webhooks">الويب هوك</a></li>
                         <li><a href="#permissions-ref" class="sidebar-link block py-2 px-3 text-sm text-gray-600 rounded-lg" data-ar="جدول الصلاحيات" data-en="Permissions Map">جدول الصلاحيات</a></li>
                     </ul>
                 </div>
@@ -1155,9 +1156,36 @@
                         <code class="bg-orange-50 text-orange-600 px-1.5 py-0.5 rounded text-[10px]">422 VALIDATION_ERROR</code>
                         <code class="bg-orange-50 text-orange-600 px-1.5 py-0.5 rounded text-[10px]">422 DUPLICATE_ENTRY</code>
                     </div>
-                </section>
 
-                {{-- Manage: Sections & Spaces --}}
+                    {{-- Create Event Fields --}}
+                    <div class="mt-6 bg-white rounded-xl border border-gray-200 p-5">
+                        <h4 class="text-sm font-bold text-gray-700 mb-3" data-ar="حقول إنشاء/تحديث معرض" data-en="Create / Update Event Fields">حقول إنشاء/تحديث معرض</h4>
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-x-6 gap-y-1 text-xs">
+                            <div><code class="text-red-600 font-bold">name</code> <span class="text-gray-400">string</span> <span class="text-red-500">required</span></div>
+                            <div><code class="text-red-600 font-bold">name_ar</code> <span class="text-gray-400">string</span> <span class="text-red-500">required</span></div>
+                            <div><code class="text-red-600 font-bold">category_id</code> <span class="text-gray-400">uuid</span> <span class="text-red-500">required</span></div>
+                            <div><code class="text-red-600 font-bold">city_id</code> <span class="text-gray-400">uuid</span> <span class="text-red-500">required</span></div>
+                            <div><code class="text-red-600 font-bold">address</code> <span class="text-gray-400">string</span> <span class="text-red-500">required</span></div>
+                            <div><code class="text-red-600 font-bold">start_date</code> <span class="text-gray-400">date Y-m-d</span> <span class="text-red-500">required</span></div>
+                            <div><code class="text-red-600 font-bold">end_date</code> <span class="text-gray-400">date Y-m-d</span> <span class="text-red-500">required</span></div>
+                            <div><code class="text-gray-600">description</code> <span class="text-gray-400">string</span> <span class="text-gray-400">nullable</span></div>
+                            <div><code class="text-gray-600">description_ar</code> <span class="text-gray-400">string</span> <span class="text-gray-400">nullable</span></div>
+                            <div><code class="text-gray-600">address_ar</code> <span class="text-gray-400">string</span> <span class="text-gray-400">nullable</span></div>
+                            <div><code class="text-gray-600">latitude</code> <span class="text-gray-400">numeric</span> <span class="text-gray-400">nullable</span></div>
+                            <div><code class="text-gray-600">longitude</code> <span class="text-gray-400">numeric</span> <span class="text-gray-400">nullable</span></div>
+                            <div><code class="text-gray-600">opening_time</code> <span class="text-gray-400">HH:mm</span> <span class="text-gray-400">nullable</span></div>
+                            <div><code class="text-gray-600">closing_time</code> <span class="text-gray-400">HH:mm</span> <span class="text-gray-400">nullable</span></div>
+                            <div><code class="text-gray-600">organizer_name</code> <span class="text-gray-400">string</span> <span class="text-gray-400">nullable</span></div>
+                            <div><code class="text-gray-600">organizer_phone</code> <span class="text-gray-400">string</span> <span class="text-gray-400">nullable</span></div>
+                            <div><code class="text-gray-600">organizer_email</code> <span class="text-gray-400">email</span> <span class="text-gray-400">nullable</span></div>
+                            <div><code class="text-gray-600">website</code> <span class="text-gray-400">url</span> <span class="text-gray-400">nullable</span></div>
+                            <div><code class="text-gray-600">status</code> <span class="text-gray-400">draft|published|ended|cancelled</span></div>
+                            <div><code class="text-gray-600">is_featured</code> <span class="text-gray-400">boolean</span> <span class="text-gray-400">default: false</span></div>
+                            <div><code class="text-gray-600">images[]</code> <span class="text-gray-400">file (image)</span> <span class="text-gray-400">nullable</span></div>
+                            <div><code class="text-gray-600">images_360[]</code> <span class="text-gray-400">file (image)</span> <span class="text-gray-400">nullable</span></div>
+                        </div>
+                    </div>
+                </section>
                 <section id="manage-sections-spaces" class="mb-16">
                     <h3 class="text-2xl font-bold mb-4" data-ar="الأقسام والمساحات" data-en="Sections & Spaces">الأقسام والمساحات</h3>
                     <div class="overflow-x-auto bg-white rounded-xl border border-gray-200">
@@ -1181,6 +1209,37 @@
                         <code class="bg-red-50 text-red-600 px-1.5 py-0.5 rounded text-[10px]">403 PERMISSION_DENIED</code>
                         <code class="bg-blue-50 text-blue-600 px-1.5 py-0.5 rounded text-[10px]">404 NOT_FOUND</code>
                         <code class="bg-orange-50 text-orange-600 px-1.5 py-0.5 rounded text-[10px]">422 VALIDATION_ERROR</code>
+                    </div>
+
+                    {{-- Create Space Fields --}}
+                    <div class="mt-6 bg-white rounded-xl border border-gray-200 p-5">
+                        <h4 class="text-sm font-bold text-gray-700 mb-3" data-ar="حقول إنشاء/تحديث مساحة" data-en="Create / Update Space Fields">حقول إنشاء/تحديث مساحة</h4>
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-x-6 gap-y-1 text-xs">
+                            <div><code class="text-red-600 font-bold">name</code> <span class="text-gray-400">string</span> <span class="text-red-500">required</span></div>
+                            <div><code class="text-red-600 font-bold">location_code</code> <span class="text-gray-400">string</span> <span class="text-red-500">required</span></div>
+                            <div><code class="text-red-600 font-bold">area_sqm</code> <span class="text-gray-400">numeric</span> <span class="text-red-500">required</span></div>
+                            <div><code class="text-red-600 font-bold">price_total</code> <span class="text-gray-400">numeric</span> <span class="text-red-500">required</span></div>
+                            <div><code class="text-gray-600">name_ar</code> <span class="text-gray-400">string</span> <span class="text-gray-400">nullable</span></div>
+                            <div><code class="text-gray-600">description</code> <span class="text-gray-400">string</span> <span class="text-gray-400">nullable</span></div>
+                            <div><code class="text-gray-600">description_ar</code> <span class="text-gray-400">string</span> <span class="text-gray-400">nullable</span></div>
+                            <div><code class="text-gray-600">section_id</code> <span class="text-gray-400">uuid</span> <span class="text-gray-400">nullable</span></div>
+                            <div><code class="text-gray-600">price_per_day</code> <span class="text-gray-400">numeric</span> <span class="text-gray-400">nullable</span></div>
+                            <div><code class="text-gray-600">space_type</code> <span class="text-gray-400">booth|shop|office|hall|outdoor|other</span></div>
+                            <div><code class="text-gray-600">payment_system</code> <span class="text-gray-400">full|installment|daily|monthly</span></div>
+                            <div><code class="text-gray-600">rental_duration</code> <span class="text-gray-400">daily|weekly|monthly|full_event</span></div>
+                            <div><code class="text-gray-600">floor_number</code> <span class="text-gray-400">integer</span> <span class="text-gray-400">nullable</span></div>
+                            <div><code class="text-gray-600">status</code> <span class="text-gray-400">available|reserved|rented|unavailable</span></div>
+                            <div><code class="text-gray-600">is_featured</code> <span class="text-gray-400">boolean</span> <span class="text-gray-400">default: false</span></div>
+                            <div><code class="text-gray-600">latitude</code> <span class="text-gray-400">numeric</span> <span class="text-gray-400">nullable</span></div>
+                            <div><code class="text-gray-600">longitude</code> <span class="text-gray-400">numeric</span> <span class="text-gray-400">nullable</span></div>
+                            <div><code class="text-gray-600">address</code> <span class="text-gray-400">string</span> <span class="text-gray-400">nullable</span></div>
+                            <div><code class="text-gray-600">address_ar</code> <span class="text-gray-400">string</span> <span class="text-gray-400">nullable</span></div>
+                            <div><code class="text-gray-600">services[]</code> <span class="text-gray-400">array of uuid</span> <span class="text-gray-400">nullable</span></div>
+                            <div><code class="text-gray-600">images[]</code> <span class="text-gray-400">file (image)</span> <span class="text-gray-400">nullable</span></div>
+                            <div><code class="text-gray-600">images_360[]</code> <span class="text-gray-400">file (image)</span> <span class="text-gray-400">nullable</span></div>
+                            <div><code class="text-gray-600">amenities[]</code> <span class="text-gray-400">array string</span> <span class="text-gray-400">nullable</span></div>
+                            <div><code class="text-gray-600">amenities_ar[]</code> <span class="text-gray-400">array string</span> <span class="text-gray-400">nullable</span></div>
+                        </div>
                     </div>
                 </section>
 
@@ -1233,6 +1292,35 @@
                                 <tr><td class="p-3"><span class="badge method-put text-white">PUT</span></td><td class="p-3"><code>/v1/manage/settings</code></td><td class="p-3" data-ar="تحديث الإعدادات" data-en="Update settings">تحديث</td><td class="p-3"><span class="perm-badge">settings.update</span></td></tr>
                             </tbody>
                         </table>
+                    </div>
+
+                    {{-- Settings Keys Reference --}}
+                    <div class="mt-6 bg-white rounded-xl border border-gray-200 p-5">
+                        <h4 class="text-sm font-bold text-gray-700 mb-3" data-ar="مفاتيح الإعدادات المتاحة (صيغة مسطحة)" data-en="Available Setting Keys (flat format)">مفاتيح الإعدادات (PUT — صيغة مسطحة)</h4>
+                        <p class="text-xs text-gray-500 mb-3" data-ar="أرسل فقط المفاتيح التي تريد تحديثها" data-en="Send only the keys you want to update">أرسل فقط المفاتيح التي تريد تحديثها</p>
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-x-6 gap-y-1 text-xs">
+                            <div><code class="text-gray-700">site_name</code> <span class="text-gray-400">string</span></div>
+                            <div><code class="text-gray-700">site_name_ar</code> <span class="text-gray-400">string</span></div>
+                            <div><code class="text-gray-700">contact_email</code> <span class="text-gray-400">email</span></div>
+                            <div><code class="text-gray-700">contact_phone</code> <span class="text-gray-400">string</span></div>
+                            <div><code class="text-gray-700">support_email</code> <span class="text-gray-400">email</span></div>
+                            <div><code class="text-gray-700">maintenance_mode</code> <span class="text-gray-400">boolean</span></div>
+                            <div><code class="text-gray-700">allow_registration</code> <span class="text-gray-400">boolean</span></div>
+                            <div><code class="text-gray-700">auto_approve_profiles</code> <span class="text-gray-400">boolean</span></div>
+                            <div><code class="text-gray-700">max_visit_requests_per_day</code> <span class="text-gray-400">integer</span></div>
+                            <div><code class="text-gray-700">max_rental_requests_per_merchant</code> <span class="text-gray-400">integer</span></div>
+                            <div><code class="text-gray-700">default_currency</code> <span class="text-gray-400">string (SAR)</span></div>
+                            <div><code class="text-gray-700">timezone</code> <span class="text-gray-400">string (Asia/Riyadh)</span></div>
+                            <div><code class="text-purple-600 font-bold">visit_fee</code> <span class="text-gray-400">numeric</span> <span class="text-purple-500">رسوم الزيارة</span></div>
+                            <div><code class="text-gray-700">payment_enabled</code> <span class="text-gray-400">boolean</span></div>
+                            <div><code class="text-gray-700">payment_gateway_mode</code> <span class="text-gray-400">test|live</span></div>
+                            <div><code class="text-gray-700">payment_default_currency</code> <span class="text-gray-400">string (SAR)</span></div>
+                            <div><code class="text-gray-700">payment_3d_secure</code> <span class="text-gray-400">boolean</span></div>
+                            <div><code class="text-gray-700">sms_enabled</code> <span class="text-gray-400">boolean</span></div>
+                            <div><code class="text-gray-700">sms_default_channel</code> <span class="text-gray-400">sms|whatsapp</span></div>
+                            <div><code class="text-gray-700">sms_max_attempts_per_hour</code> <span class="text-gray-400">integer</span></div>
+                            <div><code class="text-gray-700">sms_code_length</code> <span class="text-gray-400">integer</span></div>
+                        </div>
                     </div>
                     <div class="mt-3 flex flex-wrap items-center gap-1.5 px-1">
                         <span class="text-[10px] text-gray-400 font-bold">⚠️</span>
@@ -2030,6 +2118,21 @@
                             </tbody>
                         </table>
                     </div>
+                </section>
+
+                {{-- 🔗 Webhooks --}}
+                <section id="webhooks" class="mb-16">
+                    <h3 class="text-2xl font-bold mb-4" data-ar="الويب هوك" data-en="Webhooks">الويب هوك (Webhooks)</h3>
+                    <p class="text-gray-500 mb-4 text-sm" data-ar="نقاط استقبال الإشعارات من بوابات الدفع الخارجية" data-en="Endpoints for receiving notifications from external payment gateways">نقاط استقبال الإشعارات من بوابات الدفع</p>
+                    <div class="overflow-x-auto bg-white rounded-xl border border-gray-200">
+                        <table class="w-full text-sm">
+                            <thead><tr class="bg-gray-50 border-b"><th class="p-3 text-right">Method</th><th class="p-3 text-right">Endpoint</th><th class="p-3 text-right" data-ar="الوصف" data-en="Description">الوصف</th><th class="p-3 text-right">Auth</th></tr></thead>
+                            <tbody>
+                                <tr><td class="p-3"><span class="badge method-post text-white">POST</span></td><td class="p-3"><code>/v1/webhooks/tap</code></td><td class="p-3" data-ar="إشعارات بوابة Tap للدفع" data-en="Tap payment gateway webhook">Tap Webhook</td><td class="p-3"><span class="text-xs text-gray-400">noauth</span></td></tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <div class="mt-3 text-xs text-gray-500 px-1" data-ar="يتم التحقق من التوقيع تلقائياً — لا يحتاج توثيق" data-en="Signature is verified automatically — no authentication needed">يتم التحقق من التوقيع تلقائياً — لا يحتاج توثيق</div>
                 </section>
 
                 {{-- Permissions Reference --}}
