@@ -82,41 +82,47 @@ class SettingController extends Controller
      */
     public function update(Request $request): JsonResponse
     {
-        $validated = $request->validate([
-            'settings' => 'required|array',
-            'settings.site_name' => 'sometimes|nullable|string|max:255',
-            'settings.site_name_ar' => 'sometimes|nullable|string|max:255',
-            'settings.contact_email' => 'sometimes|nullable|email|max:255',
-            'settings.contact_phone' => 'sometimes|nullable|string|max:20',
-            'settings.support_email' => 'sometimes|nullable|email|max:255',
-            'settings.maintenance_mode' => 'sometimes|boolean',
-            'settings.allow_registration' => 'sometimes|boolean',
-            'settings.auto_approve_profiles' => 'sometimes|boolean',
-            'settings.max_visit_requests_per_day' => 'sometimes|integer|min:1|max:100',
-            'settings.max_rental_requests_per_merchant' => 'sometimes|integer|min:1|max:50',
-            'settings.default_currency' => 'sometimes|string|max:10',
-            'settings.timezone' => 'sometimes|string|max:50',
+        // Accept both flat format and wrapped {settings: {...}} format
+        $input = $request->has('settings') ? $request->input('settings') : $request->except(['auth_user_id', 'auth_user_role']);
 
-            // CORS
-            'settings.cors_allowed_origins' => 'sometimes|string|max:2000',
-            'settings.cors_supports_credentials' => 'sometimes|boolean',
-            'settings.cors_max_age' => 'sometimes|integer|min:0|max:604800',
+        if (!is_array($input) || empty($input)) {
+            return ApiResponse::error(__('messages.validation_failed'), 'validation_failed', 422);
+        }
 
-            // Payment Gateway
-            'settings.payment_enabled' => 'sometimes|boolean',
-            'settings.payment_gateway_mode' => 'sometimes|string|in:test,live',
-            'settings.payment_default_currency' => 'sometimes|string|max:10',
-            'settings.payment_3d_secure' => 'sometimes|boolean',
+        // Only allow known setting keys
+        $allowedKeys = array_keys($this->defaults);
+        $input = array_intersect_key($input, array_flip($allowedKeys));
 
-            // SMS/OTP
-            'settings.sms_enabled' => 'sometimes|boolean',
-            'settings.sms_default_channel' => 'sometimes|string|in:sms,whatsapp',
-            'settings.sms_max_attempts_per_hour' => 'sometimes|integer|min:1|max:20',
-            'settings.sms_code_length' => 'sometimes|integer|min:4|max:8',
-        ]);
+        $rules = [
+            'site_name' => 'sometimes|nullable|string|max:255',
+            'site_name_ar' => 'sometimes|nullable|string|max:255',
+            'contact_email' => 'sometimes|nullable|email|max:255',
+            'contact_phone' => 'sometimes|nullable|string|max:20',
+            'support_email' => 'sometimes|nullable|email|max:255',
+            'maintenance_mode' => 'sometimes|boolean',
+            'allow_registration' => 'sometimes|boolean',
+            'auto_approve_profiles' => 'sometimes|boolean',
+            'max_visit_requests_per_day' => 'sometimes|integer|min:1|max:100',
+            'max_rental_requests_per_merchant' => 'sometimes|integer|min:1|max:50',
+            'default_currency' => 'sometimes|string|max:10',
+            'timezone' => 'sometimes|string|max:50',
+            'cors_allowed_origins' => 'sometimes|string|max:2000',
+            'cors_supports_credentials' => 'sometimes|boolean',
+            'cors_max_age' => 'sometimes|integer|min:0|max:604800',
+            'payment_enabled' => 'sometimes|boolean',
+            'payment_gateway_mode' => 'sometimes|string|in:test,live',
+            'payment_default_currency' => 'sometimes|string|max:10',
+            'payment_3d_secure' => 'sometimes|boolean',
+            'sms_enabled' => 'sometimes|boolean',
+            'sms_default_channel' => 'sometimes|string|in:sms,whatsapp',
+            'sms_max_attempts_per_hour' => 'sometimes|integer|min:1|max:20',
+            'sms_code_length' => 'sometimes|integer|min:4|max:8',
+        ];
+
+        $validated = validator($input, $rules)->validate();
 
         $currentSettings = $this->getSettings();
-        $updatedSettings = array_merge($currentSettings, $validated['settings']);
+        $updatedSettings = array_merge($currentSettings, $validated);
 
         Cache::forever(self::CACHE_KEY, $updatedSettings);
 

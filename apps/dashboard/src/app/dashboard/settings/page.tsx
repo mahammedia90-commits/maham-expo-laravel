@@ -35,7 +35,7 @@ export default function SettingsPage() {
       for (const [key, value] of Object.entries(settings)) {
         cleanSettings[key] = value === '' ? null : value;
       }
-      await expoApi.put('/manage/settings', { settings: cleanSettings });
+      await expoApi.put('/manage/settings', cleanSettings);
       setSaveMessage(isRtl ? 'تم الحفظ بنجاح' : 'Settings saved successfully');
       fetchSettings();
       setTimeout(() => setSaveMessage(''), 3000);
