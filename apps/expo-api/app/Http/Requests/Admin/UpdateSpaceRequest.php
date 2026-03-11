@@ -55,6 +55,7 @@ class UpdateSpaceRequest extends FormRequest
             'address_ar' => ['nullable', 'string', 'max:500'],
             'services' => ['nullable', 'array', 'max:20'],
             'services.*' => ['uuid', 'exists:services,id'],
+            'is_featured' => ['sometimes', 'boolean'],
         ];
     }
 }

@@ -34,6 +34,9 @@ class SettingController extends Controller
         'default_currency' => 'SAR',
         'timezone' => 'Asia/Riyadh',
 
+        // ── Visit Fee ──
+        'visit_fee' => 0,                         // رسوم الزيارة
+
         // ── CORS Settings ──
         'cors_allowed_origins' => '*',           // * أو روابط مفصولة بفاصلة
         'cors_supports_credentials' => false,
@@ -106,6 +109,7 @@ class SettingController extends Controller
             'max_rental_requests_per_merchant' => 'sometimes|integer|min:1|max:50',
             'default_currency' => 'sometimes|string|max:10',
             'timezone' => 'sometimes|string|max:50',
+            'visit_fee' => 'sometimes|numeric|min:0|max:9999999',
             'cors_allowed_origins' => 'sometimes|string|max:2000',
             'cors_supports_credentials' => 'sometimes|boolean',
             'cors_max_age' => 'sometimes|integer|min:0|max:604800',

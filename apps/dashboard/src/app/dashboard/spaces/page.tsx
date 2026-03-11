@@ -7,9 +7,10 @@ import StatusBadge from '@/components/ui/StatusBadge';
 import { expoApi } from '@/lib/api';
 import { formatCurrency } from '@/lib/utils';
 import { Space } from '@/types';
-import { Plus, Search, Filter, MapPin, Edit, Trash2, Upload, X, ImageIcon } from 'lucide-react';
+import { Plus, Search, Filter, MapPin, Edit, Trash2, Upload, X, ImageIcon, Star, Wrench } from 'lucide-react';
 
 interface EventOption { id: string; name: string; name_ar: string; }
+interface ServiceOption { id: string; name: string; name_ar: string; }
 
 export default function SpacesPage() {
   const [spaces, setSpaces] = useState<Space[]>([]);
@@ -23,6 +24,10 @@ export default function SpacesPage() {
   const [events, setEvents] = useState<EventOption[]>([]);
   const [selectedEventId, setSelectedEventId] = useState('');
 
+  // Services
+  const [services, setServices] = useState<ServiceOption[]>([]);
+  const [selectedServices, setSelectedServices] = useState<string[]>([]);
+
   // Modal state
   const [showModal, setShowModal] = useState(false);
   const [editingSpace, setEditingSpace] = useState<Space | null>(null);
@@ -31,7 +36,7 @@ export default function SpacesPage() {
   const [formData, setFormData] = useState({
     name: '', name_ar: '', location_code: '', area_sqm: '', price_total: '',
     price_per_day: '', description: '', description_ar: '', floor_number: '',
-    space_type: '', status: 'available', amenities: '',
+    space_type: '', status: 'available', amenities: '', is_featured: false,
   });
 
   // Image upload state
@@ -46,7 +51,7 @@ export default function SpacesPage() {
 
   const isRtl = locale === 'ar';
 
-  useEffect(() => { setLocale(localStorage.getItem('locale') || 'ar'); fetchEvents(); }, []);
+  useEffect(() => { setLocale(localStorage.getItem('locale') || 'ar'); fetchEvents(); fetchServices(); }, []);
   useEffect(() => { if (selectedEventId) fetchSpaces(); }, [selectedEventId, pagination.current_page, statusFilter, searchQuery]);
 
   const fetchEvents = async () => {
@@ -55,6 +60,13 @@ export default function SpacesPage() {
       const evts = res.data.data || [];
       setEvents(evts);
       if (evts.length > 0 && !selectedEventId) setSelectedEventId(evts[0].id);
+    } catch { /* silent */ }
+  };
+
+  const fetchServices = async () => {
+    try {
+      const res = await expoApi.get('/manage/services', { params: { per_page: 100, is_active: 1 } });
+      setServices(res.data.data || []);
     } catch { /* silent */ }
   };
 
@@ -77,15 +89,16 @@ export default function SpacesPage() {
     setFormData({
       name: '', name_ar: '', location_code: '', area_sqm: '', price_total: '',
       price_per_day: '', description: '', description_ar: '', floor_number: '',
-      space_type: '', status: 'available', amenities: '',
+      space_type: '', status: 'available', amenities: '', is_featured: false,
     });
+    setSelectedServices([]);
     setImageFiles([]); setImagePreviews([]); setExistingImages([]);
     setImage360Files([]); setImage360Previews([]); setExistingImages360([]);
     setErrors({});
     setShowModal(true);
   };
 
-  const handleEdit = (space: Space) => {
+  const handleEdit = async (space: Space) => {
     setEditingSpace(space);
     setFormData({
       name: space.name || '',
@@ -100,7 +113,16 @@ export default function SpacesPage() {
       space_type: space.space_type || '',
       status: space.status || 'available',
       amenities: Array.isArray(space.amenities) ? space.amenities.join(', ') : '',
+      is_featured: space.is_featured || false,
     });
+    // Load space services from detail endpoint
+    try {
+      const res = await expoApi.get(`/manage/spaces/${space.id}`);
+      const detail = res.data.data;
+      setSelectedServices(detail.services?.map((s: ServiceOption) => s.id) || []);
+    } catch {
+      setSelectedServices(space.services?.map(s => s.id) || []);
+    }
     setImageFiles([]); setImagePreviews([]);
     setExistingImages(space.images || []);
     setImage360Files([]); setImage360Previews([]);
@@ -172,6 +194,12 @@ export default function SpacesPage() {
         formData.amenities.split(',').map(a => a.trim()).filter(Boolean).forEach(a => fd.append('amenities[]', a));
       }
 
+      // Featured
+      fd.append('is_featured', formData.is_featured ? '1' : '0');
+
+      // Services
+      selectedServices.forEach(serviceId => fd.append('services[]', serviceId));
+
       // Images
       imageFiles.forEach(file => fd.append('images[]', file));
       image360Files.forEach(file => fd.append('images_360[]', file));
@@ -231,7 +259,12 @@ export default function SpacesPage() {
     {
       key: 'type',
       header: isRtl ? 'النوع' : 'Type',
-      render: (item) => <span className="text-sm text-gray-600 dark:text-gray-300">{item.space_type || '-'}</span>,
+      render: (item) => (
+        <div className="flex items-center gap-1">
+          {item.is_featured && <Star className="w-3.5 h-3.5 text-amber-500 fill-amber-500" />}
+          <span className="text-sm text-gray-600 dark:text-gray-300">{item.space_type || '-'}</span>
+        </div>
+      ),
     },
     {
       key: 'status',
@@ -367,10 +400,12 @@ export default function SpacesPage() {
                   <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">{isRtl ? 'النوع' : 'Type'}</label>
                   <select value={formData.space_type} onChange={(e) => setFormData({ ...formData, space_type: e.target.value })} className={inputClass}>
                     <option value="">{isRtl ? 'اختر...' : 'Select...'}</option>
-                    <option value="booth">Booth</option>
-                    <option value="hall">Hall</option>
-                    <option value="room">Room</option>
-                    <option value="outdoor">Outdoor</option>
+                    <option value="booth">{isRtl ? 'كشك' : 'Booth'}</option>
+                    <option value="shop">{isRtl ? 'محل' : 'Shop'}</option>
+                    <option value="office">{isRtl ? 'مكتب' : 'Office'}</option>
+                    <option value="hall">{isRtl ? 'قاعة' : 'Hall'}</option>
+                    <option value="outdoor">{isRtl ? 'خارجي' : 'Outdoor'}</option>
+                    <option value="other">{isRtl ? 'أخرى' : 'Other'}</option>
                   </select>
                 </div>
               </div>
@@ -386,6 +421,46 @@ export default function SpacesPage() {
                   <textarea value={formData.description_ar} onChange={(e) => setFormData({ ...formData, description_ar: e.target.value })} rows={2} className={inputClass} dir="rtl" />
                 </div>
               </div>
+
+              {/* Featured Toggle */}
+              <div className="flex items-center gap-3 py-2">
+                <label className="relative inline-flex items-center cursor-pointer">
+                  <input type="checkbox" checked={formData.is_featured} onChange={(e) => setFormData({ ...formData, is_featured: e.target.checked })} className="sr-only peer" />
+                  <div className="w-11 h-6 bg-gray-200 peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-amber-500/25 rounded-full peer dark:bg-gray-700 peer-checked:after:translate-x-full rtl:peer-checked:after:-translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:start-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-amber-500" />
+                  <span className="ms-2 text-sm font-medium text-gray-700 dark:text-gray-300 flex items-center gap-1">
+                    <Star className="w-4 h-4 text-amber-500" />
+                    {isRtl ? 'مساحة مميزة' : 'Featured Space'}
+                  </span>
+                </label>
+              </div>
+
+              {/* Services */}
+              {services.length > 0 && (
+                <div>
+                  <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2 flex items-center gap-1">
+                    <Wrench className="w-4 h-4" />
+                    {isRtl ? 'الخدمات' : 'Services'}
+                  </label>
+                  <div className="grid grid-cols-2 sm:grid-cols-3 gap-2">
+                    {services.map(service => (
+                      <label key={service.id} className={`flex items-center gap-2 px-3 py-2 rounded-xl border cursor-pointer transition-all ${
+                        selectedServices.includes(service.id)
+                          ? 'border-emerald-400/60 bg-emerald-50/50 dark:bg-emerald-500/10'
+                          : 'border-gray-200/60 dark:border-white/10 hover:border-emerald-300/40'
+                      }`}>
+                        <input type="checkbox" checked={selectedServices.includes(service.id)}
+                          onChange={(e) => {
+                            if (e.target.checked) setSelectedServices(prev => [...prev, service.id]);
+                            else setSelectedServices(prev => prev.filter(id => id !== service.id));
+                          }}
+                          className="rounded border-gray-300 text-emerald-500 focus:ring-emerald-500/25" />
+                        <span className="text-sm text-gray-700 dark:text-gray-300">{isRtl ? service.name_ar || service.name : service.name}</span>
+                      </label>
+                    ))}
+                  </div>
+                  {errors.services && <p className="text-xs text-red-500 mt-1">{errors.services[0]}</p>}
+                </div>
+              )}
 
               {/* Amenities */}
               <div>

@@ -162,6 +162,7 @@ export default function SettingsPage() {
                     <InputField label={isRtl ? 'المنطقة الزمنية' : 'Timezone'} settingKey="timezone" placeholder="Asia/Riyadh" />
                     <InputField label={isRtl ? 'الحد الأقصى لطلبات الزيارة يومياً' : 'Max Visit Requests/Day'} settingKey="max_visit_requests_per_day" type="number" />
                     <InputField label={isRtl ? 'الحد الأقصى لطلبات التأجير لكل تاجر' : 'Max Rental Requests/Merchant'} settingKey="max_rental_requests_per_merchant" type="number" />
+                    <InputField label={isRtl ? 'رسوم الزيارة' : 'Visit Fee'} settingKey="visit_fee" type="number" placeholder="0" />
                   </div>
                   <div className="mt-4 space-y-2">
                     <ToggleField label={isRtl ? 'وضع الصيانة' : 'Maintenance Mode'} settingKey="maintenance_mode" description={isRtl ? 'تعطيل الوصول العام للموقع' : 'Disable public access to the site'} />

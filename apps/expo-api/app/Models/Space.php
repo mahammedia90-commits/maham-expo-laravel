@@ -48,6 +48,7 @@ class Space extends Model
         'longitude',
         'address',
         'address_ar',
+        'is_featured',
     ];
 
     protected $casts = [
@@ -65,6 +66,7 @@ class Space extends Model
         'rental_duration' => RentalDuration::class,
         'latitude' => 'decimal:8',
         'longitude' => 'decimal:8',
+        'is_featured' => 'boolean',
     ];
 
     /* ========================================

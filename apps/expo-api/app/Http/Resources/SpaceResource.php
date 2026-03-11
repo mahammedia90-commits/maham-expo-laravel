@@ -57,6 +57,7 @@ class SpaceResource extends JsonResource
                 'longitude' => $this->longitude ? (float) $this->longitude : null,
                 'address' => $this->localized_address,
             ],
+            'is_featured' => (bool) $this->is_featured,
             'is_favorited' => $userId ? Favorite::isFavorited($userId, 'space', $this->id) : false,
             'created_at' => $this->created_at->toISOString(),
         ];

@@ -53,6 +53,8 @@ export interface Space {
   space_type: string;
   payment_system: string;
   rental_duration: string;
+  is_featured: boolean;
+  services?: { id: string; name: string; name_ar: string }[];
 }
 
 export interface Category {
@@ -280,6 +282,7 @@ export interface Settings {
   max_rental_requests_per_merchant: number;
   default_currency: string;
   timezone: string;
+  visit_fee: number;
   cors_allowed_origins: string;
   payment_enabled: boolean;
   payment_gateway_mode: string;
