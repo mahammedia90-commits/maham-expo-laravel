@@ -13,12 +13,22 @@ use App\Traits\TracksPlatform;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Validation\Rule;
 
 class SpaceController extends Controller
 {
     use TracksPlatform;
+
+    /**
+     * Check if spaces need admin approval before being published
+     */
+    private function needsApproval(): bool
+    {
+        $settings = Cache::get('system_settings', []);
+        return $settings['space_approval_required'] ?? true;
+    }
 
     /**
      * List investor's own spaces
@@ -137,6 +147,7 @@ class SpaceController extends Controller
                 'images' => $imagePaths,
                 'images_360' => $images360Paths,
                 'status' => SpaceStatus::AVAILABLE,
+                'approval_status' => $this->needsApproval() ? 'pending' : 'approved',
                 ...$this->getTrackingData($request),
             ]);
 

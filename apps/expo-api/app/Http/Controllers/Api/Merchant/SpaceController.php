@@ -30,6 +30,7 @@ class SpaceController extends Controller
     public function index(Request $request): JsonResponse
     {
         $query = Space::where('status', 'available')
+            ->where('approval_status', 'approved')
             ->whereHas('event', fn($q) => $q->where('status', 'published'))
             ->with([
                 'event:id,name,name_ar,start_date,end_date',

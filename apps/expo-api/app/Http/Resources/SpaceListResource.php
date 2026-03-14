@@ -53,6 +53,8 @@ class SpaceListResource extends JsonResource
             'rental_duration' => $this->rental_duration?->value,
             'rental_duration_label' => $this->rental_duration ? (app()->getLocale() === 'ar' ? $this->rental_duration->label() : $this->rental_duration->labelEn()) : null,
             'is_featured' => (bool) $this->is_featured,
+            'approval_status' => $this->approval_status ?? 'approved',
+            'rejection_reason' => $this->rejection_reason,
             'is_favorited' => $userId ? Favorite::isFavorited($userId, 'space', $this->id) : false,
         ];
     }

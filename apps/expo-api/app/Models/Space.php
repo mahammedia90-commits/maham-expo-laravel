@@ -49,6 +49,10 @@ class Space extends Model
         'address',
         'address_ar',
         'is_featured',
+        'approval_status',
+        'rejection_reason',
+        'approved_by',
+        'approved_at',
     ];
 
     protected $casts = [
@@ -67,6 +71,7 @@ class Space extends Model
         'latitude' => 'decimal:8',
         'longitude' => 'decimal:8',
         'is_featured' => 'boolean',
+        'approved_at' => 'datetime',
     ];
 
     /* ========================================
@@ -115,6 +120,16 @@ class Space extends Model
     public function scopeAvailable($query)
     {
         return $query->where('status', SpaceStatus::AVAILABLE);
+    }
+
+    public function scopeApproved($query)
+    {
+        return $query->where('approval_status', 'approved');
+    }
+
+    public function scopePendingApproval($query)
+    {
+        return $query->where('approval_status', 'pending');
     }
 
     public function scopeInEvent($query, string $eventId)
@@ -242,6 +257,34 @@ class Space extends Model
     public function markAsAvailable(): void
     {
         $this->update(['status' => SpaceStatus::AVAILABLE]);
+    }
+
+    public function markAsApproved(string $adminId): void
+    {
+        $this->update([
+            'approval_status' => 'approved',
+            'rejection_reason' => null,
+            'approved_by' => $adminId,
+            'approved_at' => now(),
+        ]);
+    }
+
+    public function markAsRejected(string $reason): void
+    {
+        $this->update([
+            'approval_status' => 'rejected',
+            'rejection_reason' => $reason,
+        ]);
+    }
+
+    public function isPendingApproval(): bool
+    {
+        return $this->approval_status === 'pending';
+    }
+
+    public function isApprovedSpace(): bool
+    {
+        return $this->approval_status === 'approved';
     }
 
     public function isAvailableForDates(string $startDate, string $endDate): bool

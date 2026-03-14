@@ -37,6 +37,7 @@ return [
     'max_attempts_per_hour' => $dashboardSettings['sms_max_attempts_per_hour'] ?? env('TWILIO_MAX_ATTEMPTS', 5),
 
     // ── Test Mode (in test mode, any OTP code is accepted without calling Twilio) ──
+    // Dashboard setting takes priority → then OTP_TEST_MODE env → then TWILIO_TEST_MODE env
     'test_mode' => $dashboardSettings['sms_test_mode'] ?? env('OTP_TEST_MODE', env('TWILIO_TEST_MODE', false)),
 
     // ── Auth Mode (phone_and_otp | phone_or_email_and_pass) ──

@@ -10,6 +10,7 @@ use App\Http\Resources\SpaceListResource;
 use App\Models\Event;
 use App\Models\Space;
 use App\Support\ApiResponse;
+use App\Support\ApiErrorCode;
 use App\Support\SafeOrderBy;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
@@ -28,6 +29,11 @@ class SpaceController extends Controller
         // Filter by status
         if ($status = $request->input('status')) {
             $query->where('status', $status);
+        }
+
+        // Filter by approval status
+        if ($approvalStatus = $request->input('approval_status')) {
+            $query->where('approval_status', $approvalStatus);
         }
 
         // Filter by section
@@ -192,6 +198,49 @@ class SpaceController extends Controller
         return ApiResponse::success(
             null,
             __('messages.space.deleted')
+        );
+    }
+
+    /**
+     * Approve a space
+     */
+    public function approve(Request $request, Space $space): JsonResponse
+    {
+        if ($space->approval_status === 'approved') {
+            return ApiResponse::error(
+                __('messages.space.already_approved'),
+                ApiErrorCode::VALIDATION_FAILED,
+                422
+            );
+        }
+
+        $adminId = $request->input('auth_user_id');
+        $space->markAsApproved($adminId);
+
+        $space->load(['event', 'section', 'services']);
+
+        return ApiResponse::success(
+            new SpaceResource($space),
+            __('messages.space.approved')
+        );
+    }
+
+    /**
+     * Reject a space
+     */
+    public function reject(Request $request, Space $space): JsonResponse
+    {
+        $request->validate([
+            'rejection_reason' => 'required|string|max:1000',
+        ]);
+
+        $space->markAsRejected($request->input('rejection_reason'));
+
+        $space->load(['event', 'section', 'services']);
+
+        return ApiResponse::success(
+            new SpaceResource($space),
+            __('messages.space.rejected')
         );
     }
 

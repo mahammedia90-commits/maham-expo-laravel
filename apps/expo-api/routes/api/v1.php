@@ -506,6 +506,10 @@ Route::middleware([SetLocale::class])->group(function () {
                         ->middleware(CheckPermission::class . ':spaces.update');
                     Route::delete('/{space}', [AdminSpaceController::class, 'destroy'])
                         ->middleware(CheckPermission::class . ':spaces.delete');
+                    Route::put('/{space}/approve', [AdminSpaceController::class, 'approve'])
+                        ->middleware(CheckPermission::class . ':spaces.update');
+                    Route::put('/{space}/reject', [AdminSpaceController::class, 'reject'])
+                        ->middleware(CheckPermission::class . ':spaces.update');
                 });
 
                 // ── Services ─────────────────────────────────────────

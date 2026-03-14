@@ -58,6 +58,9 @@ class SpaceResource extends JsonResource
                 'address' => $this->localized_address,
             ],
             'is_featured' => (bool) $this->is_featured,
+            'approval_status' => $this->approval_status ?? 'approved',
+            'rejection_reason' => $this->rejection_reason,
+            'approved_at' => $this->approved_at?->toISOString(),
             'is_favorited' => $userId ? Favorite::isFavorited($userId, 'space', $this->id) : false,
             'created_at' => $this->created_at->toISOString(),
         ];

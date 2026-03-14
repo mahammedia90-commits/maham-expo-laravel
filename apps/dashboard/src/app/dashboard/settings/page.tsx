@@ -168,6 +168,7 @@ export default function SettingsPage() {
                     <ToggleField label={isRtl ? 'وضع الصيانة' : 'Maintenance Mode'} settingKey="maintenance_mode" description={isRtl ? 'تعطيل الوصول العام للموقع' : 'Disable public access to the site'} />
                     <ToggleField label={isRtl ? 'السماح بالتسجيل' : 'Allow Registration'} settingKey="allow_registration" description={isRtl ? 'السماح للمستخدمين الجدد بالتسجيل' : 'Allow new users to register'} />
                     <ToggleField label={isRtl ? 'الموافقة التلقائية على الملفات التجارية' : 'Auto Approve Profiles'} settingKey="auto_approve_profiles" description={isRtl ? 'قبول الملفات التجارية تلقائياً' : 'Automatically approve business profiles'} />
+                    <ToggleField label={isRtl ? 'مراجعة المساحات قبل النشر' : 'Space Approval Required'} settingKey="space_approval_required" description={isRtl ? 'المساحات تحتاج موافقة الإدارة قبل ظهورها للتجار' : 'Spaces require admin approval before appearing to merchants'} />
                   </div>
                 </>
               )}
@@ -190,6 +191,7 @@ export default function SettingsPage() {
                   <h3 className="text-lg font-semibold text-gray-900 dark:text-white">{isRtl ? 'إعدادات الرسائل' : 'SMS Settings'}</h3>
                   <div className="space-y-4">
                     <ToggleField label={isRtl ? 'تفعيل الرسائل' : 'Enable SMS'} settingKey="sms_enabled" description={isRtl ? 'تفعيل خدمة الرسائل القصيرة' : 'Enable SMS messaging service'} />
+                    <ToggleField label={isRtl ? 'وضع الاختبار (OTP)' : 'OTP Test Mode'} settingKey="sms_test_mode" description={isRtl ? 'أي كود يُقبل بدون إرسال رسالة — أوقفه عند تفعيل Twilio' : 'Any code accepted without sending SMS — disable when Twilio is active'} />
                     <SelectField label={isRtl ? 'القناة الافتراضية' : 'Default Channel'} settingKey="sms_default_channel"
                       options={[{ value: 'sms', label: 'SMS' }, { value: 'whatsapp', label: 'WhatsApp' }]} />
                     <InputField label={isRtl ? 'الحد الأقصى للمحاولات في الساعة' : 'Max Attempts Per Hour'} settingKey="sms_max_attempts_per_hour" type="number" />

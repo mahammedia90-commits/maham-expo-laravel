@@ -27,6 +27,7 @@ class InternalSettingController extends Controller
             'settings.sms_default_channel' => 'sometimes|string|in:sms,whatsapp',
             'settings.sms_max_attempts_per_hour' => 'sometimes|integer|min:1|max:20',
             'settings.sms_code_length' => 'sometimes|integer|min:4|max:8',
+            'settings.sms_test_mode' => 'sometimes|boolean',
         ]);
 
         try {

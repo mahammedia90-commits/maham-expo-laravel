@@ -53,9 +53,13 @@ class SettingController extends Controller
         'sms_default_channel' => 'sms',          // sms أو whatsapp
         'sms_max_attempts_per_hour' => 5,
         'sms_code_length' => 6,
+        'sms_test_mode' => true,                 // true = أي كود OTP يُقبل — بدون إرسال رسالة
 
         // ── Authentication Mode ──
         'auth_mode' => 'phone_and_otp',          // phone_and_otp أو phone_or_email_and_pass
+
+        // ── Space Approval ──
+        'space_approval_required' => true,       // true = المساحات تحتاج موافقة الإدارة
     ];
 
     /**
@@ -124,7 +128,9 @@ class SettingController extends Controller
             'sms_default_channel' => 'sometimes|string|in:sms,whatsapp',
             'sms_max_attempts_per_hour' => 'sometimes|integer|min:1|max:20',
             'sms_code_length' => 'sometimes|integer|min:4|max:8',
+            'sms_test_mode' => 'sometimes|boolean',
             'auth_mode' => 'sometimes|string|in:phone_and_otp,phone_or_email_and_pass',
+            'space_approval_required' => 'sometimes|boolean',
         ];
 
         $validated = validator($input, $rules)->validate();
@@ -186,9 +192,11 @@ class SettingController extends Controller
             // Payment
             'payment_enabled', 'payment_gateway_mode', 'payment_default_currency', 'payment_3d_secure',
             // SMS
-            'sms_enabled', 'sms_default_channel', 'sms_max_attempts_per_hour', 'sms_code_length',
+            'sms_enabled', 'sms_default_channel', 'sms_max_attempts_per_hour', 'sms_code_length', 'sms_test_mode',
             // Auth
             'auth_mode',
+            // Space
+            'space_approval_required',
         ];
 
         $cached = [];
@@ -208,7 +216,7 @@ class SettingController extends Controller
      */
     private function syncAuthServiceSettings(array $settings): void
     {
-        $smsKeys = ['sms_enabled', 'sms_default_channel', 'sms_max_attempts_per_hour', 'sms_code_length'];
+        $smsKeys = ['sms_enabled', 'sms_default_channel', 'sms_max_attempts_per_hour', 'sms_code_length', 'sms_test_mode'];
         $smsSettings = [];
 
         foreach ($smsKeys as $key) {
