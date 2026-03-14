@@ -132,6 +132,17 @@ Route::middleware([SetLocale::class])->group(function () {
         // Services (Public)
         Route::get('/services', [ServiceController::class, 'index']);
 
+        // Auth Mode (Public - tells frontend which login flow to use)
+        Route::get('/auth-mode', function () {
+            $settings = \Illuminate\Support\Facades\Cache::get('system_settings', []);
+            return response()->json([
+                'success' => true,
+                'data' => [
+                    'auth_mode' => $settings['auth_mode'] ?? 'phone_and_otp',
+                ],
+            ]);
+        });
+
         // Statistics (Public - Website)
         Route::prefix('statistics')->group(function () {
             Route::get('/', [StatisticsController::class, 'index']);

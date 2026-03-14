@@ -459,4 +459,133 @@ class AuthController extends Controller
             'message' => $result['message'],
         ]);
     }
+
+    /* ========================================
+     * OTP Login / Register (Public)
+     * ======================================== */
+
+    /**
+     * إرسال رمز التحقق لتسجيل الدخول عبر الجوال (بدون توثيق)
+     */
+    public function sendLoginOtp(Request $request): JsonResponse
+    {
+        $request->validate([
+            'phone' => 'required|string|max:20',
+            'user_type' => 'required|string|exists:roles,name',
+            'channel' => 'nullable|string|in:sms,whatsapp',
+        ]);
+
+        $result = $this->authService->sendLoginOtp(
+            $request->phone,
+            $request->user_type,
+            $request->input('channel', 'sms')
+        );
+
+        if (!$result['success']) {
+            $statusCode = match ($result['error_code'] ?? null) {
+                'user_type_mismatch' => 403,
+                'account_inactive' => 403,
+                default => 400,
+            };
+
+            return response()->json([
+                'success' => false,
+                'message' => $result['message'],
+                'error_code' => $result['error_code'] ?? null,
+            ], $statusCode);
+        }
+
+        $response = [
+            'success' => true,
+            'message' => $result['message'],
+            'data' => [
+                'is_new_user' => $result['is_new_user'] ?? false,
+            ],
+        ];
+
+        // In test mode, return OTP for easy testing
+        if (isset($result['otp'])) {
+            $response['data']['otp'] = $result['otp'];
+        }
+
+        return response()->json($response);
+    }
+
+    /**
+     * التحقق من رمز الدخول عبر الجوال (بدون توثيق)
+     */
+    public function verifyLoginOtp(Request $request): JsonResponse
+    {
+        $request->validate([
+            'phone' => 'required|string|max:20',
+            'code' => 'required|string|min:4|max:8',
+            'user_type' => 'required|string|exists:roles,name',
+        ]);
+
+        $result = $this->authService->verifyLoginOtp(
+            $request->phone,
+            $request->code,
+            $request->user_type
+        );
+
+        if (!$result['success']) {
+            $statusCode = match ($result['error_code'] ?? null) {
+                'user_type_mismatch' => 403,
+                default => 400,
+            };
+
+            return response()->json([
+                'success' => false,
+                'message' => $result['message'],
+                'error_code' => $result['error_code'] ?? null,
+            ], $statusCode);
+        }
+
+        return response()->json([
+            'success' => true,
+            'message' => $result['message'],
+            'data' => $result['data'] ?? null,
+            'is_new_user' => $result['is_new_user'] ?? false,
+        ]);
+    }
+
+    /**
+     * إكمال التسجيل بعد التحقق من OTP (للمستخدمين الجدد)
+     */
+    public function completeOtpRegistration(Request $request): JsonResponse
+    {
+        $request->validate([
+            'registration_token' => 'required|string',
+            'name' => 'required|string|max:255',
+            'email' => 'nullable|email|max:255|unique:users,email',
+            'business_name' => 'nullable|string|max:255',
+            'business_type' => 'nullable|string|max:255',
+            'region' => 'nullable|string|max:255',
+        ]);
+
+        $result = $this->authService->completeOtpRegistration(
+            $request->registration_token,
+            $request->only(['name', 'email', 'business_name', 'business_type', 'region'])
+        );
+
+        if (!$result['success']) {
+            $statusCode = match ($result['error_code'] ?? null) {
+                'invalid_registration_token' => 400,
+                'phone_already_registered' => 409,
+                default => 400,
+            };
+
+            return response()->json([
+                'success' => false,
+                'message' => $result['message'],
+                'error_code' => $result['error_code'] ?? null,
+            ], $statusCode);
+        }
+
+        return response()->json([
+            'success' => true,
+            'message' => $result['message'],
+            'data' => $result['data'],
+        ], 201);
+    }
 }

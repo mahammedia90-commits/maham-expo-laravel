@@ -6,11 +6,13 @@ use App\Models\User;
 use App\Mail\PasswordResetMail;
 use App\Mail\EmailVerificationMail;
 use App\Models\RefreshToken;
+use App\Models\Role;
 use App\Services\TwilioService;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Str;
+use Illuminate\Support\Facades\Cache;
 use Tymon\JWTAuth\Facades\JWTAuth;
 
 
@@ -484,5 +486,214 @@ class AuthService
         }
 
         return $phone;
+    }
+
+    /**
+     * Send OTP for login/register (public — no auth required)
+     */
+    public function sendLoginOtp(string $phone, string $userType, string $channel = 'sms'): array
+    {
+        $phone = $this->normalizePhone($phone);
+
+        // Check if user exists with this phone
+        $user = User::where('phone', $phone)->first();
+
+        // If user exists, verify their role matches the requested user_type
+        if ($user) {
+            if (!$user->hasRole($userType)) {
+                return [
+                    'success' => false,
+                    'message' => 'رقم الجوال غير مسجل بهذا النوع من الحسابات',
+                    'error_code' => 'user_type_mismatch',
+                ];
+            }
+
+            if (!$user->isActive()) {
+                return [
+                    'success' => false,
+                    'message' => $this->getStatusMessage($user->status),
+                    'error_code' => 'account_inactive',
+                ];
+            }
+        }
+
+        // Check if in test mode — use cache-based OTP instead of Twilio
+        $isTestMode = config('app.debug') || config('twilio.test_mode', false);
+
+        if ($isTestMode) {
+            $code = '1234'; // Fixed test OTP
+            Cache::put("login_otp_{$phone}", $code, now()->addMinutes(10));
+
+            return [
+                'success' => true,
+                'message' => 'تم إرسال رمز التحقق',
+                'is_new_user' => !$user,
+                'otp' => $code, // Return OTP in test mode
+            ];
+        }
+
+        // Production: send via Twilio
+        $result = $this->twilioService->sendOtp($phone, $channel);
+
+        if ($result['success']) {
+            $result['is_new_user'] = !$user;
+        }
+
+        return $result;
+    }
+
+    /**
+     * Verify OTP for login/register (public — no auth required)
+     */
+    public function verifyLoginOtp(string $phone, string $code, string $userType): array
+    {
+        $phone = $this->normalizePhone($phone);
+
+        // Check test mode
+        $isTestMode = config('app.debug') || config('twilio.test_mode', false);
+
+        if ($isTestMode) {
+            $cachedCode = Cache::get("login_otp_{$phone}");
+            if (!$cachedCode || $cachedCode !== $code) {
+                return [
+                    'success' => false,
+                    'message' => 'رمز التحقق غير صحيح',
+                    'valid' => false,
+                ];
+            }
+            Cache::forget("login_otp_{$phone}");
+        } else {
+            // Production: verify via Twilio
+            $result = $this->twilioService->verifyOtp($phone, $code);
+            if (!$result['success'] || !$result['valid']) {
+                return $result;
+            }
+        }
+
+        // OTP is valid — check if user exists
+        $user = User::where('phone', $phone)->first();
+
+        if ($user) {
+            // Verify user type matches
+            if (!$user->hasRole($userType)) {
+                return [
+                    'success' => false,
+                    'message' => 'رقم الجوال غير مسجل بهذا النوع من الحسابات',
+                    'error_code' => 'user_type_mismatch',
+                    'valid' => false,
+                ];
+            }
+
+            // Existing user — generate token and login
+            $token = $this->generateToken($user);
+            $user->updateLastLogin(request()->ip());
+            $user->update(['phone_verified_at' => now()]);
+
+            $this->auditService->log('login_otp', $user, [
+                'ip' => request()->ip(),
+            ]);
+
+            return [
+                'success' => true,
+                'message' => 'تم تسجيل الدخول بنجاح',
+                'valid' => true,
+                'is_new_user' => false,
+                'data' => [
+                    'user' => $user->fresh()->fullInfo,
+                    'token' => $token,
+                    'token_type' => 'bearer',
+                    'expires_in' => config('jwt.ttl') * 60,
+                ],
+            ];
+        }
+
+        // New user — generate temporary registration token
+        $registrationToken = Str::random(64);
+        Cache::put("otp_registration_{$registrationToken}", [
+            'phone' => $phone,
+            'user_type' => $userType,
+            'verified_at' => now()->toISOString(),
+        ], now()->addMinutes(30));
+
+        return [
+            'success' => true,
+            'message' => 'تم التحقق — أكمل بياناتك للتسجيل',
+            'valid' => true,
+            'is_new_user' => true,
+            'data' => [
+                'registration_token' => $registrationToken,
+            ],
+        ];
+    }
+
+    /**
+     * Complete registration after OTP verification (for new users)
+     */
+    public function completeOtpRegistration(string $registrationToken, array $data): array
+    {
+        // Validate registration token
+        $cached = Cache::get("otp_registration_{$registrationToken}");
+
+        if (!$cached) {
+            return [
+                'success' => false,
+                'message' => 'رمز التسجيل غير صالح أو منتهي الصلاحية',
+                'error_code' => 'invalid_registration_token',
+            ];
+        }
+
+        $phone = $cached['phone'];
+        $userType = $cached['user_type'];
+
+        // Check if phone was already registered (race condition)
+        if (User::where('phone', $phone)->exists()) {
+            Cache::forget("otp_registration_{$registrationToken}");
+            return [
+                'success' => false,
+                'message' => 'رقم الجوال مسجل مسبقاً',
+                'error_code' => 'phone_already_registered',
+            ];
+        }
+
+        // Create user
+        $user = User::create([
+            'name' => $data['name'],
+            'email' => $data['email'] ?? null,
+            'phone' => $phone,
+            'password' => Hash::make(Str::random(32)), // Random password (OTP-only user)
+            'phone_verified_at' => now(),
+            'status' => 'active',
+            'metadata' => [
+                'business_name' => $data['business_name'] ?? null,
+                'business_type' => $data['business_type'] ?? null,
+                'region' => $data['region'] ?? null,
+            ],
+        ]);
+
+        // Assign role
+        $user->assignRole([$userType]);
+
+        // Generate token
+        $token = $this->generateToken($user);
+        $user->updateLastLogin(request()->ip());
+
+        // Cleanup
+        Cache::forget("otp_registration_{$registrationToken}");
+
+        $this->auditService->log('register_otp', $user, [
+            'ip' => request()->ip(),
+            'user_type' => $userType,
+        ]);
+
+        return [
+            'success' => true,
+            'message' => 'تم التسجيل بنجاح',
+            'data' => [
+                'user' => $user->fresh()->fullInfo,
+                'token' => $token,
+                'token_type' => 'bearer',
+                'expires_in' => config('jwt.ttl') * 60,
+            ],
+        ];
     }
 }

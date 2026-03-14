@@ -53,6 +53,9 @@ class SettingController extends Controller
         'sms_default_channel' => 'sms',          // sms أو whatsapp
         'sms_max_attempts_per_hour' => 5,
         'sms_code_length' => 6,
+
+        // ── Authentication Mode ──
+        'auth_mode' => 'phone_and_otp',          // phone_and_otp أو phone_or_email_and_pass
     ];
 
     /**
@@ -121,6 +124,7 @@ class SettingController extends Controller
             'sms_default_channel' => 'sometimes|string|in:sms,whatsapp',
             'sms_max_attempts_per_hour' => 'sometimes|integer|min:1|max:20',
             'sms_code_length' => 'sometimes|integer|min:4|max:8',
+            'auth_mode' => 'sometimes|string|in:phone_and_otp,phone_or_email_and_pass',
         ];
 
         $validated = validator($input, $rules)->validate();
@@ -183,6 +187,8 @@ class SettingController extends Controller
             'payment_enabled', 'payment_gateway_mode', 'payment_default_currency', 'payment_3d_secure',
             // SMS
             'sms_enabled', 'sms_default_channel', 'sms_max_attempts_per_hour', 'sms_code_length',
+            // Auth
+            'auth_mode',
         ];
 
         $cached = [];

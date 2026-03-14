@@ -34,6 +34,11 @@ Route::prefix('auth')->group(function () {
     // Password Reset (Public)
     Route::post('/forgot-password', [AuthController::class, 'forgotPassword']);
     Route::post('/reset-password', [AuthController::class, 'resetPassword']);
+
+    // OTP Login / Register (Public — phone + OTP flow)
+    Route::post('/otp/send', [AuthController::class, 'sendLoginOtp'])->middleware('throttle:10,1');
+    Route::post('/otp/verify', [AuthController::class, 'verifyLoginOtp'])->middleware('throttle:10,1');
+    Route::post('/otp/complete-registration', [AuthController::class, 'completeOtpRegistration']);
 });
 
 /*
