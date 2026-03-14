@@ -36,8 +36,8 @@ return [
     'code_length' => $dashboardSettings['sms_code_length'] ?? env('TWILIO_CODE_LENGTH', 6),
     'max_attempts_per_hour' => $dashboardSettings['sms_max_attempts_per_hour'] ?? env('TWILIO_MAX_ATTEMPTS', 5),
 
-    // ── Test Mode (in test mode, returns fixed OTP "1234" without calling Twilio) ──
-    'test_mode' => $dashboardSettings['payment_gateway_mode'] ?? env('TWILIO_TEST_MODE', false),
+    // ── Test Mode (in test mode, any OTP code is accepted without calling Twilio) ──
+    'test_mode' => $dashboardSettings['sms_test_mode'] ?? env('OTP_TEST_MODE', env('TWILIO_TEST_MODE', false)),
 
     // ── Auth Mode (phone_and_otp | phone_or_email_and_pass) ──
     'auth_mode' => $dashboardSettings['auth_mode'] ?? env('AUTH_MODE', 'phone_and_otp'),

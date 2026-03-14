@@ -517,18 +517,18 @@ class AuthService
             }
         }
 
-        // Check if in test mode — use cache-based OTP instead of Twilio
-        $isTestMode = config('app.debug') || config('twilio.test_mode', false);
+        // Check if in test mode — skip Twilio, accept any OTP code
+        $isTestMode = config('twilio.test_mode', false);
 
         if ($isTestMode) {
-            $code = '1234'; // Fixed test OTP
-            Cache::put("login_otp_{$phone}", $code, now()->addMinutes(10));
+            // In test mode: mark that this phone has a pending OTP (any code will be accepted)
+            Cache::put("login_otp_{$phone}", '__test_mode__', now()->addMinutes(10));
 
             return [
                 'success' => true,
-                'message' => 'تم إرسال رمز التحقق',
+                'message' => 'تم إرسال رمز التحقق (وضع الاختبار)',
                 'is_new_user' => !$user,
-                'otp' => $code, // Return OTP in test mode
+                'test_mode' => true,
             ];
         }
 
@@ -550,14 +550,15 @@ class AuthService
         $phone = $this->normalizePhone($phone);
 
         // Check test mode
-        $isTestMode = config('app.debug') || config('twilio.test_mode', false);
+        $isTestMode = config('twilio.test_mode', false);
 
         if ($isTestMode) {
+            // In test mode: just verify that an OTP was requested for this phone (any code accepted)
             $cachedCode = Cache::get("login_otp_{$phone}");
-            if (!$cachedCode || $cachedCode !== $code) {
+            if (!$cachedCode) {
                 return [
                     'success' => false,
-                    'message' => 'رمز التحقق غير صحيح',
+                    'message' => 'لم يتم طلب رمز تحقق لهذا الرقم',
                     'valid' => false,
                 ];
             }
