@@ -165,19 +165,26 @@ class SettingController extends Controller
 
     /**
      * Get settings from cache or file fallback
+     * Always merges with defaults so new settings are included
      */
     private function getSettings(): array
     {
-        return Cache::rememberForever(self::CACHE_KEY, function () {
+        $saved = Cache::get(self::CACHE_KEY);
+
+        if ($saved === null) {
+            // Not in cache — try file fallback
             $settingsPath = storage_path('app/settings.json');
-
             if (file_exists($settingsPath)) {
-                $saved = json_decode(file_get_contents($settingsPath), true);
-                return array_merge($this->defaults, $saved ?? []);
+                $saved = json_decode(file_get_contents($settingsPath), true) ?? [];
+            } else {
+                $saved = [];
             }
+            // Store in cache for next time
+            Cache::forever(self::CACHE_KEY, array_merge($this->defaults, $saved));
+        }
 
-            return $this->defaults;
-        });
+        // Always merge with defaults so new keys are included
+        return array_merge($this->defaults, $saved);
     }
 
     /**
