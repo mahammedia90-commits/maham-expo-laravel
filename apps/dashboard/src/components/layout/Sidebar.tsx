@@ -31,6 +31,7 @@ import {
   ChevronRight,
   Briefcase,
   FileSignature,
+  ShieldCheck,
 } from 'lucide-react';
 
 interface NavItem {
@@ -43,6 +44,7 @@ interface NavItem {
 
 const navItems: NavItem[] = [
   { label: 'Dashboard', labelAr: 'لوحة التحكم', href: '/dashboard', icon: LayoutDashboard },
+  { label: 'Account Verification', labelAr: 'توثيق الحساب', href: '/dashboard/verification', icon: ShieldCheck },
   {
     label: 'Management', labelAr: 'الإدارة', icon: Briefcase,
     children: [

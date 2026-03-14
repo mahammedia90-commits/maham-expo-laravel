@@ -196,6 +196,7 @@ Route::middleware([SetLocale::class])->group(function () {
                 Route::get('/', [BusinessProfileController::class, 'show']);
                 Route::post('/', [BusinessProfileController::class, 'store']);
                 Route::put('/', [BusinessProfileController::class, 'update']);
+                Route::post('/kyc-step', [BusinessProfileController::class, 'saveKycStep']);
             });
 
             // Favorites
@@ -276,8 +277,8 @@ Route::middleware([SetLocale::class])->group(function () {
                     ->middleware(CheckPermission::class . ':invoices.view');
             });
 
-            // Visit Requests (own requests)
-            Route::prefix('visit-requests')->group(function () {
+            // Visit Requests (own requests, requires verified profile)
+            Route::prefix('visit-requests')->middleware([CheckVerifiedProfile::class])->group(function () {
                 Route::get('/', [VisitRequestController::class, 'index'])
                     ->middleware(CheckPermission::class . ':visit-requests.view');
                 Route::post('/', [VisitRequestController::class, 'store'])

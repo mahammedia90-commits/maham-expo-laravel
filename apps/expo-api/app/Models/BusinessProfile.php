@@ -16,6 +16,7 @@ class BusinessProfile extends Model
 
     protected $fillable = [
         'user_id',
+        'full_name',
         'company_name',
         'company_name_ar',
         'commercial_registration_number',
@@ -35,16 +36,50 @@ class BusinessProfile extends Model
         'reviewed_at',
         'rejection_reason',
         'notes',
+        // KYC Personal
+        'date_of_birth',
+        'nationality',
+        'city',
+        // KYC Company
+        'business_activity_type',
+        'establishment_year',
+        'vat_number',
+        'national_address',
+        'employee_count',
+        // KYC Bank
+        'bank_name',
+        'iban',
+        'account_holder_name',
+        'account_number',
+        // KYC Documents
+        'vat_certificate_image',
+        'authorization_letter_image',
+        'national_address_doc',
+        'bank_letter_image',
+        'company_profile_doc',
+        'product_catalog_doc',
+        // KYC Tracking
+        'legal_declaration_accepted',
+        'legal_declaration_accepted_at',
+        'kyc_step',
+        'kyc_submitted_at',
     ];
 
     protected $casts = [
         'business_type' => BusinessType::class,
         'status' => ProfileStatus::class,
         'reviewed_at' => 'datetime',
+        'date_of_birth' => 'date',
+        'legal_declaration_accepted' => 'boolean',
+        'legal_declaration_accepted_at' => 'datetime',
+        'kyc_step' => 'integer',
+        'kyc_submitted_at' => 'datetime',
     ];
 
     protected $hidden = [
         'national_id_number',
+        'iban',
+        'account_number',
     ];
 
     /* ========================================
