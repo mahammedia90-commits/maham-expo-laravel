@@ -115,9 +115,13 @@
                     <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
                     Health Check
                 </a>
-                <a href="http://localhost:8002" class="bg-white/5 hover:bg-white/10 text-white px-7 py-3 rounded-xl font-bold transition-all border border-white/10 hover:border-white/20 flex items-center gap-2">
+                <a href="https://expo-service-api.mahamexpo.sa/docs" class="bg-white/5 hover:bg-white/10 text-white px-7 py-3 rounded-xl font-bold transition-all border border-white/10 hover:border-white/20 flex items-center gap-2">
                     <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5"/></svg>
                     Expo API
+                </a>
+                <a href="https://dashboard.mahamexpo.sa" class="bg-white/5 hover:bg-white/10 text-white px-7 py-3 rounded-xl font-bold transition-all border border-white/10 hover:border-white/20 flex items-center gap-2">
+                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 5a1 1 0 011-1h14a1 1 0 011 1v2a1 1 0 01-1 1H5a1 1 0 01-1-1V5zM4 13a1 1 0 011-1h6a1 1 0 011 1v6a1 1 0 01-1 1H5a1 1 0 01-1-1v-6z"/></svg>
+                    لوحة التحكم
                 </a>
             </div>
         </div>
@@ -304,6 +308,66 @@
         </div>
 
         <!-- GET /api/v1/auth/me + POST /api/v1/auth/refresh + POST /api/v1/auth/logout -->
+
+        <!-- OTP Login Flow -->
+        <div class="mb-8 glass border border-indigo-500/10 rounded-2xl overflow-hidden">
+            <div class="px-6 py-4 border-b border-white/5 bg-emerald-500/5">
+                <h4 class="font-bold text-emerald-400 flex items-center gap-2">
+                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 18h.01M8 21h8a2 2 0 002-2V5a2 2 0 00-2-2H8a2 2 0 00-2 2v14a2 2 0 002 2z"/></svg>
+                    تسجيل الدخول بالجوال + رمز OTP
+                </h4>
+                <p class="text-xs text-gray-500 mt-1">الطريقة الرئيسية لتسجيل الدخول عبر التطبيق — SMS أو WhatsApp</p>
+            </div>
+            <div class="p-6">
+                <div class="grid md:grid-cols-3 gap-4 mb-6">
+                    <!-- Step 1: Send OTP -->
+                    <div class="glass border border-white/5 rounded-xl p-4">
+                        <div class="flex items-center gap-2 mb-3">
+                            <span class="w-6 h-6 bg-emerald-500/20 rounded-full flex items-center justify-center text-xs text-emerald-400 font-bold">1</span>
+                            <span class="method-badge font-bold px-2 py-0.5 rounded bg-blue-500/20 text-blue-400 font-mono">POST</span>
+                        </div>
+                        <code class="text-xs text-gray-300 font-mono block mb-2" dir="ltr">/api/v1/auth/otp/send</code>
+                        <div class="text-xs text-gray-500 space-y-1">
+                            <div><code class="text-indigo-300/70">phone</code> <span class="text-rose-400 text-[10px] font-bold">required</span></div>
+                            <div><code class="text-indigo-300/70">channel</code> <span class="text-gray-600 text-[10px]">sms | whatsapp</span></div>
+                        </div>
+                        <div class="mt-3 text-[10px] text-gray-600">يرسل رمز مكوّن من 6 أرقام</div>
+                    </div>
+                    <!-- Step 2: Verify OTP -->
+                    <div class="glass border border-white/5 rounded-xl p-4">
+                        <div class="flex items-center gap-2 mb-3">
+                            <span class="w-6 h-6 bg-emerald-500/20 rounded-full flex items-center justify-center text-xs text-emerald-400 font-bold">2</span>
+                            <span class="method-badge font-bold px-2 py-0.5 rounded bg-blue-500/20 text-blue-400 font-mono">POST</span>
+                        </div>
+                        <code class="text-xs text-gray-300 font-mono block mb-2" dir="ltr">/api/v1/auth/otp/verify</code>
+                        <div class="text-xs text-gray-500 space-y-1">
+                            <div><code class="text-indigo-300/70">phone</code> <span class="text-rose-400 text-[10px] font-bold">required</span></div>
+                            <div><code class="text-indigo-300/70">code</code> <span class="text-rose-400 text-[10px] font-bold">required</span> <span class="text-gray-600">6 أرقام</span></div>
+                        </div>
+                        <div class="mt-3 text-[10px] text-gray-600">→ مستخدم موجود: JWT Token</div>
+                        <div class="text-[10px] text-gray-600">→ مستخدم جديد: registration_token</div>
+                    </div>
+                    <!-- Step 3: Complete Registration -->
+                    <div class="glass border border-white/5 rounded-xl p-4">
+                        <div class="flex items-center gap-2 mb-3">
+                            <span class="w-6 h-6 bg-amber-500/20 rounded-full flex items-center justify-center text-xs text-amber-400 font-bold">3</span>
+                            <span class="method-badge font-bold px-2 py-0.5 rounded bg-blue-500/20 text-blue-400 font-mono">POST</span>
+                        </div>
+                        <code class="text-xs text-gray-300 font-mono block mb-2" dir="ltr">/api/v1/auth/otp/complete-registration</code>
+                        <div class="text-xs text-gray-500 space-y-1">
+                            <div><code class="text-indigo-300/70">registration_token</code> <span class="text-rose-400 text-[10px] font-bold">required</span></div>
+                            <div><code class="text-indigo-300/70">name</code> <span class="text-rose-400 text-[10px] font-bold">required</span></div>
+                            <div><code class="text-indigo-300/70">email</code> <span class="text-gray-600 text-[10px]">optional</span></div>
+                        </div>
+                        <div class="mt-3 text-[10px] text-amber-400/70">فقط للمستخدمين الجدد</div>
+                    </div>
+                </div>
+                <div class="p-3 bg-amber-500/5 border border-amber-500/10 rounded-lg">
+                    <p class="text-xs text-amber-400/80"><span class="font-bold">⚡ وضع الاختبار:</span> عند تفعيل <code class="text-amber-300">sms_test_mode</code> من إعدادات المنصة، الرمز دائماً <code class="text-emerald-300 font-bold">123456</code> — بدون إرسال SMS فعلي</p>
+                </div>
+            </div>
+        </div>
+
         <div class="grid md:grid-cols-3 gap-4 mb-8">
             <div class="glass border border-white/5 rounded-2xl p-5">
                 <div class="flex items-center gap-2 mb-3">
@@ -731,7 +795,7 @@
                         Copy
                     </button>
                 </div>
-                <pre class="p-5 text-sm overflow-x-auto" dir="ltr"><code class="text-gray-300" id="code-login"><span class="cmd">curl</span> <span class="flag">-X</span> POST <span class="url">http://localhost:8001/api/v1/auth/login</span> \
+                <pre class="p-5 text-sm overflow-x-auto" dir="ltr"><code class="text-gray-300" id="code-login"><span class="cmd">curl</span> <span class="flag">-X</span> POST <span class="url">https://auth-service-api.mahamexpo.sa/api/v1/auth/login</span> \
   <span class="flag">-H</span> <span class="str">"Content-Type: application/json"</span> \
   <span class="flag">-d</span> <span class="str">'{
     "identifier": "admin@auth-service.local",
@@ -751,7 +815,7 @@
                         Copy
                     </button>
                 </div>
-                <pre class="p-5 text-sm overflow-x-auto" dir="ltr"><code class="text-gray-300" id="code-register"><span class="cmd">curl</span> <span class="flag">-X</span> POST <span class="url">http://localhost:8001/api/v1/auth/register</span> \
+                <pre class="p-5 text-sm overflow-x-auto" dir="ltr"><code class="text-gray-300" id="code-register"><span class="cmd">curl</span> <span class="flag">-X</span> POST <span class="url">https://auth-service-api.mahamexpo.sa/api/v1/auth/register</span> \
   <span class="flag">-H</span> <span class="str">"Content-Type: application/json"</span> \
   <span class="flag">-d</span> <span class="str">'{
     "name": "Ahmed Ali",
@@ -773,7 +837,7 @@
                         Copy
                     </button>
                 </div>
-                <pre class="p-5 text-sm overflow-x-auto" dir="ltr"><code class="text-gray-300" id="code-s2s"><span class="cmd">curl</span> <span class="flag">-X</span> POST <span class="url">http://localhost:8001/api/v1/service/verify-token</span> \
+                <pre class="p-5 text-sm overflow-x-auto" dir="ltr"><code class="text-gray-300" id="code-s2s"><span class="cmd">curl</span> <span class="flag">-X</span> POST <span class="url">https://auth-service-api.mahamexpo.sa/api/v1/service/verify-token</span> \
   <span class="flag">-H</span> <span class="str">"Content-Type: application/json"</span> \
   <span class="flag">-d</span> <span class="str">'{
     "token": "user-jwt-token-here"
@@ -791,7 +855,7 @@
                         Copy
                     </button>
                 </div>
-                <pre class="p-5 text-sm overflow-x-auto" dir="ltr"><code class="text-gray-300" id="code-service"><span class="cmd">curl</span> <span class="flag">-X</span> POST <span class="url">http://localhost:8001/api/services</span> \
+                <pre class="p-5 text-sm overflow-x-auto" dir="ltr"><code class="text-gray-300" id="code-service"><span class="cmd">curl</span> <span class="flag">-X</span> POST <span class="url">https://auth-service-api.mahamexpo.sa/api/v1/services</span> \
   <span class="flag">-H</span> <span class="str">"Content-Type: application/json"</span> \
   <span class="flag">-H</span> <span class="str">"Authorization: Bearer admin-jwt-token"</span> \
   <span class="flag">-d</span> <span class="str">'{
@@ -914,9 +978,9 @@
                     </div>
                 </div>
                 <div class="space-y-2 text-xs">
-                    <div class="flex justify-between text-gray-500"><span>API</span><a href="http://localhost:8001" class="font-mono text-indigo-400 hover:underline">localhost:8001</a></div>
-                    <div class="flex justify-between text-gray-500"><span>MySQL</span><span class="font-mono text-gray-400">localhost:3307</span></div>
-                    <div class="flex justify-between text-gray-500"><span>Redis</span><span class="font-mono text-gray-400">localhost:6380</span></div>
+                    <div class="flex justify-between text-gray-500"><span>API</span><a href="https://auth-service-api.mahamexpo.sa" class="font-mono text-indigo-400 hover:underline">auth-service-api.mahamexpo.sa</a></div>
+                    <div class="flex justify-between text-gray-500"><span>MySQL</span><span class="font-mono text-gray-400">internal (auth-mysql:3306)</span></div>
+                    <div class="flex justify-between text-gray-500"><span>Redis</span><span class="font-mono text-gray-400">internal (auth-redis:6379)</span></div>
                 </div>
             </div>
             <div class="glass border border-white/5 rounded-2xl p-5 card-hover">
@@ -930,9 +994,9 @@
                     </div>
                 </div>
                 <div class="space-y-2 text-xs">
-                    <div class="flex justify-between text-gray-500"><span>API</span><a href="http://localhost:8002" class="font-mono text-emerald-400 hover:underline">localhost:8002</a></div>
-                    <div class="flex justify-between text-gray-500"><span>MySQL</span><span class="font-mono text-gray-400">localhost:3308</span></div>
-                    <div class="flex justify-between text-gray-500"><span>Redis</span><span class="font-mono text-gray-400">localhost:6381</span></div>
+                    <div class="flex justify-between text-gray-500"><span>API</span><a href="https://expo-service-api.mahamexpo.sa" class="font-mono text-emerald-400 hover:underline">expo-service-api.mahamexpo.sa</a></div>
+                    <div class="flex justify-between text-gray-500"><span>MySQL</span><span class="font-mono text-gray-400">internal (mysql:3306)</span></div>
+                    <div class="flex justify-between text-gray-500"><span>Redis</span><span class="font-mono text-gray-400">internal (redis:6379)</span></div>
                 </div>
             </div>
             <div class="glass border border-white/5 rounded-2xl p-5 card-hover">
@@ -946,7 +1010,7 @@
                     </div>
                 </div>
                 <div class="space-y-2 text-xs">
-                    <div class="flex justify-between text-gray-500"><span>Interface</span><a href="http://localhost:8080" class="font-mono text-orange-400 hover:underline">localhost:8080</a></div>
+                    <div class="flex justify-between text-gray-500"><span>Interface</span><a href="https://dashboard.mahamexpo.sa" class="font-mono text-orange-400 hover:underline">dashboard.mahamexpo.sa</a></div>
                     <div class="flex justify-between text-gray-500"><span>Auth DB</span><span class="font-mono text-gray-400">auth-mysql:3306</span></div>
                     <div class="flex justify-between text-gray-500"><span>Expo DB</span><span class="font-mono text-gray-400">expo-mysql:3306</span></div>
                 </div>
@@ -1134,9 +1198,10 @@
                 <span>Maham Auth Service v{{ config('auth-service.service_version', '1.0.0') }}</span>
             </div>
             <div class="flex items-center gap-4">
-                <a href="http://localhost:8002" class="hover:text-emerald-400 transition">Expo API</a>
-                <a href="http://localhost:8080" class="hover:text-orange-400 transition">phpMyAdmin</a>
+                <a href="https://expo-service-api.mahamexpo.sa/docs" class="hover:text-emerald-400 transition">Expo API</a>
+                <a href="https://dashboard.mahamexpo.sa" class="hover:text-orange-400 transition">لوحة التحكم</a>
                 <a href="/api/health" class="hover:text-indigo-400 transition">Health</a>
+                <a href="/docs" class="hover:text-cyan-400 transition">API Docs</a>
             </div>
             <span>{{ date('Y') }} &copy; Maham Expo</span>
         </div>
