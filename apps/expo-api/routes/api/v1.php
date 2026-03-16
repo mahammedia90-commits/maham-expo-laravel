@@ -74,6 +74,13 @@ use App\Http\Controllers\Api\TrackingController;
 use App\Http\Controllers\Api\My\ActivityController as MyActivityController;
 use App\Http\Controllers\Api\Admin\AnalyticsController as AdminAnalyticsController;
 
+// Team Member & Dynamic Type Controllers
+use App\Http\Controllers\Api\BusinessActivityTypeController;
+use App\Http\Controllers\Api\Admin\MemberTypeController as AdminMemberTypeController;
+use App\Http\Controllers\Api\Admin\BusinessActivityTypeController as AdminBusinessActivityTypeController;
+use App\Http\Controllers\Api\Merchant\TeamMemberController as MerchantTeamMemberController;
+use App\Http\Controllers\Api\Investor\TeamMemberController as InvestorTeamMemberController;
+
 use App\Http\Middleware\AuthServiceMiddleware;
 use App\Http\Middleware\CheckPermission;
 use App\Http\Middleware\CheckVerifiedProfile;
@@ -171,6 +178,10 @@ Route::middleware([SetLocale::class])->group(function () {
         // Banners (Public)
         Route::get('/banners', [BannerController::class, 'index']);
         Route::post('/banners/{banner}/click', [BannerController::class, 'click']);
+
+        // Business Activity Types (Public)
+        Route::get('/business-activity-types', [BusinessActivityTypeController::class, 'index']);
+        Route::get('/business-activity-types/{businessActivityType}', [BusinessActivityTypeController::class, 'show']);
 
         // ==================== TRACKING ROUTES ====================
         // These work for both authenticated & anonymous users.
@@ -431,6 +442,38 @@ Route::middleware([SetLocale::class])->group(function () {
                 Route::prefix('activity')->group(function () {
                     Route::get('/', [MyActivityController::class, 'index']);
                     Route::get('/summary', [MyActivityController::class, 'summary']);
+                });
+
+                // ── Team Members (Merchant) ──────────────────────────
+                Route::prefix('merchant-team')->group(function () {
+                    Route::get('/member-types', [MerchantTeamMemberController::class, 'memberTypes'])
+                        ->middleware(CheckPermission::class . ':team-members.view');
+                    Route::get('/', [MerchantTeamMemberController::class, 'index'])
+                        ->middleware(CheckPermission::class . ':team-members.view');
+                    Route::post('/', [MerchantTeamMemberController::class, 'store'])
+                        ->middleware(CheckPermission::class . ':team-members.create');
+                    Route::get('/{teamMember}', [MerchantTeamMemberController::class, 'show'])
+                        ->middleware(CheckPermission::class . ':team-members.view');
+                    Route::put('/{teamMember}', [MerchantTeamMemberController::class, 'update'])
+                        ->middleware(CheckPermission::class . ':team-members.update');
+                    Route::delete('/{teamMember}', [MerchantTeamMemberController::class, 'destroy'])
+                        ->middleware(CheckPermission::class . ':team-members.delete');
+                });
+
+                // ── Team Members (Investor) ──────────────────────────
+                Route::prefix('investor-team')->group(function () {
+                    Route::get('/member-types', [InvestorTeamMemberController::class, 'memberTypes'])
+                        ->middleware(CheckPermission::class . ':team-members.view');
+                    Route::get('/', [InvestorTeamMemberController::class, 'index'])
+                        ->middleware(CheckPermission::class . ':team-members.view');
+                    Route::post('/', [InvestorTeamMemberController::class, 'store'])
+                        ->middleware(CheckPermission::class . ':team-members.create');
+                    Route::get('/{teamMember}', [InvestorTeamMemberController::class, 'show'])
+                        ->middleware(CheckPermission::class . ':team-members.view');
+                    Route::put('/{teamMember}', [InvestorTeamMemberController::class, 'update'])
+                        ->middleware(CheckPermission::class . ':team-members.update');
+                    Route::delete('/{teamMember}', [InvestorTeamMemberController::class, 'destroy'])
+                        ->middleware(CheckPermission::class . ':team-members.delete');
                 });
 
             }); // End /my/
@@ -824,6 +867,34 @@ Route::middleware([SetLocale::class])->group(function () {
                         ->middleware(CheckPermission::class . ':reports.view');
                     Route::get('/users', [AdminAnalyticsController::class, 'users'])
                         ->middleware(CheckPermission::class . ':reports.view');
+                });
+
+                // ── Member Types (Admin) ─────────────────────────────
+                Route::prefix('member-types')->group(function () {
+                    Route::get('/', [AdminMemberTypeController::class, 'index'])
+                        ->middleware(CheckPermission::class . ':member-types.view');
+                    Route::post('/', [AdminMemberTypeController::class, 'store'])
+                        ->middleware(CheckPermission::class . ':member-types.create');
+                    Route::get('/{memberType}', [AdminMemberTypeController::class, 'show'])
+                        ->middleware(CheckPermission::class . ':member-types.view');
+                    Route::put('/{memberType}', [AdminMemberTypeController::class, 'update'])
+                        ->middleware(CheckPermission::class . ':member-types.update');
+                    Route::delete('/{memberType}', [AdminMemberTypeController::class, 'destroy'])
+                        ->middleware(CheckPermission::class . ':member-types.delete');
+                });
+
+                // ── Business Activity Types (Admin) ──────────────────
+                Route::prefix('business-activity-types')->group(function () {
+                    Route::get('/', [AdminBusinessActivityTypeController::class, 'index'])
+                        ->middleware(CheckPermission::class . ':business-activity-types.view');
+                    Route::post('/', [AdminBusinessActivityTypeController::class, 'store'])
+                        ->middleware(CheckPermission::class . ':business-activity-types.create');
+                    Route::get('/{businessActivityType}', [AdminBusinessActivityTypeController::class, 'show'])
+                        ->middleware(CheckPermission::class . ':business-activity-types.view');
+                    Route::put('/{businessActivityType}', [AdminBusinessActivityTypeController::class, 'update'])
+                        ->middleware(CheckPermission::class . ':business-activity-types.update');
+                    Route::delete('/{businessActivityType}', [AdminBusinessActivityTypeController::class, 'destroy'])
+                        ->middleware(CheckPermission::class . ':business-activity-types.delete');
                 });
 
             }); // End /manage/

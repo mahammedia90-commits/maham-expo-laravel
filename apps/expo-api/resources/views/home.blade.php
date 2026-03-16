@@ -413,6 +413,28 @@
             </div>
             @endforeach
         </div>
+
+        <!-- Business Activity Types (Public) -->
+        <div class="glass border border-white/5 rounded-2xl overflow-hidden mt-4">
+            <div class="px-6 py-3 border-b border-white/5 bg-white/[0.02]">
+                <h5 class="text-xs font-bold text-gray-400">أنواع النشاط التجاري - Business Activity Types (Public)</h5>
+            </div>
+            @php
+                $batPublicEps = [
+                    ['GET', '/api/v1/business-activity-types', 'قائمة أنواع النشاط', 'أنواع النشاط التجاري النشطة'],
+                    ['GET', '/api/v1/business-activity-types/{id}', 'تفاصيل نوع نشاط', 'معلومات نوع النشاط التجاري'],
+                ];
+            @endphp
+            @foreach($batPublicEps as $ep)
+            <div class="endpoint-row flex items-center px-6 py-3.5 gap-3 {{ !$loop->last ? 'border-b border-white/5' : '' }}">
+                <span class="method-badge font-bold px-2 py-0.5 rounded font-mono min-w-[56px] text-center bg-emerald-500/20 text-emerald-400">{{ $ep[0] }}</span>
+                <code class="text-xs text-gray-300 font-mono" dir="ltr">{{ $ep[1] }}</code>
+                <span class="text-xs text-gray-600">{{ $ep[2] }}</span>
+                <span class="mr-auto"></span>
+                <span class="text-[10px] px-2 py-0.5 rounded-full bg-green-500/10 text-green-400 font-semibold">public</span>
+            </div>
+            @endforeach
+        </div>
     </section>
 
     <div class="glow-line max-w-4xl mx-auto"></div>
@@ -1114,6 +1136,38 @@
                 @endforeach
             </div>
         </div>
+
+        <!-- Admin Member Types & Business Activity Types -->
+        <div class="glass border border-white/5 rounded-2xl overflow-hidden mb-4">
+            <div class="px-6 py-3 border-b border-white/5 bg-white/[0.02]">
+                <h5 class="text-xs font-bold text-gray-400">أنواع الأعضاء والنشاط التجاري - Member Types & Business Activity Types (Admin)</h5>
+            </div>
+            <div class="divide-y divide-white/5">
+                @php
+                    $adminTypeEps = [
+                        ['GET', '/api/v1/manage/member-types', 'قائمة أنواع الأعضاء', 'member-types.view'],
+                        ['POST', '/api/v1/manage/member-types', 'إنشاء نوع عضو', 'member-types.create'],
+                        ['GET', '/api/v1/manage/member-types/{id}', 'تفاصيل نوع عضو', 'member-types.view'],
+                        ['PUT', '/api/v1/manage/member-types/{id}', 'تحديث نوع عضو', 'member-types.update'],
+                        ['DELETE', '/api/v1/manage/member-types/{id}', 'حذف نوع عضو', 'member-types.delete'],
+                        ['GET', '/api/v1/manage/business-activity-types', 'قائمة أنواع النشاط', 'business-activity-types.view'],
+                        ['POST', '/api/v1/manage/business-activity-types', 'إنشاء نوع نشاط', 'business-activity-types.create'],
+                        ['GET', '/api/v1/manage/business-activity-types/{id}', 'تفاصيل نوع نشاط', 'business-activity-types.view'],
+                        ['PUT', '/api/v1/manage/business-activity-types/{id}', 'تحديث نوع نشاط', 'business-activity-types.update'],
+                        ['DELETE', '/api/v1/manage/business-activity-types/{id}', 'حذف نوع نشاط', 'business-activity-types.delete'],
+                    ];
+                @endphp
+                @foreach($adminTypeEps as $ep)
+                <div class="endpoint-row flex items-center px-5 py-2.5 gap-2">
+                    <span class="method-badge font-bold px-1.5 py-0.5 rounded font-mono min-w-[44px] text-center {{ $ep[0] === 'GET' ? 'bg-emerald-500/15 text-emerald-400' : ($ep[0] === 'POST' ? 'bg-blue-500/15 text-blue-400' : ($ep[0] === 'PUT' ? 'bg-amber-500/15 text-amber-400' : 'bg-rose-500/15 text-rose-400')) }}">{{ $ep[0] }}</span>
+                    <code class="text-[11px] text-gray-400 font-mono" dir="ltr">{{ $ep[1] }}</code>
+                    <span class="text-[11px] text-gray-600">{{ $ep[2] }}</span>
+                    <span class="mr-auto"></span>
+                    <span class="text-[9px] px-2 py-0.5 rounded-full bg-amber-500/10 text-amber-400/70 font-mono">{{ $ep[3] }}</span>
+                </div>
+                @endforeach
+            </div>
+        </div>
     </section>
 
     <div class="glow-line max-w-4xl mx-auto"></div>
@@ -1548,6 +1602,34 @@
                 @endforeach
             </div>
         </div>
+
+        <!-- Investor Team Members -->
+        <div class="glass border border-white/5 rounded-2xl overflow-hidden mb-4">
+            <div class="px-6 py-3 border-b border-white/5 bg-white/[0.02]">
+                <h5 class="text-xs font-bold text-gray-400">فريق العمل - Team Members (Investor)</h5>
+            </div>
+            <div class="divide-y divide-white/5">
+                @php
+                    $invTeamEps = [
+                        ['GET', '/api/v1/my/investor-team/member-types', 'أنواع الأعضاء', 'الأنواع المتاحة للمستثمرين'],
+                        ['GET', '/api/v1/my/investor-team', 'قائمة الفريق', 'أعضاء فريق المستثمر'],
+                        ['POST', '/api/v1/my/investor-team', 'إضافة عضو', 'إضافة عضو جديد للفريق'],
+                        ['GET', '/api/v1/my/investor-team/{id}', 'تفاصيل عضو', 'بيانات عضو الفريق'],
+                        ['PUT', '/api/v1/my/investor-team/{id}', 'تحديث عضو', 'تعديل بيانات عضو'],
+                        ['DELETE', '/api/v1/my/investor-team/{id}', 'حذف عضو', 'إزالة عضو من الفريق'],
+                    ];
+                @endphp
+                @foreach($invTeamEps as $ep)
+                <div class="endpoint-row flex items-center px-6 py-3 gap-3">
+                    <span class="method-badge font-bold px-2 py-0.5 rounded font-mono min-w-[56px] text-center {{ $ep[0] === 'GET' ? 'bg-emerald-500/20 text-emerald-400' : ($ep[0] === 'POST' ? 'bg-blue-500/20 text-blue-400' : ($ep[0] === 'DELETE' ? 'bg-red-500/20 text-red-400' : 'bg-amber-500/20 text-amber-400')) }}">{{ $ep[0] }}</span>
+                    <code class="text-xs text-gray-300 font-mono whitespace-nowrap" dir="ltr">{{ $ep[1] }}</code>
+                    <span class="text-xs text-gray-600">{{ $ep[2] }}</span>
+                    <span class="mr-auto"></span>
+                    <span class="text-[10px] px-2 py-0.5 rounded-full bg-indigo-500/10 text-indigo-400 font-semibold">investor</span>
+                </div>
+                @endforeach
+            </div>
+        </div>
     </section>
 
     <div class="glow-line max-w-4xl mx-auto"></div>
@@ -1701,6 +1783,34 @@
                 @foreach($mContractEps as $ep)
                 <div class="endpoint-row flex items-center px-6 py-3 gap-3">
                     <span class="method-badge font-bold px-2 py-0.5 rounded font-mono min-w-[56px] text-center {{ $ep[0] === 'GET' ? 'bg-emerald-500/20 text-emerald-400' : 'bg-amber-500/20 text-amber-400' }}">{{ $ep[0] }}</span>
+                    <code class="text-xs text-gray-300 font-mono whitespace-nowrap" dir="ltr">{{ $ep[1] }}</code>
+                    <span class="text-xs text-gray-600">{{ $ep[2] }}</span>
+                    <span class="mr-auto"></span>
+                    <span class="text-[10px] px-2 py-0.5 rounded-full bg-sky-500/10 text-sky-400 font-semibold">merchant</span>
+                </div>
+                @endforeach
+            </div>
+        </div>
+
+        <!-- Merchant Team Members -->
+        <div class="glass border border-white/5 rounded-2xl overflow-hidden mb-4">
+            <div class="px-6 py-3 border-b border-white/5 bg-white/[0.02]">
+                <h5 class="text-xs font-bold text-gray-400">فريق العمل - Team Members (Merchant)</h5>
+            </div>
+            <div class="divide-y divide-white/5">
+                @php
+                    $mTeamEps = [
+                        ['GET', '/api/v1/my/merchant-team/member-types', 'أنواع الأعضاء', 'الأنواع المتاحة للتجار'],
+                        ['GET', '/api/v1/my/merchant-team', 'قائمة الفريق', 'أعضاء فريق التاجر'],
+                        ['POST', '/api/v1/my/merchant-team', 'إضافة عضو', 'إضافة عضو جديد للفريق'],
+                        ['GET', '/api/v1/my/merchant-team/{id}', 'تفاصيل عضو', 'بيانات عضو الفريق'],
+                        ['PUT', '/api/v1/my/merchant-team/{id}', 'تحديث عضو', 'تعديل بيانات عضو'],
+                        ['DELETE', '/api/v1/my/merchant-team/{id}', 'حذف عضو', 'إزالة عضو من الفريق'],
+                    ];
+                @endphp
+                @foreach($mTeamEps as $ep)
+                <div class="endpoint-row flex items-center px-6 py-3 gap-3">
+                    <span class="method-badge font-bold px-2 py-0.5 rounded font-mono min-w-[56px] text-center {{ $ep[0] === 'GET' ? 'bg-emerald-500/20 text-emerald-400' : ($ep[0] === 'POST' ? 'bg-blue-500/20 text-blue-400' : ($ep[0] === 'DELETE' ? 'bg-red-500/20 text-red-400' : 'bg-amber-500/20 text-amber-400')) }}">{{ $ep[0] }}</span>
                     <code class="text-xs text-gray-300 font-mono whitespace-nowrap" dir="ltr">{{ $ep[1] }}</code>
                     <span class="text-xs text-gray-600">{{ $ep[2] }}</span>
                     <span class="mr-auto"></span>
