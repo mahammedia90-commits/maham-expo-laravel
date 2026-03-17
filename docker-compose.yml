@@ -6,11 +6,11 @@ services:
   auth-service:
     build:
       context: ./apps/maham-auth-expo-api
-      dockerfile: Dockerfile
+      dockerfile: Dockerfile.prod
     container_name: auth-service
     restart: unless-stopped
     ports:
-      - "8001:8000"
+      - "8001:80"
     volumes:
       - ./apps/maham-auth-expo-api:/var/www/html
       - auth-vendor:/var/www/html/vendor
@@ -24,7 +24,7 @@ services:
     networks:
       - microservices
     healthcheck:
-      test: ["CMD", "curl", "-f", "http://localhost:8000/api/health"]
+      test: ["CMD", "curl", "-f", "http://localhost/api/health"]
       interval: 30s
       timeout: 10s
       retries: 3
