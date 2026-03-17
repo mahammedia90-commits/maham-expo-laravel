@@ -98,6 +98,9 @@
                     <ul class="space-y-0.5">
                         <li><a href="#register" class="sidebar-link block py-2 px-3 text-sm text-gray-600 rounded-lg"><span class="badge method-post text-white ml-1">POST</span> <span data-ar="التسجيل" data-en="Register">التسجيل</span></a></li>
                         <li><a href="#login" class="sidebar-link block py-2 px-3 text-sm text-gray-600 rounded-lg"><span class="badge method-post text-white ml-1">POST</span> <span data-ar="تسجيل الدخول" data-en="Login">تسجيل الدخول</span></a></li>
+                        <li><a href="#otp-send" class="sidebar-link block py-2 px-3 text-sm text-gray-600 rounded-lg"><span class="badge method-post text-white ml-1">POST</span> <span data-ar="إرسال OTP" data-en="Send OTP">إرسال OTP</span></a></li>
+                        <li><a href="#otp-verify" class="sidebar-link block py-2 px-3 text-sm text-gray-600 rounded-lg"><span class="badge method-post text-white ml-1">POST</span> <span data-ar="تحقق OTP" data-en="Verify OTP">تحقق OTP</span></a></li>
+                        <li><a href="#otp-complete" class="sidebar-link block py-2 px-3 text-sm text-gray-600 rounded-lg"><span class="badge method-post text-white ml-1">POST</span> <span data-ar="إكمال التسجيل" data-en="Complete Registration">إكمال التسجيل</span></a></li>
                         <li><a href="#logout" class="sidebar-link block py-2 px-3 text-sm text-gray-600 rounded-lg"><span class="badge method-post text-white ml-1">POST</span> <span data-ar="تسجيل الخروج" data-en="Logout">تسجيل الخروج</span></a></li>
                         <li><a href="#me" class="sidebar-link block py-2 px-3 text-sm text-gray-600 rounded-lg"><span class="badge method-get text-white ml-1">GET</span> <span data-ar="بيانات المستخدم" data-en="Current User">بيانات المستخدم</span></a></li>
                         <li><a href="#refresh" class="sidebar-link block py-2 px-3 text-sm text-gray-600 rounded-lg"><span class="badge method-post text-white ml-1">POST</span> <span data-ar="تجديد التوكن" data-en="Refresh Token">تجديد التوكن</span></a></li>
@@ -119,6 +122,8 @@
                         <li><a href="#update-profile" class="sidebar-link block py-2 px-3 text-sm text-gray-600 rounded-lg"><span class="badge method-put text-white ml-1">PUT</span> <span data-ar="تحديث الملف" data-en="Update Profile">تحديث الملف</span></a></li>
                         <li><a href="#send-verification" class="sidebar-link block py-2 px-3 text-sm text-gray-600 rounded-lg"><span class="badge method-post text-white ml-1">POST</span> <span data-ar="إرسال كود التحقق" data-en="Send Verification">إرسال كود التحقق</span></a></li>
                         <li><a href="#verify-email" class="sidebar-link block py-2 px-3 text-sm text-gray-600 rounded-lg"><span class="badge method-post text-white ml-1">POST</span> <span data-ar="تحقق من البريد" data-en="Verify Email">تحقق من البريد</span></a></li>
+                        <li><a href="#phone-send-otp" class="sidebar-link block py-2 px-3 text-sm text-gray-600 rounded-lg"><span class="badge method-post text-white ml-1">POST</span> <span data-ar="تحقق الجوال" data-en="Phone OTP">تحقق الجوال</span></a></li>
+                        <li><a href="#phone-verify-otp" class="sidebar-link block py-2 px-3 text-sm text-gray-600 rounded-lg"><span class="badge method-post text-white ml-1">POST</span> <span data-ar="تأكيد الجوال" data-en="Verify Phone">تأكيد الجوال</span></a></li>
                     </ul>
                 </div>
 
@@ -447,6 +452,178 @@
                     </div>
                 </section>
 
+                {{-- ============================================================ --}}
+                {{-- OTP LOGIN FLOW --}}
+                {{-- ============================================================ --}}
+                <div class="bg-emerald-50 border border-emerald-200 rounded-xl p-5 mb-8">
+                    <h3 class="text-xl font-bold text-emerald-800 mb-2 flex items-center gap-2" data-ar="📱 تسجيل الدخول عبر OTP" data-en="📱 OTP Login Flow">📱 تسجيل الدخول عبر OTP</h3>
+                    <p class="text-emerald-700 text-sm mb-3" data-ar="تسجيل الدخول أو إنشاء حساب جديد عبر رقم الجوال و رمز التحقق (OTP)" data-en="Login or register via phone number and OTP verification code">تسجيل الدخول أو إنشاء حساب جديد عبر رقم الجوال و رمز التحقق</p>
+                    <div class="bg-white/60 rounded-lg p-4 text-sm">
+                        <p class="font-bold text-emerald-800 mb-2" data-ar="التدفق الكامل:" data-en="Complete Flow:">التدفق الكامل:</p>
+                        <ol class="list-decimal list-inside space-y-1 text-emerald-700">
+                            <li data-ar="أرسل رقم الجوال + نوع المستخدم → يصلك رمز OTP" data-en="Send phone + user_type → receive OTP code">أرسل رقم الجوال + نوع المستخدم → يصلك رمز OTP</li>
+                            <li data-ar="أرسل الرمز للتحقق → إذا المستخدم موجود = توكن، إذا جديد = registration_token" data-en="Verify OTP → existing user = JWT token, new user = registration_token">أرسل الرمز للتحقق → إذا المستخدم موجود = توكن، إذا جديد = registration_token</li>
+                            <li data-ar="(للمستخدمين الجدد فقط) أكمل البيانات باستخدام registration_token" data-en="(New users only) Complete profile using registration_token">(للمستخدمين الجدد فقط) أكمل البيانات باستخدام registration_token</li>
+                        </ol>
+                        <div class="mt-3 p-2 bg-yellow-50 border border-yellow-200 rounded text-yellow-700 text-xs">
+                            <span class="font-bold">⚠️</span>
+                            <span data-ar="وضع الاختبار: أي رمز OTP مقبول (لا يُرسل SMS فعلي)" data-en="Test mode: any OTP code is accepted (no real SMS sent)">وضع الاختبار: أي رمز OTP مقبول (لا يُرسل SMS فعلي)</span>
+                        </div>
+                    </div>
+                </div>
+
+                {{-- OTP SEND --}}
+                <section id="otp-send" class="mb-16">
+                    <div class="endpoint-card">
+                        <div class="bg-emerald-50 border-b border-emerald-100 p-5 flex items-center gap-3">
+                            <span class="badge method-post text-white text-xs">POST</span>
+                            <code class="text-gray-800 font-semibold">/auth/otp/send</code>
+                            <span class="mr-auto text-sm text-gray-500" data-ar="إرسال رمز التحقق" data-en="Send OTP Code">إرسال رمز التحقق</span>
+                            <span class="badge bg-green-100 text-green-700" data-ar="عام" data-en="Public">عام</span>
+                        </div>
+                        <div class="p-5 space-y-6">
+                            <div class="overflow-x-auto">
+                                <table class="param-table w-full text-sm">
+                                    <thead><tr class="border-b bg-gray-50"><th class="p-3 text-right" data-ar="الحقل" data-en="Field">الحقل</th><th class="p-3 text-right" data-ar="النوع" data-en="Type">النوع</th><th class="p-3 text-right" data-ar="مطلوب" data-en="Required">مطلوب</th><th class="p-3 text-right" data-ar="القواعد" data-en="Rules">القواعد</th></tr></thead>
+                                    <tbody>
+                                        <tr class="border-b"><td class="p-3"><code>phone</code></td><td class="p-3">string</td><td class="p-3"><span class="text-red-500 font-bold">✓</span></td><td class="p-3" data-ar="رقم الجوال (0501234567 أو +966501234567)" data-en="Phone (0501234567 or +966501234567)">رقم الجوال</td></tr>
+                                        <tr class="border-b"><td class="p-3"><code>user_type</code></td><td class="p-3">string</td><td class="p-3"><span class="text-red-500 font-bold">✓</span></td><td class="p-3" data-ar="نوع الحساب: admin, supervisor, merchant, investor, sponsor, user" data-en="Role: admin, supervisor, merchant, investor, sponsor, user">نوع الحساب (admin, merchant, etc)</td></tr>
+                                        <tr><td class="p-3"><code>channel</code></td><td class="p-3">string</td><td class="p-3"><span class="text-gray-400">—</span></td><td class="p-3" data-ar="sms أو whatsapp (افتراضي: sms)" data-en="sms or whatsapp (default: sms)">sms | whatsapp</td></tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                            <div class="grid grid-cols-1 lg:grid-cols-2 gap-4">
+                                <div class="code-block">
+                                    <div class="code-header"><span>Request</span></div>
+                                    <pre><code>{
+  <span class="json-key">"phone"</span>: <span class="json-string">"0501234567"</span>,
+  <span class="json-key">"user_type"</span>: <span class="json-string">"merchant"</span>
+}</code></pre>
+                                </div>
+                                <div class="code-block">
+                                    <div class="code-header"><span>Response</span><span class="badge bg-green-500/30 text-green-300">200</span></div>
+                                    <pre><code>{
+  <span class="json-key">"success"</span>: <span class="json-bool">true</span>,
+  <span class="json-key">"message"</span>: <span class="json-string">"تم إرسال رمز التحقق"</span>,
+  <span class="json-key">"data"</span>: {
+    <span class="json-key">"is_new_user"</span>: <span class="json-bool">false</span>
+  }
+}</code></pre>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
+                {{-- OTP VERIFY --}}
+                <section id="otp-verify" class="mb-16">
+                    <div class="endpoint-card">
+                        <div class="bg-emerald-50 border-b border-emerald-100 p-5 flex items-center gap-3">
+                            <span class="badge method-post text-white text-xs">POST</span>
+                            <code class="text-gray-800 font-semibold">/auth/otp/verify</code>
+                            <span class="mr-auto text-sm text-gray-500" data-ar="تحقق من الرمز" data-en="Verify OTP Code">تحقق من الرمز</span>
+                            <span class="badge bg-green-100 text-green-700" data-ar="عام" data-en="Public">عام</span>
+                        </div>
+                        <div class="p-5 space-y-6">
+                            <div class="overflow-x-auto">
+                                <table class="param-table w-full text-sm">
+                                    <thead><tr class="border-b bg-gray-50"><th class="p-3 text-right" data-ar="الحقل" data-en="Field">الحقل</th><th class="p-3 text-right" data-ar="النوع" data-en="Type">النوع</th><th class="p-3 text-right" data-ar="مطلوب" data-en="Required">مطلوب</th><th class="p-3 text-right" data-ar="القواعد" data-en="Rules">القواعد</th></tr></thead>
+                                    <tbody>
+                                        <tr class="border-b"><td class="p-3"><code>phone</code></td><td class="p-3">string</td><td class="p-3"><span class="text-red-500 font-bold">✓</span></td><td class="p-3" data-ar="نفس الرقم المستخدم في الإرسال" data-en="Same phone used in send">نفس رقم الإرسال</td></tr>
+                                        <tr class="border-b"><td class="p-3"><code>otp</code></td><td class="p-3">string</td><td class="p-3"><span class="text-red-500 font-bold">✓</span></td><td class="p-3" data-ar="رمز التحقق المرسل" data-en="OTP code received">رمز التحقق</td></tr>
+                                        <tr><td class="p-3"><code>user_type</code></td><td class="p-3">string</td><td class="p-3"><span class="text-red-500 font-bold">✓</span></td><td class="p-3" data-ar="نفس النوع المرسل" data-en="Same user_type as send">نفس نوع الحساب</td></tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                            <p class="text-sm text-gray-500 bg-gray-50 rounded-lg p-3" data-ar="إذا كان المستخدم موجود → يرجع token + بيانات المستخدم. إذا جديد → يرجع registration_token لإكمال التسجيل." data-en="If user exists → returns token + user data. If new → returns registration_token to complete registration.">إذا كان المستخدم موجود → يرجع token. إذا جديد → يرجع registration_token.</p>
+                            <div class="grid grid-cols-1 lg:grid-cols-2 gap-4">
+                                <div class="code-block">
+                                    <div class="code-header"><span>Request</span></div>
+                                    <pre><code>{
+  <span class="json-key">"phone"</span>: <span class="json-string">"0501234567"</span>,
+  <span class="json-key">"otp"</span>: <span class="json-string">"123456"</span>,
+  <span class="json-key">"user_type"</span>: <span class="json-string">"merchant"</span>
+}</code></pre>
+                                </div>
+                                <div class="code-block">
+                                    <div class="code-header"><span data-ar="رد — مستخدم موجود" data-en="Response — Existing User">رد — مستخدم موجود</span><span class="badge bg-green-500/30 text-green-300">200</span></div>
+                                    <pre><code>{
+  <span class="json-key">"success"</span>: <span class="json-bool">true</span>,
+  <span class="json-key">"message"</span>: <span class="json-string">"تم تسجيل الدخول بنجاح"</span>,
+  <span class="json-key">"data"</span>: {
+    <span class="json-key">"is_new_user"</span>: <span class="json-bool">false</span>,
+    <span class="json-key">"user"</span>: { ... },
+    <span class="json-key">"token"</span>: <span class="json-string">"eyJ0eXAi..."</span>,
+    <span class="json-key">"token_type"</span>: <span class="json-string">"bearer"</span>,
+    <span class="json-key">"expires_in"</span>: <span class="json-number">3600</span>
+  }
+}</code></pre>
+                                </div>
+                            </div>
+                            <div class="code-block">
+                                <div class="code-header"><span data-ar="رد — مستخدم جديد" data-en="Response — New User">رد — مستخدم جديد</span><span class="badge bg-blue-500/30 text-blue-300">200</span></div>
+                                <pre><code>{
+  <span class="json-key">"success"</span>: <span class="json-bool">true</span>,
+  <span class="json-key">"message"</span>: <span class="json-string">"تم التحقق — أكمل بياناتك للتسجيل"</span>,
+  <span class="json-key">"data"</span>: {
+    <span class="json-key">"is_new_user"</span>: <span class="json-bool">true</span>,
+    <span class="json-key">"registration_token"</span>: <span class="json-string">"xPbaVXHRV5zXi4bBJx92Q..."</span>
+  }
+}</code></pre>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
+                {{-- OTP COMPLETE REGISTRATION --}}
+                <section id="otp-complete" class="mb-16">
+                    <div class="endpoint-card">
+                        <div class="bg-emerald-50 border-b border-emerald-100 p-5 flex items-center gap-3">
+                            <span class="badge method-post text-white text-xs">POST</span>
+                            <code class="text-gray-800 font-semibold">/auth/otp/complete-registration</code>
+                            <span class="mr-auto text-sm text-gray-500" data-ar="إكمال التسجيل بعد OTP" data-en="Complete Registration after OTP">إكمال التسجيل بعد OTP</span>
+                            <span class="badge bg-green-100 text-green-700" data-ar="عام" data-en="Public">عام</span>
+                        </div>
+                        <div class="p-5 space-y-6">
+                            <p class="text-sm text-gray-500 bg-gray-50 rounded-lg p-3" data-ar="هذا الإندبوينت فقط للمستخدمين الجدد — بعد الحصول على registration_token من /otp/verify" data-en="This endpoint is only for new users — after getting registration_token from /otp/verify">فقط للمستخدمين الجدد بعد الحصول على registration_token</p>
+                            <div class="overflow-x-auto">
+                                <table class="param-table w-full text-sm">
+                                    <thead><tr class="border-b bg-gray-50"><th class="p-3 text-right" data-ar="الحقل" data-en="Field">الحقل</th><th class="p-3 text-right" data-ar="النوع" data-en="Type">النوع</th><th class="p-3 text-right" data-ar="مطلوب" data-en="Required">مطلوب</th><th class="p-3 text-right" data-ar="القواعد" data-en="Rules">القواعد</th></tr></thead>
+                                    <tbody>
+                                        <tr class="border-b"><td class="p-3"><code>registration_token</code></td><td class="p-3">string</td><td class="p-3"><span class="text-red-500 font-bold">✓</span></td><td class="p-3" data-ar="التوكن من /otp/verify" data-en="Token from /otp/verify">التوكن من verify</td></tr>
+                                        <tr class="border-b"><td class="p-3"><code>name</code></td><td class="p-3">string</td><td class="p-3"><span class="text-red-500 font-bold">✓</span></td><td class="p-3" data-ar="الاسم الكامل" data-en="Full name">الاسم الكامل</td></tr>
+                                        <tr class="border-b"><td class="p-3"><code>email</code></td><td class="p-3">string</td><td class="p-3"><span class="text-gray-400">—</span></td><td class="p-3" data-ar="بريد إلكتروني فريد" data-en="Unique email">بريد إلكتروني</td></tr>
+                                        <tr><td class="p-3"><code>password</code></td><td class="p-3">string</td><td class="p-3"><span class="text-gray-400">—</span></td><td class="p-3" data-ar="كلمة مرور (اختياري — يمكن التسجيل بدونها)" data-en="Password (optional — can register without)">كلمة مرور (اختياري)</td></tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                            <div class="grid grid-cols-1 lg:grid-cols-2 gap-4">
+                                <div class="code-block">
+                                    <div class="code-header"><span>Request</span></div>
+                                    <pre><code>{
+  <span class="json-key">"registration_token"</span>: <span class="json-string">"xPbaVXHRV5zXi4bBJx92Q..."</span>,
+  <span class="json-key">"name"</span>: <span class="json-string">"أحمد محمد"</span>,
+  <span class="json-key">"email"</span>: <span class="json-string">"ahmed@example.com"</span>
+}</code></pre>
+                                </div>
+                                <div class="code-block">
+                                    <div class="code-header"><span>Response</span><span class="badge bg-green-500/30 text-green-300">201</span></div>
+                                    <pre><code>{
+  <span class="json-key">"success"</span>: <span class="json-bool">true</span>,
+  <span class="json-key">"message"</span>: <span class="json-string">"تم إنشاء الحساب بنجاح"</span>,
+  <span class="json-key">"data"</span>: {
+    <span class="json-key">"user"</span>: { ... },
+    <span class="json-key">"token"</span>: <span class="json-string">"eyJ0eXAi..."</span>,
+    <span class="json-key">"token_type"</span>: <span class="json-string">"bearer"</span>,
+    <span class="json-key">"expires_in"</span>: <span class="json-number">3600</span>
+  }
+}</code></pre>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
                 {{-- LOGOUT --}}
                 <section id="logout" class="mb-16">
                     <div class="endpoint-card">
@@ -664,6 +841,89 @@
                                         <tr><td class="p-3"><code>code</code></td><td class="p-3">string</td><td class="p-3"><span class="text-red-500 font-bold">✓</span></td><td class="p-3" data-ar="6 أرقام" data-en="6-digit code">6 أرقام</td></tr>
                                     </tbody>
                                 </table>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
+                {{-- ============================================================ --}}
+                {{-- PHONE VERIFICATION --}}
+                {{-- ============================================================ --}}
+                <section id="phone-send-otp" class="mb-16">
+                    <div class="endpoint-card">
+                        <div class="bg-blue-50 border-b border-blue-100 p-5 flex items-center gap-3">
+                            <span class="badge method-post text-white text-xs">POST</span>
+                            <code class="text-gray-800 font-semibold">/auth/phone/send-otp</code>
+                            <span class="mr-auto text-sm text-gray-500" data-ar="إرسال رمز تحقق الجوال" data-en="Send Phone OTP">إرسال رمز تحقق الجوال</span>
+                            <span class="badge bg-yellow-100 text-yellow-700">Auth</span>
+                        </div>
+                        <div class="p-5 space-y-6">
+                            <p class="text-gray-600 text-sm mb-1" data-ar="يرسل رمز OTP لتوثيق رقم جوال المستخدم المسجل دخوله." data-en="Sends OTP to verify the authenticated user's phone number.">يرسل رمز OTP لتوثيق رقم جوال المستخدم المسجل دخوله.</p>
+                            <div class="overflow-x-auto">
+                                <table class="param-table w-full text-sm">
+                                    <thead><tr class="border-b bg-gray-50"><th class="p-3 text-right" data-ar="الحقل" data-en="Field">الحقل</th><th class="p-3 text-right" data-ar="النوع" data-en="Type">النوع</th><th class="p-3 text-right" data-ar="مطلوب" data-en="Required">مطلوب</th><th class="p-3 text-right" data-ar="القواعد" data-en="Rules">القواعد</th></tr></thead>
+                                    <tbody>
+                                        <tr class="border-b"><td class="p-3"><code>phone</code></td><td class="p-3">string</td><td class="p-3"><span class="text-red-500 font-bold">✓</span></td><td class="p-3" data-ar="رقم الجوال" data-en="Phone number">رقم الجوال</td></tr>
+                                        <tr><td class="p-3"><code>channel</code></td><td class="p-3">string</td><td class="p-3"><span class="text-gray-400">—</span></td><td class="p-3" data-ar="sms أو whatsapp (افتراضي: sms)" data-en="sms or whatsapp (default: sms)">sms | whatsapp</td></tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                            <div class="grid grid-cols-1 lg:grid-cols-2 gap-4">
+                                <div class="code-block">
+                                    <div class="code-header"><span>Request</span></div>
+                                    <pre><code>{
+  <span class="json-key">"phone"</span>: <span class="json-string">"0501234567"</span>,
+  <span class="json-key">"channel"</span>: <span class="json-string">"sms"</span>
+}</code></pre>
+                                </div>
+                                <div class="code-block">
+                                    <div class="code-header"><span>Response</span><span class="badge bg-green-500/30 text-green-300">200</span></div>
+                                    <pre><code>{
+  <span class="json-key">"success"</span>: <span class="json-bool">true</span>,
+  <span class="json-key">"message"</span>: <span class="json-string">"تم إرسال رمز التحقق"</span>,
+  <span class="json-key">"data"</span>: {
+    <span class="json-key">"channel"</span>: <span class="json-string">"sms"</span>
+  }
+}</code></pre>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
+                <section id="phone-verify-otp" class="mb-16">
+                    <div class="endpoint-card">
+                        <div class="bg-blue-50 border-b border-blue-100 p-5 flex items-center gap-3">
+                            <span class="badge method-post text-white text-xs">POST</span>
+                            <code class="text-gray-800 font-semibold">/auth/phone/verify-otp</code>
+                            <span class="mr-auto text-sm text-gray-500" data-ar="تأكيد رقم الجوال" data-en="Verify Phone Number">تأكيد رقم الجوال</span>
+                            <span class="badge bg-yellow-100 text-yellow-700">Auth</span>
+                        </div>
+                        <div class="p-5 space-y-6">
+                            <div class="overflow-x-auto">
+                                <table class="param-table w-full text-sm">
+                                    <thead><tr class="border-b bg-gray-50"><th class="p-3 text-right" data-ar="الحقل" data-en="Field">الحقل</th><th class="p-3 text-right" data-ar="النوع" data-en="Type">النوع</th><th class="p-3 text-right" data-ar="مطلوب" data-en="Required">مطلوب</th><th class="p-3 text-right" data-ar="القواعد" data-en="Rules">القواعد</th></tr></thead>
+                                    <tbody>
+                                        <tr class="border-b"><td class="p-3"><code>phone</code></td><td class="p-3">string</td><td class="p-3"><span class="text-red-500 font-bold">✓</span></td><td class="p-3" data-ar="نفس الرقم" data-en="Same phone">نفس الرقم</td></tr>
+                                        <tr><td class="p-3"><code>code</code></td><td class="p-3">string</td><td class="p-3"><span class="text-red-500 font-bold">✓</span></td><td class="p-3" data-ar="رمز التحقق" data-en="OTP code">رمز التحقق</td></tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                            <div class="grid grid-cols-1 lg:grid-cols-2 gap-4">
+                                <div class="code-block">
+                                    <div class="code-header"><span>Request</span></div>
+                                    <pre><code>{
+  <span class="json-key">"phone"</span>: <span class="json-string">"0501234567"</span>,
+  <span class="json-key">"code"</span>: <span class="json-string">"123456"</span>
+}</code></pre>
+                                </div>
+                                <div class="code-block">
+                                    <div class="code-header"><span>Response</span><span class="badge bg-green-500/30 text-green-300">200</span></div>
+                                    <pre><code>{
+  <span class="json-key">"success"</span>: <span class="json-bool">true</span>,
+  <span class="json-key">"message"</span>: <span class="json-string">"تم توثيق رقم الجوال بنجاح"</span>
+}</code></pre>
+                                </div>
                             </div>
                         </div>
                     </div>
