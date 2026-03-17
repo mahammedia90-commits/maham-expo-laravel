@@ -29,6 +29,8 @@ use App\Http\Controllers\Api\Admin\SponsorContractController as AdminSponsorCont
 use App\Http\Controllers\Api\Admin\SponsorPaymentController as AdminSponsorPaymentController;
 use App\Http\Controllers\Api\Admin\SponsorBenefitController as AdminSponsorBenefitController;
 use App\Http\Controllers\Api\Admin\SponsorAssetController as AdminSponsorAssetController;
+use App\Http\Controllers\Api\Admin\SponsorLeadController as AdminSponsorLeadController;
+use App\Http\Controllers\Api\Admin\SponsorDeliverableController as AdminSponsorDeliverableController;
 use App\Http\Controllers\Api\Admin\EventController as AdminEventController;
 use App\Http\Controllers\Api\Admin\SectionController as AdminSectionController;
 use App\Http\Controllers\Api\Admin\ServiceController as AdminServiceController;
@@ -57,6 +59,8 @@ use App\Http\Controllers\Api\Sponsor\ContractController as SponsorContractContro
 use App\Http\Controllers\Api\Sponsor\PaymentController as SponsorPaymentController;
 use App\Http\Controllers\Api\Sponsor\AssetController as SponsorAssetController;
 use App\Http\Controllers\Api\Sponsor\ExposureController as SponsorExposureController;
+use App\Http\Controllers\Api\Sponsor\LeadController as SponsorLeadController;
+use App\Http\Controllers\Api\Sponsor\DeliverableController as SponsorDeliverableController;
 
 // Management-only Controllers (Categories, Cities, Settings, Users)
 use App\Http\Controllers\Api\SuperAdmin\CategoryController as ManageCategoryController;
@@ -440,6 +444,24 @@ Route::middleware([SetLocale::class])->group(function () {
                         ->middleware(CheckPermission::class . ':sponsor-exposure.view');
                 });
 
+                // ── Sponsor Leads (own — read-only) ──────────────────
+                Route::prefix('sponsor-leads')->group(function () {
+                    Route::get('/', [SponsorLeadController::class, 'index'])
+                        ->middleware(CheckPermission::class . ':sponsor-leads.view');
+                    Route::get('/{sponsorLead}', [SponsorLeadController::class, 'show'])
+                        ->middleware(CheckPermission::class . ':sponsor-leads.view');
+                });
+
+                // ── Sponsor Deliverables (own — view + upload) ───────
+                Route::prefix('sponsor-deliverables')->group(function () {
+                    Route::get('/', [SponsorDeliverableController::class, 'index'])
+                        ->middleware(CheckPermission::class . ':sponsor-deliverables.view');
+                    Route::get('/{sponsorDeliverable}', [SponsorDeliverableController::class, 'show'])
+                        ->middleware(CheckPermission::class . ':sponsor-deliverables.view');
+                    Route::post('/{sponsorDeliverable}/upload', [SponsorDeliverableController::class, 'upload'])
+                        ->middleware(CheckPermission::class . ':sponsor-deliverables.upload');
+                });
+
                 // ── My Activity (own activity history) ───────────────
                 Route::prefix('activity')->group(function () {
                     Route::get('/', [MyActivityController::class, 'index']);
@@ -765,6 +787,38 @@ Route::middleware([SetLocale::class])->group(function () {
                         ->middleware(CheckPermission::class . ':sponsor-assets.approve');
                     Route::put('/{sponsorAsset}/reject', [AdminSponsorAssetController::class, 'reject'])
                         ->middleware(CheckPermission::class . ':sponsor-assets.approve');
+                });
+
+                // ── Sponsor Leads (management CRUD) ──────────────────
+                Route::prefix('sponsor-leads')->group(function () {
+                    Route::get('/', [AdminSponsorLeadController::class, 'index'])
+                        ->middleware(CheckPermission::class . ':sponsor-leads.view-all');
+                    Route::post('/', [AdminSponsorLeadController::class, 'store'])
+                        ->middleware(CheckPermission::class . ':sponsor-leads.create');
+                    Route::get('/{sponsorLead}', [AdminSponsorLeadController::class, 'show'])
+                        ->middleware(CheckPermission::class . ':sponsor-leads.view-all');
+                    Route::put('/{sponsorLead}', [AdminSponsorLeadController::class, 'update'])
+                        ->middleware(CheckPermission::class . ':sponsor-leads.update');
+                    Route::delete('/{sponsorLead}', [AdminSponsorLeadController::class, 'destroy'])
+                        ->middleware(CheckPermission::class . ':sponsor-leads.delete');
+                });
+
+                // ── Sponsor Deliverables (management CRUD) ───────────
+                Route::prefix('sponsor-deliverables')->group(function () {
+                    Route::get('/', [AdminSponsorDeliverableController::class, 'index'])
+                        ->middleware(CheckPermission::class . ':sponsor-deliverables.view-all');
+                    Route::post('/', [AdminSponsorDeliverableController::class, 'store'])
+                        ->middleware(CheckPermission::class . ':sponsor-deliverables.create');
+                    Route::get('/{sponsorDeliverable}', [AdminSponsorDeliverableController::class, 'show'])
+                        ->middleware(CheckPermission::class . ':sponsor-deliverables.view-all');
+                    Route::put('/{sponsorDeliverable}', [AdminSponsorDeliverableController::class, 'update'])
+                        ->middleware(CheckPermission::class . ':sponsor-deliverables.update');
+                    Route::delete('/{sponsorDeliverable}', [AdminSponsorDeliverableController::class, 'destroy'])
+                        ->middleware(CheckPermission::class . ':sponsor-deliverables.delete');
+                    Route::put('/{sponsorDeliverable}/approve', [AdminSponsorDeliverableController::class, 'approve'])
+                        ->middleware(CheckPermission::class . ':sponsor-deliverables.approve');
+                    Route::put('/{sponsorDeliverable}/reject', [AdminSponsorDeliverableController::class, 'reject'])
+                        ->middleware(CheckPermission::class . ':sponsor-deliverables.approve');
                 });
 
                 // ── Ratings (management) ─────────────────────────────

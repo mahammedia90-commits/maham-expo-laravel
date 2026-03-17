@@ -311,6 +311,26 @@ class RolesAndPermissionsSeeder extends Seeder
                 'update'  => 'تعديل ميزة رعاية',
                 'deliver' => 'تسليم ميزة رعاية',
             ],
+
+            // ==================== عملاء الرعاة المحتملون ====================
+            'sponsor-leads' => [
+                'view'     => 'عرض عملائي المحتملين',
+                'create'   => 'إنشاء عميل محتمل',
+                'update'   => 'تعديل عميل محتمل',
+                'delete'   => 'حذف عميل محتمل',
+                'view-all' => 'عرض جميع العملاء المحتملين',
+            ],
+
+            // ==================== تسليمات الرعاية ====================
+            'sponsor-deliverables' => [
+                'view'    => 'عرض تسليماتي',
+                'create'  => 'إنشاء تسليم',
+                'update'  => 'تعديل تسليم',
+                'delete'  => 'حذف تسليم',
+                'approve' => 'اعتماد تسليم',
+                'upload'  => 'رفع ملف تسليم',
+                'view-all' => 'عرض جميع التسليمات',
+            ],
         ];
 
         $permissions = [];
@@ -438,6 +458,14 @@ class RolesAndPermissionsSeeder extends Seeder
 
             // مزايا الرعاية
             'sponsor-benefits.view', 'sponsor-benefits.create', 'sponsor-benefits.update', 'sponsor-benefits.deliver',
+
+            // عملاء الرعاة المحتملون
+            'sponsor-leads.view', 'sponsor-leads.create', 'sponsor-leads.update', 'sponsor-leads.delete', 'sponsor-leads.view-all',
+
+            // تسليمات الرعاية
+            'sponsor-deliverables.view', 'sponsor-deliverables.create', 'sponsor-deliverables.update',
+            'sponsor-deliverables.delete', 'sponsor-deliverables.approve', 'sponsor-deliverables.upload',
+            'sponsor-deliverables.view-all',
         ];
         $admin->syncPermissions($adminPermissions);
         $this->command->info("   ✅ Admin: " . count($adminPermissions) . " صلاحية");
@@ -449,69 +477,91 @@ class RolesAndPermissionsSeeder extends Seeder
             ['name' => 'supervisor'],
             [
                 'display_name' => 'مشرف',
-                'description' => 'صلاحيات إشرافية - مراجعة الطلبات والملفات',
+                'description' => 'صلاحيات إشرافية كاملة - تحكم كامل بجميع العمليات',
                 'is_system' => true,
                 'level' => 50,
             ]
         );
         $supervisorPermissions = [
-            'users.view',
+            // Auth System
+            'users.view', 'users.create', 'users.update',
             'roles.view',
             'permissions.view',
+            'services.view',
+            'audit.view',
 
-            // عرض المحتوى
-            'events.view',
-            'sections.view',
-            'spaces.view',
-            'expo-services.view',
-            'categories.view',
-            'cities.view',
+            // Expo - إدارة الفعاليات (CRUD كامل)
+            'events.view', 'events.create', 'events.update', 'events.delete',
+            'sections.view', 'sections.create', 'sections.update', 'sections.delete',
+            'spaces.view', 'spaces.create', 'spaces.update', 'spaces.delete',
+            'expo-services.view', 'expo-services.create', 'expo-services.update', 'expo-services.delete',
+            'categories.view', 'categories.create', 'categories.update', 'categories.delete',
+            'cities.view', 'cities.create', 'cities.update', 'cities.delete',
 
-            // مراجعة الملفات والطلبات
+            // Expo - إدارة الملفات التجارية
             'profiles.view', 'profiles.view-all', 'profiles.approve', 'profiles.reject',
-            'visit-requests.view', 'visit-requests.view-all', 'visit-requests.approve', 'visit-requests.reject',
-            'rental-requests.view', 'rental-requests.view-all', 'rental-requests.approve', 'rental-requests.reject',
 
-            // التقارير
-            'reports.view',
-            'payments.view',
+            // Expo - إدارة طلبات الزيارة
+            'visit-requests.view', 'visit-requests.view-all',
+            'visit-requests.approve', 'visit-requests.reject',
 
-            // الرعاة - عرض + موافقة/رفض عقود
-            'sponsors.view', 'sponsors.view-all',
-            'sponsor-contracts.view', 'sponsor-contracts.view-all',
-            'sponsor-contracts.approve', 'sponsor-contracts.reject',
-            'sponsor-packages.view',
-            'sponsor-payments.view',
-            'sponsor-assets.view',
+            // Expo - إدارة طلبات الاستئجار
+            'rental-requests.view', 'rental-requests.view-all',
+            'rental-requests.approve', 'rental-requests.reject', 'rental-requests.record-payment',
 
-            // التقييمات - عرض + اعتماد/رفض
-            'ratings.view', 'ratings.view-all', 'ratings.approve', 'ratings.reject',
+            // التقارير والمالية
+            'reports.view', 'reports.export',
+            'payments.view', 'payments.create', 'payments.refund',
 
-            // تذاكر الدعم - عرض + رد + إغلاق + تعيين
-            'support-tickets.view', 'support-tickets.view-all',
-            'support-tickets.reply', 'support-tickets.close', 'support-tickets.assign',
+            // الرعاة - إدارة كاملة
+            'sponsors.view', 'sponsors.create', 'sponsors.update', 'sponsors.delete',
+            'sponsors.approve', 'sponsors.reject', 'sponsors.view-all',
+            'sponsor-packages.view', 'sponsor-packages.create', 'sponsor-packages.update', 'sponsor-packages.delete',
+            'sponsor-contracts.view', 'sponsor-contracts.create', 'sponsor-contracts.update',
+            'sponsor-contracts.approve', 'sponsor-contracts.reject', 'sponsor-contracts.view-all',
+            'sponsor-payments.view', 'sponsor-payments.create', 'sponsor-payments.view-all',
+            'sponsor-assets.view', 'sponsor-assets.approve',
+            'sponsor-exposure.view',
 
-            // عقود الاستئجار - عرض + اعتماد/رفض
-            'rental-contracts.view', 'rental-contracts.view-all',
-            'rental-contracts.approve', 'rental-contracts.reject',
+            // التقييمات - إدارة كاملة
+            'ratings.view', 'ratings.create', 'ratings.update', 'ratings.delete',
+            'ratings.approve', 'ratings.reject', 'ratings.view-all',
 
-            // الفواتير - عرض + إصدار + تسجيل دفع
-            'invoices.view', 'invoices.view-all',
-            'invoices.issue', 'invoices.mark-paid',
+            // تذاكر الدعم - إدارة كاملة
+            'support-tickets.view', 'support-tickets.create', 'support-tickets.update',
+            'support-tickets.close', 'support-tickets.reply', 'support-tickets.view-all',
+            'support-tickets.assign', 'support-tickets.delete',
 
-            // CMS - عرض فقط
-            'pages.view',
-            'faqs.view',
-            'banners.view',
+            // عقود الاستئجار - إدارة كاملة
+            'rental-contracts.view', 'rental-contracts.create', 'rental-contracts.update',
+            'rental-contracts.sign', 'rental-contracts.approve', 'rental-contracts.reject',
+            'rental-contracts.terminate', 'rental-contracts.view-all',
 
-            // إعدادات النظام - عرض
-            'settings.view',
+            // الفواتير - إدارة كاملة
+            'invoices.view', 'invoices.create', 'invoices.update',
+            'invoices.issue', 'invoices.mark-paid', 'invoices.cancel', 'invoices.view-all',
 
-            // مزايا الرعاية - عرض
-            'sponsor-benefits.view',
+            // CMS - إدارة كاملة
+            'pages.view', 'pages.create', 'pages.update', 'pages.delete',
+            'faqs.view', 'faqs.create', 'faqs.update', 'faqs.delete',
+            'banners.view', 'banners.create', 'banners.update', 'banners.delete',
 
-            // تسجيل دفعة استئجار
-            'rental-requests.record-payment',
+            // تفضيلات الإشعارات
+            'notification-preferences.view', 'notification-preferences.update',
+
+            // إعدادات النظام - تحكم كامل
+            'settings.view', 'settings.update',
+
+            // مزايا الرعاية - إدارة كاملة
+            'sponsor-benefits.view', 'sponsor-benefits.create', 'sponsor-benefits.update', 'sponsor-benefits.deliver',
+
+            // عملاء الرعاة المحتملون - إدارة كاملة
+            'sponsor-leads.view', 'sponsor-leads.create', 'sponsor-leads.update', 'sponsor-leads.delete', 'sponsor-leads.view-all',
+
+            // تسليمات الرعاية - إدارة كاملة
+            'sponsor-deliverables.view', 'sponsor-deliverables.create', 'sponsor-deliverables.update',
+            'sponsor-deliverables.delete', 'sponsor-deliverables.approve', 'sponsor-deliverables.upload',
+            'sponsor-deliverables.view-all',
         ];
         $supervisor->syncPermissions($supervisorPermissions);
         $this->command->info("   ✅ Supervisor (مشرف): " . count($supervisorPermissions) . " صلاحية");
@@ -677,6 +727,15 @@ class RolesAndPermissionsSeeder extends Seeder
 
             // تتبع الظهور
             'sponsor-exposure.view',
+
+            // العملاء المحتملون - عرض
+            'sponsor-leads.view',
+
+            // التسليمات - عرض + رفع
+            'sponsor-deliverables.view', 'sponsor-deliverables.upload',
+
+            // مزايا الرعاية - عرض
+            'sponsor-benefits.view',
 
             // تذاكر الدعم - إنشاء والمتابعة
             'support-tickets.view', 'support-tickets.create',

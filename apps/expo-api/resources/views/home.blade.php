@@ -1228,6 +1228,68 @@
                 @endforeach
             </div>
         </div>
+
+        <!-- Admin Sponsor Leads CRUD -->
+        <div class="glass border border-white/5 rounded-2xl overflow-hidden mb-4">
+            <div class="px-6 py-3 border-b border-white/5 bg-white/[0.02]">
+                <h5 class="text-xs font-bold text-gray-400 flex items-center gap-2">
+                    <svg class="w-3.5 h-3.5 text-yellow-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z"/></svg>
+                    عملاء الرعاة المحتملون - Sponsor Leads (Admin)
+                </h5>
+            </div>
+            <div class="divide-y divide-white/5">
+                @php
+                    $adminLeadEps = [
+                        ['GET', '/api/v1/manage/sponsor-leads', 'قائمة العملاء المحتملين', 'sponsor-leads.view-all'],
+                        ['POST', '/api/v1/manage/sponsor-leads', 'إنشاء عميل محتمل', 'sponsor-leads.create'],
+                        ['GET', '/api/v1/manage/sponsor-leads/{id}', 'تفاصيل عميل', 'sponsor-leads.view-all'],
+                        ['PUT', '/api/v1/manage/sponsor-leads/{id}', 'تحديث عميل', 'sponsor-leads.update'],
+                        ['DELETE', '/api/v1/manage/sponsor-leads/{id}', 'حذف عميل', 'sponsor-leads.delete'],
+                    ];
+                @endphp
+                @foreach($adminLeadEps as $ep)
+                <div class="endpoint-row flex items-center px-5 py-2.5 gap-2">
+                    <span class="method-badge font-bold px-1.5 py-0.5 rounded font-mono min-w-[44px] text-center {{ $ep[0] === 'GET' ? 'bg-emerald-500/15 text-emerald-400' : ($ep[0] === 'POST' ? 'bg-blue-500/15 text-blue-400' : ($ep[0] === 'PUT' ? 'bg-amber-500/15 text-amber-400' : 'bg-rose-500/15 text-rose-400')) }}">{{ $ep[0] }}</span>
+                    <code class="text-[11px] text-gray-400 font-mono" dir="ltr">{{ $ep[1] }}</code>
+                    <span class="text-[11px] text-gray-600">{{ $ep[2] }}</span>
+                    <span class="mr-auto"></span>
+                    <span class="text-[9px] px-2 py-0.5 rounded-full bg-amber-500/10 text-amber-400/70 font-mono">{{ $ep[3] }}</span>
+                </div>
+                @endforeach
+            </div>
+        </div>
+
+        <!-- Admin Sponsor Deliverables CRUD -->
+        <div class="glass border border-white/5 rounded-2xl overflow-hidden mb-4">
+            <div class="px-6 py-3 border-b border-white/5 bg-white/[0.02]">
+                <h5 class="text-xs font-bold text-gray-400 flex items-center gap-2">
+                    <svg class="w-3.5 h-3.5 text-teal-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2m-6 9l2 2 4-4"/></svg>
+                    تسليمات الرعاية - Sponsor Deliverables (Admin)
+                </h5>
+            </div>
+            <div class="divide-y divide-white/5">
+                @php
+                    $adminDeliverableEps = [
+                        ['GET', '/api/v1/manage/sponsor-deliverables', 'قائمة التسليمات', 'sponsor-deliverables.view-all'],
+                        ['POST', '/api/v1/manage/sponsor-deliverables', 'إنشاء تسليم', 'sponsor-deliverables.create'],
+                        ['GET', '/api/v1/manage/sponsor-deliverables/{id}', 'تفاصيل تسليم', 'sponsor-deliverables.view-all'],
+                        ['PUT', '/api/v1/manage/sponsor-deliverables/{id}', 'تحديث تسليم', 'sponsor-deliverables.update'],
+                        ['DELETE', '/api/v1/manage/sponsor-deliverables/{id}', 'حذف تسليم', 'sponsor-deliverables.delete'],
+                        ['PUT', '/api/v1/manage/sponsor-deliverables/{id}/approve', 'اعتماد تسليم', 'sponsor-deliverables.approve'],
+                        ['PUT', '/api/v1/manage/sponsor-deliverables/{id}/reject', 'رفض تسليم', 'sponsor-deliverables.approve'],
+                    ];
+                @endphp
+                @foreach($adminDeliverableEps as $ep)
+                <div class="endpoint-row flex items-center px-5 py-2.5 gap-2">
+                    <span class="method-badge font-bold px-1.5 py-0.5 rounded font-mono min-w-[44px] text-center {{ $ep[0] === 'GET' ? 'bg-emerald-500/15 text-emerald-400' : ($ep[0] === 'POST' ? 'bg-blue-500/15 text-blue-400' : ($ep[0] === 'PUT' ? 'bg-amber-500/15 text-amber-400' : 'bg-rose-500/15 text-rose-400')) }}">{{ $ep[0] }}</span>
+                    <code class="text-[11px] text-gray-400 font-mono" dir="ltr">{{ $ep[1] }}</code>
+                    <span class="text-[11px] text-gray-600">{{ $ep[2] }}</span>
+                    <span class="mr-auto"></span>
+                    <span class="text-[9px] px-2 py-0.5 rounded-full bg-amber-500/10 text-amber-400/70 font-mono">{{ $ep[3] }}</span>
+                </div>
+                @endforeach
+            </div>
+        </div>
     </section>
     <section id="supervisor-api" class="section-anchor max-w-7xl mx-auto px-6 py-16">
         <div class="flex items-center gap-3 mb-2">
@@ -1235,10 +1297,10 @@
             <h3 class="text-2xl font-bold">واجهة المشرف</h3>
             <span class="text-xs bg-orange-500/10 text-orange-400 px-2.5 py-1 rounded-full">Supervisor API</span>
         </div>
-        <p class="text-gray-500 text-sm mb-8 mr-4">نقاط الوصول للمشرف - مشاهدة الفعاليات والمساحات، إدارة الطلبات والملفات التجارية (بدون حذف)</p>
+        <p class="text-gray-500 text-sm mb-8 mr-4">نقاط الوصول للمشرف - تحكم كامل بجميع العمليات (نفس صلاحيات المدير)</p>
 
         <div class="mb-4 p-3 bg-orange-500/5 border border-orange-500/10 rounded-xl">
-            <p class="text-xs text-orange-400/80"><span class="font-bold">الصلاحيات:</span> تتطلب دور <code class="text-orange-300/60">supervisor</code> أو <code class="text-orange-300/60">admin</code> أو <code class="text-orange-300/60">super-admin</code></p>
+            <p class="text-xs text-orange-400/80"><span class="font-bold">الصلاحيات:</span> المشرف لديه تحكم كامل — نفس صلاحيات <code class="text-orange-300/60">admin</code> (إنشاء، تعديل، حذف، اعتماد، رفض)</p>
         </div>
 
         <!-- Supervisor Dashboard + Read-only -->
@@ -1720,6 +1782,11 @@
                         ['PUT', '/api/v1/sponsor/assets/{id}', 'تحديث ملف', 'تعديل البيانات'],
                         ['DELETE', '/api/v1/sponsor/assets/{id}', 'حذف ملف', 'إزالة الملف'],
                         ['GET', '/api/v1/sponsor/exposure', 'تقرير التعرض', 'إحصائيات الظهور والنقرات'],
+                        ['GET', '/api/v1/my/sponsor-leads', 'عملائي المحتملون', 'قائمة العملاء المحتملين من الفعاليات'],
+                        ['GET', '/api/v1/my/sponsor-leads/{id}', 'تفاصيل عميل محتمل', 'البيانات الكاملة للعميل'],
+                        ['GET', '/api/v1/my/sponsor-deliverables', 'تسليماتي', 'قائمة التسليمات والمتطلبات'],
+                        ['GET', '/api/v1/my/sponsor-deliverables/{id}', 'تفاصيل تسليم', 'البيانات والحالة والموعد'],
+                        ['POST', '/api/v1/my/sponsor-deliverables/{id}/upload', 'رفع ملف تسليم', 'رفع الملف وتحويل الحالة للمراجعة'],
                     ];
                 @endphp
                 @foreach($sponsorSelfEps as $ep)
