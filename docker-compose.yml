@@ -23,6 +23,7 @@ services:
         condition: service_healthy
     networks:
       - microservices
+      - maham-network
     healthcheck:
       test: ["CMD", "curl", "-f", "http://localhost/api/health"]
       interval: 30s
@@ -178,6 +179,9 @@ networks:
   microservices:
     driver: bridge
     name: microservices_network
+  maham-network:
+    external: true
+    name: maham-network
 
 volumes:
   auth-mysql-data:

@@ -93,7 +93,62 @@
       ]
     },
     {
-      "name": "📊 Dashboard & Statistics",
+      "name": "� OTP Management",
+      "item": [
+        {
+          "name": "GET OTP Balance (Active Provider)",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": { "raw": "{{auth_url}}/v1/admin/otp/balance", "host": ["{{auth_url}}"], "path": ["v1", "admin", "otp", "balance"] },
+            "description": "Get OTP balance for the active provider.\n\n**Requires:** admin role."
+          }
+        },
+        {
+          "name": "GET All Balances (All Providers)",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": { "raw": "{{auth_url}}/v1/admin/otp/balances", "host": ["{{auth_url}}"], "path": ["v1", "admin", "otp", "balances"] },
+            "description": "Get OTP balances for all configured providers.\n\n**Requires:** admin role."
+          }
+        },
+        {
+          "name": "GET Providers Status",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": { "raw": "{{auth_url}}/v1/admin/otp/providers", "host": ["{{auth_url}}"], "path": ["v1", "admin", "otp", "providers"] },
+            "description": "Get status of all OTP providers.\n\n**Requires:** admin role."
+          }
+        },
+        {
+          "name": "GET OTP Stats",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": { "raw": "{{auth_url}}/v1/admin/otp/stats", "host": ["{{auth_url}}"], "path": ["v1", "admin", "otp", "stats"] },
+            "description": "Get OTP sending statistics.\n\n**Requires:** admin role."
+          }
+        },
+        {
+          "name": "POST Test Send OTP",
+          "request": {
+            "method": "POST",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n    \"phone\": \"+966501000001\",\n    \"channel\": \"sms\"\n}",
+              "options": { "raw": { "language": "json" } }
+            },
+            "url": { "raw": "{{auth_url}}/v1/admin/otp/test-send", "host": ["{{auth_url}}"], "path": ["v1", "admin", "otp", "test-send"] },
+            "description": "Send a test OTP to verify provider connectivity.\n\n**Requires:** admin role.\n\n**Body:** phone (string, required), channel (string: sms|whatsapp)"
+          }
+        }
+      ]
+    },
+    {
+      "name": "�📊 Dashboard & Statistics",
       "item": [
         {
           "name": "Dashboard Overview",
