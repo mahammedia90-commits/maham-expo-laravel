@@ -329,6 +329,7 @@
                         <code class="text-xs text-gray-300 font-mono block mb-2" dir="ltr">/api/v1/auth/otp/send</code>
                         <div class="text-xs text-gray-500 space-y-1">
                             <div><code class="text-indigo-300/70">phone</code> <span class="text-rose-400 text-[10px] font-bold">required</span></div>
+                            <div><code class="text-indigo-300/70">user_type</code> <span class="text-rose-400 text-[10px] font-bold">required</span> <span class="text-gray-600 text-[10px]">admin | merchant | sponsor ...</span></div>
                             <div><code class="text-indigo-300/70">channel</code> <span class="text-gray-600 text-[10px]">sms | whatsapp</span></div>
                         </div>
                         <div class="mt-3 text-[10px] text-gray-600">يرسل رمز مكوّن من 6 أرقام</div>
@@ -342,7 +343,8 @@
                         <code class="text-xs text-gray-300 font-mono block mb-2" dir="ltr">/api/v1/auth/otp/verify</code>
                         <div class="text-xs text-gray-500 space-y-1">
                             <div><code class="text-indigo-300/70">phone</code> <span class="text-rose-400 text-[10px] font-bold">required</span></div>
-                            <div><code class="text-indigo-300/70">code</code> <span class="text-rose-400 text-[10px] font-bold">required</span> <span class="text-gray-600">6 أرقام</span></div>
+                            <div><code class="text-indigo-300/70">otp</code> <span class="text-rose-400 text-[10px] font-bold">required</span> <span class="text-gray-600">6 أرقام</span></div>
+                            <div><code class="text-indigo-300/70">user_type</code> <span class="text-rose-400 text-[10px] font-bold">required</span></div>
                         </div>
                         <div class="mt-3 text-[10px] text-gray-600">→ مستخدم موجود: JWT Token</div>
                         <div class="text-[10px] text-gray-600">→ مستخدم جديد: registration_token</div>
@@ -477,6 +479,34 @@
                 <p class="text-xs text-gray-500 mb-2">التحقق من البريد الإلكتروني</p>
                 <div class="space-y-1 text-xs text-gray-600">
                     <div><code class="text-indigo-300/70">code</code> <span class="text-rose-400 text-[10px] font-bold">required</span> - رمز التحقق المرسل للبريد</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Phone Verification -->
+        <div class="grid md:grid-cols-2 gap-4 mt-4">
+            <div class="glass border border-white/5 rounded-2xl p-5">
+                <div class="flex items-center gap-2 mb-3">
+                    <span class="method-badge font-bold px-2 py-0.5 rounded bg-blue-500/20 text-blue-400 font-mono">POST</span>
+                    <code class="text-xs text-gray-400 font-mono" dir="ltr">/api/v1/auth/phone/send-otp</code>
+                    <span class="text-[10px] px-2 py-0.5 rounded-full bg-blue-500/10 text-blue-400 font-semibold mr-auto">auth</span>
+                </div>
+                <p class="text-xs text-gray-500 mb-2">إرسال رمز التحقق لتوثيق رقم الجوال</p>
+                <div class="space-y-1 text-xs text-gray-600">
+                    <div><code class="text-indigo-300/70">phone</code> <span class="text-rose-400 text-[10px] font-bold">required</span> - رقم الجوال</div>
+                    <div><code class="text-indigo-300/70">channel</code> <span class="text-gray-600 text-[10px]">sms | whatsapp</span></div>
+                </div>
+            </div>
+            <div class="glass border border-white/5 rounded-2xl p-5">
+                <div class="flex items-center gap-2 mb-3">
+                    <span class="method-badge font-bold px-2 py-0.5 rounded bg-blue-500/20 text-blue-400 font-mono">POST</span>
+                    <code class="text-xs text-gray-400 font-mono" dir="ltr">/api/v1/auth/phone/verify-otp</code>
+                    <span class="text-[10px] px-2 py-0.5 rounded-full bg-blue-500/10 text-blue-400 font-semibold mr-auto">auth</span>
+                </div>
+                <p class="text-xs text-gray-500 mb-2">تأكيد رقم الجوال بالرمز المرسل</p>
+                <div class="space-y-1 text-xs text-gray-600">
+                    <div><code class="text-indigo-300/70">phone</code> <span class="text-rose-400 text-[10px] font-bold">required</span> - نفس الرقم</div>
+                    <div><code class="text-indigo-300/70">code</code> <span class="text-rose-400 text-[10px] font-bold">required</span> - رمز التحقق</div>
                 </div>
             </div>
         </div>
