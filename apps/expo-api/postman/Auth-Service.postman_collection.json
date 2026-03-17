@@ -213,7 +213,7 @@
             ],
             "body": {
               "mode": "raw",
-              "raw": "{\n  \"phone\": \"0501234567\",\n  \"user_type\": \"merchant\",\n  \"channel\": \"sms\"\n}",
+              "raw": "{\n  \"phone\": \"+966567891234\",\n  \"user_type\": \"merchant\",\n  \"channel\": \"sms\"\n}",
               "options": {
                 "raw": {
                   "language": "json"
@@ -232,7 +232,7 @@
                 "send"
               ]
             },
-            "description": "Send OTP verification code to phone number for login or registration.\n\n**Authentication:** None required\n\n**Required fields:**\n- `phone` (string) — Phone number (0501234567 or +966501234567)\n- `user_type` (string) — Role: admin, supervisor, merchant, investor, sponsor, user\n\n**Optional:**\n- `channel` (string) — `sms` or `whatsapp` (default: sms)\n\n**Response:**\n- `is_new_user: false` → user exists, will login after verify\n- `is_new_user: true` → new user, will need to complete registration\n\n**⚡ Test mode:** When OTP_TEST_MODE=1, any code is accepted and no SMS is sent."
+            "description": "Send OTP verification code to phone number for login or registration.\n\n**Authentication:** None required\n\n**Required fields:**\n- `phone` (string) — Phone number (+966XXXXXXXXX or 05XXXXXXXX)\n- `user_type` (string) — Role: admin, supervisor, merchant, investor, sponsor, user\n\n**Optional:**\n- `channel` (string) — `sms` or `whatsapp` (default: sms)\n\n**Response:**\n- `is_new_user: false` → user exists, will login after verify\n- `is_new_user: true` → new user, will need to complete registration\n\n**⚡ Test mode:** When OTP_TEST_MODE=1, any code is accepted and no SMS is sent.\n\n**📋 Test Data (حسابات الاختبار):**\n| Phone | user_type | Name |\n|-------|-----------|------|\n| +966567891234 | merchant | Mohammed Al-Harbi |\n| +966559876543 | merchant | Khalid Al-Otaibi |\n| +966512345678 | merchant | Noura Al-Dossary |\n| +966501234567 | investor | Ahmed Al-Rashidi |\n| +966544332211 | investor | Sultan Al-Qahtani |\n| +966538765432 | investor | Faisal Al-Ghamdi |\n| +966551112233 | sponsor | Abdulrahman Al-Fahad |\n| +966554445566 | sponsor | Majed Al-Shammari |\n| +966599999888 | investor | Test Investor |\n| +966501000001 | admin | Admin User |"
           },
           "response": []
         },
@@ -245,17 +245,28 @@
                 "type": "text/javascript",
                 "exec": [
                   "var jsonData = pm.response.json();",
+                  "",
+                  "// Existing user — save auth token",
                   "if (jsonData.data && jsonData.data.token) {",
                   "    pm.environment.set('auth_token', jsonData.data.token);",
                   "    console.log('✅ Token saved to auth_token');",
                   "}",
+                  "",
+                  "// New user — save registration token",
                   "if (jsonData.data && jsonData.data.registration_token) {",
                   "    pm.environment.set('registration_token', jsonData.data.registration_token);",
                   "    console.log('📝 Registration token saved — complete registration next');",
                   "}",
+                  "",
+                  "// Save user ID",
                   "if (jsonData.data && jsonData.data.user) {",
                   "    pm.environment.set('user_id', jsonData.data.user.id);",
-                  "}"
+                  "}",
+                  "",
+                  "pm.test('OTP verify returns success', function () {",
+                  "    pm.response.to.have.status(200);",
+                  "    pm.expect(jsonData.success).to.be.true;",
+                  "});"
                 ]
               }
             }
@@ -273,7 +284,7 @@
             ],
             "body": {
               "mode": "raw",
-              "raw": "{\n  \"phone\": \"0501234567\",\n  \"otp\": \"123456\",\n  \"user_type\": \"merchant\"\n}",
+              "raw": "{\n  \"phone\": \"+966567891234\",\n  \"code\": \"123456\",\n  \"user_type\": \"merchant\"\n}",
               "options": {
                 "raw": {
                   "language": "json"
@@ -292,7 +303,7 @@
                 "verify"
               ]
             },
-            "description": "Verify OTP code and login or get registration token.\n\n**Authentication:** None required\n\n**Required fields:**\n- `phone` (string) — Same phone used in send\n- `otp` (string) — OTP code received\n- `user_type` (string) — Same user_type as send\n\n**Response — Existing User:**\n```json\n{\n  \"success\": true,\n  \"data\": {\n    \"is_new_user\": false,\n    \"user\": { ... },\n    \"token\": \"eyJ0eXAi...\",\n    \"token_type\": \"bearer\",\n    \"expires_in\": 3600\n  }\n}\n```\n\n**Response — New User:**\n```json\n{\n  \"success\": true,\n  \"data\": {\n    \"is_new_user\": true,\n    \"registration_token\": \"xPbaVXHRV5z...\"\n  }\n}\n```\n\n**Test script:** Auto-saves `token` → `auth_token` or `registration_token` → `registration_token`."
+            "description": "Verify OTP code and login or get registration token.\n\n**Authentication:** None required\n\n**Required fields:**\n- `phone` (string) — Same phone used in send\n- `code` (string) — OTP code received (⚠️ الحقل اسمه `code` مو `otp`)\n- `user_type` (string) — Same user_type as send\n\n**⚡ Test mode:** Any code (e.g. 123456) works when OTP_TEST_MODE=1\n\n**Response — Existing User (تسجيل دخول):**\n```json\n{\n  \"success\": true,\n  \"message\": \"تم تسجيل الدخول بنجاح\",\n  \"data\": {\n    \"user\": { \"id\": \"...\", \"name\": \"Mohammed Al-Harbi\", \"roles\": [\"merchant\"] },\n    \"token\": \"eyJ0eXAi...\",\n    \"token_type\": \"bearer\",\n    \"expires_in\": 3600\n  },\n  \"is_new_user\": false\n}\n```\n\n**Response — New User (تسجيل جديد):**\n```json\n{\n  \"success\": true,\n  \"data\": {\n    \"is_new_user\": true,\n    \"registration_token\": \"xPbaVXHRV5z...\"\n  }\n}\n```\n\n**Test script:** Auto-saves `token` → `auth_token` or `registration_token`."
           },
           "response": []
         },
@@ -329,7 +340,7 @@
             ],
             "body": {
               "mode": "raw",
-              "raw": "{\n  \"registration_token\": \"{{registration_token}}\",\n  \"name\": \"أحمد محمد\",\n  \"email\": \"ahmed@example.com\"\n}",
+              "raw": "{\n  \"registration_token\": \"{{registration_token}}\",\n  \"name\": \"أحمد محمد\",\n  \"email\": \"ahmed@example.com\",\n  \"business_name\": \"شركة أحمد للتجارة\",\n  \"business_type\": \"retail\",\n  \"region\": \"الرياض\"\n}",
               "options": {
                 "raw": {
                   "language": "json"
@@ -348,7 +359,7 @@
                 "complete-registration"
               ]
             },
-            "description": "Complete registration for new users after OTP verification.\n\n**Authentication:** None required (uses registration_token)\n\n**Required fields:**\n- `registration_token` (string) — Token from /otp/verify (valid for 30 minutes)\n- `name` (string) — Full name\n\n**Optional:**\n- `email` (string) — Email address\n- `password` (string) — Password (optional — can register without)\n\n**Response:** Returns user data + JWT token (same as login).\n\n**Note:** This endpoint is ONLY for new users who got `is_new_user: true` from /otp/verify."
+            "description": "Complete registration for new users after OTP verification.\n\n**Authentication:** None required (uses registration_token)\n\n**Required fields:**\n- `registration_token` (string) — Token from /otp/verify (valid for 30 minutes)\n- `name` (string) — Full name\n\n**Optional:**\n- `email` (string) — Email address\n- `business_name` (string) — Business name\n- `business_type` (string) — Business type\n- `region` (string) — Region\n\n**Response:** Returns user data + JWT token (same as login).\n\n**Note:** This endpoint is ONLY for new users who got `is_new_user: true` from /otp/verify."
           },
           "response": []
         },
@@ -622,7 +633,7 @@
             ],
             "body": {
               "mode": "raw",
-              "raw": "{\n  \"phone\": \"0501234567\",\n  \"channel\": \"sms\"\n}",
+              "raw": "{\n  \"phone\": \"+966567891234\",\n  \"channel\": \"sms\"\n}",
               "options": {
                 "raw": {
                   "language": "json"
@@ -657,7 +668,7 @@
             ],
             "body": {
               "mode": "raw",
-              "raw": "{\n  \"phone\": \"0501234567\",\n  \"code\": \"123456\"\n}",
+              "raw": "{\n  \"phone\": \"+966567891234\",\n  \"code\": \"123456\"\n}",
               "options": {
                 "raw": {
                   "language": "json"
