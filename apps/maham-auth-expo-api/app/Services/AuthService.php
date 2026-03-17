@@ -7,7 +7,7 @@ use App\Mail\PasswordResetMail;
 use App\Mail\EmailVerificationMail;
 use App\Models\RefreshToken;
 use App\Models\Role;
-use App\Services\TwilioService;
+use App\Services\OtpProviderManager;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Mail;
@@ -20,7 +20,7 @@ class AuthService
 {
     public function __construct(
         protected AuditService $auditService,
-        protected TwilioService $twilioService
+        protected OtpProviderManager $otpProvider
     ) {}
 
     /**
@@ -423,12 +423,13 @@ class AuthService
         // Normalize phone to E.164 format
         $phone = $this->normalizePhone($phone);
 
-        $result = $this->twilioService->sendOtp($phone, $channel);
+        $result = $this->otpProvider->sendOtp($phone, $channel);
 
         if ($result['success']) {
             $this->auditService->log('phone_otp_sent', $user, [
                 'ip' => request()->ip(),
                 'channel' => $channel,
+                'provider' => $this->otpProvider->getActiveProviderName(),
             ]);
         }
 
@@ -442,7 +443,7 @@ class AuthService
     {
         $phone = $this->normalizePhone($phone);
 
-        $result = $this->twilioService->verifyOtp($phone, $code);
+        $result = $this->otpProvider->verifyOtp($phone, $code);
 
         if ($result['success'] && $result['valid']) {
             // Mark phone as verified
@@ -492,16 +493,21 @@ class AuthService
 
     /**
      * Send OTP for login/register (public — no auth required)
+     * user_type اختياري — إذا المستخدم موجود يُكتشف تلقائياً
      */
-    public function sendLoginOtp(string $phone, string $userType, string $channel = 'sms'): array
+    public function sendLoginOtp(string $phone, ?string $userType = null, string $channel = 'sms'): array
     {
         $phone = $this->normalizePhone($phone);
 
         // Check if user exists with this phone
         $user = User::where('phone', $phone)->first();
 
-        // If user exists, verify their role matches the requested user_type
         if ($user) {
+            // المستخدم موجود — اكتشف نوعه تلقائياً إذا ما تم تحديده
+            if (!$userType) {
+                $userType = $user->roles->first()?->name ?? 'user';
+            }
+
             if (!$user->hasRole($userType)) {
                 return [
                     'success' => false,
@@ -517,28 +523,36 @@ class AuthService
                     'error_code' => 'account_inactive',
                 ];
             }
+        } else {
+            // مستخدم جديد — يجب تحديد النوع
+            if (!$userType) {
+                $userType = 'user'; // افتراضي
+            }
         }
 
-        // Check if in test mode — skip Twilio, accept any OTP code
-        $isTestMode = config('twilio.test_mode', false);
+        // Check if in test mode
+        $isTestMode = config('otp.test_mode', config('twilio.test_mode', false));
 
         if ($isTestMode) {
-            // In test mode: mark that this phone has a pending OTP (any code will be accepted)
-            Cache::put("login_otp_{$phone}", '__test_mode__', now()->addMinutes(10));
+            Cache::put("login_otp_{$phone}", ['type' => $userType, 'mode' => 'test'], now()->addMinutes(10));
 
             return [
                 'success' => true,
                 'message' => 'تم إرسال رمز التحقق (وضع الاختبار)',
                 'is_new_user' => !$user,
+                'user_type' => $userType,
                 'test_mode' => true,
             ];
         }
 
-        // Production: send via Twilio
-        $result = $this->twilioService->sendOtp($phone, $channel);
+        // Production: send via active OTP provider
+        $result = $this->otpProvider->sendOtp($phone, $channel);
 
         if ($result['success']) {
+            // حفظ نوع المستخدم مع الـ OTP request
+            Cache::put("login_otp_type_{$phone}", $userType, now()->addMinutes(10));
             $result['is_new_user'] = !$user;
+            $result['user_type'] = $userType;
         }
 
         return $result;
@@ -546,37 +560,51 @@ class AuthService
 
     /**
      * Verify OTP for login/register (public — no auth required)
+     * user_type اختياري — يُكتشف تلقائياً إذا المستخدم موجود
      */
-    public function verifyLoginOtp(string $phone, string $code, string $userType): array
+    public function verifyLoginOtp(string $phone, string $code, ?string $userType = null): array
     {
         $phone = $this->normalizePhone($phone);
 
         // Check test mode
-        $isTestMode = config('twilio.test_mode', false);
+        $isTestMode = config('otp.test_mode', config('twilio.test_mode', false));
 
         if ($isTestMode) {
-            // In test mode: just verify that an OTP was requested for this phone (any code accepted)
-            $cachedCode = Cache::get("login_otp_{$phone}");
-            if (!$cachedCode) {
+            $cached = Cache::get("login_otp_{$phone}");
+            if (!$cached) {
                 return [
                     'success' => false,
                     'message' => 'لم يتم طلب رمز تحقق لهذا الرقم',
                     'valid' => false,
                 ];
             }
+            // استرجاع نوع المستخدم من الـ cache إذا ما تم تحديده
+            if (!$userType && is_array($cached)) {
+                $userType = $cached['type'] ?? null;
+            }
             Cache::forget("login_otp_{$phone}");
         } else {
-            // Production: verify via Twilio
-            $result = $this->twilioService->verifyOtp($phone, $code);
-            if (!$result['success'] || !$result['valid']) {
+            // Production: verify via active OTP provider
+            $result = $this->otpProvider->verifyOtp($phone, $code);
+            if (!$result['success'] || !($result['valid'] ?? false)) {
                 return $result;
             }
+            // استرجاع نوع المستخدم المحفوظ أثناء الإرسال
+            if (!$userType) {
+                $userType = Cache::get("login_otp_type_{$phone}");
+            }
+            Cache::forget("login_otp_type_{$phone}");
         }
 
         // OTP is valid — check if user exists
         $user = User::where('phone', $phone)->first();
 
         if ($user) {
+            // اكتشاف نوع المستخدم تلقائياً إذا ما تم تحديده
+            if (!$userType) {
+                $userType = $user->roles->first()?->name ?? 'user';
+            }
+
             // Verify user type matches
             if (!$user->hasRole($userType)) {
                 return [
@@ -594,6 +622,7 @@ class AuthService
 
             $this->auditService->log('login_otp', $user, [
                 'ip' => request()->ip(),
+                'provider' => $this->otpProvider->getActiveProviderName(),
             ]);
 
             return [
@@ -611,6 +640,10 @@ class AuthService
         }
 
         // New user — generate temporary registration token
+        if (!$userType) {
+            $userType = 'user';
+        }
+
         $registrationToken = Str::random(64);
         Cache::put("otp_registration_{$registrationToken}", [
             'phone' => $phone,

@@ -4,6 +4,7 @@ use App\Http\Controllers\Api\AuthController;
 use App\Http\Controllers\Api\DashboardController;
 use App\Http\Controllers\Api\HealthController;
 use App\Http\Controllers\Api\InternalSettingController;
+use App\Http\Controllers\Api\OtpController;
 use App\Http\Controllers\Api\UserController;
 use App\Http\Controllers\Api\RoleController;
 use App\Http\Controllers\Api\PermissionController;
@@ -64,6 +65,15 @@ Route::middleware('auth:api')->group(function () {
     // Admin Dashboard Statistics
     Route::get('/admin/stats/users', [DashboardController::class, 'users'])
         ->middleware('permission:users.view');
+
+    // ── Admin OTP Management ──
+    Route::prefix('admin/otp')->middleware('role:admin,super-admin')->group(function () {
+        Route::get('/balance', [OtpController::class, 'balance']);       // رصيد المزود النشط
+        Route::get('/balances', [OtpController::class, 'allBalances']); // رصيد كل المزودين
+        Route::get('/providers', [OtpController::class, 'providers']);   // حالة المزودين
+        Route::get('/stats', [OtpController::class, 'stats']);           // إحصائيات
+        Route::post('/test-send', [OtpController::class, 'testSend']);   // اختبار إرسال
+    });
 
     // Auth
     Route::prefix('auth')->group(function () {

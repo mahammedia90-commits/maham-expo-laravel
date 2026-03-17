@@ -2,11 +2,12 @@
 
 namespace App\Services;
 
+use App\Contracts\OtpProviderInterface;
 use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Cache;
 
-class TwilioService
+class TwilioService implements OtpProviderInterface
 {
     protected string $accountSid;
     protected string $authToken;
@@ -17,12 +18,22 @@ class TwilioService
 
     public function __construct()
     {
-        $this->accountSid = config('twilio.account_sid');
-        $this->authToken = config('twilio.auth_token');
-        $this->verifyServiceSid = config('twilio.verify_service_sid');
-        $this->baseUrl = rtrim(config('twilio.base_url'), '/');
-        $this->defaultChannel = config('twilio.default_channel', 'sms');
-        $this->maxAttempts = config('twilio.max_attempts_per_hour', 5);
+        $this->accountSid = config('otp.providers.twilio.account_sid', config('twilio.account_sid', ''));
+        $this->authToken = config('otp.providers.twilio.auth_token', config('twilio.auth_token', ''));
+        $this->verifyServiceSid = config('otp.providers.twilio.verify_service_sid', config('twilio.verify_service_sid', ''));
+        $this->baseUrl = rtrim(config('otp.providers.twilio.base_url', config('twilio.base_url', 'https://verify.twilio.com/v2')), '/');
+        $this->defaultChannel = config('otp.default_channel', config('twilio.default_channel', 'sms'));
+        $this->maxAttempts = config('otp.max_attempts_per_hour', config('twilio.max_attempts_per_hour', 5));
+    }
+
+    public function getName(): string
+    {
+        return 'twilio';
+    }
+
+    public function isConfigured(): bool
+    {
+        return !empty($this->accountSid) && !empty($this->authToken) && !empty($this->verifyServiceSid);
     }
 
     /**
@@ -30,9 +41,10 @@ class TwilioService
      *
      * @param string $phoneNumber Phone number in E.164 format (+966XXXXXXXXX)
      * @param string $channel 'sms' or 'whatsapp'
+     * @param array $options Additional options
      * @return array
      */
-    public function sendOtp(string $phoneNumber, string $channel = null): array
+    public function sendOtp(string $phoneNumber, string $channel = 'sms', array $options = []): array
     {
         // Check if SMS/OTP is enabled from dashboard
         if (!config('twilio.enabled', true)) {
@@ -173,6 +185,39 @@ class TwilioService
                 'message' => 'خطأ في الاتصال بخدمة التحقق',
                 'valid' => false,
             ];
+        }
+    }
+
+    /**
+     * Get balance — Twilio doesn't have a simple balance API like Authentica
+     */
+    public function getBalance(): array
+    {
+        if (!$this->isConfigured()) {
+            return ['success' => false, 'message' => 'Twilio غير مهيأ'];
+        }
+
+        try {
+            $response = Http::withBasicAuth($this->accountSid, $this->authToken)
+                ->get("https://api.twilio.com/2010-04-01/Accounts/{$this->accountSid}/Balance.json");
+
+            $data = $response->json();
+
+            if ($response->successful()) {
+                return [
+                    'success' => true,
+                    'data' => [
+                        'provider' => 'twilio',
+                        'balance' => $data['balance'] ?? null,
+                        'currency' => $data['currency'] ?? 'USD',
+                        'raw' => $data,
+                    ],
+                ];
+            }
+
+            return ['success' => false, 'message' => 'فشل جلب الرصيد'];
+        } catch (\Exception $e) {
+            return ['success' => false, 'message' => 'خطأ في الاتصال بـ Twilio'];
         }
     }
 
