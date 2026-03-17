@@ -1168,11 +1168,67 @@
                 @endforeach
             </div>
         </div>
+
+        <!-- Admin Investors CRUD -->
+        <div class="glass border border-white/5 rounded-2xl overflow-hidden mb-4">
+            <div class="px-6 py-3 border-b border-white/5 bg-white/[0.02]">
+                <h5 class="text-xs font-bold text-gray-400 flex items-center gap-2">
+                    <svg class="w-3.5 h-3.5 text-cyan-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0z"/></svg>
+                    إدارة المستثمرين - Investors Management (Admin)
+                </h5>
+            </div>
+            <div class="divide-y divide-white/5">
+                @php
+                    $adminInvestorEps = [
+                        ['GET', '/api/v1/manage/investors', 'قائمة المستثمرين', 'profiles.view-all'],
+                        ['POST', '/api/v1/manage/investors', 'إنشاء مستثمر', 'profiles.approve'],
+                        ['GET', '/api/v1/manage/investors/{investor}', 'تفاصيل مستثمر', 'profiles.view-all'],
+                        ['PUT', '/api/v1/manage/investors/{investor}', 'تحديث مستثمر', 'profiles.approve'],
+                        ['DELETE', '/api/v1/manage/investors/{investor}', 'حذف مستثمر', 'profiles.approve'],
+                    ];
+                @endphp
+                @foreach($adminInvestorEps as $ep)
+                <div class="endpoint-row flex items-center px-5 py-2.5 gap-2">
+                    <span class="method-badge font-bold px-1.5 py-0.5 rounded font-mono min-w-[44px] text-center {{ $ep[0] === 'GET' ? 'bg-emerald-500/15 text-emerald-400' : ($ep[0] === 'POST' ? 'bg-blue-500/15 text-blue-400' : ($ep[0] === 'PUT' ? 'bg-amber-500/15 text-amber-400' : 'bg-rose-500/15 text-rose-400')) }}">{{ $ep[0] }}</span>
+                    <code class="text-[11px] text-gray-400 font-mono" dir="ltr">{{ $ep[1] }}</code>
+                    <span class="text-[11px] text-gray-600">{{ $ep[2] }}</span>
+                    <span class="mr-auto"></span>
+                    <span class="text-[9px] px-2 py-0.5 rounded-full bg-amber-500/10 text-amber-400/70 font-mono">{{ $ep[3] }}</span>
+                </div>
+                @endforeach
+            </div>
+        </div>
+
+        <!-- Admin Merchants CRUD -->
+        <div class="glass border border-white/5 rounded-2xl overflow-hidden mb-4">
+            <div class="px-6 py-3 border-b border-white/5 bg-white/[0.02]">
+                <h5 class="text-xs font-bold text-gray-400 flex items-center gap-2">
+                    <svg class="w-3.5 h-3.5 text-violet-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 3h2l.4 2M7 13h10l4-8H5.4M7 13L5.4 5M7 13l-2.293 2.293c-.63.63-.184 1.707.707 1.707H17m0 0a2 2 0 100 4 2 2 0 000-4zm-8 2a2 2 0 100 4 2 2 0 000-4z"/></svg>
+                    إدارة التجار - Merchants Management (Admin)
+                </h5>
+            </div>
+            <div class="divide-y divide-white/5">
+                @php
+                    $adminMerchantEps = [
+                        ['GET', '/api/v1/manage/merchants', 'قائمة التجار', 'profiles.view-all'],
+                        ['POST', '/api/v1/manage/merchants', 'إنشاء تاجر', 'profiles.approve'],
+                        ['GET', '/api/v1/manage/merchants/{merchant}', 'تفاصيل تاجر', 'profiles.view-all'],
+                        ['PUT', '/api/v1/manage/merchants/{merchant}', 'تحديث تاجر', 'profiles.approve'],
+                        ['DELETE', '/api/v1/manage/merchants/{merchant}', 'حذف تاجر', 'profiles.approve'],
+                    ];
+                @endphp
+                @foreach($adminMerchantEps as $ep)
+                <div class="endpoint-row flex items-center px-5 py-2.5 gap-2">
+                    <span class="method-badge font-bold px-1.5 py-0.5 rounded font-mono min-w-[44px] text-center {{ $ep[0] === 'GET' ? 'bg-emerald-500/15 text-emerald-400' : ($ep[0] === 'POST' ? 'bg-blue-500/15 text-blue-400' : ($ep[0] === 'PUT' ? 'bg-amber-500/15 text-amber-400' : 'bg-rose-500/15 text-rose-400')) }}">{{ $ep[0] }}</span>
+                    <code class="text-[11px] text-gray-400 font-mono" dir="ltr">{{ $ep[1] }}</code>
+                    <span class="text-[11px] text-gray-600">{{ $ep[2] }}</span>
+                    <span class="mr-auto"></span>
+                    <span class="text-[9px] px-2 py-0.5 rounded-full bg-amber-500/10 text-amber-400/70 font-mono">{{ $ep[3] }}</span>
+                </div>
+                @endforeach
+            </div>
+        </div>
     </section>
-
-    <div class="glow-line max-w-4xl mx-auto"></div>
-
-    <!-- Supervisor API Endpoints -->
     <section id="supervisor-api" class="section-anchor max-w-7xl mx-auto px-6 py-16">
         <div class="flex items-center gap-3 mb-2">
             <div class="w-1 h-8 bg-orange-500 rounded-full"></div>
@@ -1932,6 +1988,131 @@
     <span class="key">"available_modes"</span>: [<span class="str">"phone_and_otp"</span>, <span class="str">"email_and_password"</span>, <span class="str">"both"</span>]
   }
 }</code></pre>
+            </div>
+        </div>
+    </section>
+
+    <div class="glow-line max-w-4xl mx-auto"></div>
+
+    <!-- Registration Flow -->
+    <section id="registration-flow" class="section-anchor max-w-7xl mx-auto px-6 py-16">
+        <div class="flex items-center gap-3 mb-2">
+            <div class="w-1 h-8 bg-teal-500 rounded-full"></div>
+            <h3 class="text-2xl font-bold">طريقة التسجيل</h3>
+            <span class="text-xs bg-teal-500/10 text-teal-400 px-2.5 py-1 rounded-full">Registration Flow</span>
+        </div>
+        <p class="text-gray-500 text-sm mb-8 mr-4">يمكن التسجيل في المنصة بطريقتين: التسجيل العادي أو عبر رمز التحقق OTP</p>
+
+        <div class="grid md:grid-cols-2 gap-6">
+            <!-- Method 1: Standard Registration -->
+            <div class="glass border border-white/5 rounded-2xl overflow-hidden card-hover">
+                <div class="px-6 py-4 border-b border-white/5 bg-white/[0.02]">
+                    <div class="flex items-center gap-2 mb-1">
+                        <span class="w-6 h-6 bg-blue-500/20 text-blue-400 rounded-full flex items-center justify-center text-xs font-bold">1</span>
+                        <h5 class="text-sm font-bold text-white">التسجيل العادي</h5>
+                    </div>
+                    <p class="text-xs text-gray-500">Standard Registration — الاسم + رقم الجوال</p>
+                </div>
+                <div class="p-6">
+                    <div class="space-y-4">
+                        <div class="flex items-start gap-3">
+                            <span class="w-5 h-5 bg-emerald-500/20 text-emerald-400 rounded-full flex items-center justify-center text-[10px] font-bold mt-0.5 shrink-0">①</span>
+                            <div>
+                                <p class="text-xs text-gray-300 font-semibold mb-1">التسجيل</p>
+                                <p class="text-[11px] text-gray-500">POST /api/v1/register — أرسل الاسم ورقم الجوال. الإيميل وكلمة المرور اختياريين. إذا لم ترسل كلمة مرور سيتم استخدام رقم الجوال ككلمة مرور.</p>
+                            </div>
+                        </div>
+                        <div class="flex items-start gap-3">
+                            <span class="w-5 h-5 bg-emerald-500/20 text-emerald-400 rounded-full flex items-center justify-center text-[10px] font-bold mt-0.5 shrink-0">②</span>
+                            <div>
+                                <p class="text-xs text-gray-300 font-semibold mb-1">تسجيل الدخول</p>
+                                <p class="text-[11px] text-gray-500">POST /api/v1/login — سجّل بالجوال وكلمة المرور</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="code-block rounded-xl p-4 text-xs mt-4 overflow-x-auto" dir="ltr">
+<pre class="text-gray-300"><code><span class="comment"># التسجيل العادي</span>
+<span class="cmd">curl</span> <span class="flag">-X</span> POST <span class="url">https://auth-service-api.mahamexpo.sa/api/v1/register</span> \
+  <span class="flag">-H</span> <span class="str">"Content-Type: application/json"</span> \
+  <span class="flag">-d</span> <span class="str">'{
+    "name": "أحمد",
+    "phone": "0501234567"
+  }'</span>
+
+<span class="comment"># كلمة المرور = رقم الجوال</span>
+<span class="cmd">curl</span> <span class="flag">-X</span> POST <span class="url">https://auth-service-api.mahamexpo.sa/api/v1/login</span> \
+  <span class="flag">-H</span> <span class="str">"Content-Type: application/json"</span> \
+  <span class="flag">-d</span> <span class="str">'{
+    "phone": "0501234567",
+    "password": "0501234567"
+  }'</span></code></pre>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Method 2: OTP Registration -->
+            <div class="glass border border-white/5 rounded-2xl overflow-hidden card-hover">
+                <div class="px-6 py-4 border-b border-white/5 bg-white/[0.02]">
+                    <div class="flex items-center gap-2 mb-1">
+                        <span class="w-6 h-6 bg-emerald-500/20 text-emerald-400 rounded-full flex items-center justify-center text-xs font-bold">2</span>
+                        <h5 class="text-sm font-bold text-white">التسجيل عبر OTP</h5>
+                    </div>
+                    <p class="text-xs text-gray-500">OTP Registration — رقم الجوال + رمز التحقق</p>
+                </div>
+                <div class="p-6">
+                    <div class="space-y-4">
+                        <div class="flex items-start gap-3">
+                            <span class="w-5 h-5 bg-emerald-500/20 text-emerald-400 rounded-full flex items-center justify-center text-[10px] font-bold mt-0.5 shrink-0">①</span>
+                            <div>
+                                <p class="text-xs text-gray-300 font-semibold mb-1">طلب OTP</p>
+                                <p class="text-[11px] text-gray-500">POST /api/v1/otp/send — أرسل رقم الجوال. يصلك رمز تحقق عبر SMS (في وضع الاختبار الرمز دائماً <code class="text-emerald-300">123456</code>)</p>
+                            </div>
+                        </div>
+                        <div class="flex items-start gap-3">
+                            <span class="w-5 h-5 bg-emerald-500/20 text-emerald-400 rounded-full flex items-center justify-center text-[10px] font-bold mt-0.5 shrink-0">②</span>
+                            <div>
+                                <p class="text-xs text-gray-300 font-semibold mb-1">تأكيد OTP</p>
+                                <p class="text-[11px] text-gray-500">POST /api/v1/otp/verify — أرسل الرقم + الرمز. إذا المستخدم جديد يتم تسجيله تلقائياً وكلمة المرور = رقم الجوال</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="code-block rounded-xl p-4 text-xs mt-4 overflow-x-auto" dir="ltr">
+<pre class="text-gray-300"><code><span class="comment"># إرسال رمز التحقق</span>
+<span class="cmd">curl</span> <span class="flag">-X</span> POST <span class="url">https://auth-service-api.mahamexpo.sa/api/v1/otp/send</span> \
+  <span class="flag">-H</span> <span class="str">"Content-Type: application/json"</span> \
+  <span class="flag">-d</span> <span class="str">'{"phone": "0501234567"}'</span>
+
+<span class="comment"># تأكيد الرمز (والتسجيل التلقائي)</span>
+<span class="cmd">curl</span> <span class="flag">-X</span> POST <span class="url">https://auth-service-api.mahamexpo.sa/api/v1/otp/verify</span> \
+  <span class="flag">-H</span> <span class="str">"Content-Type: application/json"</span> \
+  <span class="flag">-d</span> <span class="str">'{
+    "phone": "0501234567",
+    "otp": "123456"
+  }'</span></code></pre>
+                    </div>
+                    <div class="mt-3 p-3 bg-amber-500/5 border border-amber-500/10 rounded-xl">
+                        <p class="text-[11px] text-amber-400/80"><span class="font-bold">ملاحظة:</span> في وضع الاختبار (<code class="text-amber-300">sms_test_mode</code>)، رمز OTP دائماً <code class="text-emerald-300 font-bold">123456</code></p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Important Notes -->
+        <div class="mt-6 glass border border-white/5 rounded-2xl p-6">
+            <h5 class="text-sm font-bold text-gray-300 mb-3">ملاحظات مهمة عن التسجيل</h5>
+            <div class="grid md:grid-cols-3 gap-4">
+                <div class="flex items-start gap-2">
+                    <span class="text-emerald-400 mt-0.5">✓</span>
+                    <p class="text-xs text-gray-400"><strong class="text-gray-300">الإيميل اختياري</strong> — يمكنك التسجيل بدون إيميل</p>
+                </div>
+                <div class="flex items-start gap-2">
+                    <span class="text-emerald-400 mt-0.5">✓</span>
+                    <p class="text-xs text-gray-400"><strong class="text-gray-300">كلمة المرور الافتراضية</strong> — إذا لم تحدد كلمة مرور، سيتم استخدام رقم الجوال</p>
+                </div>
+                <div class="flex items-start gap-2">
+                    <span class="text-emerald-400 mt-0.5">✓</span>
+                    <p class="text-xs text-gray-400"><strong class="text-gray-300">التسجيل التلقائي</strong> — عبر OTP، إذا الرقم جديد يتم إنشاء حساب تلقائياً</p>
+                </div>
             </div>
         </div>
     </section>

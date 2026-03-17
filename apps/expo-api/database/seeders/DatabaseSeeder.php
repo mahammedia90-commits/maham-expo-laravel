@@ -21,6 +21,8 @@ class DatabaseSeeder extends Seeder
             ServiceSeeder::class,
             FaqSeeder::class,
             PageSeeder::class,
+            MemberTypeSeeder::class,
+            BusinessActivityTypeSeeder::class,
 
             // 2. Events (depends: Categories, Cities → also creates Sections & Spaces)
             EventSeeder::class,

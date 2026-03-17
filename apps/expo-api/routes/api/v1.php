@@ -78,6 +78,8 @@ use App\Http\Controllers\Api\Admin\AnalyticsController as AdminAnalyticsControll
 use App\Http\Controllers\Api\BusinessActivityTypeController;
 use App\Http\Controllers\Api\Admin\MemberTypeController as AdminMemberTypeController;
 use App\Http\Controllers\Api\Admin\BusinessActivityTypeController as AdminBusinessActivityTypeController;
+use App\Http\Controllers\Api\Admin\InvestorController as AdminInvestorController;
+use App\Http\Controllers\Api\Admin\MerchantController as AdminMerchantController;
 use App\Http\Controllers\Api\Merchant\TeamMemberController as MerchantTeamMemberController;
 use App\Http\Controllers\Api\Investor\TeamMemberController as InvestorTeamMemberController;
 
@@ -895,6 +897,34 @@ Route::middleware([SetLocale::class])->group(function () {
                         ->middleware(CheckPermission::class . ':business-activity-types.update');
                     Route::delete('/{businessActivityType}', [AdminBusinessActivityTypeController::class, 'destroy'])
                         ->middleware(CheckPermission::class . ':business-activity-types.delete');
+                });
+
+                // ── Investors (Admin CRUD) ───────────────────────────
+                Route::prefix('investors')->group(function () {
+                    Route::get('/', [AdminInvestorController::class, 'index'])
+                        ->middleware(CheckPermission::class . ':profiles.view-all');
+                    Route::post('/', [AdminInvestorController::class, 'store'])
+                        ->middleware(CheckPermission::class . ':profiles.approve');
+                    Route::get('/{investor}', [AdminInvestorController::class, 'show'])
+                        ->middleware(CheckPermission::class . ':profiles.view-all');
+                    Route::put('/{investor}', [AdminInvestorController::class, 'update'])
+                        ->middleware(CheckPermission::class . ':profiles.approve');
+                    Route::delete('/{investor}', [AdminInvestorController::class, 'destroy'])
+                        ->middleware(CheckPermission::class . ':profiles.approve');
+                });
+
+                // ── Merchants (Admin CRUD) ────────────────────────────
+                Route::prefix('merchants')->group(function () {
+                    Route::get('/', [AdminMerchantController::class, 'index'])
+                        ->middleware(CheckPermission::class . ':profiles.view-all');
+                    Route::post('/', [AdminMerchantController::class, 'store'])
+                        ->middleware(CheckPermission::class . ':profiles.approve');
+                    Route::get('/{merchant}', [AdminMerchantController::class, 'show'])
+                        ->middleware(CheckPermission::class . ':profiles.view-all');
+                    Route::put('/{merchant}', [AdminMerchantController::class, 'update'])
+                        ->middleware(CheckPermission::class . ':profiles.approve');
+                    Route::delete('/{merchant}', [AdminMerchantController::class, 'destroy'])
+                        ->middleware(CheckPermission::class . ':profiles.approve');
                 });
 
             }); // End /manage/

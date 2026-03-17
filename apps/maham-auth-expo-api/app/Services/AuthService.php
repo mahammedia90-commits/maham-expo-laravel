@@ -28,10 +28,12 @@ class AuthService
      */
     public function register(array $data): User
     {
+        $password = $data['password'] ?? $data['phone'];
+
         $user = User::create([
             'name' => $data['name'],
-            'email' => $data['email'],
-            'password' => Hash::make($data['password']),
+            'email' => $data['email'] ?? null,
+            'password' => Hash::make($password),
             'phone' => $data['phone'] ?? null,
             'status' => 'active',
         ]);
@@ -656,12 +658,12 @@ class AuthService
             ];
         }
 
-        // Create user
+        // Create user (email optional, password defaults to phone number)
         $user = User::create([
             'name' => $data['name'],
             'email' => $data['email'] ?? null,
             'phone' => $phone,
-            'password' => Hash::make(Str::random(32)), // Random password (OTP-only user)
+            'password' => Hash::make($phone), // كلمة المرور = رقم الجوال
             'phone_verified_at' => now(),
             'status' => 'active',
             'metadata' => [
