@@ -1,1416 +1,1954 @@
 {
-	"info": {
-		"_postman_id": "auth-service-001",
-		"name": "Auth Service",
-		"description": "Maham Auth Service API (maham-auth-expo-api)\n\nBase URL: {{auth_url}}/v1\n\nThis collection covers authentication, user management, roles, permissions, services, and service-to-service (S2S) communication.",
-		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
-	},
-	"auth": {
-		"type": "bearer",
-		"bearer": [
-			{
-				"key": "token",
-				"value": "{{auth_token}}",
-				"type": "string"
-			}
-		]
-	},
-	"event": [
-		{
-			"listen": "prerequest",
-			"script": {
-				"type": "text/javascript",
-				"exec": [
-					"pm.request.headers.add({ key: 'Accept', value: 'application/json' });",
-					"pm.request.headers.add({ key: 'Accept-Language', value: pm.environment.get('language') || 'ar' });",
-					"pm.request.headers.add({ key: 'X-Platform', value: pm.environment.get('platform') || 'web' });"
-				]
-			}
-		}
-	],
-	"variable": [
-		{
-			"key": "auth_url",
-			"value": "http://localhost:8001",
-			"description": "Auth service base URL"
-		},
-		{
-			"key": "auth_token",
-			"value": "",
-			"description": "JWT access token"
-		},
-		{
-			"key": "user_id",
-			"value": "",
-			"description": "Current user ID"
-		},
-		{
-			"key": "role_id",
-			"value": "",
-			"description": "Role ID for role operations"
-		},
-		{
-			"key": "permission_id",
-			"value": "",
-			"description": "Permission ID for permission operations"
-		},
-		{
-			"key": "service_id",
-			"value": "",
-			"description": "Service record ID for service operations"
-		},
-		{
-			"key": "language",
-			"value": "ar",
-			"description": "Accept-Language header value (default: ar)"
-		},
-		{
-			"key": "platform",
-			"value": "web",
-			"description": "X-Platform header value (default: web)"
-		}
-	],
-	"item": [
-		{
-			"name": "🏥 Health Check",
-			"description": "Health check endpoint for the Auth Service.",
-			"item": [
-				{
-					"name": "Health Check",
-					"request": {
-						"auth": {
-							"type": "noauth"
-						},
-						"method": "GET",
-						"header": [],
-						"url": {
-							"raw": "{{auth_url}}/health",
-							"host": ["{{auth_url}}"],
-							"path": ["health"]
-						},
-						"description": "Check the health status of the Auth Service.\n\n**Authentication:** None required"
-					},
-					"response": []
-				}
-			]
-		},
-		{
-			"name": "🔐 Authentication",
-			"description": "Authentication endpoints: register, login, profile management, password reset, token operations, and permission checks.",
-			"item": [
-				{
-					"name": "Register",
-					"request": {
-						"auth": {
-							"type": "noauth"
-						},
-						"method": "POST",
-						"header": [
-							{
-								"key": "Content-Type",
-								"value": "application/json"
-							}
-						],
-						"body": {
-							"mode": "raw",
-							"raw": "{\n\t\"name\": \"John Doe\",\n\t\"email\": \"john@example.com\",\n\t\"password\": \"password123\",\n\t\"password_confirmation\": \"password123\",\n\t\"phone\": \"+966500000000\",\n\t\"roles\": [\"merchant\"]\n}",
-							"options": {
-								"raw": {
-									"language": "json"
-								}
-							}
-						},
-						"url": {
-							"raw": "{{auth_url}}/v1/auth/register",
-							"host": ["{{auth_url}}"],
-							"path": ["v1", "auth", "register"]
-						},
-						"description": "Register a new user. Roles cannot include super-admin, admin, or supervisor.\n\n**Authentication:** None required\n\n**Required fields:**\n- `name` (string) — Full name of the user\n- `email` (string) — Valid email address\n- `password` (string) — Minimum 8 characters\n- `password_confirmation` (string) — Must match password\n\n**Optional fields:**\n- `phone` (string) — Phone number with country code\n- `roles` (array of strings) — Allowed: merchant, investor, sponsor. Cannot include super-admin, admin, or supervisor."
-					},
-					"response": []
-				},
-				{
-					"name": "Login",
-					"event": [
-						{
-							"listen": "test",
-							"script": {
-								"type": "text/javascript",
-								"exec": [
-									"var jsonData = pm.response.json();",
-									"if (jsonData.data && jsonData.data.access_token) {",
-									"    pm.environment.set(\"auth_token\", jsonData.data.access_token);",
-									"}",
-									"if (jsonData.data && jsonData.data.user) {",
-									"    pm.environment.set(\"user_id\", jsonData.data.user.id);",
-									"}"
-								]
-							}
-						}
-					],
-					"request": {
-						"auth": {
-							"type": "noauth"
-						},
-						"method": "POST",
-						"header": [
-							{
-								"key": "Content-Type",
-								"value": "application/json"
-							}
-						],
-						"body": {
-							"mode": "raw",
-							"raw": "{\n\t\"identifier\": \"john@example.com\",\n\t\"password\": \"password123\"\n}",
-							"options": {
-								"raw": {
-									"language": "json"
-								}
-							}
-						},
-						"url": {
-							"raw": "{{auth_url}}/v1/auth/login",
-							"host": ["{{auth_url}}"],
-							"path": ["v1", "auth", "login"]
-						},
-						"description": "Login with email or phone. Rate limited to 10 requests per minute.\n\n**Authentication:** None required\n\n**Required fields:**\n- `identifier` (string) — Email or phone number\n- `password` (string) — Account password\n\n**Test script:** Automatically saves `access_token` to `auth_token` and `user.id` to `user_id` environment variables."
-					},
-					"response": []
-				},
-				{
-					"name": "Get Current User",
-					"request": {
-						"method": "GET",
-						"header": [],
-						"url": {
-							"raw": "{{auth_url}}/v1/auth/me",
-							"host": ["{{auth_url}}"],
-							"path": ["v1", "auth", "me"]
-						},
-						"description": "Get the currently authenticated user's profile.\n\n**Authentication:** Bearer token required"
-					},
-					"response": []
-				},
-				{
-					"name": "Update Profile",
-					"request": {
-						"method": "PUT",
-						"header": [
-							{
-								"key": "Content-Type",
-								"value": "application/json"
-							}
-						],
-						"body": {
-							"mode": "raw",
-							"raw": "{\n\t\"name\": \"John Updated\",\n\t\"phone\": \"+966500000001\"\n}",
-							"options": {
-								"raw": {
-									"language": "json"
-								}
-							}
-						},
-						"url": {
-							"raw": "{{auth_url}}/v1/auth/profile",
-							"host": ["{{auth_url}}"],
-							"path": ["v1", "auth", "profile"]
-						},
-						"description": "Update the authenticated user's profile.\n\n**Authentication:** Bearer token required\n\n**Optional fields:**\n- `name` (string) — Updated full name\n- `phone` (string) — Updated phone number"
-					},
-					"response": []
-				},
-				{
-					"name": "Change Password",
-					"request": {
-						"method": "POST",
-						"header": [
-							{
-								"key": "Content-Type",
-								"value": "application/json"
-							}
-						],
-						"body": {
-							"mode": "raw",
-							"raw": "{\n\t\"current_password\": \"password123\",\n\t\"password\": \"newpassword123\",\n\t\"password_confirmation\": \"newpassword123\"\n}",
-							"options": {
-								"raw": {
-									"language": "json"
-								}
-							}
-						},
-						"url": {
-							"raw": "{{auth_url}}/v1/auth/change-password",
-							"host": ["{{auth_url}}"],
-							"path": ["v1", "auth", "change-password"]
-						},
-						"description": "Change the authenticated user's password.\n\n**Authentication:** Bearer token required\n\n**Required fields:**\n- `current_password` (string) — Current account password\n- `password` (string) — New password, minimum 8 characters\n- `password_confirmation` (string) — Must match new password"
-					},
-					"response": []
-				},
-				{
-					"name": "Forgot Password",
-					"request": {
-						"auth": {
-							"type": "noauth"
-						},
-						"method": "POST",
-						"header": [
-							{
-								"key": "Content-Type",
-								"value": "application/json"
-							}
-						],
-						"body": {
-							"mode": "raw",
-							"raw": "{\n\t\"email\": \"john@example.com\"\n}",
-							"options": {
-								"raw": {
-									"language": "json"
-								}
-							}
-						},
-						"url": {
-							"raw": "{{auth_url}}/v1/auth/forgot-password",
-							"host": ["{{auth_url}}"],
-							"path": ["v1", "auth", "forgot-password"]
-						},
-						"description": "Send a password reset link/code to the user's email.\n\n**Authentication:** None required\n\n**Required fields:**\n- `email` (string) — Registered email address"
-					},
-					"response": []
-				},
-				{
-					"name": "Reset Password",
-					"request": {
-						"auth": {
-							"type": "noauth"
-						},
-						"method": "POST",
-						"header": [
-							{
-								"key": "Content-Type",
-								"value": "application/json"
-							}
-						],
-						"body": {
-							"mode": "raw",
-							"raw": "{\n\t\"email\": \"john@example.com\",\n\t\"token\": \"reset-token-here\",\n\t\"password\": \"newpassword123\",\n\t\"password_confirmation\": \"newpassword123\"\n}",
-							"options": {
-								"raw": {
-									"language": "json"
-								}
-							}
-						},
-						"url": {
-							"raw": "{{auth_url}}/v1/auth/reset-password",
-							"host": ["{{auth_url}}"],
-							"path": ["v1", "auth", "reset-password"]
-						},
-						"description": "Reset a user's password using the token received via email.\n\n**Authentication:** None required\n\n**Required fields:**\n- `email` (string) — Registered email address\n- `token` (string) — Reset token from the forgot-password email\n- `password` (string) — New password, minimum 8 characters\n- `password_confirmation` (string) — Must match new password"
-					},
-					"response": []
-				},
-				{
-					"name": "Refresh Token",
-					"request": {
-						"method": "POST",
-						"header": [],
-						"url": {
-							"raw": "{{auth_url}}/v1/auth/refresh",
-							"host": ["{{auth_url}}"],
-							"path": ["v1", "auth", "refresh"]
-						},
-						"description": "Refresh the current JWT access token.\n\n**Authentication:** Bearer token required (uses current token to issue a new one)"
-					},
-					"response": []
-				},
-				{
-					"name": "Logout",
-					"request": {
-						"method": "POST",
-						"header": [],
-						"url": {
-							"raw": "{{auth_url}}/v1/auth/logout",
-							"host": ["{{auth_url}}"],
-							"path": ["v1", "auth", "logout"]
-						},
-						"description": "Logout and invalidate the current token.\n\n**Authentication:** Bearer token required"
-					},
-					"response": []
-				},
-				{
-					"name": "Send Email Verification",
-					"request": {
-						"method": "POST",
-						"header": [],
-						"url": {
-							"raw": "{{auth_url}}/v1/auth/email/send-verification",
-							"host": ["{{auth_url}}"],
-							"path": ["v1", "auth", "email", "send-verification"]
-						},
-						"description": "Send an email verification code to the authenticated user's email address.\n\n**Authentication:** Bearer token required"
-					},
-					"response": []
-				},
-				{
-					"name": "Verify Email",
-					"request": {
-						"method": "POST",
-						"header": [
-							{
-								"key": "Content-Type",
-								"value": "application/json"
-							}
-						],
-						"body": {
-							"mode": "raw",
-							"raw": "{\n\t\"code\": \"123456\"\n}",
-							"options": {
-								"raw": {
-									"language": "json"
-								}
-							}
-						},
-						"url": {
-							"raw": "{{auth_url}}/v1/auth/email/verify",
-							"host": ["{{auth_url}}"],
-							"path": ["v1", "auth", "email", "verify"]
-						},
-						"description": "Verify the authenticated user's email address using the code sent via email.\n\n**Authentication:** Bearer token required\n\n**Required fields:**\n- `code` (string) — Verification code received via email"
-					},
-					"response": []
-				},
-				{
-					"name": "Verify Token",
-					"request": {
-						"method": "POST",
-						"header": [
-							{
-								"key": "Content-Type",
-								"value": "application/json"
-							}
-						],
-						"body": {
-							"mode": "raw",
-							"raw": "{\n\t\"token\": \"{{auth_token}}\"\n}",
-							"options": {
-								"raw": {
-									"language": "json"
-								}
-							}
-						},
-						"url": {
-							"raw": "{{auth_url}}/v1/verify-token",
-							"host": ["{{auth_url}}"],
-							"path": ["v1", "verify-token"]
-						},
-						"description": "Verify if a given JWT token is valid.\n\n**Authentication:** Bearer token required\n\n**Required fields:**\n- `token` (string) — JWT token to verify"
-					},
-					"response": []
-				},
-				{
-					"name": "Check Permission",
-					"request": {
-						"method": "POST",
-						"header": [
-							{
-								"key": "Content-Type",
-								"value": "application/json"
-							}
-						],
-						"body": {
-							"mode": "raw",
-							"raw": "{\n\t\"permission\": \"users.view\"\n}",
-							"options": {
-								"raw": {
-									"language": "json"
-								}
-							}
-						},
-						"url": {
-							"raw": "{{auth_url}}/v1/check-permission",
-							"host": ["{{auth_url}}"],
-							"path": ["v1", "check-permission"]
-						},
-						"description": "Check if the authenticated user has a specific permission.\n\n**Authentication:** Bearer token required\n\n**Required fields:**\n- `permission` (string) — Permission name to check (e.g. users.view)"
-					},
-					"response": []
-				},
-				{
-					"name": "Check Multiple Permissions",
-					"request": {
-						"method": "POST",
-						"header": [
-							{
-								"key": "Content-Type",
-								"value": "application/json"
-							}
-						],
-						"body": {
-							"mode": "raw",
-							"raw": "{\n\t\"permissions\": [\"users.view\", \"users.create\"]\n}",
-							"options": {
-								"raw": {
-									"language": "json"
-								}
-							}
-						},
-						"url": {
-							"raw": "{{auth_url}}/v1/check-permissions",
-							"host": ["{{auth_url}}"],
-							"path": ["v1", "check-permissions"]
-						},
-						"description": "Check if the authenticated user has multiple permissions at once.\n\n**Authentication:** Bearer token required\n\n**Required fields:**\n- `permissions` (array of strings) — List of permission names to check"
-					},
-					"response": []
-				}
-			]
-		},
-		{
-			"name": "🔌 Service (S2S)",
-			"description": "Service-to-service (S2S) endpoints. Internal Docker network — no authentication required.",
-			"item": [
-				{
-					"name": "Verify User Token",
-					"request": {
-						"auth": {
-							"type": "noauth"
-						},
-						"method": "POST",
-						"header": [
-							{
-								"key": "Content-Type",
-								"value": "application/json"
-							}
-						],
-						"body": {
-							"mode": "raw",
-							"raw": "{\n\t\"token\": \"{{auth_token}}\"\n}",
-							"options": {
-								"raw": {
-									"language": "json"
-								}
-							}
-						},
-						"url": {
-							"raw": "{{auth_url}}/v1/service/verify-token",
-							"host": ["{{auth_url}}"],
-							"path": ["v1", "service", "verify-token"]
-						},
-						"description": "Verify a user's JWT token via service-to-service call.\n\n**Authentication:** None (internal Docker network)\n\n**Required fields:**\n- `token` (string) — The user's JWT token to verify"
-					},
-					"response": []
-				},
-				{
-					"name": "Check User Permission",
-					"request": {
-						"auth": {
-							"type": "noauth"
-						},
-						"method": "POST",
-						"header": [
-							{
-								"key": "Content-Type",
-								"value": "application/json"
-							}
-						],
-						"body": {
-							"mode": "raw",
-							"raw": "{\n\t\"token\": \"{{auth_token}}\",\n\t\"permission\": \"events.view\"\n}",
-							"options": {
-								"raw": {
-									"language": "json"
-								}
-							}
-						},
-						"url": {
-							"raw": "{{auth_url}}/v1/service/check-permission",
-							"host": ["{{auth_url}}"],
-							"path": ["v1", "service", "check-permission"]
-						},
-						"description": "Check if a user has a specific permission via service-to-service call.\n\n**Authentication:** None (internal Docker network)\n\n**Required fields:**\n- `token` (string) — The user's JWT token\n- `permission` (string) — Permission name to check"
-					},
-					"response": []
-				},
-				{
-					"name": "Get User Info",
-					"request": {
-						"auth": {
-							"type": "noauth"
-						},
-						"method": "POST",
-						"header": [
-							{
-								"key": "Content-Type",
-								"value": "application/json"
-							}
-						],
-						"body": {
-							"mode": "raw",
-							"raw": "{\n\t\"token\": \"{{auth_token}}\"\n}",
-							"options": {
-								"raw": {
-									"language": "json"
-								}
-							}
-						},
-						"url": {
-							"raw": "{{auth_url}}/v1/service/user-info",
-							"host": ["{{auth_url}}"],
-							"path": ["v1", "service", "user-info"]
-						},
-						"description": "Get user information from a JWT token via service-to-service call.\n\n**Authentication:** None (internal Docker network)\n\n**Required fields:**\n- `token` (string) — The user's JWT token"
-					},
-					"response": []
-				}
-			]
-		},
-		{
-			"name": "👥 Users",
-			"description": "User management endpoints: CRUD operations, role assignment, and permission management.",
-			"item": [
-				{
-					"name": "List Users",
-					"request": {
-						"method": "GET",
-						"header": [],
-						"url": {
-							"raw": "{{auth_url}}/v1/users",
-							"host": ["{{auth_url}}"],
-							"path": ["v1", "users"],
-							"query": [
-								{
-									"key": "page",
-									"value": "1",
-									"description": "Page number",
-									"disabled": true
-								},
-								{
-									"key": "per_page",
-									"value": "15",
-									"description": "Items per page",
-									"disabled": true
-								},
-								{
-									"key": "search",
-									"value": "",
-									"description": "Search by name or email",
-									"disabled": true
-								},
-								{
-									"key": "status",
-									"value": "active",
-									"description": "Filter by status: active, inactive, suspended",
-									"disabled": true
-								},
-								{
-									"key": "role",
-									"value": "",
-									"description": "Filter by role name",
-									"disabled": true
-								},
-								{
-									"key": "sort_by",
-									"value": "created_at",
-									"description": "Sort field",
-									"disabled": true
-								},
-								{
-									"key": "sort_order",
-									"value": "desc",
-									"description": "Sort direction: asc, desc",
-									"disabled": true
-								}
-							]
-						},
-						"description": "List all users with optional filters and pagination.\n\n**Authentication:** Bearer token required\n\n**Permission:** `users.view`\n\n**Query parameters (all optional):**\n- `page` — Page number\n- `per_page` — Items per page\n- `search` — Search by name or email\n- `status` — Filter by status (active, inactive, suspended)\n- `role` — Filter by role name\n- `sort_by` — Sort field\n- `sort_order` — Sort direction (asc, desc)"
-					},
-					"response": []
-				},
-				{
-					"name": "Create User",
-					"request": {
-						"method": "POST",
-						"header": [
-							{
-								"key": "Content-Type",
-								"value": "application/json"
-							}
-						],
-						"body": {
-							"mode": "raw",
-							"raw": "{\n\t\"name\": \"New User\",\n\t\"email\": \"newuser@example.com\",\n\t\"password\": \"password123\",\n\t\"phone\": \"+966500000002\",\n\t\"status\": \"active\",\n\t\"roles\": [\"merchant\"],\n\t\"metadata\": {}\n}",
-							"options": {
-								"raw": {
-									"language": "json"
-								}
-							}
-						},
-						"url": {
-							"raw": "{{auth_url}}/v1/users",
-							"host": ["{{auth_url}}"],
-							"path": ["v1", "users"]
-						},
-						"description": "Create a new user.\n\n**Authentication:** Bearer token required\n\n**Permission:** `users.create`\n\n**Required fields:**\n- `name` (string) — Full name\n- `email` (string) — Valid email address\n- `password` (string) — Minimum 8 characters\n\n**Optional fields:**\n- `phone` (string) — Phone number with country code\n- `status` (string) — User status: active, inactive, suspended (default: active)\n- `roles` (array of strings) — Roles to assign\n- `metadata` (object) — Additional metadata"
-					},
-					"response": []
-				},
-				{
-					"name": "Show User",
-					"request": {
-						"method": "GET",
-						"header": [],
-						"url": {
-							"raw": "{{auth_url}}/v1/users/{{user_id}}",
-							"host": ["{{auth_url}}"],
-							"path": ["v1", "users", "{{user_id}}"]
-						},
-						"description": "Get details of a specific user.\n\n**Authentication:** Bearer token required\n\n**Permission:** `users.view`\n\n**Path parameters:**\n- `user_id` — The user's ID"
-					},
-					"response": []
-				},
-				{
-					"name": "Update User",
-					"request": {
-						"method": "PUT",
-						"header": [
-							{
-								"key": "Content-Type",
-								"value": "application/json"
-							}
-						],
-						"body": {
-							"mode": "raw",
-							"raw": "{\n\t\"name\": \"Updated Name\",\n\t\"phone\": \"+966500000003\",\n\t\"status\": \"active\"\n}",
-							"options": {
-								"raw": {
-									"language": "json"
-								}
-							}
-						},
-						"url": {
-							"raw": "{{auth_url}}/v1/users/{{user_id}}",
-							"host": ["{{auth_url}}"],
-							"path": ["v1", "users", "{{user_id}}"]
-						},
-						"description": "Update a specific user's details.\n\n**Authentication:** Bearer token required\n\n**Permission:** `users.update`\n\n**Path parameters:**\n- `user_id` — The user's ID\n\n**Optional fields:**\n- `name` (string) — Updated full name\n- `phone` (string) — Updated phone number\n- `status` (string) — Updated status: active, inactive, suspended"
-					},
-					"response": []
-				},
-				{
-					"name": "Delete User",
-					"request": {
-						"method": "DELETE",
-						"header": [],
-						"url": {
-							"raw": "{{auth_url}}/v1/users/{{user_id}}",
-							"host": ["{{auth_url}}"],
-							"path": ["v1", "users", "{{user_id}}"]
-						},
-						"description": "Delete a specific user.\n\n**Authentication:** Bearer token required\n\n**Permission:** `users.delete`\n\n**Path parameters:**\n- `user_id` — The user's ID"
-					},
-					"response": []
-				},
-				{
-					"name": "Assign Roles",
-					"request": {
-						"method": "POST",
-						"header": [
-							{
-								"key": "Content-Type",
-								"value": "application/json"
-							}
-						],
-						"body": {
-							"mode": "raw",
-							"raw": "{\n\t\"roles\": [\"merchant\"]\n}",
-							"options": {
-								"raw": {
-									"language": "json"
-								}
-							}
-						},
-						"url": {
-							"raw": "{{auth_url}}/v1/users/{{user_id}}/roles",
-							"host": ["{{auth_url}}"],
-							"path": ["v1", "users", "{{user_id}}", "roles"]
-						},
-						"description": "Assign roles to a specific user.\n\n**Authentication:** Bearer token required\n\n**Permission:** `roles.update`\n\n**Path parameters:**\n- `user_id` — The user's ID\n\n**Required fields:**\n- `roles` (array of strings) — Role names to assign"
-					},
-					"response": []
-				},
-				{
-					"name": "Get User Permissions",
-					"request": {
-						"method": "GET",
-						"header": [],
-						"url": {
-							"raw": "{{auth_url}}/v1/users/{{user_id}}/permissions",
-							"host": ["{{auth_url}}"],
-							"path": ["v1", "users", "{{user_id}}", "permissions"]
-						},
-						"description": "Get all permissions assigned to a specific user (direct and via roles).\n\n**Authentication:** Bearer token required\n\n**Permission:** `permissions.view`\n\n**Path parameters:**\n- `user_id` — The user's ID"
-					},
-					"response": []
-				},
-				{
-					"name": "Assign Permissions",
-					"request": {
-						"method": "POST",
-						"header": [
-							{
-								"key": "Content-Type",
-								"value": "application/json"
-							}
-						],
-						"body": {
-							"mode": "raw",
-							"raw": "{\n\t\"permissions\": [\"events.view\"]\n}",
-							"options": {
-								"raw": {
-									"language": "json"
-								}
-							}
-						},
-						"url": {
-							"raw": "{{auth_url}}/v1/users/{{user_id}}/permissions",
-							"host": ["{{auth_url}}"],
-							"path": ["v1", "users", "{{user_id}}", "permissions"]
-						},
-						"description": "Assign direct permissions to a specific user.\n\n**Authentication:** Bearer token required\n\n**Permission:** `permissions.update`\n\n**Path parameters:**\n- `user_id` — The user's ID\n\n**Required fields:**\n- `permissions` (array of strings) — Permission names to assign"
-					},
-					"response": []
-				},
-				{
-					"name": "User Stats",
-					"request": {
-						"method": "GET",
-						"header": [],
-						"url": {
-							"raw": "{{auth_url}}/v1/admin/stats/users",
-							"host": ["{{auth_url}}"],
-							"path": ["v1", "admin", "stats", "users"],
-							"query": [
-								{
-									"key": "period",
-									"value": "month",
-									"description": "Stats period: today, week, month, year, all",
-									"disabled": true
-								}
-							]
-						},
-						"description": "Get user statistics for the admin dashboard.\n\n**Authentication:** Bearer token required\n\n**Permission:** `users.view`\n\n**Query parameters (optional):**\n- `period` — Stats period: today, week, month, year, all"
-					},
-					"response": []
-				}
-			]
-		},
-		{
-			"name": "🛡️ Roles",
-			"description": "Role management endpoints: CRUD operations and permission assignment for roles.",
-			"item": [
-				{
-					"name": "List Roles",
-					"request": {
-						"method": "GET",
-						"header": [],
-						"url": {
-							"raw": "{{auth_url}}/v1/roles",
-							"host": ["{{auth_url}}"],
-							"path": ["v1", "roles"],
-							"query": [
-								{
-									"key": "page",
-									"value": "1",
-									"description": "Page number",
-									"disabled": true
-								},
-								{
-									"key": "per_page",
-									"value": "15",
-									"description": "Items per page",
-									"disabled": true
-								},
-								{
-									"key": "search",
-									"value": "",
-									"description": "Search by name or display_name",
-									"disabled": true
-								}
-							]
-						},
-						"description": "List all roles.\n\n**Authentication:** Bearer token required\n\n**Permission:** `roles.view`\n\n**Query parameters (all optional):**\n- `page` — Page number\n- `per_page` — Items per page\n- `search` — Search by name or display_name"
-					},
-					"response": []
-				},
-				{
-					"name": "Create Role",
-					"request": {
-						"method": "POST",
-						"header": [
-							{
-								"key": "Content-Type",
-								"value": "application/json"
-							}
-						],
-						"body": {
-							"mode": "raw",
-							"raw": "{\n\t\"name\": \"editor\",\n\t\"display_name\": \"Editor\",\n\t\"description\": \"Can edit content\"\n}",
-							"options": {
-								"raw": {
-									"language": "json"
-								}
-							}
-						},
-						"url": {
-							"raw": "{{auth_url}}/v1/roles",
-							"host": ["{{auth_url}}"],
-							"path": ["v1", "roles"]
-						},
-						"description": "Create a new role.\n\n**Authentication:** Bearer token required\n\n**Permission:** `roles.create`\n\n**Required fields:**\n- `name` (string) — Unique role slug (lowercase, no spaces)\n\n**Optional fields:**\n- `display_name` (string) — Human-readable role name\n- `description` (string) — Role description"
-					},
-					"response": []
-				},
-				{
-					"name": "Show Role",
-					"request": {
-						"method": "GET",
-						"header": [],
-						"url": {
-							"raw": "{{auth_url}}/v1/roles/{{role_id}}",
-							"host": ["{{auth_url}}"],
-							"path": ["v1", "roles", "{{role_id}}"]
-						},
-						"description": "Get details of a specific role including its permissions.\n\n**Authentication:** Bearer token required\n\n**Permission:** `roles.view`\n\n**Path parameters:**\n- `role_id` — The role's ID"
-					},
-					"response": []
-				},
-				{
-					"name": "Update Role",
-					"request": {
-						"method": "PUT",
-						"header": [
-							{
-								"key": "Content-Type",
-								"value": "application/json"
-							}
-						],
-						"body": {
-							"mode": "raw",
-							"raw": "{\n\t\"display_name\": \"Updated Editor\",\n\t\"description\": \"Updated description\"\n}",
-							"options": {
-								"raw": {
-									"language": "json"
-								}
-							}
-						},
-						"url": {
-							"raw": "{{auth_url}}/v1/roles/{{role_id}}",
-							"host": ["{{auth_url}}"],
-							"path": ["v1", "roles", "{{role_id}}"]
-						},
-						"description": "Update a specific role.\n\n**Authentication:** Bearer token required\n\n**Permission:** `roles.update`\n\n**Path parameters:**\n- `role_id` — The role's ID\n\n**Optional fields:**\n- `display_name` (string) — Updated human-readable name\n- `description` (string) — Updated description"
-					},
-					"response": []
-				},
-				{
-					"name": "Delete Role",
-					"request": {
-						"method": "DELETE",
-						"header": [],
-						"url": {
-							"raw": "{{auth_url}}/v1/roles/{{role_id}}",
-							"host": ["{{auth_url}}"],
-							"path": ["v1", "roles", "{{role_id}}"]
-						},
-						"description": "Delete a specific role.\n\n**Authentication:** Bearer token required\n\n**Permission:** `roles.delete`\n\n**Path parameters:**\n- `role_id` — The role's ID"
-					},
-					"response": []
-				},
-				{
-					"name": "Sync Permissions",
-					"request": {
-						"method": "POST",
-						"header": [
-							{
-								"key": "Content-Type",
-								"value": "application/json"
-							}
-						],
-						"body": {
-							"mode": "raw",
-							"raw": "{\n\t\"permissions\": [\"events.view\", \"events.create\"]\n}",
-							"options": {
-								"raw": {
-									"language": "json"
-								}
-							}
-						},
-						"url": {
-							"raw": "{{auth_url}}/v1/roles/{{role_id}}/permissions",
-							"host": ["{{auth_url}}"],
-							"path": ["v1", "roles", "{{role_id}}", "permissions"]
-						},
-						"description": "Sync (replace) all permissions for a role. This removes any permissions not in the provided list.\n\n**Authentication:** Bearer token required\n\n**Permission:** `roles.update`\n\n**Path parameters:**\n- `role_id` — The role's ID\n\n**Required fields:**\n- `permissions` (array of strings) — Complete list of permission names to sync"
-					},
-					"response": []
-				},
-				{
-					"name": "Add Permissions",
-					"request": {
-						"method": "POST",
-						"header": [
-							{
-								"key": "Content-Type",
-								"value": "application/json"
-							}
-						],
-						"body": {
-							"mode": "raw",
-							"raw": "{\n\t\"permissions\": [\"events.delete\"]\n}",
-							"options": {
-								"raw": {
-									"language": "json"
-								}
-							}
-						},
-						"url": {
-							"raw": "{{auth_url}}/v1/roles/{{role_id}}/permissions/add",
-							"host": ["{{auth_url}}"],
-							"path": ["v1", "roles", "{{role_id}}", "permissions", "add"]
-						},
-						"description": "Add permissions to a role without removing existing ones.\n\n**Authentication:** Bearer token required\n\n**Permission:** `roles.update`\n\n**Path parameters:**\n- `role_id` — The role's ID\n\n**Required fields:**\n- `permissions` (array of strings) — Permission names to add"
-					},
-					"response": []
-				},
-				{
-					"name": "Remove Permissions",
-					"request": {
-						"method": "POST",
-						"header": [
-							{
-								"key": "Content-Type",
-								"value": "application/json"
-							}
-						],
-						"body": {
-							"mode": "raw",
-							"raw": "{\n\t\"permissions\": [\"events.delete\"]\n}",
-							"options": {
-								"raw": {
-									"language": "json"
-								}
-							}
-						},
-						"url": {
-							"raw": "{{auth_url}}/v1/roles/{{role_id}}/permissions/remove",
-							"host": ["{{auth_url}}"],
-							"path": ["v1", "roles", "{{role_id}}", "permissions", "remove"]
-						},
-						"description": "Remove specific permissions from a role.\n\n**Authentication:** Bearer token required\n\n**Permission:** `roles.update`\n\n**Path parameters:**\n- `role_id` — The role's ID\n\n**Required fields:**\n- `permissions` (array of strings) — Permission names to remove"
-					},
-					"response": []
-				}
-			]
-		},
-		{
-			"name": "🔑 Permissions",
-			"description": "Permission management endpoints: CRUD operations and bulk resource permission creation.",
-			"item": [
-				{
-					"name": "List Permissions",
-					"request": {
-						"method": "GET",
-						"header": [],
-						"url": {
-							"raw": "{{auth_url}}/v1/permissions",
-							"host": ["{{auth_url}}"],
-							"path": ["v1", "permissions"],
-							"query": [
-								{
-									"key": "page",
-									"value": "1",
-									"description": "Page number",
-									"disabled": true
-								},
-								{
-									"key": "per_page",
-									"value": "15",
-									"description": "Items per page",
-									"disabled": true
-								},
-								{
-									"key": "search",
-									"value": "",
-									"description": "Search by name or display_name",
-									"disabled": true
-								},
-								{
-									"key": "group",
-									"value": "",
-									"description": "Filter by permission group",
-									"disabled": true
-								}
-							]
-						},
-						"description": "List all permissions.\n\n**Authentication:** Bearer token required\n\n**Permission:** `permissions.view`\n\n**Query parameters (all optional):**\n- `page` — Page number\n- `per_page` — Items per page\n- `search` — Search by name or display_name\n- `group` — Filter by permission group"
-					},
-					"response": []
-				},
-				{
-					"name": "Create Permission",
-					"request": {
-						"method": "POST",
-						"header": [
-							{
-								"key": "Content-Type",
-								"value": "application/json"
-							}
-						],
-						"body": {
-							"mode": "raw",
-							"raw": "{\n\t\"name\": \"reports.export\",\n\t\"display_name\": \"Export Reports\",\n\t\"description\": \"Can export reports to CSV/PDF\",\n\t\"group\": \"reports\"\n}",
-							"options": {
-								"raw": {
-									"language": "json"
-								}
-							}
-						},
-						"url": {
-							"raw": "{{auth_url}}/v1/permissions",
-							"host": ["{{auth_url}}"],
-							"path": ["v1", "permissions"]
-						},
-						"description": "Create a new permission.\n\n**Authentication:** Bearer token required\n\n**Permission:** `permissions.create`\n\n**Required fields:**\n- `name` (string) — Unique permission slug (e.g. reports.export)\n\n**Optional fields:**\n- `display_name` (string) — Human-readable permission name\n- `description` (string) — Permission description\n- `group` (string) — Permission group for organization"
-					},
-					"response": []
-				},
-				{
-					"name": "Create Resource Permissions",
-					"request": {
-						"method": "POST",
-						"header": [
-							{
-								"key": "Content-Type",
-								"value": "application/json"
-							}
-						],
-						"body": {
-							"mode": "raw",
-							"raw": "{\n\t\"resource\": \"events\",\n\t\"actions\": [\"view\", \"create\", \"update\", \"delete\"]\n}",
-							"options": {
-								"raw": {
-									"language": "json"
-								}
-							}
-						},
-						"url": {
-							"raw": "{{auth_url}}/v1/permissions/resource",
-							"host": ["{{auth_url}}"],
-							"path": ["v1", "permissions", "resource"]
-						},
-						"description": "Bulk-create permissions for a resource. Creates permissions in the format resource.action (e.g. events.view, events.create).\n\n**Authentication:** Bearer token required\n\n**Permission:** `permissions.create`\n\n**Required fields:**\n- `resource` (string) — Resource name (e.g. events, users, reports)\n- `actions` (array of strings) — Actions to create (e.g. view, create, update, delete)"
-					},
-					"response": []
-				},
-				{
-					"name": "Show Permission",
-					"request": {
-						"method": "GET",
-						"header": [],
-						"url": {
-							"raw": "{{auth_url}}/v1/permissions/{{permission_id}}",
-							"host": ["{{auth_url}}"],
-							"path": ["v1", "permissions", "{{permission_id}}"]
-						},
-						"description": "Get details of a specific permission.\n\n**Authentication:** Bearer token required\n\n**Permission:** `permissions.view`\n\n**Path parameters:**\n- `permission_id` — The permission's ID"
-					},
-					"response": []
-				},
-				{
-					"name": "Update Permission",
-					"request": {
-						"method": "PUT",
-						"header": [
-							{
-								"key": "Content-Type",
-								"value": "application/json"
-							}
-						],
-						"body": {
-							"mode": "raw",
-							"raw": "{\n\t\"display_name\": \"Updated Permission Name\",\n\t\"description\": \"Updated description\"\n}",
-							"options": {
-								"raw": {
-									"language": "json"
-								}
-							}
-						},
-						"url": {
-							"raw": "{{auth_url}}/v1/permissions/{{permission_id}}",
-							"host": ["{{auth_url}}"],
-							"path": ["v1", "permissions", "{{permission_id}}"]
-						},
-						"description": "Update a specific permission.\n\n**Authentication:** Bearer token required\n\n**Permission:** `permissions.update`\n\n**Path parameters:**\n- `permission_id` — The permission's ID\n\n**Optional fields:**\n- `display_name` (string) — Updated human-readable name\n- `description` (string) — Updated description"
-					},
-					"response": []
-				},
-				{
-					"name": "Delete Permission",
-					"request": {
-						"method": "DELETE",
-						"header": [],
-						"url": {
-							"raw": "{{auth_url}}/v1/permissions/{{permission_id}}",
-							"host": ["{{auth_url}}"],
-							"path": ["v1", "permissions", "{{permission_id}}"]
-						},
-						"description": "Delete a specific permission.\n\n**Authentication:** Bearer token required\n\n**Permission:** `permissions.delete`\n\n**Path parameters:**\n- `permission_id` — The permission's ID"
-					},
-					"response": []
-				}
-			]
-		},
-		{
-			"name": "⚙️ Services",
-			"description": "Service management endpoints: CRUD operations, token regeneration, and role management for registered services.",
-			"item": [
-				{
-					"name": "List Services",
-					"request": {
-						"method": "GET",
-						"header": [],
-						"url": {
-							"raw": "{{auth_url}}/v1/services",
-							"host": ["{{auth_url}}"],
-							"path": ["v1", "services"],
-							"query": [
-								{
-									"key": "page",
-									"value": "1",
-									"description": "Page number",
-									"disabled": true
-								},
-								{
-									"key": "per_page",
-									"value": "15",
-									"description": "Items per page",
-									"disabled": true
-								},
-								{
-									"key": "search",
-									"value": "",
-									"description": "Search by service name",
-									"disabled": true
-								},
-								{
-									"key": "is_active",
-									"value": "true",
-									"description": "Filter by active status: true, false",
-									"disabled": true
-								}
-							]
-						},
-						"description": "List all registered services.\n\n**Authentication:** Bearer token required\n\n**Permission:** `services.view`\n\n**Query parameters (all optional):**\n- `page` — Page number\n- `per_page` — Items per page\n- `search` — Search by service name\n- `is_active` — Filter by active status (true/false)"
-					},
-					"response": []
-				},
-				{
-					"name": "Create Service",
-					"request": {
-						"method": "POST",
-						"header": [
-							{
-								"key": "Content-Type",
-								"value": "application/json"
-							}
-						],
-						"body": {
-							"mode": "raw",
-							"raw": "{\n\t\"name\": \"maham-expo\",\n\t\"description\": \"Main expo application service\",\n\t\"roles\": [\"merchant\", \"investor\"]\n}",
-							"options": {
-								"raw": {
-									"language": "json"
-								}
-							}
-						},
-						"url": {
-							"raw": "{{auth_url}}/v1/services",
-							"host": ["{{auth_url}}"],
-							"path": ["v1", "services"]
-						},
-						"description": "Create a new service registration.\n\n**Authentication:** Bearer token required\n\n**Permission:** `services.create`\n\n**Required fields:**\n- `name` (string) — Unique service name\n\n**Optional fields:**\n- `description` (string) — Service description\n- `roles` (array of strings) — Roles this service can access (replaces old allowed_permissions)\n\n**Notes:** The roles field defines which user roles this service is allowed to interact with."
-					},
-					"response": []
-				},
-				{
-					"name": "Show Service",
-					"request": {
-						"method": "GET",
-						"header": [],
-						"url": {
-							"raw": "{{auth_url}}/v1/services/{{service_id}}",
-							"host": ["{{auth_url}}"],
-							"path": ["v1", "services", "{{service_id}}"]
-						},
-						"description": "Get details of a specific service.\n\n**Authentication:** Bearer token required\n\n**Permission:** `services.view`\n\n**Path parameters:**\n- `service_id` — The service record's ID"
-					},
-					"response": []
-				},
-				{
-					"name": "Update Service",
-					"request": {
-						"method": "PUT",
-						"header": [
-							{
-								"key": "Content-Type",
-								"value": "application/json"
-							}
-						],
-						"body": {
-							"mode": "raw",
-							"raw": "{\n\t\"name\": \"maham-expo-updated\",\n\t\"description\": \"Updated service description\",\n\t\"is_active\": true,\n\t\"roles\": [\"merchant\"]\n}",
-							"options": {
-								"raw": {
-									"language": "json"
-								}
-							}
-						},
-						"url": {
-							"raw": "{{auth_url}}/v1/services/{{service_id}}",
-							"host": ["{{auth_url}}"],
-							"path": ["v1", "services", "{{service_id}}"]
-						},
-						"description": "Update a specific service.\n\n**Authentication:** Bearer token required\n\n**Permission:** `services.update`\n\n**Path parameters:**\n- `service_id` — The service record's ID\n\n**Optional fields:**\n- `name` (string) — Updated service name\n- `description` (string) — Updated description\n- `is_active` (boolean) — Enable or disable the service\n- `roles` (array of strings) — Updated roles this service can access"
-					},
-					"response": []
-				},
-				{
-					"name": "Delete Service",
-					"request": {
-						"method": "DELETE",
-						"header": [],
-						"url": {
-							"raw": "{{auth_url}}/v1/services/{{service_id}}",
-							"host": ["{{auth_url}}"],
-							"path": ["v1", "services", "{{service_id}}"]
-						},
-						"description": "Delete a specific service.\n\n**Authentication:** Bearer token required\n\n**Permission:** `services.delete`\n\n**Path parameters:**\n- `service_id` — The service record's ID"
-					},
-					"response": []
-				},
-				{
-					"name": "Regenerate Token",
-					"request": {
-						"method": "POST",
-						"header": [],
-						"url": {
-							"raw": "{{auth_url}}/v1/services/{{service_id}}/regenerate-token",
-							"host": ["{{auth_url}}"],
-							"path": ["v1", "services", "{{service_id}}", "regenerate-token"]
-						},
-						"description": "Regenerate the service token for a specific service. The old token will be invalidated.\n\n**Authentication:** Bearer token required\n\n**Permission:** `services.update`\n\n**Path parameters:**\n- `service_id` — The service record's ID"
-					},
-					"response": []
-				},
-				{
-					"name": "Get Service Roles",
-					"request": {
-						"method": "GET",
-						"header": [],
-						"url": {
-							"raw": "{{auth_url}}/v1/services/{{service_id}}/roles",
-							"host": ["{{auth_url}}"],
-							"path": ["v1", "services", "{{service_id}}", "roles"]
-						},
-						"description": "Get all roles assigned to a specific service.\n\n**Authentication:** Bearer token required\n\n**Permission:** `services.view`\n\n**Path parameters:**\n- `service_id` — The service record's ID"
-					},
-					"response": []
-				},
-				{
-					"name": "Assign Roles",
-					"request": {
-						"method": "POST",
-						"header": [
-							{
-								"key": "Content-Type",
-								"value": "application/json"
-							}
-						],
-						"body": {
-							"mode": "raw",
-							"raw": "{\n\t\"roles\": [\"merchant\"]\n}",
-							"options": {
-								"raw": {
-									"language": "json"
-								}
-							}
-						},
-						"url": {
-							"raw": "{{auth_url}}/v1/services/{{service_id}}/roles",
-							"host": ["{{auth_url}}"],
-							"path": ["v1", "services", "{{service_id}}", "roles"]
-						},
-						"description": "Assign additional roles to a specific service.\n\n**Authentication:** Bearer token required\n\n**Permission:** `services.update`\n\n**Path parameters:**\n- `service_id` — The service record's ID\n\n**Required fields:**\n- `roles` (array of strings) — Role names to assign"
-					},
-					"response": []
-				},
-				{
-					"name": "Sync Roles",
-					"request": {
-						"method": "PUT",
-						"header": [
-							{
-								"key": "Content-Type",
-								"value": "application/json"
-							}
-						],
-						"body": {
-							"mode": "raw",
-							"raw": "{\n\t\"roles\": [\"merchant\", \"investor\"]\n}",
-							"options": {
-								"raw": {
-									"language": "json"
-								}
-							}
-						},
-						"url": {
-							"raw": "{{auth_url}}/v1/services/{{service_id}}/roles",
-							"host": ["{{auth_url}}"],
-							"path": ["v1", "services", "{{service_id}}", "roles"]
-						},
-						"description": "Sync (replace) all roles for a specific service. Roles not in the provided list will be removed.\n\n**Authentication:** Bearer token required\n\n**Permission:** `services.update`\n\n**Path parameters:**\n- `service_id` — The service record's ID\n\n**Required fields:**\n- `roles` (array of strings) — Complete list of role names to sync"
-					},
-					"response": []
-				},
-				{
-					"name": "Remove Roles",
-					"request": {
-						"method": "DELETE",
-						"header": [
-							{
-								"key": "Content-Type",
-								"value": "application/json"
-							}
-						],
-						"body": {
-							"mode": "raw",
-							"raw": "{\n\t\"roles\": [\"merchant\"]\n}",
-							"options": {
-								"raw": {
-									"language": "json"
-								}
-							}
-						},
-						"url": {
-							"raw": "{{auth_url}}/v1/services/{{service_id}}/roles",
-							"host": ["{{auth_url}}"],
-							"path": ["v1", "services", "{{service_id}}", "roles"]
-						},
-						"description": "Remove specific roles from a service.\n\n**Authentication:** Bearer token required\n\n**Permission:** `services.update`\n\n**Path parameters:**\n- `service_id` — The service record's ID\n\n**Required fields:**\n- `roles` (array of strings) — Role names to remove"
-					},
-					"response": []
-				}
-			]
-		}
-	]
+  "info": {
+    "_postman_id": "auth-service-001",
+    "name": "Auth Service",
+    "description": "Maham Auth Service API (maham-auth-expo-api)\n\nBase URL: {{auth_url}}/v1\n\nThis collection covers authentication, user management, roles, permissions, services, and service-to-service (S2S) communication.",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "auth": {
+    "type": "bearer",
+    "bearer": [
+      {
+        "key": "token",
+        "value": "{{auth_token}}",
+        "type": "string"
+      }
+    ]
+  },
+  "event": [
+    {
+      "listen": "prerequest",
+      "script": {
+        "type": "text/javascript",
+        "exec": [
+          "pm.request.headers.add({ key: 'Accept', value: 'application/json' });",
+          "pm.request.headers.add({ key: 'Accept-Language', value: pm.environment.get('language') || 'ar' });",
+          "pm.request.headers.add({ key: 'X-Platform', value: pm.environment.get('platform') || 'web' });"
+        ]
+      }
+    }
+  ],
+  "variable": [
+    {
+      "key": "auth_url",
+      "value": "http://localhost:8001",
+      "description": "Auth service base URL"
+    },
+    {
+      "key": "auth_token",
+      "value": "",
+      "description": "JWT access token"
+    },
+    {
+      "key": "user_id",
+      "value": "",
+      "description": "Current user ID"
+    },
+    {
+      "key": "role_id",
+      "value": "",
+      "description": "Role ID for role operations"
+    },
+    {
+      "key": "permission_id",
+      "value": "",
+      "description": "Permission ID for permission operations"
+    },
+    {
+      "key": "service_id",
+      "value": "",
+      "description": "Service record ID for service operations"
+    },
+    {
+      "key": "language",
+      "value": "ar",
+      "description": "Accept-Language header value (default: ar)"
+    },
+    {
+      "key": "platform",
+      "value": "web",
+      "description": "X-Platform header value (default: web)"
+    },
+    {
+      "key": "registration_token",
+      "value": ""
+    }
+  ],
+  "item": [
+    {
+      "name": "🏥 Health Check",
+      "description": "Health check endpoint for the Auth Service.",
+      "item": [
+        {
+          "name": "Health Check",
+          "request": {
+            "auth": {
+              "type": "noauth"
+            },
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{auth_url}}/health",
+              "host": [
+                "{{auth_url}}"
+              ],
+              "path": [
+                "health"
+              ]
+            },
+            "description": "Check the health status of the Auth Service.\n\n**Authentication:** None required"
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "🔐 Authentication",
+      "description": "Authentication endpoints: register, login, profile management, password reset, token operations, and permission checks.",
+      "item": [
+        {
+          "name": "Register",
+          "request": {
+            "auth": {
+              "type": "noauth"
+            },
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n\t\"name\": \"John Doe\",\n\t\"email\": \"john@example.com\",\n\t\"password\": \"password123\",\n\t\"password_confirmation\": \"password123\",\n\t\"phone\": \"+966500000000\",\n\t\"roles\": [\"merchant\"]\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{auth_url}}/v1/auth/register",
+              "host": [
+                "{{auth_url}}"
+              ],
+              "path": [
+                "v1",
+                "auth",
+                "register"
+              ]
+            },
+            "description": "Register a new user. Roles cannot include super-admin, admin, or supervisor.\n\n**Authentication:** None required\n\n**Required fields:**\n- `name` (string) — Full name of the user\n- `email` (string) — Valid email address\n- `password` (string) — Minimum 8 characters\n- `password_confirmation` (string) — Must match password\n\n**Optional fields:**\n- `phone` (string) — Phone number with country code\n- `roles` (array of strings) — Allowed: merchant, investor, sponsor. Cannot include super-admin, admin, or supervisor."
+          },
+          "response": []
+        },
+        {
+          "name": "Login",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "var jsonData = pm.response.json();",
+                  "if (jsonData.data && jsonData.data.access_token) {",
+                  "    pm.environment.set(\"auth_token\", jsonData.data.access_token);",
+                  "}",
+                  "if (jsonData.data && jsonData.data.user) {",
+                  "    pm.environment.set(\"user_id\", jsonData.data.user.id);",
+                  "}"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "auth": {
+              "type": "noauth"
+            },
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n\t\"identifier\": \"john@example.com\",\n\t\"password\": \"password123\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{auth_url}}/v1/auth/login",
+              "host": [
+                "{{auth_url}}"
+              ],
+              "path": [
+                "v1",
+                "auth",
+                "login"
+              ]
+            },
+            "description": "Login with email or phone. Rate limited to 10 requests per minute.\n\n**Authentication:** None required\n\n**Required fields:**\n- `identifier` (string) — Email or phone number\n- `password` (string) — Account password\n\n**Test script:** Automatically saves `access_token` to `auth_token` and `user.id` to `user_id` environment variables."
+          },
+          "response": []
+        },
+        {
+          "name": "📱 OTP — Send Code",
+          "event": [],
+          "request": {
+            "auth": {
+              "type": "noauth"
+            },
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"phone\": \"0501234567\",\n  \"user_type\": \"merchant\",\n  \"channel\": \"sms\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{auth_url}}/v1/auth/otp/send",
+              "host": [
+                "{{auth_url}}"
+              ],
+              "path": [
+                "v1",
+                "auth",
+                "otp",
+                "send"
+              ]
+            },
+            "description": "Send OTP verification code to phone number for login or registration.\n\n**Authentication:** None required\n\n**Required fields:**\n- `phone` (string) — Phone number (0501234567 or +966501234567)\n- `user_type` (string) — Role: admin, supervisor, merchant, investor, sponsor, user\n\n**Optional:**\n- `channel` (string) — `sms` or `whatsapp` (default: sms)\n\n**Response:**\n- `is_new_user: false` → user exists, will login after verify\n- `is_new_user: true` → new user, will need to complete registration\n\n**⚡ Test mode:** When OTP_TEST_MODE=1, any code is accepted and no SMS is sent."
+          },
+          "response": []
+        },
+        {
+          "name": "📱 OTP — Verify Code",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "var jsonData = pm.response.json();",
+                  "if (jsonData.data && jsonData.data.token) {",
+                  "    pm.environment.set('auth_token', jsonData.data.token);",
+                  "    console.log('✅ Token saved to auth_token');",
+                  "}",
+                  "if (jsonData.data && jsonData.data.registration_token) {",
+                  "    pm.environment.set('registration_token', jsonData.data.registration_token);",
+                  "    console.log('📝 Registration token saved — complete registration next');",
+                  "}",
+                  "if (jsonData.data && jsonData.data.user) {",
+                  "    pm.environment.set('user_id', jsonData.data.user.id);",
+                  "}"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "auth": {
+              "type": "noauth"
+            },
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"phone\": \"0501234567\",\n  \"otp\": \"123456\",\n  \"user_type\": \"merchant\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{auth_url}}/v1/auth/otp/verify",
+              "host": [
+                "{{auth_url}}"
+              ],
+              "path": [
+                "v1",
+                "auth",
+                "otp",
+                "verify"
+              ]
+            },
+            "description": "Verify OTP code and login or get registration token.\n\n**Authentication:** None required\n\n**Required fields:**\n- `phone` (string) — Same phone used in send\n- `otp` (string) — OTP code received\n- `user_type` (string) — Same user_type as send\n\n**Response — Existing User:**\n```json\n{\n  \"success\": true,\n  \"data\": {\n    \"is_new_user\": false,\n    \"user\": { ... },\n    \"token\": \"eyJ0eXAi...\",\n    \"token_type\": \"bearer\",\n    \"expires_in\": 3600\n  }\n}\n```\n\n**Response — New User:**\n```json\n{\n  \"success\": true,\n  \"data\": {\n    \"is_new_user\": true,\n    \"registration_token\": \"xPbaVXHRV5z...\"\n  }\n}\n```\n\n**Test script:** Auto-saves `token` → `auth_token` or `registration_token` → `registration_token`."
+          },
+          "response": []
+        },
+        {
+          "name": "📱 OTP — Complete Registration",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "var jsonData = pm.response.json();",
+                  "if (jsonData.data && jsonData.data.token) {",
+                  "    pm.environment.set('auth_token', jsonData.data.token);",
+                  "    console.log('✅ Token saved — user registered and logged in');",
+                  "}",
+                  "if (jsonData.data && jsonData.data.user) {",
+                  "    pm.environment.set('user_id', jsonData.data.user.id);",
+                  "}"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "auth": {
+              "type": "noauth"
+            },
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"registration_token\": \"{{registration_token}}\",\n  \"name\": \"أحمد محمد\",\n  \"email\": \"ahmed@example.com\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{auth_url}}/v1/auth/otp/complete-registration",
+              "host": [
+                "{{auth_url}}"
+              ],
+              "path": [
+                "v1",
+                "auth",
+                "otp",
+                "complete-registration"
+              ]
+            },
+            "description": "Complete registration for new users after OTP verification.\n\n**Authentication:** None required (uses registration_token)\n\n**Required fields:**\n- `registration_token` (string) — Token from /otp/verify (valid for 30 minutes)\n- `name` (string) — Full name\n\n**Optional:**\n- `email` (string) — Email address\n- `password` (string) — Password (optional — can register without)\n\n**Response:** Returns user data + JWT token (same as login).\n\n**Note:** This endpoint is ONLY for new users who got `is_new_user: true` from /otp/verify."
+          },
+          "response": []
+        },
+        {
+          "name": "Get Current User",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{auth_url}}/v1/auth/me",
+              "host": [
+                "{{auth_url}}"
+              ],
+              "path": [
+                "v1",
+                "auth",
+                "me"
+              ]
+            },
+            "description": "Get the currently authenticated user's profile.\n\n**Authentication:** Bearer token required"
+          },
+          "response": []
+        },
+        {
+          "name": "Update Profile",
+          "request": {
+            "method": "PUT",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n\t\"name\": \"John Updated\",\n\t\"phone\": \"+966500000001\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{auth_url}}/v1/auth/profile",
+              "host": [
+                "{{auth_url}}"
+              ],
+              "path": [
+                "v1",
+                "auth",
+                "profile"
+              ]
+            },
+            "description": "Update the authenticated user's profile.\n\n**Authentication:** Bearer token required\n\n**Optional fields:**\n- `name` (string) — Updated full name\n- `phone` (string) — Updated phone number"
+          },
+          "response": []
+        },
+        {
+          "name": "Change Password",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n\t\"current_password\": \"password123\",\n\t\"password\": \"newpassword123\",\n\t\"password_confirmation\": \"newpassword123\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{auth_url}}/v1/auth/change-password",
+              "host": [
+                "{{auth_url}}"
+              ],
+              "path": [
+                "v1",
+                "auth",
+                "change-password"
+              ]
+            },
+            "description": "Change the authenticated user's password.\n\n**Authentication:** Bearer token required\n\n**Required fields:**\n- `current_password` (string) — Current account password\n- `password` (string) — New password, minimum 8 characters\n- `password_confirmation` (string) — Must match new password"
+          },
+          "response": []
+        },
+        {
+          "name": "Forgot Password",
+          "request": {
+            "auth": {
+              "type": "noauth"
+            },
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n\t\"email\": \"john@example.com\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{auth_url}}/v1/auth/forgot-password",
+              "host": [
+                "{{auth_url}}"
+              ],
+              "path": [
+                "v1",
+                "auth",
+                "forgot-password"
+              ]
+            },
+            "description": "Send a password reset link/code to the user's email.\n\n**Authentication:** None required\n\n**Required fields:**\n- `email` (string) — Registered email address"
+          },
+          "response": []
+        },
+        {
+          "name": "Reset Password",
+          "request": {
+            "auth": {
+              "type": "noauth"
+            },
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n\t\"email\": \"john@example.com\",\n\t\"token\": \"reset-token-here\",\n\t\"password\": \"newpassword123\",\n\t\"password_confirmation\": \"newpassword123\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{auth_url}}/v1/auth/reset-password",
+              "host": [
+                "{{auth_url}}"
+              ],
+              "path": [
+                "v1",
+                "auth",
+                "reset-password"
+              ]
+            },
+            "description": "Reset a user's password using the token received via email.\n\n**Authentication:** None required\n\n**Required fields:**\n- `email` (string) — Registered email address\n- `token` (string) — Reset token from the forgot-password email\n- `password` (string) — New password, minimum 8 characters\n- `password_confirmation` (string) — Must match new password"
+          },
+          "response": []
+        },
+        {
+          "name": "Refresh Token",
+          "request": {
+            "method": "POST",
+            "header": [],
+            "url": {
+              "raw": "{{auth_url}}/v1/auth/refresh",
+              "host": [
+                "{{auth_url}}"
+              ],
+              "path": [
+                "v1",
+                "auth",
+                "refresh"
+              ]
+            },
+            "description": "Refresh the current JWT access token.\n\n**Authentication:** Bearer token required (uses current token to issue a new one)"
+          },
+          "response": []
+        },
+        {
+          "name": "Logout",
+          "request": {
+            "method": "POST",
+            "header": [],
+            "url": {
+              "raw": "{{auth_url}}/v1/auth/logout",
+              "host": [
+                "{{auth_url}}"
+              ],
+              "path": [
+                "v1",
+                "auth",
+                "logout"
+              ]
+            },
+            "description": "Logout and invalidate the current token.\n\n**Authentication:** Bearer token required"
+          },
+          "response": []
+        },
+        {
+          "name": "Send Email Verification",
+          "request": {
+            "method": "POST",
+            "header": [],
+            "url": {
+              "raw": "{{auth_url}}/v1/auth/email/send-verification",
+              "host": [
+                "{{auth_url}}"
+              ],
+              "path": [
+                "v1",
+                "auth",
+                "email",
+                "send-verification"
+              ]
+            },
+            "description": "Send an email verification code to the authenticated user's email address.\n\n**Authentication:** Bearer token required"
+          },
+          "response": []
+        },
+        {
+          "name": "Verify Email",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n\t\"code\": \"123456\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{auth_url}}/v1/auth/email/verify",
+              "host": [
+                "{{auth_url}}"
+              ],
+              "path": [
+                "v1",
+                "auth",
+                "email",
+                "verify"
+              ]
+            },
+            "description": "Verify the authenticated user's email address using the code sent via email.\n\n**Authentication:** Bearer token required\n\n**Required fields:**\n- `code` (string) — Verification code received via email"
+          },
+          "response": []
+        },
+        {
+          "name": "📞 Phone — Send Verification OTP",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"phone\": \"0501234567\",\n  \"channel\": \"sms\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{auth_url}}/v1/auth/phone/send-otp",
+              "host": [
+                "{{auth_url}}"
+              ],
+              "path": [
+                "v1",
+                "auth",
+                "phone",
+                "send-otp"
+              ]
+            },
+            "description": "Send OTP to verify the authenticated user's phone number.\n\n**Authentication:** Required (Bearer token)\n\n**Required fields:**\n- `phone` (string) — Phone number to verify\n\n**Optional:**\n- `channel` (string) — `sms` or `whatsapp` (default: sms)"
+          },
+          "response": []
+        },
+        {
+          "name": "📞 Phone — Verify OTP",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"phone\": \"0501234567\",\n  \"code\": \"123456\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{auth_url}}/v1/auth/phone/verify-otp",
+              "host": [
+                "{{auth_url}}"
+              ],
+              "path": [
+                "v1",
+                "auth",
+                "phone",
+                "verify-otp"
+              ]
+            },
+            "description": "Verify the phone number using the OTP code.\n\n**Authentication:** Required (Bearer token)\n\n**Required fields:**\n- `phone` (string) — Same phone number\n- `code` (string) — OTP verification code"
+          },
+          "response": []
+        },
+        {
+          "name": "Verify Token",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n\t\"token\": \"{{auth_token}}\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{auth_url}}/v1/verify-token",
+              "host": [
+                "{{auth_url}}"
+              ],
+              "path": [
+                "v1",
+                "verify-token"
+              ]
+            },
+            "description": "Verify if a given JWT token is valid.\n\n**Authentication:** Bearer token required\n\n**Required fields:**\n- `token` (string) — JWT token to verify"
+          },
+          "response": []
+        },
+        {
+          "name": "Check Permission",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n\t\"permission\": \"users.view\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{auth_url}}/v1/check-permission",
+              "host": [
+                "{{auth_url}}"
+              ],
+              "path": [
+                "v1",
+                "check-permission"
+              ]
+            },
+            "description": "Check if the authenticated user has a specific permission.\n\n**Authentication:** Bearer token required\n\n**Required fields:**\n- `permission` (string) — Permission name to check (e.g. users.view)"
+          },
+          "response": []
+        },
+        {
+          "name": "Check Multiple Permissions",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n\t\"permissions\": [\"users.view\", \"users.create\"]\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{auth_url}}/v1/check-permissions",
+              "host": [
+                "{{auth_url}}"
+              ],
+              "path": [
+                "v1",
+                "check-permissions"
+              ]
+            },
+            "description": "Check if the authenticated user has multiple permissions at once.\n\n**Authentication:** Bearer token required\n\n**Required fields:**\n- `permissions` (array of strings) — List of permission names to check"
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "🔌 Service (S2S)",
+      "description": "Service-to-service (S2S) endpoints. Internal Docker network — no authentication required.",
+      "item": [
+        {
+          "name": "Verify User Token",
+          "request": {
+            "auth": {
+              "type": "noauth"
+            },
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n\t\"token\": \"{{auth_token}}\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{auth_url}}/v1/service/verify-token",
+              "host": [
+                "{{auth_url}}"
+              ],
+              "path": [
+                "v1",
+                "service",
+                "verify-token"
+              ]
+            },
+            "description": "Verify a user's JWT token via service-to-service call.\n\n**Authentication:** None (internal Docker network)\n\n**Required fields:**\n- `token` (string) — The user's JWT token to verify"
+          },
+          "response": []
+        },
+        {
+          "name": "Check User Permission",
+          "request": {
+            "auth": {
+              "type": "noauth"
+            },
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n\t\"token\": \"{{auth_token}}\",\n\t\"permission\": \"events.view\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{auth_url}}/v1/service/check-permission",
+              "host": [
+                "{{auth_url}}"
+              ],
+              "path": [
+                "v1",
+                "service",
+                "check-permission"
+              ]
+            },
+            "description": "Check if a user has a specific permission via service-to-service call.\n\n**Authentication:** None (internal Docker network)\n\n**Required fields:**\n- `token` (string) — The user's JWT token\n- `permission` (string) — Permission name to check"
+          },
+          "response": []
+        },
+        {
+          "name": "Get User Info",
+          "request": {
+            "auth": {
+              "type": "noauth"
+            },
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n\t\"token\": \"{{auth_token}}\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{auth_url}}/v1/service/user-info",
+              "host": [
+                "{{auth_url}}"
+              ],
+              "path": [
+                "v1",
+                "service",
+                "user-info"
+              ]
+            },
+            "description": "Get user information from a JWT token via service-to-service call.\n\n**Authentication:** None (internal Docker network)\n\n**Required fields:**\n- `token` (string) — The user's JWT token"
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "👥 Users",
+      "description": "User management endpoints: CRUD operations, role assignment, and permission management.",
+      "item": [
+        {
+          "name": "List Users",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{auth_url}}/v1/users",
+              "host": [
+                "{{auth_url}}"
+              ],
+              "path": [
+                "v1",
+                "users"
+              ],
+              "query": [
+                {
+                  "key": "page",
+                  "value": "1",
+                  "description": "Page number",
+                  "disabled": true
+                },
+                {
+                  "key": "per_page",
+                  "value": "15",
+                  "description": "Items per page",
+                  "disabled": true
+                },
+                {
+                  "key": "search",
+                  "value": "",
+                  "description": "Search by name or email",
+                  "disabled": true
+                },
+                {
+                  "key": "status",
+                  "value": "active",
+                  "description": "Filter by status: active, inactive, suspended",
+                  "disabled": true
+                },
+                {
+                  "key": "role",
+                  "value": "",
+                  "description": "Filter by role name",
+                  "disabled": true
+                },
+                {
+                  "key": "sort_by",
+                  "value": "created_at",
+                  "description": "Sort field",
+                  "disabled": true
+                },
+                {
+                  "key": "sort_order",
+                  "value": "desc",
+                  "description": "Sort direction: asc, desc",
+                  "disabled": true
+                }
+              ]
+            },
+            "description": "List all users with optional filters and pagination.\n\n**Authentication:** Bearer token required\n\n**Permission:** `users.view`\n\n**Query parameters (all optional):**\n- `page` — Page number\n- `per_page` — Items per page\n- `search` — Search by name or email\n- `status` — Filter by status (active, inactive, suspended)\n- `role` — Filter by role name\n- `sort_by` — Sort field\n- `sort_order` — Sort direction (asc, desc)"
+          },
+          "response": []
+        },
+        {
+          "name": "Create User",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n\t\"name\": \"New User\",\n\t\"email\": \"newuser@example.com\",\n\t\"password\": \"password123\",\n\t\"phone\": \"+966500000002\",\n\t\"status\": \"active\",\n\t\"roles\": [\"merchant\"],\n\t\"metadata\": {}\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{auth_url}}/v1/users",
+              "host": [
+                "{{auth_url}}"
+              ],
+              "path": [
+                "v1",
+                "users"
+              ]
+            },
+            "description": "Create a new user.\n\n**Authentication:** Bearer token required\n\n**Permission:** `users.create`\n\n**Required fields:**\n- `name` (string) — Full name\n- `email` (string) — Valid email address\n- `password` (string) — Minimum 8 characters\n\n**Optional fields:**\n- `phone` (string) — Phone number with country code\n- `status` (string) — User status: active, inactive, suspended (default: active)\n- `roles` (array of strings) — Roles to assign\n- `metadata` (object) — Additional metadata"
+          },
+          "response": []
+        },
+        {
+          "name": "Show User",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{auth_url}}/v1/users/{{user_id}}",
+              "host": [
+                "{{auth_url}}"
+              ],
+              "path": [
+                "v1",
+                "users",
+                "{{user_id}}"
+              ]
+            },
+            "description": "Get details of a specific user.\n\n**Authentication:** Bearer token required\n\n**Permission:** `users.view`\n\n**Path parameters:**\n- `user_id` — The user's ID"
+          },
+          "response": []
+        },
+        {
+          "name": "Update User",
+          "request": {
+            "method": "PUT",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n\t\"name\": \"Updated Name\",\n\t\"phone\": \"+966500000003\",\n\t\"status\": \"active\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{auth_url}}/v1/users/{{user_id}}",
+              "host": [
+                "{{auth_url}}"
+              ],
+              "path": [
+                "v1",
+                "users",
+                "{{user_id}}"
+              ]
+            },
+            "description": "Update a specific user's details.\n\n**Authentication:** Bearer token required\n\n**Permission:** `users.update`\n\n**Path parameters:**\n- `user_id` — The user's ID\n\n**Optional fields:**\n- `name` (string) — Updated full name\n- `phone` (string) — Updated phone number\n- `status` (string) — Updated status: active, inactive, suspended"
+          },
+          "response": []
+        },
+        {
+          "name": "Delete User",
+          "request": {
+            "method": "DELETE",
+            "header": [],
+            "url": {
+              "raw": "{{auth_url}}/v1/users/{{user_id}}",
+              "host": [
+                "{{auth_url}}"
+              ],
+              "path": [
+                "v1",
+                "users",
+                "{{user_id}}"
+              ]
+            },
+            "description": "Delete a specific user.\n\n**Authentication:** Bearer token required\n\n**Permission:** `users.delete`\n\n**Path parameters:**\n- `user_id` — The user's ID"
+          },
+          "response": []
+        },
+        {
+          "name": "Assign Roles",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n\t\"roles\": [\"merchant\"]\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{auth_url}}/v1/users/{{user_id}}/roles",
+              "host": [
+                "{{auth_url}}"
+              ],
+              "path": [
+                "v1",
+                "users",
+                "{{user_id}}",
+                "roles"
+              ]
+            },
+            "description": "Assign roles to a specific user.\n\n**Authentication:** Bearer token required\n\n**Permission:** `roles.update`\n\n**Path parameters:**\n- `user_id` — The user's ID\n\n**Required fields:**\n- `roles` (array of strings) — Role names to assign"
+          },
+          "response": []
+        },
+        {
+          "name": "Get User Permissions",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{auth_url}}/v1/users/{{user_id}}/permissions",
+              "host": [
+                "{{auth_url}}"
+              ],
+              "path": [
+                "v1",
+                "users",
+                "{{user_id}}",
+                "permissions"
+              ]
+            },
+            "description": "Get all permissions assigned to a specific user (direct and via roles).\n\n**Authentication:** Bearer token required\n\n**Permission:** `permissions.view`\n\n**Path parameters:**\n- `user_id` — The user's ID"
+          },
+          "response": []
+        },
+        {
+          "name": "Assign Permissions",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n\t\"permissions\": [\"events.view\"]\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{auth_url}}/v1/users/{{user_id}}/permissions",
+              "host": [
+                "{{auth_url}}"
+              ],
+              "path": [
+                "v1",
+                "users",
+                "{{user_id}}",
+                "permissions"
+              ]
+            },
+            "description": "Assign direct permissions to a specific user.\n\n**Authentication:** Bearer token required\n\n**Permission:** `permissions.update`\n\n**Path parameters:**\n- `user_id` — The user's ID\n\n**Required fields:**\n- `permissions` (array of strings) — Permission names to assign"
+          },
+          "response": []
+        },
+        {
+          "name": "User Stats",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{auth_url}}/v1/admin/stats/users",
+              "host": [
+                "{{auth_url}}"
+              ],
+              "path": [
+                "v1",
+                "admin",
+                "stats",
+                "users"
+              ],
+              "query": [
+                {
+                  "key": "period",
+                  "value": "month",
+                  "description": "Stats period: today, week, month, year, all",
+                  "disabled": true
+                }
+              ]
+            },
+            "description": "Get user statistics for the admin dashboard.\n\n**Authentication:** Bearer token required\n\n**Permission:** `users.view`\n\n**Query parameters (optional):**\n- `period` — Stats period: today, week, month, year, all"
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "🛡️ Roles",
+      "description": "Role management endpoints: CRUD operations and permission assignment for roles.",
+      "item": [
+        {
+          "name": "List Roles",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{auth_url}}/v1/roles",
+              "host": [
+                "{{auth_url}}"
+              ],
+              "path": [
+                "v1",
+                "roles"
+              ],
+              "query": [
+                {
+                  "key": "page",
+                  "value": "1",
+                  "description": "Page number",
+                  "disabled": true
+                },
+                {
+                  "key": "per_page",
+                  "value": "15",
+                  "description": "Items per page",
+                  "disabled": true
+                },
+                {
+                  "key": "search",
+                  "value": "",
+                  "description": "Search by name or display_name",
+                  "disabled": true
+                }
+              ]
+            },
+            "description": "List all roles.\n\n**Authentication:** Bearer token required\n\n**Permission:** `roles.view`\n\n**Query parameters (all optional):**\n- `page` — Page number\n- `per_page` — Items per page\n- `search` — Search by name or display_name"
+          },
+          "response": []
+        },
+        {
+          "name": "Create Role",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n\t\"name\": \"editor\",\n\t\"display_name\": \"Editor\",\n\t\"description\": \"Can edit content\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{auth_url}}/v1/roles",
+              "host": [
+                "{{auth_url}}"
+              ],
+              "path": [
+                "v1",
+                "roles"
+              ]
+            },
+            "description": "Create a new role.\n\n**Authentication:** Bearer token required\n\n**Permission:** `roles.create`\n\n**Required fields:**\n- `name` (string) — Unique role slug (lowercase, no spaces)\n\n**Optional fields:**\n- `display_name` (string) — Human-readable role name\n- `description` (string) — Role description"
+          },
+          "response": []
+        },
+        {
+          "name": "Show Role",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{auth_url}}/v1/roles/{{role_id}}",
+              "host": [
+                "{{auth_url}}"
+              ],
+              "path": [
+                "v1",
+                "roles",
+                "{{role_id}}"
+              ]
+            },
+            "description": "Get details of a specific role including its permissions.\n\n**Authentication:** Bearer token required\n\n**Permission:** `roles.view`\n\n**Path parameters:**\n- `role_id` — The role's ID"
+          },
+          "response": []
+        },
+        {
+          "name": "Update Role",
+          "request": {
+            "method": "PUT",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n\t\"display_name\": \"Updated Editor\",\n\t\"description\": \"Updated description\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{auth_url}}/v1/roles/{{role_id}}",
+              "host": [
+                "{{auth_url}}"
+              ],
+              "path": [
+                "v1",
+                "roles",
+                "{{role_id}}"
+              ]
+            },
+            "description": "Update a specific role.\n\n**Authentication:** Bearer token required\n\n**Permission:** `roles.update`\n\n**Path parameters:**\n- `role_id` — The role's ID\n\n**Optional fields:**\n- `display_name` (string) — Updated human-readable name\n- `description` (string) — Updated description"
+          },
+          "response": []
+        },
+        {
+          "name": "Delete Role",
+          "request": {
+            "method": "DELETE",
+            "header": [],
+            "url": {
+              "raw": "{{auth_url}}/v1/roles/{{role_id}}",
+              "host": [
+                "{{auth_url}}"
+              ],
+              "path": [
+                "v1",
+                "roles",
+                "{{role_id}}"
+              ]
+            },
+            "description": "Delete a specific role.\n\n**Authentication:** Bearer token required\n\n**Permission:** `roles.delete`\n\n**Path parameters:**\n- `role_id` — The role's ID"
+          },
+          "response": []
+        },
+        {
+          "name": "Sync Permissions",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n\t\"permissions\": [\"events.view\", \"events.create\"]\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{auth_url}}/v1/roles/{{role_id}}/permissions",
+              "host": [
+                "{{auth_url}}"
+              ],
+              "path": [
+                "v1",
+                "roles",
+                "{{role_id}}",
+                "permissions"
+              ]
+            },
+            "description": "Sync (replace) all permissions for a role. This removes any permissions not in the provided list.\n\n**Authentication:** Bearer token required\n\n**Permission:** `roles.update`\n\n**Path parameters:**\n- `role_id` — The role's ID\n\n**Required fields:**\n- `permissions` (array of strings) — Complete list of permission names to sync"
+          },
+          "response": []
+        },
+        {
+          "name": "Add Permissions",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n\t\"permissions\": [\"events.delete\"]\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{auth_url}}/v1/roles/{{role_id}}/permissions/add",
+              "host": [
+                "{{auth_url}}"
+              ],
+              "path": [
+                "v1",
+                "roles",
+                "{{role_id}}",
+                "permissions",
+                "add"
+              ]
+            },
+            "description": "Add permissions to a role without removing existing ones.\n\n**Authentication:** Bearer token required\n\n**Permission:** `roles.update`\n\n**Path parameters:**\n- `role_id` — The role's ID\n\n**Required fields:**\n- `permissions` (array of strings) — Permission names to add"
+          },
+          "response": []
+        },
+        {
+          "name": "Remove Permissions",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n\t\"permissions\": [\"events.delete\"]\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{auth_url}}/v1/roles/{{role_id}}/permissions/remove",
+              "host": [
+                "{{auth_url}}"
+              ],
+              "path": [
+                "v1",
+                "roles",
+                "{{role_id}}",
+                "permissions",
+                "remove"
+              ]
+            },
+            "description": "Remove specific permissions from a role.\n\n**Authentication:** Bearer token required\n\n**Permission:** `roles.update`\n\n**Path parameters:**\n- `role_id` — The role's ID\n\n**Required fields:**\n- `permissions` (array of strings) — Permission names to remove"
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "🔑 Permissions",
+      "description": "Permission management endpoints: CRUD operations and bulk resource permission creation.",
+      "item": [
+        {
+          "name": "List Permissions",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{auth_url}}/v1/permissions",
+              "host": [
+                "{{auth_url}}"
+              ],
+              "path": [
+                "v1",
+                "permissions"
+              ],
+              "query": [
+                {
+                  "key": "page",
+                  "value": "1",
+                  "description": "Page number",
+                  "disabled": true
+                },
+                {
+                  "key": "per_page",
+                  "value": "15",
+                  "description": "Items per page",
+                  "disabled": true
+                },
+                {
+                  "key": "search",
+                  "value": "",
+                  "description": "Search by name or display_name",
+                  "disabled": true
+                },
+                {
+                  "key": "group",
+                  "value": "",
+                  "description": "Filter by permission group",
+                  "disabled": true
+                }
+              ]
+            },
+            "description": "List all permissions.\n\n**Authentication:** Bearer token required\n\n**Permission:** `permissions.view`\n\n**Query parameters (all optional):**\n- `page` — Page number\n- `per_page` — Items per page\n- `search` — Search by name or display_name\n- `group` — Filter by permission group"
+          },
+          "response": []
+        },
+        {
+          "name": "Create Permission",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n\t\"name\": \"reports.export\",\n\t\"display_name\": \"Export Reports\",\n\t\"description\": \"Can export reports to CSV/PDF\",\n\t\"group\": \"reports\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{auth_url}}/v1/permissions",
+              "host": [
+                "{{auth_url}}"
+              ],
+              "path": [
+                "v1",
+                "permissions"
+              ]
+            },
+            "description": "Create a new permission.\n\n**Authentication:** Bearer token required\n\n**Permission:** `permissions.create`\n\n**Required fields:**\n- `name` (string) — Unique permission slug (e.g. reports.export)\n\n**Optional fields:**\n- `display_name` (string) — Human-readable permission name\n- `description` (string) — Permission description\n- `group` (string) — Permission group for organization"
+          },
+          "response": []
+        },
+        {
+          "name": "Create Resource Permissions",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n\t\"resource\": \"events\",\n\t\"actions\": [\"view\", \"create\", \"update\", \"delete\"]\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{auth_url}}/v1/permissions/resource",
+              "host": [
+                "{{auth_url}}"
+              ],
+              "path": [
+                "v1",
+                "permissions",
+                "resource"
+              ]
+            },
+            "description": "Bulk-create permissions for a resource. Creates permissions in the format resource.action (e.g. events.view, events.create).\n\n**Authentication:** Bearer token required\n\n**Permission:** `permissions.create`\n\n**Required fields:**\n- `resource` (string) — Resource name (e.g. events, users, reports)\n- `actions` (array of strings) — Actions to create (e.g. view, create, update, delete)"
+          },
+          "response": []
+        },
+        {
+          "name": "Show Permission",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{auth_url}}/v1/permissions/{{permission_id}}",
+              "host": [
+                "{{auth_url}}"
+              ],
+              "path": [
+                "v1",
+                "permissions",
+                "{{permission_id}}"
+              ]
+            },
+            "description": "Get details of a specific permission.\n\n**Authentication:** Bearer token required\n\n**Permission:** `permissions.view`\n\n**Path parameters:**\n- `permission_id` — The permission's ID"
+          },
+          "response": []
+        },
+        {
+          "name": "Update Permission",
+          "request": {
+            "method": "PUT",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n\t\"display_name\": \"Updated Permission Name\",\n\t\"description\": \"Updated description\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{auth_url}}/v1/permissions/{{permission_id}}",
+              "host": [
+                "{{auth_url}}"
+              ],
+              "path": [
+                "v1",
+                "permissions",
+                "{{permission_id}}"
+              ]
+            },
+            "description": "Update a specific permission.\n\n**Authentication:** Bearer token required\n\n**Permission:** `permissions.update`\n\n**Path parameters:**\n- `permission_id` — The permission's ID\n\n**Optional fields:**\n- `display_name` (string) — Updated human-readable name\n- `description` (string) — Updated description"
+          },
+          "response": []
+        },
+        {
+          "name": "Delete Permission",
+          "request": {
+            "method": "DELETE",
+            "header": [],
+            "url": {
+              "raw": "{{auth_url}}/v1/permissions/{{permission_id}}",
+              "host": [
+                "{{auth_url}}"
+              ],
+              "path": [
+                "v1",
+                "permissions",
+                "{{permission_id}}"
+              ]
+            },
+            "description": "Delete a specific permission.\n\n**Authentication:** Bearer token required\n\n**Permission:** `permissions.delete`\n\n**Path parameters:**\n- `permission_id` — The permission's ID"
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "⚙️ Services",
+      "description": "Service management endpoints: CRUD operations, token regeneration, and role management for registered services.",
+      "item": [
+        {
+          "name": "List Services",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{auth_url}}/v1/services",
+              "host": [
+                "{{auth_url}}"
+              ],
+              "path": [
+                "v1",
+                "services"
+              ],
+              "query": [
+                {
+                  "key": "page",
+                  "value": "1",
+                  "description": "Page number",
+                  "disabled": true
+                },
+                {
+                  "key": "per_page",
+                  "value": "15",
+                  "description": "Items per page",
+                  "disabled": true
+                },
+                {
+                  "key": "search",
+                  "value": "",
+                  "description": "Search by service name",
+                  "disabled": true
+                },
+                {
+                  "key": "is_active",
+                  "value": "true",
+                  "description": "Filter by active status: true, false",
+                  "disabled": true
+                }
+              ]
+            },
+            "description": "List all registered services.\n\n**Authentication:** Bearer token required\n\n**Permission:** `services.view`\n\n**Query parameters (all optional):**\n- `page` — Page number\n- `per_page` — Items per page\n- `search` — Search by service name\n- `is_active` — Filter by active status (true/false)"
+          },
+          "response": []
+        },
+        {
+          "name": "Create Service",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n\t\"name\": \"maham-expo\",\n\t\"description\": \"Main expo application service\",\n\t\"roles\": [\"merchant\", \"investor\"]\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{auth_url}}/v1/services",
+              "host": [
+                "{{auth_url}}"
+              ],
+              "path": [
+                "v1",
+                "services"
+              ]
+            },
+            "description": "Create a new service registration.\n\n**Authentication:** Bearer token required\n\n**Permission:** `services.create`\n\n**Required fields:**\n- `name` (string) — Unique service name\n\n**Optional fields:**\n- `description` (string) — Service description\n- `roles` (array of strings) — Roles this service can access (replaces old allowed_permissions)\n\n**Notes:** The roles field defines which user roles this service is allowed to interact with."
+          },
+          "response": []
+        },
+        {
+          "name": "Show Service",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{auth_url}}/v1/services/{{service_id}}",
+              "host": [
+                "{{auth_url}}"
+              ],
+              "path": [
+                "v1",
+                "services",
+                "{{service_id}}"
+              ]
+            },
+            "description": "Get details of a specific service.\n\n**Authentication:** Bearer token required\n\n**Permission:** `services.view`\n\n**Path parameters:**\n- `service_id` — The service record's ID"
+          },
+          "response": []
+        },
+        {
+          "name": "Update Service",
+          "request": {
+            "method": "PUT",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n\t\"name\": \"maham-expo-updated\",\n\t\"description\": \"Updated service description\",\n\t\"is_active\": true,\n\t\"roles\": [\"merchant\"]\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{auth_url}}/v1/services/{{service_id}}",
+              "host": [
+                "{{auth_url}}"
+              ],
+              "path": [
+                "v1",
+                "services",
+                "{{service_id}}"
+              ]
+            },
+            "description": "Update a specific service.\n\n**Authentication:** Bearer token required\n\n**Permission:** `services.update`\n\n**Path parameters:**\n- `service_id` — The service record's ID\n\n**Optional fields:**\n- `name` (string) — Updated service name\n- `description` (string) — Updated description\n- `is_active` (boolean) — Enable or disable the service\n- `roles` (array of strings) — Updated roles this service can access"
+          },
+          "response": []
+        },
+        {
+          "name": "Delete Service",
+          "request": {
+            "method": "DELETE",
+            "header": [],
+            "url": {
+              "raw": "{{auth_url}}/v1/services/{{service_id}}",
+              "host": [
+                "{{auth_url}}"
+              ],
+              "path": [
+                "v1",
+                "services",
+                "{{service_id}}"
+              ]
+            },
+            "description": "Delete a specific service.\n\n**Authentication:** Bearer token required\n\n**Permission:** `services.delete`\n\n**Path parameters:**\n- `service_id` — The service record's ID"
+          },
+          "response": []
+        },
+        {
+          "name": "Regenerate Token",
+          "request": {
+            "method": "POST",
+            "header": [],
+            "url": {
+              "raw": "{{auth_url}}/v1/services/{{service_id}}/regenerate-token",
+              "host": [
+                "{{auth_url}}"
+              ],
+              "path": [
+                "v1",
+                "services",
+                "{{service_id}}",
+                "regenerate-token"
+              ]
+            },
+            "description": "Regenerate the service token for a specific service. The old token will be invalidated.\n\n**Authentication:** Bearer token required\n\n**Permission:** `services.update`\n\n**Path parameters:**\n- `service_id` — The service record's ID"
+          },
+          "response": []
+        },
+        {
+          "name": "Get Service Roles",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{auth_url}}/v1/services/{{service_id}}/roles",
+              "host": [
+                "{{auth_url}}"
+              ],
+              "path": [
+                "v1",
+                "services",
+                "{{service_id}}",
+                "roles"
+              ]
+            },
+            "description": "Get all roles assigned to a specific service.\n\n**Authentication:** Bearer token required\n\n**Permission:** `services.view`\n\n**Path parameters:**\n- `service_id` — The service record's ID"
+          },
+          "response": []
+        },
+        {
+          "name": "Assign Roles",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n\t\"roles\": [\"merchant\"]\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{auth_url}}/v1/services/{{service_id}}/roles",
+              "host": [
+                "{{auth_url}}"
+              ],
+              "path": [
+                "v1",
+                "services",
+                "{{service_id}}",
+                "roles"
+              ]
+            },
+            "description": "Assign additional roles to a specific service.\n\n**Authentication:** Bearer token required\n\n**Permission:** `services.update`\n\n**Path parameters:**\n- `service_id` — The service record's ID\n\n**Required fields:**\n- `roles` (array of strings) — Role names to assign"
+          },
+          "response": []
+        },
+        {
+          "name": "Sync Roles",
+          "request": {
+            "method": "PUT",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n\t\"roles\": [\"merchant\", \"investor\"]\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{auth_url}}/v1/services/{{service_id}}/roles",
+              "host": [
+                "{{auth_url}}"
+              ],
+              "path": [
+                "v1",
+                "services",
+                "{{service_id}}",
+                "roles"
+              ]
+            },
+            "description": "Sync (replace) all roles for a specific service. Roles not in the provided list will be removed.\n\n**Authentication:** Bearer token required\n\n**Permission:** `services.update`\n\n**Path parameters:**\n- `service_id` — The service record's ID\n\n**Required fields:**\n- `roles` (array of strings) — Complete list of role names to sync"
+          },
+          "response": []
+        },
+        {
+          "name": "Remove Roles",
+          "request": {
+            "method": "DELETE",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n\t\"roles\": [\"merchant\"]\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{auth_url}}/v1/services/{{service_id}}/roles",
+              "host": [
+                "{{auth_url}}"
+              ],
+              "path": [
+                "v1",
+                "services",
+                "{{service_id}}",
+                "roles"
+              ]
+            },
+            "description": "Remove specific roles from a service.\n\n**Authentication:** Bearer token required\n\n**Permission:** `services.update`\n\n**Path parameters:**\n- `service_id` — The service record's ID\n\n**Required fields:**\n- `roles` (array of strings) — Role names to remove"
+          },
+          "response": []
+        }
+      ]
+    }
+  ]
 }
