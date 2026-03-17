@@ -471,7 +471,7 @@ class AuthController extends Controller
     {
         $request->validate([
             'phone' => 'required|string|max:20',
-            'user_type' => 'nullable|string|exists:roles,name',
+            'user_type' => 'sometimes|nullable|string|exists:roles,name',
             'channel' => 'nullable|string|in:sms,whatsapp',
         ]);
 
@@ -520,7 +520,7 @@ class AuthController extends Controller
         $request->validate([
             'phone' => 'required|string|max:20',
             'code' => 'required|string|min:4|max:8',
-            'user_type' => 'nullable|string|exists:roles,name',
+            'user_type' => 'sometimes|nullable|string|exists:roles,name',
         ]);
 
         $result = $this->authService->verifyLoginOtp(
