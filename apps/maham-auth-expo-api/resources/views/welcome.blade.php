@@ -137,6 +137,15 @@
                 </div>
 
                 <div>
+                    <h3 class="text-xs font-semibold text-gray-400 uppercase tracking-wider mb-2 px-3" data-ar="إدارة OTP" data-en="OTP Management">إدارة OTP</h3>
+                    <ul class="space-y-0.5">
+                        <li><a href="#otp-balance" class="sidebar-link block py-2 px-3 text-sm text-gray-600 rounded-lg"><span class="badge method-get text-white ml-1">GET</span> <span data-ar="رصيد OTP" data-en="OTP Balance">رصيد OTP</span></a></li>
+                        <li><a href="#otp-providers" class="sidebar-link block py-2 px-3 text-sm text-gray-600 rounded-lg"><span class="badge method-get text-white ml-1">GET</span> <span data-ar="حالة المزودين" data-en="Providers Status">حالة المزودين</span></a></li>
+                        <li><a href="#otp-stats" class="sidebar-link block py-2 px-3 text-sm text-gray-600 rounded-lg"><span class="badge method-get text-white ml-1">GET</span> <span data-ar="إحصائيات OTP" data-en="OTP Stats">إحصائيات OTP</span></a></li>
+                    </ul>
+                </div>
+
+                <div>
                     <h3 class="text-xs font-semibold text-gray-400 uppercase tracking-wider mb-2 px-3" data-ar="الإدارة" data-en="Management">الإدارة</h3>
                     <ul class="space-y-0.5">
                         <li><a href="#users" class="sidebar-link block py-2 px-3 text-sm text-gray-600 rounded-lg" data-ar="المستخدمين" data-en="Users">المستخدمين</a></li>
@@ -457,15 +466,19 @@
                 {{-- ============================================================ --}}
                 <div class="bg-emerald-50 border border-emerald-200 rounded-xl p-5 mb-8">
                     <h3 class="text-xl font-bold text-emerald-800 mb-2 flex items-center gap-2" data-ar="📱 تسجيل الدخول عبر OTP" data-en="📱 OTP Login Flow">📱 تسجيل الدخول عبر OTP</h3>
-                    <p class="text-emerald-700 text-sm mb-3" data-ar="تسجيل الدخول أو إنشاء حساب جديد عبر رقم الجوال و رمز التحقق (OTP)" data-en="Login or register via phone number and OTP verification code">تسجيل الدخول أو إنشاء حساب جديد عبر رقم الجوال و رمز التحقق</p>
+                    <p class="text-emerald-700 text-sm mb-3" data-ar="تسجيل الدخول أو إنشاء حساب جديد عبر رقم الجوال و رمز التحقق — مدعوم بمزود Authentica (SMS + WhatsApp)" data-en="Login or register via phone number and OTP — powered by Authentica provider (SMS + WhatsApp)">تسجيل الدخول أو إنشاء حساب جديد عبر رقم الجوال و رمز التحقق — مزود Authentica</p>
                     <div class="bg-white/60 rounded-lg p-4 text-sm">
                         <p class="font-bold text-emerald-800 mb-2" data-ar="التدفق الكامل:" data-en="Complete Flow:">التدفق الكامل:</p>
                         <ol class="list-decimal list-inside space-y-1 text-emerald-700">
-                            <li data-ar="أرسل رقم الجوال + نوع المستخدم → يصلك رمز OTP" data-en="Send phone + user_type → receive OTP code">أرسل رقم الجوال + نوع المستخدم → يصلك رمز OTP</li>
-                            <li data-ar="أرسل الرمز للتحقق → إذا المستخدم موجود = توكن، إذا جديد = registration_token" data-en="Verify OTP → existing user = JWT token, new user = registration_token">أرسل الرمز للتحقق → إذا المستخدم موجود = توكن، إذا جديد = registration_token</li>
-                            <li data-ar="(للمستخدمين الجدد فقط) أكمل البيانات باستخدام registration_token" data-en="(New users only) Complete profile using registration_token">(للمستخدمين الجدد فقط) أكمل البيانات باستخدام registration_token</li>
+                            <li data-ar="أرسل رقم الجوال → يصلك رمز OTP (user_type اختياري — يُكتشف تلقائياً)" data-en="Send phone → receive OTP code (user_type optional — auto-detected)">أرسل رقم الجوال → يصلك رمز OTP (user_type اختياري)</li>
+                            <li data-ar="أرسل الرمز للتحقق → مستخدم موجود = توكن JWT، مستخدم جديد = registration_token" data-en="Verify OTP → existing user = JWT token, new user = registration_token">أرسل الرمز للتحقق → موجود = توكن، جديد = registration_token</li>
+                            <li data-ar="(مستخدمين جدد) أكمل البيانات + حدد user_type (merchant/investor/sponsor)" data-en="(New users) Complete profile + specify user_type (merchant/investor/sponsor)">(مستخدمين جدد) أكمل البيانات + حدد نوع الحساب user_type</li>
                         </ol>
-                        <div class="mt-3 p-2 bg-yellow-50 border border-yellow-200 rounded text-yellow-700 text-xs">
+                        <div class="mt-3 p-2 bg-blue-50 border border-blue-200 rounded text-blue-700 text-xs">
+                            <span class="font-bold">🔌</span>
+                            <span data-ar="المزود: Authentica (authentica.sa) — يدعم SMS و WhatsApp مع خاصية الفولباك" data-en="Provider: Authentica (authentica.sa) — supports SMS & WhatsApp with fallback">المزود: Authentica — SMS + WhatsApp مع فولباك</span>
+                        </div>
+                        <div class="mt-2 p-2 bg-yellow-50 border border-yellow-200 rounded text-yellow-700 text-xs">
                             <span class="font-bold">⚠️</span>
                             <span data-ar="وضع الاختبار: أي رمز OTP مقبول (لا يُرسل SMS فعلي)" data-en="Test mode: any OTP code is accepted (no real SMS sent)">وضع الاختبار: أي رمز OTP مقبول (لا يُرسل SMS فعلي)</span>
                         </div>
@@ -487,7 +500,7 @@
                                     <thead><tr class="border-b bg-gray-50"><th class="p-3 text-right" data-ar="الحقل" data-en="Field">الحقل</th><th class="p-3 text-right" data-ar="النوع" data-en="Type">النوع</th><th class="p-3 text-right" data-ar="مطلوب" data-en="Required">مطلوب</th><th class="p-3 text-right" data-ar="القواعد" data-en="Rules">القواعد</th></tr></thead>
                                     <tbody>
                                         <tr class="border-b"><td class="p-3"><code>phone</code></td><td class="p-3">string</td><td class="p-3"><span class="text-red-500 font-bold">✓</span></td><td class="p-3" data-ar="رقم الجوال (0501234567 أو +966501234567)" data-en="Phone (0501234567 or +966501234567)">رقم الجوال</td></tr>
-                                        <tr class="border-b"><td class="p-3"><code>user_type</code></td><td class="p-3">string</td><td class="p-3"><span class="text-red-500 font-bold">✓</span></td><td class="p-3" data-ar="نوع الحساب: admin, supervisor, merchant, investor, sponsor, user" data-en="Role: admin, supervisor, merchant, investor, sponsor, user">نوع الحساب (admin, merchant, etc)</td></tr>
+                                        <tr class="border-b"><td class="p-3"><code>user_type</code></td><td class="p-3">string</td><td class="p-3"><span class="text-gray-400">—</span></td><td class="p-3" data-ar="اختياري — يُكتشف تلقائياً للمستخدمين الموجودين (merchant, investor, sponsor, ...)" data-en="Optional — auto-detected for existing users (merchant, investor, sponsor, ...)">اختياري — يُكتشف تلقائياً</td></tr>
                                         <tr><td class="p-3"><code>channel</code></td><td class="p-3">string</td><td class="p-3"><span class="text-gray-400">—</span></td><td class="p-3" data-ar="sms أو whatsapp (افتراضي: sms)" data-en="sms or whatsapp (default: sms)">sms | whatsapp</td></tr>
                                     </tbody>
                                 </table>
@@ -496,8 +509,7 @@
                                 <div class="code-block">
                                     <div class="code-header"><span>Request</span></div>
                                     <pre><code>{
-  <span class="json-key">"phone"</span>: <span class="json-string">"0501234567"</span>,
-  <span class="json-key">"user_type"</span>: <span class="json-string">"merchant"</span>
+  <span class="json-key">"phone"</span>: <span class="json-string">"+966567891234"</span>
 }</code></pre>
                                 </div>
                                 <div class="code-block">
@@ -506,7 +518,8 @@
   <span class="json-key">"success"</span>: <span class="json-bool">true</span>,
   <span class="json-key">"message"</span>: <span class="json-string">"تم إرسال رمز التحقق"</span>,
   <span class="json-key">"data"</span>: {
-    <span class="json-key">"is_new_user"</span>: <span class="json-bool">false</span>
+    <span class="json-key">"is_new_user"</span>: <span class="json-bool">false</span>,
+    <span class="json-key">"user_type"</span>: <span class="json-string">"merchant"</span>
   }
 }</code></pre>
                                 </div>
@@ -530,8 +543,8 @@
                                     <thead><tr class="border-b bg-gray-50"><th class="p-3 text-right" data-ar="الحقل" data-en="Field">الحقل</th><th class="p-3 text-right" data-ar="النوع" data-en="Type">النوع</th><th class="p-3 text-right" data-ar="مطلوب" data-en="Required">مطلوب</th><th class="p-3 text-right" data-ar="القواعد" data-en="Rules">القواعد</th></tr></thead>
                                     <tbody>
                                         <tr class="border-b"><td class="p-3"><code>phone</code></td><td class="p-3">string</td><td class="p-3"><span class="text-red-500 font-bold">✓</span></td><td class="p-3" data-ar="نفس الرقم المستخدم في الإرسال" data-en="Same phone used in send">نفس رقم الإرسال</td></tr>
-                                        <tr class="border-b"><td class="p-3"><code>otp</code></td><td class="p-3">string</td><td class="p-3"><span class="text-red-500 font-bold">✓</span></td><td class="p-3" data-ar="رمز التحقق المرسل" data-en="OTP code received">رمز التحقق</td></tr>
-                                        <tr><td class="p-3"><code>user_type</code></td><td class="p-3">string</td><td class="p-3"><span class="text-red-500 font-bold">✓</span></td><td class="p-3" data-ar="نفس النوع المرسل" data-en="Same user_type as send">نفس نوع الحساب</td></tr>
+                                        <tr class="border-b"><td class="p-3"><code>code</code></td><td class="p-3">string</td><td class="p-3"><span class="text-red-500 font-bold">✓</span></td><td class="p-3" data-ar="رمز التحقق المرسل (4-8 أرقام)" data-en="OTP code received (4-8 digits)">رمز التحقق</td></tr>
+                                        <tr><td class="p-3"><code>user_type</code></td><td class="p-3">string</td><td class="p-3"><span class="text-gray-400">—</span></td><td class="p-3" data-ar="اختياري — يُسترجع من الكاش تلقائياً" data-en="Optional — auto-retrieved from cache">اختياري — يُكتشف تلقائياً</td></tr>
                                     </tbody>
                                 </table>
                             </div>
@@ -540,9 +553,8 @@
                                 <div class="code-block">
                                     <div class="code-header"><span>Request</span></div>
                                     <pre><code>{
-  <span class="json-key">"phone"</span>: <span class="json-string">"0501234567"</span>,
-  <span class="json-key">"otp"</span>: <span class="json-string">"123456"</span>,
-  <span class="json-key">"user_type"</span>: <span class="json-string">"merchant"</span>
+  <span class="json-key">"phone"</span>: <span class="json-string">"+966567891234"</span>,
+  <span class="json-key">"code"</span>: <span class="json-string">"123456"</span>
 }</code></pre>
                                 </div>
                                 <div class="code-block">
@@ -585,15 +597,18 @@
                             <span class="badge bg-green-100 text-green-700" data-ar="عام" data-en="Public">عام</span>
                         </div>
                         <div class="p-5 space-y-6">
-                            <p class="text-sm text-gray-500 bg-gray-50 rounded-lg p-3" data-ar="هذا الإندبوينت فقط للمستخدمين الجدد — بعد الحصول على registration_token من /otp/verify" data-en="This endpoint is only for new users — after getting registration_token from /otp/verify">فقط للمستخدمين الجدد بعد الحصول على registration_token</p>
+                            <p class="text-sm text-gray-500 bg-gray-50 rounded-lg p-3" data-ar="هذا الإندبوينت فقط للمستخدمين الجدد — بعد الحصول على registration_token من /otp/verify. يجب تحديد نوع الحساب (user_type)." data-en="This endpoint is only for new users — after getting registration_token from /otp/verify. user_type is required.">فقط للمستخدمين الجدد بعد الحصول على registration_token — يجب تحديد نوع الحساب</p>
                             <div class="overflow-x-auto">
                                 <table class="param-table w-full text-sm">
                                     <thead><tr class="border-b bg-gray-50"><th class="p-3 text-right" data-ar="الحقل" data-en="Field">الحقل</th><th class="p-3 text-right" data-ar="النوع" data-en="Type">النوع</th><th class="p-3 text-right" data-ar="مطلوب" data-en="Required">مطلوب</th><th class="p-3 text-right" data-ar="القواعد" data-en="Rules">القواعد</th></tr></thead>
                                     <tbody>
                                         <tr class="border-b"><td class="p-3"><code>registration_token</code></td><td class="p-3">string</td><td class="p-3"><span class="text-red-500 font-bold">✓</span></td><td class="p-3" data-ar="التوكن من /otp/verify" data-en="Token from /otp/verify">التوكن من verify</td></tr>
                                         <tr class="border-b"><td class="p-3"><code>name</code></td><td class="p-3">string</td><td class="p-3"><span class="text-red-500 font-bold">✓</span></td><td class="p-3" data-ar="الاسم الكامل" data-en="Full name">الاسم الكامل</td></tr>
+                                        <tr class="border-b"><td class="p-3"><code>user_type</code></td><td class="p-3">string</td><td class="p-3"><span class="text-red-500 font-bold">✓</span></td><td class="p-3" data-ar="نوع الحساب: merchant, investor, sponsor, user (لا يقبل admin/super-admin)" data-en="Role: merchant, investor, sponsor, user (not admin/super-admin)">merchant | investor | sponsor | user</td></tr>
                                         <tr class="border-b"><td class="p-3"><code>email</code></td><td class="p-3">string</td><td class="p-3"><span class="text-gray-400">—</span></td><td class="p-3" data-ar="بريد إلكتروني فريد" data-en="Unique email">بريد إلكتروني</td></tr>
-                                        <tr><td class="p-3"><code>password</code></td><td class="p-3">string</td><td class="p-3"><span class="text-gray-400">—</span></td><td class="p-3" data-ar="كلمة مرور (اختياري — يمكن التسجيل بدونها)" data-en="Password (optional — can register without)">كلمة مرور (اختياري)</td></tr>
+                                        <tr class="border-b"><td class="p-3"><code>business_name</code></td><td class="p-3">string</td><td class="p-3"><span class="text-gray-400">—</span></td><td class="p-3" data-ar="اسم المؤسسة / الشركة" data-en="Business / Company name">اسم المؤسسة</td></tr>
+                                        <tr class="border-b"><td class="p-3"><code>business_type</code></td><td class="p-3">string</td><td class="p-3"><span class="text-gray-400">—</span></td><td class="p-3" data-ar="نوع النشاط التجاري" data-en="Business type">نوع النشاط</td></tr>
+                                        <tr><td class="p-3"><code>region</code></td><td class="p-3">string</td><td class="p-3"><span class="text-gray-400">—</span></td><td class="p-3" data-ar="المنطقة" data-en="Region">المنطقة</td></tr>
                                     </tbody>
                                 </table>
                             </div>
@@ -603,14 +618,16 @@
                                     <pre><code>{
   <span class="json-key">"registration_token"</span>: <span class="json-string">"xPbaVXHRV5zXi4bBJx92Q..."</span>,
   <span class="json-key">"name"</span>: <span class="json-string">"أحمد محمد"</span>,
-  <span class="json-key">"email"</span>: <span class="json-string">"ahmed@example.com"</span>
+  <span class="json-key">"user_type"</span>: <span class="json-string">"merchant"</span>,
+  <span class="json-key">"email"</span>: <span class="json-string">"ahmed@example.com"</span>,
+  <span class="json-key">"business_name"</span>: <span class="json-string">"مؤسسة النجاح التجارية"</span>
 }</code></pre>
                                 </div>
                                 <div class="code-block">
                                     <div class="code-header"><span>Response</span><span class="badge bg-green-500/30 text-green-300">201</span></div>
                                     <pre><code>{
   <span class="json-key">"success"</span>: <span class="json-bool">true</span>,
-  <span class="json-key">"message"</span>: <span class="json-string">"تم إنشاء الحساب بنجاح"</span>,
+  <span class="json-key">"message"</span>: <span class="json-string">"تم التسجيل بنجاح"</span>,
   <span class="json-key">"data"</span>: {
     <span class="json-key">"user"</span>: { ... },
     <span class="json-key">"token"</span>: <span class="json-string">"eyJ0eXAi..."</span>,
@@ -619,6 +636,93 @@
   }
 }</code></pre>
                                 </div>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
+                {{-- ============================================================ --}}
+                {{-- OTP MANAGEMENT (Admin) --}}
+                {{-- ============================================================ --}}
+                <div class="bg-purple-50 border border-purple-200 rounded-xl p-5 mb-8">
+                    <h3 class="text-xl font-bold text-purple-800 mb-2 flex items-center gap-2" data-ar="📱 إدارة OTP (أدمن)" data-en="📱 OTP Management (Admin)">📱 إدارة OTP</h3>
+                    <p class="text-purple-700 text-sm" data-ar="إدارة مزودي خدمة OTP والرصيد والإحصائيات — يحتاج صلاحية admin أو super-admin" data-en="Manage OTP providers, balance and stats — requires admin or super-admin role">إدارة المزودين والرصيد والإحصائيات — يحتاج أدمن</p>
+                </div>
+
+                <section id="otp-balance" class="mb-16">
+                    <div class="endpoint-card">
+                        <div class="bg-purple-50 border-b border-purple-100 p-5 flex items-center gap-3">
+                            <span class="badge method-get text-white text-xs">GET</span>
+                            <code class="text-gray-800 font-semibold">/admin/otp/balance</code>
+                            <span class="mr-auto text-sm text-gray-500" data-ar="رصيد المزود النشط" data-en="Active Provider Balance">رصيد المزود النشط</span>
+                            <span class="badge bg-yellow-100 text-yellow-700">Admin</span>
+                        </div>
+                        <div class="p-5">
+                            <p class="text-sm text-gray-600 mb-4" data-ar="يرجع رصيد مزود OTP النشط حالياً (مثل Authentica)" data-en="Returns the balance of the currently active OTP provider (e.g. Authentica)">يرجع رصيد مزود OTP النشط حالياً</p>
+                            <div class="code-block">
+                                <div class="code-header"><span>Response</span><span class="badge bg-green-500/30 text-green-300">200</span></div>
+                                <pre><code>{
+  <span class="json-key">"success"</span>: <span class="json-bool">true</span>,
+  <span class="json-key">"data"</span>: {
+    <span class="json-key">"provider"</span>: <span class="json-string">"authentica"</span>,
+    <span class="json-key">"balance"</span>: <span class="json-string">"100.00"</span>
+  }
+}</code></pre>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
+                <section id="otp-providers" class="mb-16">
+                    <div class="endpoint-card">
+                        <div class="bg-purple-50 border-b border-purple-100 p-5 flex items-center gap-3">
+                            <span class="badge method-get text-white text-xs">GET</span>
+                            <code class="text-gray-800 font-semibold">/admin/otp/providers</code>
+                            <span class="mr-auto text-sm text-gray-500" data-ar="حالة المزودين" data-en="Providers Status">حالة المزودين</span>
+                            <span class="badge bg-yellow-100 text-yellow-700">Admin</span>
+                        </div>
+                        <div class="p-5">
+                            <p class="text-sm text-gray-600 mb-4" data-ar="يرجع حالة كل مزودي OTP المتاحين (Authentica + Twilio) مع حالة التهيئة والمزود النشط" data-en="Returns status of all available OTP providers (Authentica + Twilio) with configuration and active provider">يرجع حالة كل المزودين</p>
+                            <div class="code-block">
+                                <div class="code-header"><span>Response</span><span class="badge bg-green-500/30 text-green-300">200</span></div>
+                                <pre><code>{
+  <span class="json-key">"success"</span>: <span class="json-bool">true</span>,
+  <span class="json-key">"data"</span>: {
+    <span class="json-key">"active_provider"</span>: <span class="json-string">"authentica"</span>,
+    <span class="json-key">"test_mode"</span>: <span class="json-bool">true</span>,
+    <span class="json-key">"providers"</span>: {
+      <span class="json-key">"authentica"</span>: { <span class="json-key">"configured"</span>: <span class="json-bool">true</span>, <span class="json-key">"active"</span>: <span class="json-bool">true</span> },
+      <span class="json-key">"twilio"</span>: { <span class="json-key">"configured"</span>: <span class="json-bool">false</span>, <span class="json-key">"active"</span>: <span class="json-bool">false</span> }
+    }
+  }
+}</code></pre>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
+                <section id="otp-stats" class="mb-16">
+                    <div class="endpoint-card">
+                        <div class="bg-purple-50 border-b border-purple-100 p-5 flex items-center gap-3">
+                            <span class="badge method-get text-white text-xs">GET</span>
+                            <code class="text-gray-800 font-semibold">/admin/otp/stats</code>
+                            <span class="mr-auto text-sm text-gray-500" data-ar="إحصائيات OTP" data-en="OTP Statistics">إحصائيات OTP</span>
+                            <span class="badge bg-yellow-100 text-yellow-700">Admin</span>
+                        </div>
+                        <div class="p-5">
+                            <p class="text-sm text-gray-600 mb-4" data-ar="إحصائيات إرسال واستخدام OTP (اليوم / هذا الأسبوع / هذا الشهر)" data-en="OTP send and usage statistics (today / this week / this month)">إحصائيات OTP اليوم والأسبوع والشهر</p>
+                            <div class="code-block">
+                                <div class="code-header"><span>Response</span><span class="badge bg-green-500/30 text-green-300">200</span></div>
+                                <pre><code>{
+  <span class="json-key">"success"</span>: <span class="json-bool">true</span>,
+  <span class="json-key">"data"</span>: {
+    <span class="json-key">"today"</span>: { <span class="json-key">"otp_sent"</span>: <span class="json-number">15</span>, <span class="json-key">"otp_logins"</span>: <span class="json-number">8</span>, <span class="json-key">"otp_registrations"</span>: <span class="json-number">3</span> },
+    <span class="json-key">"this_week"</span>: { ... },
+    <span class="json-key">"this_month"</span>: { ... },
+    <span class="json-key">"active_provider"</span>: <span class="json-string">"authentica"</span>,
+    <span class="json-key">"balance"</span>: { <span class="json-key">"balance"</span>: <span class="json-string">"99.00"</span> }
+  }
+}</code></pre>
                             </div>
                         </div>
                     </div>

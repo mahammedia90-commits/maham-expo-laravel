@@ -679,7 +679,8 @@ class AuthService
         }
 
         $phone = $cached['phone'];
-        $userType = $cached['user_type'];
+        // user_type من الطلب (أولوية) أو من الكاش
+        $userType = $data['user_type'] ?? $cached['user_type'] ?? 'user';
 
         // Check if phone was already registered (race condition)
         if (User::where('phone', $phone)->exists()) {

@@ -329,10 +329,10 @@
                         <code class="text-xs text-gray-300 font-mono block mb-2" dir="ltr">/api/v1/auth/otp/send</code>
                         <div class="text-xs text-gray-500 space-y-1">
                             <div><code class="text-indigo-300/70">phone</code> <span class="text-rose-400 text-[10px] font-bold">required</span></div>
-                            <div><code class="text-indigo-300/70">user_type</code> <span class="text-rose-400 text-[10px] font-bold">required</span> <span class="text-gray-600 text-[10px]">admin | merchant | sponsor ...</span></div>
+                            <div><code class="text-indigo-300/70">user_type</code> <span class="text-gray-600 text-[10px]">optional — يُكتشف تلقائياً</span></div>
                             <div><code class="text-indigo-300/70">channel</code> <span class="text-gray-600 text-[10px]">sms | whatsapp</span></div>
                         </div>
-                        <div class="mt-3 text-[10px] text-gray-600">يرسل رمز مكوّن من 6 أرقام</div>
+                        <div class="mt-3 text-[10px] text-gray-600">يرسل رمز مكوّن من 6 أرقام عبر Authentica</div>
                     </div>
                     <!-- Step 2: Verify OTP -->
                     <div class="glass border border-white/5 rounded-xl p-4">
@@ -343,8 +343,8 @@
                         <code class="text-xs text-gray-300 font-mono block mb-2" dir="ltr">/api/v1/auth/otp/verify</code>
                         <div class="text-xs text-gray-500 space-y-1">
                             <div><code class="text-indigo-300/70">phone</code> <span class="text-rose-400 text-[10px] font-bold">required</span></div>
-                            <div><code class="text-indigo-300/70">otp</code> <span class="text-rose-400 text-[10px] font-bold">required</span> <span class="text-gray-600">6 أرقام</span></div>
-                            <div><code class="text-indigo-300/70">user_type</code> <span class="text-rose-400 text-[10px] font-bold">required</span></div>
+                            <div><code class="text-indigo-300/70">code</code> <span class="text-rose-400 text-[10px] font-bold">required</span> <span class="text-gray-600">4-8 أرقام</span></div>
+                            <div><code class="text-indigo-300/70">user_type</code> <span class="text-gray-600 text-[10px]">optional</span></div>
                         </div>
                         <div class="mt-3 text-[10px] text-gray-600">→ مستخدم موجود: JWT Token</div>
                         <div class="text-[10px] text-gray-600">→ مستخدم جديد: registration_token</div>
@@ -359,13 +359,14 @@
                         <div class="text-xs text-gray-500 space-y-1">
                             <div><code class="text-indigo-300/70">registration_token</code> <span class="text-rose-400 text-[10px] font-bold">required</span></div>
                             <div><code class="text-indigo-300/70">name</code> <span class="text-rose-400 text-[10px] font-bold">required</span></div>
+                            <div><code class="text-indigo-300/70">user_type</code> <span class="text-rose-400 text-[10px] font-bold">required</span> <span class="text-gray-600 text-[10px]">merchant | investor | sponsor</span></div>
                             <div><code class="text-indigo-300/70">email</code> <span class="text-gray-600 text-[10px]">optional</span></div>
                         </div>
-                        <div class="mt-3 text-[10px] text-amber-400/70">فقط للمستخدمين الجدد</div>
+                        <div class="mt-3 text-[10px] text-amber-400/70">فقط للمستخدمين الجدد — يحدد نوع الحساب</div>
                     </div>
                 </div>
                 <div class="p-3 bg-amber-500/5 border border-amber-500/10 rounded-lg">
-                    <p class="text-xs text-amber-400/80"><span class="font-bold">⚡ وضع الاختبار:</span> عند تفعيل <code class="text-amber-300">sms_test_mode</code> من إعدادات المنصة، الرمز دائماً <code class="text-emerald-300 font-bold">123456</code> — بدون إرسال SMS فعلي</p>
+                    <p class="text-xs text-amber-400/80"><span class="font-bold">⚡ المزود:</span> Authentica (SMS + WhatsApp) — <code class="text-amber-300">OTP_TEST_MODE</code> مفعل حالياً، الرمز <code class="text-emerald-300 font-bold">123456</code></p>
                 </div>
             </div>
         </div>

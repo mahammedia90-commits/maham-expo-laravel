@@ -1989,11 +1989,11 @@
                         <div>
                             <div class="text-sm font-semibold text-white/80">إكمال التسجيل (مستخدم جديد فقط)</div>
                             <code class="text-xs text-gray-400 font-mono" dir="ltr">POST /api/v1/auth/otp/complete-registration</code>
-                            <div class="text-xs text-gray-500 mt-1">أرسل <code class="text-indigo-300">registration_token</code> + <code class="text-indigo-300">name</code> + <code class="text-indigo-300">email</code></div>
+                            <div class="text-xs text-gray-500 mt-1">أرسل <code class="text-indigo-300">registration_token</code> + <code class="text-indigo-300">name</code> + <code class="text-indigo-300">user_type</code> <span class="text-rose-400 text-[10px] font-bold">required</span> <span class="text-gray-600 text-[10px]">(merchant | investor | sponsor)</span></div>
                         </div>
                     </div>
                     <div class="mt-4 p-3 bg-amber-500/5 border border-amber-500/10 rounded-lg">
-                        <p class="text-xs text-amber-400/80"><span class="font-bold">وضع الاختبار:</span> عند تفعيل <code class="text-amber-300">sms_test_mode</code> من الإعدادات، الرمز دائماً <code class="text-emerald-300 font-bold">123456</code></p>
+                        <p class="text-xs text-amber-400/80"><span class="font-bold">🔌 المزود:</span> Authentica (SMS + WhatsApp) — <code class="text-amber-300">OTP_TEST_MODE</code> مفعل حالياً، الرمز <code class="text-emerald-300 font-bold">123456</code></p>
                     </div>
                 </div>
             </div>

@@ -558,6 +558,7 @@ class AuthController extends Controller
         $request->validate([
             'registration_token' => 'required|string',
             'name' => 'required|string|max:255',
+            'user_type' => 'required|string|exists:roles,name|not_in:super-admin,admin,supervisor',
             'email' => 'nullable|email|max:255|unique:users,email',
             'business_name' => 'nullable|string|max:255',
             'business_type' => 'nullable|string|max:255',
@@ -566,7 +567,7 @@ class AuthController extends Controller
 
         $result = $this->authService->completeOtpRegistration(
             $request->registration_token,
-            $request->only(['name', 'email', 'business_name', 'business_type', 'region'])
+            $request->only(['name', 'email', 'user_type', 'business_name', 'business_type', 'region'])
         );
 
         if (!$result['success']) {
