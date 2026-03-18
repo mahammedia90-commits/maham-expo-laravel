@@ -1,0 +1,52 @@
+[mysqld]
+# ============================================
+# Maham Services - MySQL Performance Tuning
+# Optimized for 15GB RAM server
+# ============================================
+
+# InnoDB Buffer Pool — main memory for caching data & indexes
+# ~512MB per MySQL instance (2 instances on server)
+innodb_buffer_pool_size = 512M
+innodb_buffer_pool_instances = 2
+
+# InnoDB Log — larger = better write performance, slower crash recovery
+innodb_log_file_size = 128M
+innodb_log_buffer_size = 16M
+
+# InnoDB Flush — best performance on SSDs
+innodb_flush_method = O_DIRECT
+innodb_flush_log_at_trx_commit = 2
+
+# Thread & Connection tuning
+max_connections = 200
+thread_cache_size = 16
+table_open_cache = 2000
+table_definition_cache = 1400
+
+# Temp tables
+tmp_table_size = 64M
+max_heap_table_size = 64M
+
+# Query cache (disabled in MySQL 8.0, but explicit)
+# query_cache_type = 0
+
+# Sort & join buffers
+sort_buffer_size = 4M
+join_buffer_size = 4M
+read_buffer_size = 2M
+read_rnd_buffer_size = 2M
+
+# Slow query log — helps identify problematic queries
+slow_query_log = 1
+slow_query_log_file = /var/log/mysql/slow.log
+long_query_time = 2
+
+# Binary log expiration (cleanup old logs)
+binlog_expire_logs_seconds = 259200
+
+# Character set
+character-set-server = utf8mb4
+collation-server = utf8mb4_unicode_ci
+
+# Performance Schema (minimal overhead)
+performance_schema = ON

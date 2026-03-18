@@ -57,6 +57,7 @@ services:
         condition: service_healthy
     networks:
       - microservices
+      - maham-network
     healthcheck:
       test: ["CMD", "curl", "-f", "http://localhost:8000/api/health"]
       interval: 30s
@@ -81,6 +82,7 @@ services:
       MYSQL_PASSWORD: secret
     volumes:
       - auth-mysql-data:/var/lib/mysql
+      - ./docker/mysql/custom.cnf:/etc/mysql/conf.d/custom.cnf:ro
     networks:
       - microservices
     healthcheck:
@@ -105,6 +107,7 @@ services:
       MYSQL_DATABASE: maham_expo_api
     volumes:
       - expo-mysql-data:/var/lib/mysql
+      - ./docker/mysql/custom.cnf:/etc/mysql/conf.d/custom.cnf:ro
     networks:
       - microservices
     healthcheck:
