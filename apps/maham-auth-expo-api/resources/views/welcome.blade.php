@@ -524,6 +524,47 @@
 }</code></pre>
                                 </div>
                             </div>
+                            {{-- OTP Send Error Examples --}}
+                            <div>
+                                <h4 class="text-sm font-semibold text-red-600 mb-2" data-ar="أمثلة الأخطاء المحتملة" data-en="Possible Error Responses">أمثلة الأخطاء المحتملة</h4>
+                                <div class="grid grid-cols-1 lg:grid-cols-2 gap-3">
+                                    <div class="code-block">
+                                        <div class="code-header"><span data-ar="تجاوز حد الإرسال" data-en="Max attempts exceeded">تجاوز حد الإرسال</span><span class="badge bg-red-500/30 text-red-300">429</span></div>
+                                        <pre><code>{
+  <span class="json-key">"success"</span>: <span class="json-bool">false</span>,
+  <span class="json-key">"message"</span>: <span class="json-string">"تم تجاوز الحد الأقصى لمحاولات الإرسال"</span>,
+  <span class="json-key">"error_code"</span>: <span class="json-string">"otp_max_attempts_exceeded"</span>
+}</code></pre>
+                                    </div>
+                                    <div class="code-block">
+                                        <div class="code-header"><span data-ar="فشل الإرسال" data-en="Send failed">فشل الإرسال</span><span class="badge bg-red-500/30 text-red-300">422</span></div>
+                                        <pre><code>{
+  <span class="json-key">"success"</span>: <span class="json-bool">false</span>,
+  <span class="json-key">"message"</span>: <span class="json-string">"فشل إرسال رمز التحقق"</span>,
+  <span class="json-key">"error_code"</span>: <span class="json-string">"otp_send_failed"</span>
+}</code></pre>
+                                    </div>
+                                    <div class="code-block">
+                                        <div class="code-header"><span data-ar="بيانات غير صحيحة" data-en="Validation error">بيانات غير صحيحة</span><span class="badge bg-yellow-500/30 text-yellow-300">400</span></div>
+                                        <pre><code>{
+  <span class="json-key">"success"</span>: <span class="json-bool">false</span>,
+  <span class="json-key">"message"</span>: <span class="json-string">"فشل التحقق من البيانات"</span>,
+  <span class="json-key">"error_code"</span>: <span class="json-string">"validation_failed"</span>,
+  <span class="json-key">"errors"</span>: {
+    <span class="json-key">"phone"</span>: [<span class="json-string">"حقل الهاتف مطلوب"</span>]
+  }
+}</code></pre>
+                                    </div>
+                                    <div class="code-block">
+                                        <div class="code-header"><span data-ar="الحساب محظور" data-en="Account blocked">الحساب محظور</span><span class="badge bg-red-500/30 text-red-300">403</span></div>
+                                        <pre><code>{
+  <span class="json-key">"success"</span>: <span class="json-bool">false</span>,
+  <span class="json-key">"message"</span>: <span class="json-string">"حسابك محظور. تواصل مع الدعم"</span>,
+  <span class="json-key">"error_code"</span>: <span class="json-string">"user_blocked"</span>
+}</code></pre>
+                                    </div>
+                                </div>
+                            </div>
                         </div>
                     </div>
                 </section>
@@ -583,6 +624,28 @@
   }
 }</code></pre>
                             </div>
+                            {{-- OTP Verify Error Examples --}}
+                            <div>
+                                <h4 class="text-sm font-semibold text-red-600 mb-2" data-ar="أمثلة الأخطاء المحتملة" data-en="Possible Error Responses">أمثلة الأخطاء المحتملة</h4>
+                                <div class="grid grid-cols-1 lg:grid-cols-2 gap-3">
+                                    <div class="code-block">
+                                        <div class="code-header"><span data-ar="رمز خاطئ" data-en="Invalid OTP">رمز خاطئ</span><span class="badge bg-red-500/30 text-red-300">401</span></div>
+                                        <pre><code>{
+  <span class="json-key">"success"</span>: <span class="json-bool">false</span>,
+  <span class="json-key">"message"</span>: <span class="json-string">"رمز التحقق غير صحيح"</span>,
+  <span class="json-key">"error_code"</span>: <span class="json-string">"otp_invalid"</span>
+}</code></pre>
+                                    </div>
+                                    <div class="code-block">
+                                        <div class="code-header"><span data-ar="رمز منتهي" data-en="OTP expired">رمز منتهي</span><span class="badge bg-red-500/30 text-red-300">401</span></div>
+                                        <pre><code>{
+  <span class="json-key">"success"</span>: <span class="json-bool">false</span>,
+  <span class="json-key">"message"</span>: <span class="json-string">"رمز التحقق منتهي الصلاحية"</span>,
+  <span class="json-key">"error_code"</span>: <span class="json-string">"otp_expired"</span>
+}</code></pre>
+                                    </div>
+                                </div>
+                            </div>
                         </div>
                     </div>
                 </section>
@@ -635,6 +698,40 @@
     <span class="json-key">"expires_in"</span>: <span class="json-number">3600</span>
   }
 }</code></pre>
+                                </div>
+                            </div>
+                            {{-- Complete Registration Error Examples --}}
+                            <div>
+                                <h4 class="text-sm font-semibold text-red-600 mb-2" data-ar="أمثلة الأخطاء المحتملة" data-en="Possible Error Responses">أمثلة الأخطاء المحتملة</h4>
+                                <div class="grid grid-cols-1 lg:grid-cols-3 gap-3">
+                                    <div class="code-block">
+                                        <div class="code-header"><span data-ar="توكن غير صالح" data-en="Invalid token">توكن غير صالح</span><span class="badge bg-red-500/30 text-red-300">401</span></div>
+                                        <pre><code>{
+  <span class="json-key">"success"</span>: <span class="json-bool">false</span>,
+  <span class="json-key">"message"</span>: <span class="json-string">"رمز التسجيل غير صالح أو منتهي"</span>,
+  <span class="json-key">"error_code"</span>: <span class="json-string">"otp_expired"</span>
+}</code></pre>
+                                    </div>
+                                    <div class="code-block">
+                                        <div class="code-header"><span data-ar="بريد مكرر" data-en="Email taken">بريد مكرر</span><span class="badge bg-yellow-500/30 text-yellow-300">400</span></div>
+                                        <pre><code>{
+  <span class="json-key">"success"</span>: <span class="json-bool">false</span>,
+  <span class="json-key">"error_code"</span>: <span class="json-string">"validation_failed"</span>,
+  <span class="json-key">"errors"</span>: {
+    <span class="json-key">"email"</span>: [<span class="json-string">"البريد مستخدم"</span>]
+  }
+}</code></pre>
+                                    </div>
+                                    <div class="code-block">
+                                        <div class="code-header"><span data-ar="نوع ممنوع" data-en="Forbidden type">نوع ممنوع</span><span class="badge bg-yellow-500/30 text-yellow-300">400</span></div>
+                                        <pre><code>{
+  <span class="json-key">"success"</span>: <span class="json-bool">false</span>,
+  <span class="json-key">"error_code"</span>: <span class="json-string">"validation_failed"</span>,
+  <span class="json-key">"errors"</span>: {
+    <span class="json-key">"user_type"</span>: [<span class="json-string">"القيمة المختارة غير صالحة"</span>]
+  }
+}</code></pre>
+                                    </div>
                                 </div>
                             </div>
                         </div>
@@ -1373,27 +1470,113 @@
                 {{-- ERROR CODES --}}
                 <section id="error-codes" class="mb-20">
                     <h2 class="text-3xl font-bold mb-6" data-ar="جدول رموز الأخطاء" data-en="Error Codes Reference">جدول رموز الأخطاء</h2>
+
+                    {{-- Error Response Format --}}
+                    <div class="mb-8">
+                        <h3 class="text-xl font-semibold mb-3" data-ar="شكل رد الخطأ" data-en="Error Response Format">شكل رد الخطأ</h3>
+                        <div class="grid grid-cols-1 lg:grid-cols-2 gap-4">
+                            <div class="code-block">
+                                <div class="code-header"><span data-ar="رد خطأ عام" data-en="General Error Response">رد خطأ عام</span><span class="badge bg-red-500/30 text-red-300">4xx/5xx</span></div>
+                                <pre><code>{
+  <span class="json-key">"success"</span>: <span class="json-bool">false</span>,
+  <span class="json-key">"message"</span>: <span class="json-string">"رسالة الخطأ بالعربي"</span>,
+  <span class="json-key">"error_code"</span>: <span class="json-string">"error_code_string"</span>
+}</code></pre>
+                            </div>
+                            <div class="code-block">
+                                <div class="code-header"><span data-ar="رد خطأ التحقق" data-en="Validation Error Response">رد خطأ التحقق</span><span class="badge bg-yellow-500/30 text-yellow-300">400</span></div>
+                                <pre><code>{
+  <span class="json-key">"success"</span>: <span class="json-bool">false</span>,
+  <span class="json-key">"message"</span>: <span class="json-string">"فشل التحقق من البيانات"</span>,
+  <span class="json-key">"error_code"</span>: <span class="json-string">"validation_failed"</span>,
+  <span class="json-key">"errors"</span>: {
+    <span class="json-key">"phone"</span>: [<span class="json-string">"حقل الهاتف مطلوب"</span>],
+    <span class="json-key">"code"</span>: [<span class="json-string">"الرمز يجب أن يكون 4 أحرف على الأقل"</span>]
+  }
+}</code></pre>
+                            </div>
+                        </div>
+                        <p class="text-xs text-gray-500 mt-2" data-ar="ملاحظة: حقل errors يظهر فقط في أخطاء التحقق. حقل debug يظهر فقط عند APP_DEBUG=true" data-en="Note: 'errors' field only appears in validation errors. 'debug' field only appears when APP_DEBUG=true">ملاحظة: حقل errors يظهر فقط في أخطاء التحقق</p>
+                    </div>
+
                     <div class="overflow-x-auto bg-white rounded-xl border border-gray-200">
                         <table class="w-full text-sm">
                             <thead><tr class="bg-gray-50 border-b"><th class="p-3 text-right">Error Code</th><th class="p-3 text-right">HTTP</th><th class="p-3 text-right" data-ar="الوصف" data-en="Description">الوصف</th></tr></thead>
                             <tbody>
-                                <tr class="border-b bg-red-50/50"><td colspan="3" class="p-2 font-bold text-red-800 text-xs uppercase tracking-wider">Authentication</td></tr>
-                                <tr class="border-b"><td class="p-3"><code>authentication_required</code></td><td class="p-3">401</td><td class="p-3" data-ar="غير مصرح" data-en="Unauthenticated">Unauthenticated</td></tr>
-                                <tr class="border-b"><td class="p-3"><code>token_expired</code></td><td class="p-3">401</td><td class="p-3" data-ar="انتهت صلاحية التوكن" data-en="Token expired">Token expired</td></tr>
-                                <tr class="border-b"><td class="p-3"><code>token_invalid</code></td><td class="p-3">401</td><td class="p-3" data-ar="التوكن غير صالح" data-en="Token invalid">Token invalid</td></tr>
-                                <tr class="border-b"><td class="p-3"><code>token_blacklisted</code></td><td class="p-3">401</td><td class="p-3" data-ar="التوكن محظور" data-en="Token blacklisted">Token blacklisted</td></tr>
-                                <tr class="border-b"><td class="p-3"><code>invalid_login_credentials</code></td><td class="p-3">401</td><td class="p-3" data-ar="بيانات دخول خاطئة" data-en="Invalid credentials">Invalid credentials</td></tr>
-                                <tr class="border-b bg-orange-50/50"><td colspan="3" class="p-2 font-bold text-orange-800 text-xs uppercase tracking-wider">Authorization</td></tr>
-                                <tr class="border-b"><td class="p-3"><code>permission_denied</code></td><td class="p-3">403</td><td class="p-3" data-ar="ليس لديك صلاحية" data-en="Permission denied">Permission denied</td></tr>
-                                <tr class="border-b"><td class="p-3"><code>user_blocked</code></td><td class="p-3">403</td><td class="p-3" data-ar="الحساب محظور" data-en="Account blocked">Account blocked</td></tr>
-                                <tr class="border-b"><td class="p-3"><code>user_suspended</code></td><td class="p-3">403</td><td class="p-3" data-ar="الحساب موقوف" data-en="Account suspended">Account suspended</td></tr>
-                                <tr class="border-b bg-yellow-50/50"><td colspan="3" class="p-2 font-bold text-yellow-800 text-xs uppercase tracking-wider">Validation</td></tr>
-                                <tr class="border-b"><td class="p-3"><code>validation_failed</code></td><td class="p-3">400</td><td class="p-3" data-ar="فشل التحقق" data-en="Validation failed">Validation failed</td></tr>
-                                <tr class="border-b"><td class="p-3"><code>resource_not_found</code></td><td class="p-3">404</td><td class="p-3" data-ar="غير موجود" data-en="Not found">Resource not found</td></tr>
-                                <tr><td class="p-3"><code>rate_limit_exceeded</code></td><td class="p-3">429</td><td class="p-3" data-ar="تجاوز حد الطلبات" data-en="Too many requests">Too many requests</td></tr>
+                                {{-- OTP / SMS --}}
+                                <tr class="border-b bg-emerald-50/50"><td colspan="3" class="p-2 font-bold text-emerald-800 text-xs uppercase tracking-wider">🔐 OTP / SMS / WhatsApp</td></tr>
+                                <tr class="border-b"><td class="p-3"><code>otp_send_failed</code></td><td class="p-3">422</td><td class="p-3" data-ar="فشل إرسال رمز التحقق (مشكلة في الخدمة أو الرقم)" data-en="Failed to send OTP (service or phone issue)">فشل إرسال رمز التحقق</td></tr>
+                                <tr class="border-b"><td class="p-3"><code>otp_invalid</code></td><td class="p-3">401</td><td class="p-3" data-ar="رمز التحقق غير صحيح" data-en="Invalid OTP code">رمز التحقق غير صحيح</td></tr>
+                                <tr class="border-b"><td class="p-3"><code>otp_expired</code></td><td class="p-3">401</td><td class="p-3" data-ar="رمز التحقق منتهي الصلاحية" data-en="OTP code has expired">رمز التحقق منتهي الصلاحية</td></tr>
+                                <tr class="border-b"><td class="p-3"><code>otp_max_attempts_exceeded</code></td><td class="p-3">429</td><td class="p-3" data-ar="تجاوزت الحد الأقصى للمحاولات (5/ساعة)" data-en="Max OTP attempts exceeded (5/hour)">تجاوزت الحد الأقصى للمحاولات</td></tr>
+                                <tr class="border-b"><td class="p-3"><code>otp_already_sent</code></td><td class="p-3">429</td><td class="p-3" data-ar="تم إرسال رمز مسبقاً — انتظر قبل إعادة الإرسال" data-en="OTP already sent — wait before resending">تم إرسال رمز مسبقاً</td></tr>
+                                <tr class="border-b"><td class="p-3"><code>phone_verification_required</code></td><td class="p-3">403</td><td class="p-3" data-ar="يجب التحقق من رقم الجوال أولاً" data-en="Phone verification required first">يجب التحقق من الجوال أولاً</td></tr>
+                                <tr class="border-b"><td class="p-3"><code>phone_already_verified</code></td><td class="p-3">409</td><td class="p-3" data-ar="رقم الجوال محقق مسبقاً" data-en="Phone already verified">الجوال محقق مسبقاً</td></tr>
+                                <tr class="border-b"><td class="p-3"><code>email_verification_required</code></td><td class="p-3">403</td><td class="p-3" data-ar="يجب التحقق من البريد الإلكتروني" data-en="Email verification required">يجب التحقق من البريد</td></tr>
+                                <tr class="border-b"><td class="p-3"><code>email_already_verified</code></td><td class="p-3">409</td><td class="p-3" data-ar="البريد محقق مسبقاً" data-en="Email already verified">البريد محقق مسبقاً</td></tr>
+
+                                {{-- Authentication --}}
+                                <tr class="border-b bg-red-50/50"><td colspan="3" class="p-2 font-bold text-red-800 text-xs uppercase tracking-wider">🔑 Authentication</td></tr>
+                                <tr class="border-b"><td class="p-3"><code>authentication_required</code></td><td class="p-3">401</td><td class="p-3" data-ar="يجب تسجيل الدخول — أرسل التوكن في Header" data-en="Login required — send token in Authorization header">يجب تسجيل الدخول</td></tr>
+                                <tr class="border-b"><td class="p-3"><code>invalid_login_credentials</code></td><td class="p-3">401</td><td class="p-3" data-ar="بيانات الدخول غير صحيحة" data-en="Invalid login credentials">بيانات الدخول غير صحيحة</td></tr>
+                                <tr class="border-b"><td class="p-3"><code>token_expired</code></td><td class="p-3">401</td><td class="p-3" data-ar="انتهت صلاحية التوكن — استخدم /auth/refresh" data-en="Token expired — use /auth/refresh">انتهت صلاحية التوكن</td></tr>
+                                <tr class="border-b"><td class="p-3"><code>token_invalid</code></td><td class="p-3">401</td><td class="p-3" data-ar="التوكن غير صالح" data-en="Token invalid or malformed">التوكن غير صالح</td></tr>
+                                <tr class="border-b"><td class="p-3"><code>token_blacklisted</code></td><td class="p-3">401</td><td class="p-3" data-ar="التوكن محظور (تم تسجيل الخروج)" data-en="Token blacklisted (logged out)">التوكن محظور</td></tr>
+                                <tr class="border-b"><td class="p-3"><code>token_not_provided</code></td><td class="p-3">401</td><td class="p-3" data-ar="لم يتم إرسال التوكن في الطلب" data-en="No token provided in request">لم يتم إرسال التوكن</td></tr>
+                                <tr class="border-b"><td class="p-3"><code>too_many_login_attempts</code></td><td class="p-3">429</td><td class="p-3" data-ar="محاولات دخول كثيرة — انتظر دقيقة" data-en="Too many login attempts — wait 1 minute">محاولات دخول كثيرة</td></tr>
+                                <tr class="border-b"><td class="p-3"><code>account_locked</code></td><td class="p-3">403</td><td class="p-3" data-ar="الحساب مقفل" data-en="Account is locked">الحساب مقفل</td></tr>
+
+                                {{-- Authorization / Account Status --}}
+                                <tr class="border-b bg-orange-50/50"><td colspan="3" class="p-2 font-bold text-orange-800 text-xs uppercase tracking-wider">🛡️ Authorization / Account</td></tr>
+                                <tr class="border-b"><td class="p-3"><code>permission_denied</code></td><td class="p-3">403</td><td class="p-3" data-ar="ليس لديك صلاحية لهذا الإجراء" data-en="No permission for this action">ليس لديك صلاحية</td></tr>
+                                <tr class="border-b"><td class="p-3"><code>insufficient_permissions</code></td><td class="p-3">403</td><td class="p-3" data-ar="صلاحيات غير كافية" data-en="Insufficient permissions">صلاحيات غير كافية</td></tr>
+                                <tr class="border-b"><td class="p-3"><code>user_blocked</code></td><td class="p-3">403</td><td class="p-3" data-ar="الحساب محظور" data-en="Account blocked">الحساب محظور</td></tr>
+                                <tr class="border-b"><td class="p-3"><code>user_suspended</code></td><td class="p-3">403</td><td class="p-3" data-ar="الحساب معلّق مؤقتاً" data-en="Account suspended temporarily">الحساب معلّق</td></tr>
+                                <tr class="border-b"><td class="p-3"><code>user_disabled</code></td><td class="p-3">403</td><td class="p-3" data-ar="الحساب معطّل" data-en="Account disabled">الحساب معطّل</td></tr>
+                                <tr class="border-b"><td class="p-3"><code>user_not_verified</code></td><td class="p-3">403</td><td class="p-3" data-ar="الحساب غير موثق" data-en="Account not verified">الحساب غير موثق</td></tr>
+                                <tr class="border-b"><td class="p-3"><code>user_deleted</code></td><td class="p-3">404</td><td class="p-3" data-ar="الحساب محذوف" data-en="Account deleted">الحساب محذوف</td></tr>
+
+                                {{-- Validation --}}
+                                <tr class="border-b bg-yellow-50/50"><td colspan="3" class="p-2 font-bold text-yellow-800 text-xs uppercase tracking-wider">⚠️ Validation</td></tr>
+                                <tr class="border-b"><td class="p-3"><code>validation_failed</code></td><td class="p-3">400</td><td class="p-3" data-ar="فشل التحقق من البيانات — تحقق من حقل errors" data-en="Validation failed — check errors field">فشل التحقق من البيانات</td></tr>
+                                <tr class="border-b"><td class="p-3"><code>invalid_phone_format</code></td><td class="p-3">400</td><td class="p-3" data-ar="صيغة رقم الجوال غير صحيحة" data-en="Invalid phone number format">صيغة الجوال غير صحيحة</td></tr>
+                                <tr class="border-b"><td class="p-3"><code>invalid_email_format</code></td><td class="p-3">400</td><td class="p-3" data-ar="صيغة البريد الإلكتروني غير صحيحة" data-en="Invalid email format">صيغة البريد غير صحيحة</td></tr>
+                                <tr class="border-b"><td class="p-3"><code>missing_required_field</code></td><td class="p-3">400</td><td class="p-3" data-ar="حقل مطلوب مفقود" data-en="Required field missing">حقل مطلوب مفقود</td></tr>
+                                <tr class="border-b"><td class="p-3"><code>invalid_input</code></td><td class="p-3">400</td><td class="p-3" data-ar="إدخال غير صالح" data-en="Invalid input data">إدخال غير صالح</td></tr>
+
+                                {{-- Resources --}}
+                                <tr class="border-b bg-blue-50/50"><td colspan="3" class="p-2 font-bold text-blue-800 text-xs uppercase tracking-wider">📦 Resources</td></tr>
+                                <tr class="border-b"><td class="p-3"><code>resource_not_found</code></td><td class="p-3">404</td><td class="p-3" data-ar="المورد غير موجود" data-en="Resource not found">المورد غير موجود</td></tr>
+                                <tr class="border-b"><td class="p-3"><code>resource_already_exists</code></td><td class="p-3">409</td><td class="p-3" data-ar="المورد موجود مسبقاً" data-en="Resource already exists">المورد موجود مسبقاً</td></tr>
+                                <tr class="border-b"><td class="p-3"><code>user_not_found</code></td><td class="p-3">404</td><td class="p-3" data-ar="المستخدم غير موجود" data-en="User not found">المستخدم غير موجود</td></tr>
+                                <tr class="border-b"><td class="p-3"><code>user_already_exists</code></td><td class="p-3">409</td><td class="p-3" data-ar="المستخدم موجود مسبقاً" data-en="User already exists">المستخدم موجود مسبقاً</td></tr>
+                                <tr class="border-b"><td class="p-3"><code>user_email_already_exists</code></td><td class="p-3">409</td><td class="p-3" data-ar="البريد الإلكتروني مستخدم" data-en="Email already taken">البريد مستخدم</td></tr>
+                                <tr class="border-b"><td class="p-3"><code>user_phone_already_exists</code></td><td class="p-3">409</td><td class="p-3" data-ar="رقم الجوال مسجل مسبقاً" data-en="Phone number already registered">الجوال مسجل مسبقاً</td></tr>
+                                <tr class="border-b"><td class="p-3"><code>role_not_found</code></td><td class="p-3">404</td><td class="p-3" data-ar="الدور غير موجود" data-en="Role not found">الدور غير موجود</td></tr>
+
+                                {{-- Password --}}
+                                <tr class="border-b bg-purple-50/50"><td colspan="3" class="p-2 font-bold text-purple-800 text-xs uppercase tracking-wider">🔒 Password</td></tr>
+                                <tr class="border-b"><td class="p-3"><code>password_reset_token_invalid</code></td><td class="p-3">401</td><td class="p-3" data-ar="رمز إعادة التعيين غير صالح" data-en="Invalid password reset token">رمز إعادة التعيين غير صالح</td></tr>
+                                <tr class="border-b"><td class="p-3"><code>password_reset_token_expired</code></td><td class="p-3">401</td><td class="p-3" data-ar="رمز إعادة التعيين منتهي" data-en="Password reset token expired">رمز إعادة التعيين منتهي</td></tr>
+                                <tr class="border-b"><td class="p-3"><code>password_same_as_old</code></td><td class="p-3">400</td><td class="p-3" data-ar="كلمة المرور الجديدة مطابقة للقديمة" data-en="New password same as old">كلمة المرور مطابقة للقديمة</td></tr>
+                                <tr class="border-b"><td class="p-3"><code>password_mismatch</code></td><td class="p-3">400</td><td class="p-3" data-ar="كلمة المرور غير متطابقة" data-en="Password mismatch">كلمة المرور غير متطابقة</td></tr>
+
+                                {{-- Rate Limiting --}}
+                                <tr class="border-b bg-pink-50/50"><td colspan="3" class="p-2 font-bold text-pink-800 text-xs uppercase tracking-wider">⏱️ Rate Limiting</td></tr>
+                                <tr class="border-b"><td class="p-3"><code>rate_limit_exceeded</code></td><td class="p-3">429</td><td class="p-3" data-ar="تجاوزت حد الطلبات — انتظر" data-en="Rate limit exceeded — wait and retry">تجاوزت حد الطلبات</td></tr>
+                                <tr class="border-b"><td class="p-3"><code>rate_limit_login_exceeded</code></td><td class="p-3">429</td><td class="p-3" data-ar="محاولات تسجيل دخول كثيرة" data-en="Too many login attempts">محاولات دخول كثيرة</td></tr>
+
+                                {{-- Server / Service --}}
+                                <tr class="border-b bg-gray-100/50"><td colspan="3" class="p-2 font-bold text-gray-800 text-xs uppercase tracking-wider">🖥️ Server / Service</td></tr>
+                                <tr class="border-b"><td class="p-3"><code>internal_server_error</code></td><td class="p-3">500</td><td class="p-3" data-ar="خطأ داخلي في السيرفر" data-en="Internal server error">خطأ داخلي في السيرفر</td></tr>
+                                <tr class="border-b"><td class="p-3"><code>service_unavailable</code></td><td class="p-3">503</td><td class="p-3" data-ar="الخدمة غير متوفرة مؤقتاً" data-en="Service temporarily unavailable">الخدمة غير متوفرة</td></tr>
+                                <tr class="border-b"><td class="p-3"><code>service_communication_failed</code></td><td class="p-3">502</td><td class="p-3" data-ar="فشل الاتصال بالخدمة الخارجية" data-en="External service communication failed">فشل الاتصال بالخدمة</td></tr>
+                                <tr><td class="p-3"><code>maintenance_mode</code></td><td class="p-3">503</td><td class="p-3" data-ar="الخدمة في وضع الصيانة" data-en="Service in maintenance mode">وضع الصيانة</td></tr>
                             </tbody>
                         </table>
                     </div>
+
+                    <p class="text-xs text-gray-400 mt-3" data-ar="💡 الأكواد أعلاه هي الأكثر استخداماً. يوجد 120+ كود خطأ مُعرّف في النظام." data-en="💡 Above are the most common codes. 120+ error codes are defined in the system.">💡 الأكواد أعلاه هي الأكثر استخداماً. يوجد 120+ كود خطأ.</p>
                 </section>
 
                 {{-- RATE LIMITING --}}
