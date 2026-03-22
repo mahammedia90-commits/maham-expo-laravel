@@ -20,6 +20,7 @@ class AuthenticaService implements OtpProviderInterface
     protected string $baseUrl;
     protected string $defaultChannel;
     protected int $maxAttempts;
+    protected int $cooldownSeconds;
     protected bool $fallbackEnabled;
     protected ?int $templateId;
 
@@ -28,7 +29,8 @@ class AuthenticaService implements OtpProviderInterface
         $this->apiKey = config('otp.providers.authentica.api_key', '');
         $this->baseUrl = rtrim(config('otp.providers.authentica.base_url', 'https://api.authentica.sa/api/v2'), '/');
         $this->defaultChannel = config('otp.providers.authentica.default_channel', 'sms');
-        $this->maxAttempts = config('otp.max_attempts_per_hour', 5);
+        $this->maxAttempts = (int) config('otp.max_attempts_per_hour', 5);
+        $this->cooldownSeconds = (int) config('otp.cooldown_seconds', 60);
         $this->fallbackEnabled = config('otp.providers.authentica.fallback_enabled', true);
         $this->templateId = config('otp.providers.authentica.template_id');
     }
@@ -53,12 +55,29 @@ class AuthenticaService implements OtpProviderInterface
             return [
                 'success' => false,
                 'message' => 'خدمة Authentica غير مهيأة',
+                'error_code' => 'otp_send_failed',
             ];
         }
 
         $channel = $channel ?: $this->defaultChannel;
 
-        // Rate limiting
+        // Cooldown check — minimum time between sends
+        $cooldownKey = "otp_cooldown_{$phoneNumber}";
+        $lastSentAt = Cache::get($cooldownKey);
+        if ($lastSentAt && $this->cooldownSeconds > 0) {
+            $elapsed = now()->diffInSeconds($lastSentAt, true);
+            $remaining = max(0, $this->cooldownSeconds - (int) $elapsed);
+            if ($remaining > 0) {
+                return [
+                    'success' => false,
+                    'message' => "يرجى الانتظار {$remaining} ثانية قبل إعادة الإرسال",
+                    'error_code' => 'otp_cooldown_active',
+                    'remaining_seconds' => $remaining,
+                ];
+            }
+        }
+
+        // Rate limiting — max attempts per hour
         $cacheKey = "otp_attempts_{$phoneNumber}";
         $attempts = (int) Cache::get($cacheKey, 0);
 
@@ -66,6 +85,7 @@ class AuthenticaService implements OtpProviderInterface
             return [
                 'success' => false,
                 'message' => 'تم تجاوز الحد الأقصى لمحاولات الإرسال. يرجى المحاولة لاحقاً',
+                'error_code' => 'otp_max_attempts_exceeded',
             ];
         }
 
@@ -102,6 +122,9 @@ class AuthenticaService implements OtpProviderInterface
                 // Increment rate limit
                 Cache::put($cacheKey, $attempts + 1, now()->addHour());
 
+                // Set cooldown timer
+                Cache::put($cooldownKey, now(), now()->addSeconds($this->cooldownSeconds));
+
                 Log::info('Authentica OTP sent', [
                     'phone' => $this->maskPhone($phoneNumber),
                     'channel' => $channel,
@@ -128,6 +151,7 @@ class AuthenticaService implements OtpProviderInterface
             return [
                 'success' => false,
                 'message' => $data['message'] ?? 'فشل إرسال رمز التحقق',
+                'error_code' => 'otp_send_failed',
             ];
         } catch (\Exception $e) {
             Log::error('Authentica send OTP exception', [
@@ -138,6 +162,7 @@ class AuthenticaService implements OtpProviderInterface
             return [
                 'success' => false,
                 'message' => 'خطأ في الاتصال بخدمة الرسائل',
+                'error_code' => 'otp_send_failed',
             ];
         }
     }
@@ -152,6 +177,7 @@ class AuthenticaService implements OtpProviderInterface
             return [
                 'success' => false,
                 'message' => 'خدمة Authentica غير مهيأة',
+                'error_code' => 'otp_invalid',
                 'valid' => false,
             ];
         }
@@ -193,6 +219,7 @@ class AuthenticaService implements OtpProviderInterface
             return [
                 'success' => false,
                 'message' => $data['message'] ?? 'رمز التحقق غير صحيح',
+                'error_code' => 'otp_invalid',
                 'valid' => false,
             ];
         } catch (\Exception $e) {
@@ -204,6 +231,7 @@ class AuthenticaService implements OtpProviderInterface
             return [
                 'success' => false,
                 'message' => 'خطأ في الاتصال بخدمة التحقق',
+                'error_code' => 'otp_invalid',
                 'valid' => false,
             ];
         }

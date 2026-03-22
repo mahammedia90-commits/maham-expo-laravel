@@ -466,29 +466,38 @@ class AuthService
     }
 
     /**
-     * Normalize phone number to E.164 format
+     * Normalize phone number to E.164 format (+966XXXXXXXXX)
+     *
+     * Accepts: 0541249651, 541249651, 966541249651, +966541249651
      */
     protected function normalizePhone(string $phone): string
     {
-        // Remove spaces and dashes
-        $phone = preg_replace('/[\s\-]/', '', $phone);
+        // Remove spaces, dashes, and parentheses
+        $phone = preg_replace('/[\s\-\(\)]/', '', $phone);
 
-        // If starts with 05 (Saudi local), convert to +966
+        // Remove leading + for uniform processing, we'll add it back
+        $phone = ltrim($phone, '+');
+
+        // If starts with 00 (international prefix), remove it
+        if (str_starts_with($phone, '00')) {
+            $phone = substr($phone, 2);
+        }
+
+        // If starts with 05 (Saudi local with leading 0), remove 0
         if (preg_match('/^05\d{8}$/', $phone)) {
-            $phone = '+966' . substr($phone, 1);
+            $phone = '966' . substr($phone, 1);
+        }
+        // If starts with 5 and is 9 digits (Saudi without leading 0)
+        elseif (preg_match('/^5\d{8}$/', $phone)) {
+            $phone = '966' . $phone;
+        }
+        // If starts with 966 and is 12 digits, it's already correct
+        elseif (preg_match('/^966\d{9}$/', $phone)) {
+            // Already in correct format
         }
 
-        // If starts with 966 without +, add +
-        if (preg_match('/^966\d{9}$/', $phone)) {
-            $phone = '+' . $phone;
-        }
-
-        // If doesn't start with +, add +
-        if (!str_starts_with($phone, '+')) {
-            $phone = '+' . $phone;
-        }
-
-        return $phone;
+        // Add + prefix
+        return '+' . $phone;
     }
 
     /**
@@ -553,6 +562,11 @@ class AuthService
             Cache::put("login_otp_type_{$phone}", $userType, now()->addMinutes(10));
             $result['is_new_user'] = !$user;
             $result['user_type'] = $userType;
+        } else {
+            // Ensure error_code is always set
+            if (empty($result['error_code'])) {
+                $result['error_code'] = 'otp_send_failed';
+            }
         }
 
         return $result;
@@ -575,6 +589,7 @@ class AuthService
                 return [
                     'success' => false,
                     'message' => 'لم يتم طلب رمز تحقق لهذا الرقم',
+                    'error_code' => 'otp_invalid',
                     'valid' => false,
                 ];
             }
@@ -587,6 +602,10 @@ class AuthService
             // Production: verify via active OTP provider
             $result = $this->otpProvider->verifyOtp($phone, $code);
             if (!$result['success'] || !($result['valid'] ?? false)) {
+                // Ensure error_code is always set
+                if (empty($result['error_code'])) {
+                    $result['error_code'] = 'otp_invalid';
+                }
                 return $result;
             }
             // استرجاع نوع المستخدم المحفوظ أثناء الإرسال

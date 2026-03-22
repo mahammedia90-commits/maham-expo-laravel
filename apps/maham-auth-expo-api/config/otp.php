@@ -57,9 +57,20 @@ return [
     | Rate Limiting
     |--------------------------------------------------------------------------
     */
-    'max_attempts_per_hour' => $dashboardSettings['otp_max_attempts']
+    'max_attempts_per_hour' => (int) ($dashboardSettings['otp_max_attempts']
         ?? $dashboardSettings['sms_max_attempts_per_hour']
-        ?? env('OTP_MAX_ATTEMPTS', 5),
+        ?? env('OTP_MAX_ATTEMPTS', 5)),
+
+    /*
+    |--------------------------------------------------------------------------
+    | Cooldown Between Sends (seconds)
+    |--------------------------------------------------------------------------
+    | الحد الأدنى بالثواني بين كل رسالة OTP وأخرى لنفس الرقم
+    | مثال: 60 = دقيقة واحدة بين كل رسالة
+    */
+    'cooldown_seconds' => (int) ($dashboardSettings['otp_cooldown_seconds']
+        ?? $dashboardSettings['sms_cooldown_seconds']
+        ?? env('OTP_COOLDOWN_SECONDS', 60)),
 
     /*
     |--------------------------------------------------------------------------

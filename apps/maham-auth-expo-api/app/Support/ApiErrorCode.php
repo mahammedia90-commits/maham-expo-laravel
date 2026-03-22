@@ -157,6 +157,12 @@ class ApiErrorCode
     public const OTP_MAX_ATTEMPTS_EXCEEDED = 'otp_max_attempts_exceeded';
     public const OTP_SEND_FAILED = 'otp_send_failed';
     public const OTP_ALREADY_SENT = 'otp_already_sent';
+    public const OTP_COOLDOWN_ACTIVE = 'otp_cooldown_active';
+    public const OTP_NOT_REQUESTED = 'otp_not_requested';
+    public const USER_TYPE_MISMATCH = 'user_type_mismatch';
+    public const ACCOUNT_INACTIVE = 'account_inactive';
+    public const INVALID_REGISTRATION_TOKEN = 'invalid_registration_token';
+    public const PHONE_ALREADY_REGISTERED = 'phone_already_registered';
     public const EMAIL_VERIFICATION_REQUIRED = 'email_verification_required';
     public const PHONE_VERIFICATION_REQUIRED = 'phone_verification_required';
     public const EMAIL_ALREADY_VERIFIED = 'email_already_verified';
@@ -205,7 +211,8 @@ class ApiErrorCode
             self::PROFILE_TYPE_INVALID,
             self::OPERATION_NOT_ALLOWED,
             self::INVALID_STATE_TRANSITION,
-            self::DUPLICATE_ACTION => 400,
+            self::DUPLICATE_ACTION,
+            self::INVALID_REGISTRATION_TOKEN => 400,
 
             // 401 Unauthorized
             self::INVALID_LOGIN_CREDENTIALS,
@@ -220,7 +227,8 @@ class ApiErrorCode
             self::OTP_INVALID,
             self::OTP_EXPIRED,
             self::PASSWORD_RESET_TOKEN_INVALID,
-            self::PASSWORD_RESET_TOKEN_EXPIRED => 401,
+            self::PASSWORD_RESET_TOKEN_EXPIRED,
+            self::OTP_NOT_REQUESTED => 401,
 
             // 403 Forbidden
             self::USER_BLOCKED,
@@ -231,6 +239,8 @@ class ApiErrorCode
             self::PERMISSION_DENIED,
             self::INSUFFICIENT_PERMISSIONS,
             self::ACCOUNT_LOCKED,
+            self::USER_TYPE_MISMATCH,
+            self::ACCOUNT_INACTIVE,
             self::ROLE_SYSTEM_MODIFICATION_FORBIDDEN,
             self::ROLE_SYSTEM_DELETION_FORBIDDEN,
             self::ROLE_SUPER_ADMIN_PROTECTED,
@@ -274,7 +284,8 @@ class ApiErrorCode
             self::PROFILE_ALREADY_REJECTED,
             self::EMAIL_ALREADY_VERIFIED,
             self::PHONE_ALREADY_VERIFIED,
-            self::ACTION_ALREADY_PERFORMED => 409,
+            self::ACTION_ALREADY_PERFORMED,
+            self::PHONE_ALREADY_REGISTERED => 409,
 
             // 422 Unprocessable Entity
             self::RESOURCE_CREATION_FAILED,
@@ -324,7 +335,8 @@ class ApiErrorCode
             self::RATE_LIMIT_SERVICE_EXCEEDED,
             self::TOO_MANY_LOGIN_ATTEMPTS,
             self::OTP_MAX_ATTEMPTS_EXCEEDED,
-            self::OTP_ALREADY_SENT => 429,
+            self::OTP_ALREADY_SENT,
+            self::OTP_COOLDOWN_ACTIVE => 429,
 
             // 500 Internal Server Error
             self::INTERNAL_SERVER_ERROR,

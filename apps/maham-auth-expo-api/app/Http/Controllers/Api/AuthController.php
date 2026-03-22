@@ -13,6 +13,7 @@ use App\Models\User;
 use App\Services\AuthService;
 use App\Services\AuditService;
 use App\Support\ApiErrorCode;
+use App\Support\ApiResponse;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Tymon\JWTAuth\Facades\JWTAuth;
@@ -416,10 +417,14 @@ class AuthController extends Controller
         );
 
         if (!$result['success']) {
-            return response()->json([
-                'success' => false,
-                'message' => $result['message'],
-            ], 400);
+            $errorCode = $result['error_code'] ?? ApiErrorCode::OTP_SEND_FAILED;
+            $errors = isset($result['remaining_seconds']) ? ['remaining_seconds' => $result['remaining_seconds']] : null;
+
+            return ApiResponse::error(
+                message: $result['message'],
+                errorCode: $errorCode,
+                errors: $errors,
+            );
         }
 
         return response()->json([
@@ -448,10 +453,12 @@ class AuthController extends Controller
         );
 
         if (!$result['success']) {
-            return response()->json([
-                'success' => false,
-                'message' => $result['message'],
-            ], 400);
+            $errorCode = $result['error_code'] ?? ApiErrorCode::OTP_INVALID;
+
+            return ApiResponse::error(
+                message: $result['message'],
+                errorCode: $errorCode,
+            );
         }
 
         return response()->json([
@@ -482,17 +489,19 @@ class AuthController extends Controller
         );
 
         if (!$result['success']) {
-            $statusCode = match ($result['error_code'] ?? null) {
-                'user_type_mismatch' => 403,
-                'account_inactive' => 403,
-                default => 400,
-            };
+            $errorCode = $result['error_code'] ?? ApiErrorCode::OTP_SEND_FAILED;
 
-            return response()->json([
-                'success' => false,
-                'message' => $result['message'],
-                'error_code' => $result['error_code'] ?? null,
-            ], $statusCode);
+            $errors = null;
+            // Include remaining_seconds for cooldown errors
+            if (isset($result['remaining_seconds'])) {
+                $errors = ['remaining_seconds' => $result['remaining_seconds']];
+            }
+
+            return ApiResponse::error(
+                message: $result['message'],
+                errorCode: $errorCode,
+                errors: $errors,
+            );
         }
 
         $response = [
@@ -530,16 +539,12 @@ class AuthController extends Controller
         );
 
         if (!$result['success']) {
-            $statusCode = match ($result['error_code'] ?? null) {
-                'user_type_mismatch' => 403,
-                default => 400,
-            };
+            $errorCode = $result['error_code'] ?? ApiErrorCode::OTP_INVALID;
 
-            return response()->json([
-                'success' => false,
-                'message' => $result['message'],
-                'error_code' => $result['error_code'] ?? null,
-            ], $statusCode);
+            return ApiResponse::error(
+                message: $result['message'],
+                errorCode: $errorCode,
+            );
         }
 
         return response()->json([
@@ -571,17 +576,12 @@ class AuthController extends Controller
         );
 
         if (!$result['success']) {
-            $statusCode = match ($result['error_code'] ?? null) {
-                'invalid_registration_token' => 400,
-                'phone_already_registered' => 409,
-                default => 400,
-            };
+            $errorCode = $result['error_code'] ?? ApiErrorCode::RESOURCE_CREATION_FAILED;
 
-            return response()->json([
-                'success' => false,
-                'message' => $result['message'],
-                'error_code' => $result['error_code'] ?? null,
-            ], $statusCode);
+            return ApiResponse::error(
+                message: $result['message'],
+                errorCode: $errorCode,
+            );
         }
 
         return response()->json([
