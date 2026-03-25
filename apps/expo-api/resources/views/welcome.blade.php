@@ -126,6 +126,8 @@
                         <li><a href="#self-invoices" class="sidebar-link block py-2 px-3 text-sm text-gray-600 rounded-lg" data-ar="فواتيري" data-en="My Invoices">فواتيري</a></li>
                         <li><a href="#self-visits" class="sidebar-link block py-2 px-3 text-sm text-gray-600 rounded-lg" data-ar="طلبات الزيارة" data-en="Visit Requests">طلبات الزيارة</a></li>
                         <li><a href="#self-rentals" class="sidebar-link block py-2 px-3 text-sm text-gray-600 rounded-lg" data-ar="طلبات الإيجار" data-en="Rental Requests">طلبات الإيجار</a></li>
+                        <li><a href="#self-payments" class="sidebar-link block py-2 px-3 text-sm text-gray-600 rounded-lg" data-ar="بوابة الدفع" data-en="Payment Gateway">💳 بوابة الدفع</a></li>
+                        <li><a href="#self-devices" class="sidebar-link block py-2 px-3 text-sm text-gray-600 rounded-lg" data-ar="الأجهزة" data-en="Devices (Push)">📱 الأجهزة</a></li>
                     </ul>
                 </div>
 
@@ -140,6 +142,9 @@
                         <li><a href="#my-rental-contracts" class="sidebar-link block py-2 px-3 text-sm text-gray-600 rounded-lg" data-ar="عقود الإيجار" data-en="Rental Contracts">عقود الإيجار</a></li>
                         <li><a href="#my-sponsor" class="sidebar-link block py-2 px-3 text-sm text-gray-600 rounded-lg" data-ar="الرعاية" data-en="Sponsor Data">الرعاية</a></li>
                         <li><a href="#my-activity" class="sidebar-link block py-2 px-3 text-sm text-gray-600 rounded-lg" data-ar="نشاطاتي" data-en="My Activity">نشاطاتي</a></li>
+                        <li><a href="#my-team" class="sidebar-link block py-2 px-3 text-sm text-gray-600 rounded-lg" data-ar="فريق العمل" data-en="Team Members">👥 فريق العمل</a></li>
+                        <li><a href="#my-sponsor-leads" class="sidebar-link block py-2 px-3 text-sm text-gray-600 rounded-lg" data-ar="عملاء الرعاية" data-en="Sponsor Leads">عملاء الرعاية</a></li>
+                        <li><a href="#my-sponsor-deliverables" class="sidebar-link block py-2 px-3 text-sm text-gray-600 rounded-lg" data-ar="مخرجات الرعاية" data-en="Deliverables">مخرجات الرعاية</a></li>
                     </ul>
                 </div>
 
@@ -571,7 +576,12 @@
                                 <tr class="border-b"><td class="p-3"><span class="badge method-post text-white">POST</span></td><td class="p-3"><code>/v1/faqs/{faq}/helpful</code></td><td class="p-3" data-ar="تقييم الفائدة" data-en="Mark helpful">تقييم الفائدة</td></tr>
                                 <tr class="border-b bg-gray-50/50"><td colspan="3" class="p-2 font-bold text-gray-600 text-xs uppercase tracking-wider" data-ar="البانرات" data-en="Banners">البانرات</td></tr>
                                 <tr class="border-b"><td class="p-3"><span class="badge method-get text-white">GET</span></td><td class="p-3"><code>/v1/banners</code></td><td class="p-3" data-ar="قائمة البانرات" data-en="List banners">قائمة البانرات</td></tr>
-                                <tr><td class="p-3"><span class="badge method-post text-white">POST</span></td><td class="p-3"><code>/v1/banners/{banner}/click</code></td><td class="p-3" data-ar="تسجيل نقرة" data-en="Record click">تسجيل نقرة</td></tr>
+                                <tr class="border-b"><td class="p-3"><span class="badge method-post text-white">POST</span></td><td class="p-3"><code>/v1/banners/{banner}/click</code></td><td class="p-3" data-ar="تسجيل نقرة" data-en="Record click">تسجيل نقرة</td></tr>
+                                <tr class="border-b bg-gray-50/50"><td colspan="3" class="p-2 font-bold text-gray-600 text-xs uppercase tracking-wider" data-ar="أنشطة تجارية" data-en="Business Activity Types">أنشطة تجارية</td></tr>
+                                <tr class="border-b"><td class="p-3"><span class="badge method-get text-white">GET</span></td><td class="p-3"><code>/v1/business-activity-types</code></td><td class="p-3" data-ar="قائمة أنواع الأنشطة التجارية" data-en="List business activity types">أنواع الأنشطة التجارية</td></tr>
+                                <tr class="border-b"><td class="p-3"><span class="badge method-get text-white">GET</span></td><td class="p-3"><code>/v1/business-activity-types/{id}</code></td><td class="p-3" data-ar="تفاصيل نوع نشاط" data-en="Activity type details">تفاصيل نوع نشاط</td></tr>
+                                <tr class="border-b bg-gray-50/50"><td colspan="3" class="p-2 font-bold text-gray-600 text-xs uppercase tracking-wider" data-ar="إعدادات" data-en="Configuration">إعدادات</td></tr>
+                                <tr><td class="p-3"><span class="badge method-get text-white">GET</span></td><td class="p-3"><code>/v1/auth-mode</code></td><td class="p-3" data-ar="وضع تسجيل الدخول الحالي" data-en="Current login flow mode">وضع تسجيل الدخول</td></tr>
                             </tbody>
                         </table>
                     </div>
@@ -681,7 +691,8 @@
                             <tbody>
                                 <tr class="border-b"><td class="p-3"><span class="badge method-get text-white">GET</span></td><td class="p-3"><code>/v1/profile</code></td><td class="p-3" data-ar="عرض ملفي التجاري" data-en="Show my business profile">عرض ملفي التجاري</td></tr>
                                 <tr class="border-b"><td class="p-3"><span class="badge method-post text-white">POST</span></td><td class="p-3"><code>/v1/profile</code></td><td class="p-3" data-ar="إنشاء ملف تجاري" data-en="Create business profile">إنشاء ملف تجاري</td></tr>
-                                <tr><td class="p-3"><span class="badge method-put text-white">PUT</span></td><td class="p-3"><code>/v1/profile</code></td><td class="p-3" data-ar="تحديث ملفي التجاري" data-en="Update my business profile">تحديث ملفي التجاري</td></tr>
+                                <tr class="border-b"><td class="p-3"><span class="badge method-put text-white">PUT</span></td><td class="p-3"><code>/v1/profile</code></td><td class="p-3" data-ar="تحديث ملفي التجاري" data-en="Update my business profile">تحديث ملفي التجاري</td></tr>
+                                <tr><td class="p-3"><span class="badge method-post text-white">POST</span></td><td class="p-3"><code>/v1/profile/kyc-step</code></td><td class="p-3" data-ar="حفظ خطوة توثيق KYC" data-en="Save KYC verification step">حفظ خطوة توثيق KYC</td></tr>
                             </tbody>
                         </table>
                     </div>
@@ -858,6 +869,74 @@
                         <code class="bg-blue-50 text-blue-600 px-1.5 py-0.5 rounded text-[10px]">404 NOT_FOUND</code>
                         <code class="bg-orange-50 text-orange-600 px-1.5 py-0.5 rounded text-[10px]">422 VALIDATION_ERROR</code>
                         <code class="bg-blue-50 text-blue-600 px-1.5 py-0.5 rounded text-[10px]">422 SPACE_UNAVAILABLE</code>
+                    </div>
+                </section>
+
+                {{-- Self: Payment Gateway --}}
+                <section id="self-payments" class="mb-16">
+                    <h3 class="text-2xl font-bold mb-4" data-ar="💳 بوابة الدفع" data-en="💳 Payment Gateway">💳 بوابة الدفع</h3>
+                    <div class="bg-green-50 border border-green-200 rounded-lg p-4 text-sm mb-4">
+                        <span class="font-semibold text-green-800" data-ar="بوابة الدفع:" data-en="Payment Gateway:">بوابة الدفع:</span>
+                        <span class="text-green-700" data-ar="دفع الفواتير ومتابعة حالة المدفوعات" data-en="Pay invoices and track payment status">دفع الفواتير ومتابعة حالة المدفوعات</span>
+                    </div>
+                    <div class="overflow-x-auto bg-white rounded-xl border border-gray-200">
+                        <table class="w-full text-sm">
+                            <thead><tr class="bg-gray-50 border-b"><th class="p-3 text-right">Method</th><th class="p-3 text-right">Endpoint</th><th class="p-3 text-right" data-ar="الوصف" data-en="Description">الوصف</th></tr></thead>
+                            <tbody>
+                                <tr class="border-b"><td class="p-3"><span class="badge method-get text-white">GET</span></td><td class="p-3"><code>/v1/payments</code></td><td class="p-3" data-ar="قائمة مدفوعاتي" data-en="List my payments">قائمة مدفوعاتي</td></tr>
+                                <tr class="border-b"><td class="p-3"><span class="badge method-get text-white">GET</span></td><td class="p-3"><code>/v1/payments/{payment}</code></td><td class="p-3" data-ar="تفاصيل دفعة" data-en="Payment details">تفاصيل دفعة</td></tr>
+                                <tr class="border-b"><td class="p-3"><span class="badge method-post text-white">POST</span></td><td class="p-3"><code>/v1/payments/pay-invoice</code></td><td class="p-3" data-ar="بدء دفع فاتورة" data-en="Initiate invoice payment">بدء دفع فاتورة</td></tr>
+                                <tr><td class="p-3"><span class="badge method-get text-white">GET</span></td><td class="p-3"><code>/v1/payments/{payment}/status</code></td><td class="p-3" data-ar="التحقق من حالة الدفع" data-en="Check payment status">التحقق من حالة الدفع</td></tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    {{-- Pay Invoice Body --}}
+                    <div class="mt-4 code-block">
+                        <div class="code-header"><span data-ar="جسم الطلب — POST /v1/payments/pay-invoice" data-en="Request Body — POST /v1/payments/pay-invoice">Body — POST /v1/payments/pay-invoice</span></div>
+                        <pre><code>{
+  <span class="json-key">"invoice_id"</span>: <span class="json-string">"uuid-here"</span>,
+  <span class="json-key">"payment_method"</span>: <span class="json-string">"credit_card"</span>,
+  <span class="json-key">"return_url"</span>: <span class="json-string">"https://app.mahamexpo.sa/payment/callback"</span>
+}</code></pre>
+                    </div>
+                    <div class="mt-3 flex flex-wrap items-center gap-1.5 px-1">
+                        <span class="text-[10px] text-gray-400 font-bold">⚠️</span>
+                        <code class="bg-red-50 text-red-600 px-1.5 py-0.5 rounded text-[10px]">401 UNAUTHENTICATED</code>
+                        <code class="bg-blue-50 text-blue-600 px-1.5 py-0.5 rounded text-[10px]">404 NOT_FOUND</code>
+                        <code class="bg-orange-50 text-orange-600 px-1.5 py-0.5 rounded text-[10px]">422 INVALID_INVOICE</code>
+                    </div>
+                </section>
+
+                {{-- Self: Device Registration (Push Notifications) --}}
+                <section id="self-devices" class="mb-16">
+                    <h3 class="text-2xl font-bold mb-4" data-ar="📱 الأجهزة (الإشعارات)" data-en="📱 Devices (Push Notifications)">📱 الأجهزة</h3>
+                    <div class="bg-indigo-50 border border-indigo-200 rounded-lg p-4 text-sm mb-4">
+                        <span class="font-semibold text-indigo-800" data-ar="إشعارات Push:" data-en="Push Notifications:">إشعارات Push:</span>
+                        <span class="text-indigo-700" data-ar="تسجيل الجهاز لاستقبال الإشعارات عبر FCM/APNs" data-en="Register device for push notifications via FCM/APNs">تسجيل الجهاز لاستقبال الإشعارات عبر FCM/APNs</span>
+                    </div>
+                    <div class="overflow-x-auto bg-white rounded-xl border border-gray-200">
+                        <table class="w-full text-sm">
+                            <thead><tr class="bg-gray-50 border-b"><th class="p-3 text-right">Method</th><th class="p-3 text-right">Endpoint</th><th class="p-3 text-right" data-ar="الوصف" data-en="Description">الوصف</th></tr></thead>
+                            <tbody>
+                                <tr class="border-b"><td class="p-3"><span class="badge method-get text-white">GET</span></td><td class="p-3"><code>/v1/devices</code></td><td class="p-3" data-ar="قائمة أجهزتي المسجلة" data-en="List my registered devices">قائمة أجهزتي المسجلة</td></tr>
+                                <tr class="border-b"><td class="p-3"><span class="badge method-post text-white">POST</span></td><td class="p-3"><code>/v1/devices</code></td><td class="p-3" data-ar="تسجيل جهاز للإشعارات" data-en="Register device for push">تسجيل جهاز للإشعارات</td></tr>
+                                <tr><td class="p-3"><span class="badge method-delete text-white">DEL</span></td><td class="p-3"><code>/v1/devices</code></td><td class="p-3" data-ar="إلغاء تسجيل جهاز" data-en="Unregister device">إلغاء تسجيل جهاز</td></tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    {{-- Device Register Body --}}
+                    <div class="mt-4 code-block">
+                        <div class="code-header"><span data-ar="جسم الطلب — POST /v1/devices" data-en="Request Body — POST /v1/devices">Body — POST /v1/devices</span></div>
+                        <pre><code>{
+  <span class="json-key">"device_token"</span>: <span class="json-string">"fcm_token_or_apns_token_here"</span>,
+  <span class="json-key">"device_type"</span>: <span class="json-string">"android"</span>,  <span class="text-gray-400">// android | ios</span>
+  <span class="json-key">"device_name"</span>: <span class="json-string">"Samsung Galaxy S24"</span>
+}</code></pre>
+                    </div>
+                    <div class="mt-3 flex flex-wrap items-center gap-1.5 px-1">
+                        <span class="text-[10px] text-gray-400 font-bold">⚠️</span>
+                        <code class="bg-red-50 text-red-600 px-1.5 py-0.5 rounded text-[10px]">401 UNAUTHENTICATED</code>
+                        <code class="bg-orange-50 text-orange-600 px-1.5 py-0.5 rounded text-[10px]">422 VALIDATION_ERROR</code>
                     </div>
                 </section>
 
@@ -1093,6 +1172,77 @@
                     <div class="mt-3 flex flex-wrap items-center gap-1.5 px-1">
                         <span class="text-[10px] text-gray-400 font-bold">⚠️</span>
                         <code class="bg-red-50 text-red-600 px-1.5 py-0.5 rounded text-[10px]">401 UNAUTHENTICATED</code>
+                    </div>
+                </section>
+
+                {{-- My: Team Members (Merchant & Investor) --}}
+                <section id="my-team" class="mb-16">
+                    <h3 class="text-2xl font-bold mb-4" data-ar="👥 فريق العمل" data-en="👥 Team Members">👥 فريق العمل</h3>
+                    <div class="bg-amber-50 border border-amber-200 rounded-lg p-4 text-sm mb-4">
+                        <span class="font-semibold text-amber-800" data-ar="ملاحظة:" data-en="Note:">ملاحظة:</span>
+                        <span class="text-amber-700" data-ar="نفس الـ endpoints لفريق التاجر والمستثمر — فقط يتغير البادئة" data-en="Same endpoints for merchant & investor teams — only prefix changes">نفس البنية لفريق التاجر والمستثمر — يتغير البادئة فقط</span>
+                    </div>
+                    <div class="overflow-x-auto bg-white rounded-xl border border-gray-200">
+                        <table class="w-full text-sm">
+                            <thead><tr class="bg-gray-50 border-b"><th class="p-3 text-right">Method</th><th class="p-3 text-right">Endpoint</th><th class="p-3 text-right" data-ar="الوصف" data-en="Description">الوصف</th><th class="p-3 text-right">Permission</th></tr></thead>
+                            <tbody>
+                                <tr class="border-b bg-gray-50/50"><td colspan="4" class="p-2 font-bold text-gray-600 text-xs uppercase tracking-wider" data-ar="فريق التاجر" data-en="Merchant Team">فريق التاجر — /v1/my/merchant-team</td></tr>
+                                <tr class="border-b"><td class="p-3"><span class="badge method-get text-white">GET</span></td><td class="p-3"><code>/v1/my/merchant-team/member-types</code></td><td class="p-3" data-ar="أنواع الأعضاء" data-en="Member types">أنواع الأعضاء</td><td class="p-3"><span class="perm-badge">team-members.view</span></td></tr>
+                                <tr class="border-b"><td class="p-3"><span class="badge method-get text-white">GET</span></td><td class="p-3"><code>/v1/my/merchant-team</code></td><td class="p-3" data-ar="قائمة الفريق" data-en="List team">قائمة الفريق</td><td class="p-3"><span class="perm-badge">team-members.view</span></td></tr>
+                                <tr class="border-b"><td class="p-3"><span class="badge method-post text-white">POST</span></td><td class="p-3"><code>/v1/my/merchant-team</code></td><td class="p-3" data-ar="إضافة عضو" data-en="Add member">إضافة عضو</td><td class="p-3"><span class="perm-badge">team-members.create</span></td></tr>
+                                <tr class="border-b"><td class="p-3"><span class="badge method-get text-white">GET</span></td><td class="p-3"><code>/v1/my/merchant-team/{id}</code></td><td class="p-3" data-ar="تفاصيل عضو" data-en="Member details">تفاصيل عضو</td><td class="p-3"><span class="perm-badge">team-members.view</span></td></tr>
+                                <tr class="border-b"><td class="p-3"><span class="badge method-put text-white">PUT</span></td><td class="p-3"><code>/v1/my/merchant-team/{id}</code></td><td class="p-3" data-ar="تحديث عضو" data-en="Update member">تحديث عضو</td><td class="p-3"><span class="perm-badge">team-members.update</span></td></tr>
+                                <tr class="border-b"><td class="p-3"><span class="badge method-delete text-white">DEL</span></td><td class="p-3"><code>/v1/my/merchant-team/{id}</code></td><td class="p-3" data-ar="حذف عضو" data-en="Remove member">حذف عضو</td><td class="p-3"><span class="perm-badge">team-members.delete</span></td></tr>
+                                <tr class="border-b bg-gray-50/50"><td colspan="4" class="p-2 font-bold text-gray-600 text-xs uppercase tracking-wider" data-ar="فريق المستثمر" data-en="Investor Team">فريق المستثمر — /v1/my/investor-team</td></tr>
+                                <tr class="border-b"><td class="p-3"><span class="badge method-get text-white">GET</span></td><td class="p-3"><code>/v1/my/investor-team/member-types</code></td><td class="p-3" data-ar="أنواع الأعضاء" data-en="Member types">أنواع الأعضاء</td><td class="p-3"><span class="perm-badge">team-members.view</span></td></tr>
+                                <tr class="border-b"><td class="p-3"><span class="badge method-get text-white">GET</span></td><td class="p-3"><code>/v1/my/investor-team</code></td><td class="p-3" data-ar="قائمة الفريق" data-en="List team">قائمة الفريق</td><td class="p-3"><span class="perm-badge">team-members.view</span></td></tr>
+                                <tr class="border-b"><td class="p-3"><span class="badge method-post text-white">POST</span></td><td class="p-3"><code>/v1/my/investor-team</code></td><td class="p-3" data-ar="إضافة عضو" data-en="Add member">إضافة عضو</td><td class="p-3"><span class="perm-badge">team-members.create</span></td></tr>
+                                <tr class="border-b"><td class="p-3"><span class="badge method-get text-white">GET</span></td><td class="p-3"><code>/v1/my/investor-team/{id}</code></td><td class="p-3" data-ar="تفاصيل عضو" data-en="Member details">تفاصيل عضو</td><td class="p-3"><span class="perm-badge">team-members.view</span></td></tr>
+                                <tr class="border-b"><td class="p-3"><span class="badge method-put text-white">PUT</span></td><td class="p-3"><code>/v1/my/investor-team/{id}</code></td><td class="p-3" data-ar="تحديث عضو" data-en="Update member">تحديث عضو</td><td class="p-3"><span class="perm-badge">team-members.update</span></td></tr>
+                                <tr><td class="p-3"><span class="badge method-delete text-white">DEL</span></td><td class="p-3"><code>/v1/my/investor-team/{id}</code></td><td class="p-3" data-ar="حذف عضو" data-en="Remove member">حذف عضو</td><td class="p-3"><span class="perm-badge">team-members.delete</span></td></tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <div class="mt-3 flex flex-wrap items-center gap-1.5 px-1">
+                        <span class="text-[10px] text-gray-400 font-bold">⚠️</span>
+                        <code class="bg-red-50 text-red-600 px-1.5 py-0.5 rounded text-[10px]">401 UNAUTHENTICATED</code>
+                        <code class="bg-red-50 text-red-600 px-1.5 py-0.5 rounded text-[10px]">403 PERMISSION_DENIED</code>
+                        <code class="bg-blue-50 text-blue-600 px-1.5 py-0.5 rounded text-[10px]">404 NOT_FOUND</code>
+                        <code class="bg-orange-50 text-orange-600 px-1.5 py-0.5 rounded text-[10px]">422 VALIDATION_ERROR</code>
+                    </div>
+                </section>
+
+                {{-- My: Sponsor Leads --}}
+                <section id="my-sponsor-leads" class="mb-16">
+                    <h3 class="text-2xl font-bold mb-4" data-ar="عملاء الرعاية" data-en="Sponsor Leads">عملاء الرعاية</h3>
+                    <div class="overflow-x-auto bg-white rounded-xl border border-gray-200">
+                        <table class="w-full text-sm">
+                            <thead><tr class="bg-gray-50 border-b"><th class="p-3 text-right">Method</th><th class="p-3 text-right">Endpoint</th><th class="p-3 text-right" data-ar="الوصف" data-en="Description">الوصف</th><th class="p-3 text-right">Permission</th></tr></thead>
+                            <tbody>
+                                <tr class="border-b"><td class="p-3"><span class="badge method-get text-white">GET</span></td><td class="p-3"><code>/v1/my/sponsor-leads</code></td><td class="p-3" data-ar="قائمة العملاء المحتملين" data-en="List sponsor leads">قائمة العملاء المحتملين</td><td class="p-3"><span class="perm-badge">sponsor-leads.view</span></td></tr>
+                                <tr><td class="p-3"><span class="badge method-get text-white">GET</span></td><td class="p-3"><code>/v1/my/sponsor-leads/{id}</code></td><td class="p-3" data-ar="تفاصيل عميل" data-en="Lead details">تفاصيل عميل</td><td class="p-3"><span class="perm-badge">sponsor-leads.view</span></td></tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </section>
+
+                {{-- My: Sponsor Deliverables --}}
+                <section id="my-sponsor-deliverables" class="mb-16">
+                    <h3 class="text-2xl font-bold mb-4" data-ar="مخرجات الرعاية" data-en="Sponsor Deliverables">مخرجات الرعاية</h3>
+                    <div class="overflow-x-auto bg-white rounded-xl border border-gray-200">
+                        <table class="w-full text-sm">
+                            <thead><tr class="bg-gray-50 border-b"><th class="p-3 text-right">Method</th><th class="p-3 text-right">Endpoint</th><th class="p-3 text-right" data-ar="الوصف" data-en="Description">الوصف</th><th class="p-3 text-right">Permission</th></tr></thead>
+                            <tbody>
+                                <tr class="border-b"><td class="p-3"><span class="badge method-get text-white">GET</span></td><td class="p-3"><code>/v1/my/sponsor-deliverables</code></td><td class="p-3" data-ar="قائمة المخرجات" data-en="List deliverables">قائمة المخرجات</td><td class="p-3"><span class="perm-badge">sponsor-deliverables.view</span></td></tr>
+                                <tr class="border-b"><td class="p-3"><span class="badge method-get text-white">GET</span></td><td class="p-3"><code>/v1/my/sponsor-deliverables/{id}</code></td><td class="p-3" data-ar="تفاصيل مخرج" data-en="Deliverable details">تفاصيل مخرج</td><td class="p-3"><span class="perm-badge">sponsor-deliverables.view</span></td></tr>
+                                <tr><td class="p-3"><span class="badge method-post text-white">POST</span></td><td class="p-3"><code>/v1/my/sponsor-deliverables/{id}/upload</code></td><td class="p-3" data-ar="رفع ملف المخرج" data-en="Upload deliverable file">رفع ملف المخرج</td><td class="p-3"><span class="perm-badge">sponsor-deliverables.upload</span></td></tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <div class="mt-3 flex flex-wrap items-center gap-1.5 px-1">
+                        <span class="text-[10px] text-gray-400 font-bold">⚠️</span>
+                        <code class="bg-red-50 text-red-600 px-1.5 py-0.5 rounded text-[10px]">401 UNAUTHENTICATED</code>
+                        <code class="bg-red-50 text-red-600 px-1.5 py-0.5 rounded text-[10px]">403 PERMISSION_DENIED</code>
                     </div>
                 </section>
 
