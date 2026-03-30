@@ -1,1 +1,3 @@
 test-production.sh
+.env
+.env.testing

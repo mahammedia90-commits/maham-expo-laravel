@@ -1,147 +1,30 @@
 <?php
-
 namespace App\Models;
 
-use App\Traits\HasRolesAndPermissions;
-use Illuminate\Database\Eloquent\Concerns\HasUuids;
-use Illuminate\Database\Eloquent\Factories\HasFactory;
-use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Tymon\JWTAuth\Contracts\JWTSubject;
+use App\Traits\HasRolesAndPermissions;
 
 class User extends Authenticatable implements JWTSubject
 {
-    use HasFactory, Notifiable, HasUuids, SoftDeletes, HasRolesAndPermissions;
+    use Notifiable, HasRolesAndPermissions;
+
+    public $incrementing = true;
+    protected $keyType = 'int';
+    const CREATED_AT = 'createdAt';
+    const UPDATED_AT = 'updatedAt';
 
     protected $fillable = [
-        'name',
-        'email',
-        'password',
-        'phone',
-        'phone_verified_at',
-        'avatar',
-        'metadata',
-        'status',
-        'last_login_at',
-        'last_login_ip',
+        'name', 'email', 'phone', 'role', 'loginMethod', 'openId',
+        'lastSignedIn', 'isActive', 'status',
     ];
 
-    protected $hidden = [
-        'password',
-        'remember_token',
-    ];
+    protected $casts = ['isActive' => 'boolean'];
 
-    protected function casts(): array
-    {
-        return [
-            'email_verified_at' => 'datetime',
-            'phone_verified_at' => 'datetime',
-            'last_login_at' => 'datetime',
-            'password' => 'hashed',
-            'metadata' => 'array',
-        ];
-    }
-
-    /* ========================================
-     * JWT Methods
-     * ======================================== */
-
-    public function getJWTIdentifier(): mixed
-    {
-        return $this->getKey();
-    }
-
-    public function getJWTCustomClaims(): array
-    {
-        return [
-            'email' => $this->email,
-            'name' => $this->name,
-            'roles' => $this->roles->pluck('name')->toArray(),
-        ];
-    }
-
-    /* ========================================
-     * Relationships
-     * ======================================== */
-
-    public function refreshTokens()
-    {
-        return $this->hasMany(RefreshToken::class);
-    }
-
-    public function auditLogs()
-    {
-        return $this->hasMany(AuditLog::class);
-    }
-
-    /* ========================================
-     * Scopes
-     * ======================================== */
-
-    public function scopeActive($query)
-    {
-        return $query->where('status', 'active');
-    }
-
-    public function scopeByEmail($query, string $email)
-    {
-        return $query->where('email', $email);
-    }
-
-    /* ========================================
-     * Helper Methods
-     * ======================================== */
-
-    public function isActive(): bool
-    {
-        return $this->status === 'active';
-    }
-
-    public function isSuspended(): bool
-    {
-        return $this->status === 'suspended';
-    }
-
-    public function updateLastLogin(string $ip = null): void
-    {
-        $this->update([
-            'last_login_at' => now(),
-            'last_login_ip' => $ip,
-        ]);
-    }
-
-    public function getMetadata(string $key, $default = null)
-    {
-        return data_get($this->metadata, $key, $default);
-    }
-
-    public function setMetadata(string $key, $value): void
-    {
-        $metadata = $this->metadata ?? [];
-        data_set($metadata, $key, $value);
-        $this->update(['metadata' => $metadata]);
-    }
-
-    /* ========================================
-     * Accessors
-     * ======================================== */
-
-    public function getFullInfoAttribute(): array
-    {
-        return [
-            'id' => $this->id,
-            'name' => $this->name,
-            'email' => $this->email,
-            'phone' => $this->phone,
-            'avatar' => $this->avatar,
-            'status' => $this->status,
-            'email_verified' => $this->hasVerifiedEmail(),
-            'phone_verified' => $this->phone_verified_at !== null,
-            'roles' => $this->roles->pluck('name')->toArray(),
-            'permissions' => $this->getAllPermissions()->toArray(),
-            'last_login_at' => $this->last_login_at?->toISOString(),
-            'created_at' => $this->created_at->toISOString(),
-        ];
+    public function isActive(): bool { return (bool) ($this->isActive ?? true); }
+    public function getJWTIdentifier() { return $this->getKey(); }
+    public function getJWTCustomClaims() {
+        return ['name' => $this->name, 'email' => $this->email, 'phone' => $this->phone, 'role' => $this->role];
     }
 }

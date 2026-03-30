@@ -3,15 +3,13 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
-class BusinessProfile extends Model
+class InvestorProfile extends Model
 {
-    use \Illuminate\Database\Eloquent\Factories\HasFactory;
     public $incrementing = true;
     protected $keyType = 'int';
-    protected $table = 'customers';
     const CREATED_AT = 'createdAt';
-    const UPDATED_AT = null;
-    protected $fillable = ['userId','type','companyName','crNumber','vatNumber','kycStatus','classification','score'];
+    const UPDATED_AT = 'updatedAt';
+    protected $fillable = ['userId', 'investorType', 'companyName', 'preferredSectors', 'investmentCapacity', 'totalInvested', 'verificationStatus', 'bio', 'phone', 'location'];
     
     public function user(): BelongsTo { return $this->belongsTo(User::class, 'userId'); }
 }
