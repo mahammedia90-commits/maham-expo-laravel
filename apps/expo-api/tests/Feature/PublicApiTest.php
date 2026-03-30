@@ -7,7 +7,7 @@ use Tests\TestCase;
 
 class PublicApiTest extends TestCase
 {
-    use RefreshDatabase;
+    
 
     // ==================== HEALTH CHECK ====================
 
