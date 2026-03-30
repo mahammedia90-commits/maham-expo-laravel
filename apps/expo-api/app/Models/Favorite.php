@@ -6,7 +6,6 @@ class Favorite extends Model
     public $incrementing = true;
     protected $keyType = 'int';
     const CREATED_AT = 'createdAt';
-    const UPDATED_AT = 'updatedAt';
-    public $timestamps = false;
+    const UPDATED_AT = null;
     protected $fillable = ['userId', 'eventId', 'spaceId'];
 }

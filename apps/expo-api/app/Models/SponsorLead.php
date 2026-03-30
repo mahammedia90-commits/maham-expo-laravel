@@ -4,11 +4,10 @@ use Illuminate\Database\Eloquent\Model;
 
 class SponsorLead extends Model
 {
-    use \Illuminate\Database\Eloquent\Factories\HasFactory;
     public $incrementing = true;
     protected $keyType = 'int';
-    protected $table = 'leads';
+    protected $table = 'bp_leads';
     const CREATED_AT = 'createdAt';
     const UPDATED_AT = 'updatedAt';
-    protected $fillable = ['sponsorId','eventId','companyName','contactName','email','phone','industry','interestLevel','source','status','score'];
+    protected $fillable = ['leadType','brandName','companyName','ownerName','ownerPhone','ownerEmail','assignedTo','salesAssignedTo','status','qualificationNotes','rejectionNotes','internalNotes','leadSource','budgetRange','priority','expectedRevenue'];
 }

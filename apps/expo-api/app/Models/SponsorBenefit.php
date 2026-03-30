@@ -4,9 +4,10 @@ use Illuminate\Database\Eloquent\Model;
 
 class SponsorBenefit extends Model
 {
-    use \Illuminate\Database\Eloquent\Factories\HasFactory;
     public $incrementing = true;
     protected $keyType = 'int';
     protected $table = 'sponsor_package_items';
-    public $timestamps = false;
+    const CREATED_AT = 'createdAt';
+    const UPDATED_AT = null;
+    protected $fillable = ['packageId','itemType','title','description','value','quantity','status','deliveryStatus','deliveredAt','notes'];
 }

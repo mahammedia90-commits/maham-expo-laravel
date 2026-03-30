@@ -7,5 +7,6 @@ class Payment extends Model
     protected $keyType = 'int';
     const CREATED_AT = 'createdAt';
     const UPDATED_AT = null;
-    protected $fillable = ['userId','amount','currency','status'];
+    protected $fillable = ['userId','bookingId','amount','currency','method','gatewayRef','status','invoiceId','paidAt'];
+    protected $casts = ['amount' => 'decimal:2'];
 }

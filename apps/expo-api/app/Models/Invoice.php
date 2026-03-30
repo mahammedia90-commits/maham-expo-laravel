@@ -7,5 +7,6 @@ class Invoice extends Model
     protected $keyType = 'int';
     const CREATED_AT = 'createdAt';
     const UPDATED_AT = null;
-    protected $fillable = ['invoiceNumber','userId','subtotal','vatRate','vatAmount','totalAmount','status'];
+    protected $fillable = ['invoiceNumber','paymentId','userId','amount','vatRate','vatAmount','totalAmount','zatcaUuid','zatcaHash','zatcaQr','status','pdfUrl','issuedAt'];
+    protected $casts = ['amount' => 'decimal:2', 'vatAmount' => 'decimal:2', 'totalAmount' => 'decimal:2'];
 }

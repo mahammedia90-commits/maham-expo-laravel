@@ -8,5 +8,6 @@ class RentalContract extends Model
     protected $table = 'contracts';
     const CREATED_AT = 'createdAt';
     const UPDATED_AT = null;
-    protected $fillable = ['contractNumber','bookingId','totalAmount','status'];
+    protected $fillable = ['contractNumber','bookingId','userId','type','templateId','content','totalAmount','status','signedAt','expiresAt','fileUrl','terms','signatureUrl','signatureData'];
+    protected $casts = ['totalAmount' => 'decimal:2'];
 }

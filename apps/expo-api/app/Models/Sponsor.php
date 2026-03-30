@@ -9,7 +9,7 @@ class Sponsor extends Model
     protected $table = 'sponsorships';
     const CREATED_AT = 'createdAt';
     const UPDATED_AT = null;
-    protected $fillable = ['userId', 'eventId', 'packageId', 'status', 'amount', 'benefits'];
+    protected $fillable = ['userId', 'eventId', 'packageId', 'status', 'amount', 'benefits', 'contractId'];
     protected $casts = ['benefits' => 'array', 'amount' => 'decimal:2'];
     public function event(): BelongsTo { return $this->belongsTo(Event::class, 'eventId'); }
     public function package(): BelongsTo { return $this->belongsTo(SponsorPackage::class, 'packageId'); }

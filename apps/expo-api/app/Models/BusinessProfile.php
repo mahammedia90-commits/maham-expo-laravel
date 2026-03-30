@@ -5,7 +5,6 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
 class BusinessProfile extends Model
 {
-    use \Illuminate\Database\Eloquent\Factories\HasFactory;
     public $incrementing = true;
     protected $keyType = 'int';
     protected $table = 'customers';

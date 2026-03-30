@@ -6,8 +6,9 @@ class BookingRequest extends Model
 {
     public $incrementing = true;
     protected $keyType = 'int';
-    protected $table = 'booking_requests';
+    protected $table = 'bookings';
     const CREATED_AT = 'createdAt';
     const UPDATED_AT = 'updatedAt';
-    protected $fillable = ['exhibitionId', 'unitId', 'merchantName', 'merchantCompany', 'merchantPhone', 'merchantEmail', 'activityType', 'requestedAmount', 'status', 'notes', 'investorId'];
+    protected $fillable = ['orderNumber','userId','unitId','eventId','status','totalPrice','vatAmount','services','approvedBy','approvedAt','rejectionReason','notes'];
+    protected $casts = ['services' => 'array', 'totalPrice' => 'decimal:2', 'vatAmount' => 'decimal:2'];
 }

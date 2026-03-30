@@ -7,6 +7,6 @@ class SponsorPackage extends Model
     protected $keyType = 'int';
     const CREATED_AT = 'createdAt';
     const UPDATED_AT = null;
-    protected $fillable = ['name','price','benefits','eventId'];
+    protected $fillable = ['name','nameAr','price','benefits','maxSponsors','eventId','tier'];
     protected $casts = ['benefits' => 'array', 'price' => 'decimal:2'];
 }

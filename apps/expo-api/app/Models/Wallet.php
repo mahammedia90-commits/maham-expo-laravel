@@ -8,6 +8,6 @@ class Wallet extends Model
     protected $keyType = 'int';
     const CREATED_AT = 'createdAt';
     const UPDATED_AT = null;
-    protected $fillable = ['userId', 'balance', 'currency'];
+    protected $fillable = ['userId', 'balance', 'currency', 'lastTransactionAt'];
     protected $casts = ['balance' => 'decimal:2'];
 }

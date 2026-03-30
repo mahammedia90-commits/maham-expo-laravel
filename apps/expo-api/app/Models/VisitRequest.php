@@ -5,13 +5,13 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
 class VisitRequest extends Model
 {
-    use \Illuminate\Database\Eloquent\Factories\HasFactory;
     public $incrementing = true;
     protected $keyType = 'int';
-    protected $table = 'booking_requests';
+    protected $table = 'bookings';
     const CREATED_AT = 'createdAt';
     const UPDATED_AT = 'updatedAt';
-    protected $fillable = ['exhibitionId','unitId','merchantName','merchantCompany','merchantPhone','merchantEmail','activityType','requestedAmount','status','notes','investorId'];
+    protected $fillable = ['orderNumber','userId','unitId','eventId','status','totalPrice','vatAmount','services','approvedBy','approvedAt','rejectionReason','notes'];
+    protected $casts = ['services' => 'array'];
     
-    public function event(): BelongsTo { return $this->belongsTo(Event::class, 'exhibitionId'); }
+    public function event(): BelongsTo { return $this->belongsTo(Event::class, 'eventId'); }
 }

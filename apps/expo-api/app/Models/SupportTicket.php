@@ -6,6 +6,6 @@ class SupportTicket extends Model
     public $incrementing = true;
     protected $keyType = 'int';
     const CREATED_AT = 'createdAt';
-    const UPDATED_AT = null;
-    protected $fillable = ['userId','subject','status'];
+    const UPDATED_AT = 'updatedAt';
+    protected $fillable = ['customerId','subject','category','priority','status','assignedTo','slaDeadline','description'];
 }

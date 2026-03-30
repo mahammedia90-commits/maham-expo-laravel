@@ -9,7 +9,7 @@ class Event extends Model
     protected $keyType = 'int';
     const CREATED_AT = 'createdAt';
     const UPDATED_AT = 'updatedAt';
-    protected $fillable = ['name','nameAr','description','descriptionAr','type','startDate','endDate','venueId','status','coverImage','expectedVisitors','rating','isOfficial','createdBy','city','category'];
+    protected $fillable = ['name','nameAr','description','descriptionAr','type','startDate','endDate','venueId','status','coverImage','expectedVisitors','rating','isOfficial','createdBy'];
     protected $casts = ['isOfficial' => 'boolean', 'startDate' => 'datetime', 'endDate' => 'datetime'];
     
     public function sections(): HasMany { return $this->hasMany(Section::class, 'eventId'); }
@@ -19,5 +19,4 @@ class Event extends Model
     public function scopePublished($q) { return $q->whereIn('status', ['active','upcoming']); }
     public function scopeFeatured($q) { return $q->where('isOfficial', true); }
     public function scopeSearch($q, $s) { return $q->where('name','like',"%$s%")->orWhere('nameAr','like',"%$s%"); }
-    public function scopeInCity($q, $c) { return $q->where('city', $c); }
 }

@@ -6,7 +6,7 @@ class Banner extends Model {
     protected $keyType = 'int';
     const CREATED_AT = 'createdAt';
     const UPDATED_AT = null;
-    protected $fillable = ['title','titleAr','image','link','isActive','sortOrder'];
+    protected $fillable = ['title','titleAr','image','link','isActive','sortOrder','clickCount'];
     protected $casts = ['isActive' => 'boolean'];
     public function scopeActive($q) { return $q->where('isActive', true); }
 }

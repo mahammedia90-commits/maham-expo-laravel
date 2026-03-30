@@ -12,13 +12,14 @@ class User extends Authenticatable
     const UPDATED_AT = 'updatedAt';
 
     protected $fillable = [
-        'name', 'email', 'phone', 'passwordHash', 'loginMethod', 'role',
-        'status', 'avatar', 'company', 'commercialRegister', 'vatNumber',
-        'kycStatus', 'language', 'department', 'departmentId', 'isActive',
-        'activityType', 'region',
+        'openId', 'name', 'email', 'loginMethod', 'role',
+        'phone', 'passwordHash', 'status', 'avatar', 'company',
+        'commercialRegister', 'vatNumber', 'kycStatus',
+        'twoFactorEnabled', 'twoFactorSecret', 'language',
+        'department', 'allowedSections', 'departmentId', 'lastSignedIn',
     ];
     protected $hidden = ['passwordHash', 'twoFactorSecret'];
-    protected $casts = ['isActive' => 'boolean', 'twoFactorEnabled' => 'boolean'];
+    protected $casts = ['twoFactorEnabled' => 'boolean'];
 
     public function getAuthPassword() { return $this->passwordHash; }
     public function notifications(): HasMany { return $this->hasMany(Notification::class, 'userId'); }

@@ -5,5 +5,7 @@ class OneSignalSubscription extends Model
 {
     public $incrementing = true;
     protected $keyType = 'int';
-    public $timestamps = false;
+    const CREATED_AT = 'createdAt';
+    const UPDATED_AT = null;
+    protected $fillable = ['userId','playerId','platform'];
 }
