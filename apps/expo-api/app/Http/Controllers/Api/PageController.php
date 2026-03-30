@@ -13,7 +13,6 @@ class PageController extends Controller
     }
     public function show(string $slug): JsonResponse
     {
-        $page = Page::where('slug', $slug)->published()->firstOrFail();
-        return ApiResponse::success($page);
+        return ApiResponse::success(Page::where('slug', $slug)->published()->firstOrFail());
     }
 }
