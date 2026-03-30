@@ -6,8 +6,8 @@ use App\Support\ApiResponse;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 
-use AppModelsSection;
-use AppModelsSpace;
+use App\Models\Section;
+use App\Models\Space;
 
 class EventController extends Controller
 {
