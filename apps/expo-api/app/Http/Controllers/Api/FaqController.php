@@ -10,21 +10,11 @@ class FaqController extends Controller
 {
     public function index(Request $request): JsonResponse
     {
-        $q = Faq::active();
+        $q = Faq::where('isActive', true);
         if ($cat = $request->input('category')) $q->where('category', $cat);
-        return ApiResponse::success($q->orderBy('sort_order')->get());
+        return ApiResponse::success($q->orderBy('sortOrder')->get());
     }
-    public function show(string $id): JsonResponse
-    {
-        return ApiResponse::success(Faq::findOrFail($id));
-    }
-    public function categories(): JsonResponse
-    {
-        return ApiResponse::success(Faq::select('category')->distinct()->pluck('category'));
-    }
-    public function helpful(string $id): JsonResponse
-    {
-        Faq::where('id', $id)->increment('helpful_count');
-        return ApiResponse::success(['message' => 'شكراً لتقييمك']);
-    }
+    public function show(int $id): JsonResponse { return ApiResponse::success(Faq::findOrFail($id)); }
+    public function categories(): JsonResponse { return ApiResponse::success(Faq::distinct()->pluck('category')); }
+    public function helpful(int $id): JsonResponse { return ApiResponse::success(['message' => 'شكراً']); }
 }
