@@ -17,14 +17,14 @@ trait HasRolesAndPermissions
     {
         return $this->belongsToMany(Role::class, 'user_roles')
             ->withPivot(['assigned_by', 'expires_at'])
-            ->withTimestamps();
+            ;
     }
 
     public function directPermissions()
     {
         return $this->belongsToMany(Permission::class, 'user_permissions')
             ->withPivot(['is_granted', 'assigned_by', 'expires_at'])
-            ->withTimestamps();
+            ;
     }
 
     /* ========================================

@@ -136,8 +136,8 @@ Route::middleware([SetLocale::class])->group(function () {
         Route::get('/events/{event}/sections', [EventController::class, 'sections']);
 
         // Sponsors (Public)
-        Route::get('/events/{event}/sponsors', [SponsorController::class, 'index']);
-        Route::get('/events/{event}/sponsor-packages', [SponsorController::class, 'packages']);
+        Route::get('/events/{eventId}/sponsors', [SponsorController::class, 'index']);
+        Route::get('/events/{eventId}/sponsor-packages', [SponsorController::class, 'packages']);
 
         // Spaces (Public)
         Route::get('/spaces/{space}', [SpaceController::class, 'show']);
@@ -988,3 +988,8 @@ Route::middleware([SetLocale::class])->group(function () {
     }); // End v1 prefix
 
 }); // End middleware group
+
+// Fallback for auth redirect
+Route::get('/login', function () {
+    return response()->json(['success' => false, 'message' => 'غير مصرح', 'error_code' => 'unauthenticated'], 401);
+})->name('login');

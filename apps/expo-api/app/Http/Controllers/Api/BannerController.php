@@ -5,15 +5,12 @@ use App\Models\Banner;
 use App\Support\ApiResponse;
 use Illuminate\Http\JsonResponse;
 
-class BannerController extends Controller
-{
-    public function index(): JsonResponse
-    {
-        return ApiResponse::success(Banner::active()->orderBy('sort_order')->get());
+class BannerController extends Controller {
+    public function index(): JsonResponse {
+        return ApiResponse::success(Banner::active()->orderBy('sortOrder')->get());
     }
-    public function click(string $id): JsonResponse
-    {
-        Banner::where('id', $id)->increment('clicks_count');
+    public function click(int $id): JsonResponse {
+        Banner::where('id', $id)->increment('clickCount');
         return ApiResponse::success(['message' => 'ok']);
     }
 }

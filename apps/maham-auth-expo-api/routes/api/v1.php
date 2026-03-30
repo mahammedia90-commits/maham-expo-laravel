@@ -223,3 +223,7 @@ Route::middleware('auth:api')->group(function () {
     });
 });
 });
+// Fallback for auth redirect
+Route::get('/login', function () {
+    return response()->json(['success' => false, 'message' => 'غير مصرح', 'error_code' => 'unauthenticated'], 401);
+})->name('login');
