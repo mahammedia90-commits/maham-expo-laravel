@@ -61,11 +61,11 @@ class ReportController extends Controller
     {
         $dateFilter = $this->getDateFilter($period);
         return [
-            'total_bookings' => DB::table('bookings')->where('created_at', '>=', $dateFilter)->count(),
-            'approved' => DB::table('bookings')->where('status', 'approved')->where('created_at', '>=', $dateFilter)->count(),
-            'pending' => DB::table('bookings')->where('status', 'pending')->where('created_at', '>=', $dateFilter)->count(),
-            'rejected' => DB::table('bookings')->where('status', 'rejected')->where('created_at', '>=', $dateFilter)->count(),
-            'revenue' => DB::table('bookings')->where('created_at', '>=', $dateFilter)->sum('totalPrice') ?: 0,
+            'total_bookings' => DB::table('rental_requests')->where('created_at', '>=', $dateFilter)->count(),
+            'approved' => DB::table('rental_requests')->where('status', 'approved')->where('created_at', '>=', $dateFilter)->count(),
+            'pending' => DB::table('rental_requests')->where('status', 'pending')->where('created_at', '>=', $dateFilter)->count(),
+            'rejected' => DB::table('rental_requests')->where('status', 'rejected')->where('created_at', '>=', $dateFilter)->count(),
+            'revenue' => DB::table('rental_requests')->where('created_at', '>=', $dateFilter)->sum('totalPrice') ?: 0,
         ];
     }
 

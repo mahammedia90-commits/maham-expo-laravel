@@ -24,7 +24,14 @@ class CheckPermission
         $userPermissions = $request->input('auth_user_permissions', []);
 
         // Super admin bypasses all permission checks
-        if ($this->authClient->hasRole($userRoles, 'super-admin')) {
+        if ($this->authClient->hasRole($userRoles, 'super-admin') 
+            || in_array('super_admin', $userRoles) 
+            || in_array('admin', $userRoles)) {
+            return $next($request);
+        }
+
+        // Wildcard permission bypass
+        if (in_array('*', $userPermissions)) {
             return $next($request);
         }
 

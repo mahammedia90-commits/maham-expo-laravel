@@ -7,7 +7,7 @@ class Space extends Model
 {
     public $incrementing = true;
     protected $keyType = 'int';
-    protected $table = 'units';
+    protected $table = 'spaces';
     const CREATED_AT = 'createdAt';
     const UPDATED_AT = null;
     protected $fillable = ['venueId','eventId','name','nameAr','zone','type','size','price','status','positionX','positionY','width','height','amenities','hallId','floorNumber','occupantName','occupantId','bookingId','description','electricityIncluded','wifiIncluded'];

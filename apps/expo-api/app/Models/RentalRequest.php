@@ -7,7 +7,7 @@ class RentalRequest extends Model
 {
     public $incrementing = true;
     protected $keyType = 'int';
-    protected $table = 'bookings';
+    protected $table = 'rental_requests';
     const CREATED_AT = 'createdAt';
     const UPDATED_AT = 'updatedAt';
     protected $fillable = ['orderNumber','userId','unitId','eventId','status','totalPrice','vatAmount','services','approvedBy','approvedAt','rejectionReason','notes'];
