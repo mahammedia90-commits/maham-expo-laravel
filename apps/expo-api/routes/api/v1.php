@@ -981,6 +981,24 @@ Route::middleware([SetLocale::class])->group(function () {
                         ->middleware(CheckPermission::class . ':profiles.approve');
                 });
 
+
+                // ============================================
+                // WORKFORCE MANAGEMENT
+                // ============================================
+                Route::prefix("workforce")->group(function () {
+                    Route::get("/dashboard", [\App\Http\Controllers\Api\Admin\WorkforceController::class, "dashboard"]);
+                    Route::get("/employees", [\App\Http\Controllers\Api\Admin\WorkforceController::class, "employees"]);
+                    Route::get("/attendance", [\App\Http\Controllers\Api\Admin\WorkforceController::class, "attendance"]);
+                    Route::get("/tasks", [\App\Http\Controllers\Api\Admin\WorkforceController::class, "tasks"]);
+                    Route::post("/tasks", [\App\Http\Controllers\Api\Admin\WorkforceController::class, "createTask"]);
+                    Route::put("/tasks/{id}", [\App\Http\Controllers\Api\Admin\WorkforceController::class, "updateTask"]);
+                    Route::get("/kpis", [\App\Http\Controllers\Api\Admin\WorkforceController::class, "kpis"]);
+                    Route::get("/warnings", [\App\Http\Controllers\Api\Admin\WorkforceController::class, "warnings"]);
+                    Route::get("/shifts", [\App\Http\Controllers\Api\Admin\WorkforceController::class, "shifts"]);
+                    Route::get("/leaves", [\App\Http\Controllers\Api\Admin\WorkforceController::class, "leaves"]);
+                    Route::put("/leaves/{id}/approve", [\App\Http\Controllers\Api\Admin\WorkforceController::class, "approveLeave"]);
+                    Route::put("/leaves/{id}/reject", [\App\Http\Controllers\Api\Admin\WorkforceController::class, "rejectLeave"]);
+                });
             }); // End /manage/
 
         }); // End Authenticated Routes
