@@ -1031,6 +1031,17 @@ Route::middleware([SetLocale::class])->group(function () {
                 // ============================================
 
                 // ============================================
+
+                // ============================================
+                // CONTRACT WORKFLOW
+                // ============================================
+                Route::prefix("workflow")->group(function () {
+                    Route::put("bookings/{id}/approve", [\App\Http\Controllers\Api\Admin\ContractWorkflowController::class, "approveBooking"]);
+                    Route::put("contracts/{id}/sign", [\App\Http\Controllers\Api\Admin\ContractWorkflowController::class, "signContract"]);
+                    Route::put("invoices/{id}/pay", [\App\Http\Controllers\Api\Admin\ContractWorkflowController::class, "recordPayment"]);
+                    Route::get("bookings/{id}/status", [\App\Http\Controllers\Api\Admin\ContractWorkflowController::class, "workflowStatus"]);
+                    Route::get("contracts", [\App\Http\Controllers\Api\Admin\ContractWorkflowController::class, "listWithWorkflow"]);
+                });
                 // MESSAGING
                 // ============================================
                 Route::prefix("messages")->group(function () {
