@@ -983,6 +983,50 @@ Route::middleware([SetLocale::class])->group(function () {
 
 
                 // ============================================
+
+                // ============================================
+                // CRM & SALES
+                // ============================================
+                Route::prefix("crm")->group(function () {
+                    Route::get("/dashboard", [\App\Http\Controllers\Api\Admin\CrmController::class, "dashboard"]);
+                    Route::get("/leads", [\App\Http\Controllers\Api\Admin\CrmController::class, "leads"]);
+                    Route::post("/leads", [\App\Http\Controllers\Api\Admin\CrmController::class, "createLead"]);
+                    Route::put("/leads/{id}", [\App\Http\Controllers\Api\Admin\CrmController::class, "updateLead"]);
+                    Route::put("/leads/{id}/advance", [\App\Http\Controllers\Api\Admin\CrmController::class, "advanceStage"]);
+                    Route::get("/activities", [\App\Http\Controllers\Api\Admin\CrmController::class, "activities"]);
+                    Route::post("/activities", [\App\Http\Controllers\Api\Admin\CrmController::class, "logActivity"]);
+                    Route::get("/tasks", [\App\Http\Controllers\Api\Admin\CrmController::class, "tasks"]);
+                });
+
+                // ============================================
+                // OPERATIONS
+                // ============================================
+                Route::prefix("operations")->group(function () {
+                    Route::get("/dashboard", [\App\Http\Controllers\Api\Admin\OperationsController::class, "dashboard"]);
+                    Route::get("/suppliers", [\App\Http\Controllers\Api\Admin\OperationsController::class, "suppliers"]);
+                    Route::post("/suppliers", [\App\Http\Controllers\Api\Admin\OperationsController::class, "createSupplier"]);
+                    Route::get("/gates", [\App\Http\Controllers\Api\Admin\OperationsController::class, "gates"]);
+                    Route::get("/gate-passes", [\App\Http\Controllers\Api\Admin\OperationsController::class, "gatePasses"]);
+                    Route::get("/gate-logs", [\App\Http\Controllers\Api\Admin\OperationsController::class, "gateLogs"]);
+                    Route::get("/permits", [\App\Http\Controllers\Api\Admin\OperationsController::class, "permits"]);
+                    Route::put("/permits/{id}/approve", [\App\Http\Controllers\Api\Admin\OperationsController::class, "approvePermit"]);
+                    Route::get("/field-services", [\App\Http\Controllers\Api\Admin\OperationsController::class, "fieldServices"]);
+                    Route::get("/field-requests", [\App\Http\Controllers\Api\Admin\OperationsController::class, "fieldServiceRequests"]);
+                    Route::get("/inventory", [\App\Http\Controllers\Api\Admin\OperationsController::class, "inventory"]);
+                    Route::get("/inventory-movements", [\App\Http\Controllers\Api\Admin\OperationsController::class, "inventoryMovements"]);
+                });
+
+                // ============================================
+                // RBAC & PERMISSIONS
+                // ============================================
+                Route::prefix("rbac")->group(function () {
+                    Route::get("/roles", [\App\Http\Controllers\Api\Admin\PermissionsController::class, "roles"]);
+                    Route::post("/roles", [\App\Http\Controllers\Api\Admin\PermissionsController::class, "createRole"]);
+                    Route::get("/user-roles", [\App\Http\Controllers\Api\Admin\PermissionsController::class, "userRoles"]);
+                    Route::post("/assign-role", [\App\Http\Controllers\Api\Admin\PermissionsController::class, "assignRole"]);
+                    Route::get("/audit-logs", [\App\Http\Controllers\Api\Admin\PermissionsController::class, "auditLogs"]);
+                    Route::get("/department-access", [\App\Http\Controllers\Api\Admin\PermissionsController::class, "departmentAccess"]);
+                });
                 // WORKFORCE MANAGEMENT
                 // ============================================
                 Route::prefix("workforce")->group(function () {
