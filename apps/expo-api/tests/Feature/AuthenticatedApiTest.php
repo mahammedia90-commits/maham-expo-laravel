@@ -12,7 +12,7 @@ use Tests\TestCase;
 
 class AuthenticatedApiTest extends TestCase
 {
-    use RefreshDatabase;
+    
 
     protected function setUp(): void
     {
