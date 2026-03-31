@@ -1027,6 +1027,21 @@ Route::middleware([SetLocale::class])->group(function () {
                     Route::get("/audit-logs", [\App\Http\Controllers\Api\Admin\PermissionsController::class, "auditLogs"]);
                     Route::get("/department-access", [\App\Http\Controllers\Api\Admin\PermissionsController::class, "departmentAccess"]);
                 });
+
+                // ============================================
+
+                // ============================================
+                // MESSAGING
+                // ============================================
+                Route::prefix("messages")->group(function () {
+                    Route::get("/inbox", [\App\Http\Controllers\Api\Admin\MessageController::class, "inbox"]);
+                    Route::post("/send", [\App\Http\Controllers\Api\Admin\MessageController::class, "send"]);
+                    Route::post("/broadcast", [\App\Http\Controllers\Api\Admin\MessageController::class, "broadcast"]);
+                    Route::get("/templates", [\App\Http\Controllers\Api\Admin\MessageController::class, "templates"]);
+                });
+                // REPORTS
+                // ============================================
+                Route::get("reports/generate", [\App\Http\Controllers\Api\Admin\ReportController::class, "generate"]);
                 // WORKFORCE MANAGEMENT
                 // ============================================
                 Route::prefix("workforce")->group(function () {
