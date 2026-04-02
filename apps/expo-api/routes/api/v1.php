@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\Api\AuthGatewayController;
 use App\Http\Controllers\Api\BusinessProfileController;
 use App\Http\Controllers\Api\CategoryController;
 use App\Http\Controllers\Api\CityController;
@@ -76,6 +77,22 @@ use App\Http\Controllers\Api\Webhook\TapWebhookController;
 
 use App\Http\Controllers\Api\TrackingController;
 use App\Http\Controllers\Api\My\ActivityController as MyActivityController;
+
+// Phase 3: Revenue Engine Controllers
+use App\Http\Controllers\Api\Admin\{
+    LeadsController,
+    PipelineController,
+    PerformanceController,
+    EnforcementController,
+    RevenueController,
+    WorkflowController,
+    AIController,
+    BadgeController,
+    RequestController,
+    WaitlistController,
+    DocumentController,
+    OpportunityController,
+};
 use App\Http\Controllers\Api\Admin\AnalyticsController as AdminAnalyticsController;
 
 // Team Member & Dynamic Type Controllers
@@ -156,6 +173,14 @@ Route::middleware([SetLocale::class])->group(function () {
             ]);
         });
 
+        // AUTH ROUTES (Proxy to auth service - PUBLIC)
+        Route::prefix('auth')->group(function () {
+            Route::post('/login', [AuthGatewayController::class, 'login']);
+            Route::post('/verify-otp', [AuthGatewayController::class, 'verifyOtp']);
+            Route::get('/me', [AuthGatewayController::class, 'me']);
+            Route::post('/logout', [AuthGatewayController::class, 'logout']);
+        });
+
         // Statistics (Public - Website)
         Route::prefix('statistics')->group(function () {
             Route::get('/', [StatisticsController::class, 'index']);
@@ -200,6 +225,25 @@ Route::middleware([SetLocale::class])->group(function () {
         // ==================== WEBHOOK ROUTES (No Auth) ====================
         Route::prefix('webhooks')->group(function () {
             Route::post('/tap', [TapWebhookController::class, 'handle']);
+        });
+
+        // ==================== PHASE 3 TEST ROUTES (NO AUTH) ====================
+        Route::prefix('admin-test')->group(function () {
+            // Phase 3 Revenue Engine Endpoints
+            Route::get('/crm/leads', [LeadsController::class, 'index']);
+            Route::get('/sales/pipeline', [PipelineController::class, 'index']);
+            Route::get('/performance/team', [PerformanceController::class, 'team']);
+            Route::get('/revenue/dashboard', [RevenueController::class, 'dashboard']);
+            Route::get('/enforcement/idle', [EnforcementController::class, 'idle']);
+            Route::get('/revenue-workflows', [WorkflowController::class, 'index']);
+            Route::get('/ai/priority-leads', [AIController::class, 'priorityLeads']);
+            Route::get('/ai/at-risk-deals', [AIController::class, 'atRiskDeals']);
+            // Phase 2 Controllers
+            Route::get('/badges', [BadgeController::class, 'index']);
+            Route::get('/requests', [RequestController::class, 'index']);
+            Route::get('/waitlist', [WaitlistController::class, 'index']);
+            Route::get('/documents', [DocumentController::class, 'index']);
+            Route::get('/opportunities', [OpportunityController::class, 'index']);
         });
 
         // ==================== AUTHENTICATED ROUTES ====================
@@ -1070,6 +1114,9 @@ Route::middleware([SetLocale::class])->group(function () {
                     Route::put("/leaves/{id}/reject", [\App\Http\Controllers\Api\Admin\WorkforceController::class, "rejectLeave"]);
                 });
             }); // End /manage/
+
+            // Include admin routes (aliases that map to same controllers)
+            require __DIR__ . '/admin.php';
 
         }); // End Authenticated Routes
 

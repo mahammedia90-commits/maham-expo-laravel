@@ -29,6 +29,7 @@ class DatabaseSeeder extends Seeder
 
             // 3. Business profiles (depends: users from auth service)
             BusinessProfileSeeder::class,
+            InvestorProfileSeeder::class,
 
             // 4. Requests (depends: Events, Spaces, BusinessProfiles)
             VisitRequestSeeder::class,

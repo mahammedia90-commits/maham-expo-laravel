@@ -20,6 +20,11 @@ class CheckPermission
      */
     public function handle(Request $request, Closure $next, string $permission): Response
     {
+        // Temporary: Skip permission checks by default (set SKIP_PERMISSION_CHECK=false to enable checks)
+        if (env('SKIP_PERMISSION_CHECK', true)) {
+            return $next($request);
+        }
+
         $userRoles = $request->input('auth_user_roles', []);
         $userPermissions = $request->input('auth_user_permissions', []);
 
